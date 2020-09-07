@@ -1,0 +1,178 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Sub Team {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:agency' %}" class="tab-btns">Agency</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns active-tab">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_sub_team" class="add-new-btn">New Sub Team</button> 
+    <ul>
+        {% if sub_team_list %}
+            {% for eachsub_team in sub_team_list %}
+                <li>{{ eachsub_team.sub_team_name }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+</div>
+<div id="sub_team_form" class="form_modal">
+    <div class="form_header">
+      <div class="forms-heading" style="text-align: center;">
+          <h2>Create New Sub Team</h2>
+      </div>
+      <div class="hr_line">&nbsp;</div>
+     
+    </div>
+    <div class="form_content">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="">Entity</label>
+            <div class="forms-input-holder">
+                <select name="subteam_entity" id="subteam_entity" required="true">
+                    <option value="" disabled selected>Select Entity</option>
+                    {% if entity_list %}
+                        {% for eachentity in entity_list %}
+                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Department</label>
+            <div class="forms-input-holder">
+                <select name="subteam_dept" id="subteam_dept" required="true" disabled="true">
+                    <option value="" disabled selected>Select Department</option>
+                    {% if department_list %}
+                        {% for eachdepartment in department_list %}
+                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Function</label>
+            <div class="forms-input-holder">
+                <select name="subteam_function" id="subteam_function" required="true" disabled="true">
+                    <option value="" disabled selected>Select Function</option>
+                    {% if function_list %}
+                        {% for eachfunction in function_list %}
+                            <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Team</label>
+            <div class="forms-input-holder">
+                <select name="subteam_team" required="true" id = "subteam_team" disabled="true">
+                    <option value="" disabled selected>Select Team</option>
+                    {% if team_list %}
+                        {% for eachteam in team_list %}
+                            <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Sub Team Name" name="subteam_name" required="true">
+            </div>
+              
+    </div>
+    <div class="form_footer">
+        <button type="submit" formaction="{% url 'csp_app:create_subteam' %}" class="forms-save-btn">Save Sub Team</button>
+    </form> 
+    </div>
+  
+  </div>
+<div>
+    
+</div>
+<script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#sub_team_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'sub_team_form'){
+            $("#sub_team_form").css("display", "none");
+        }   
+        });  
+        $('#new_sub_team').click(function(){
+            $("#sub_team_form").css("display", "block");
+        });
+
+        $('#subteam_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#subteam_dept option').length;
+            var count = 0;
+            $('#subteam_dept option').each(function() {
+            if ($(this).text() == filter) {
+            $('#subteam_dept').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#subteam_dept').val(filter);
+            });
+            if (count === total){
+                $('#subteam_dept').attr("disabled", true)
+            }
+        });
+
+        $('#subteam_dept').change(function() {
+            var filter = $(this).val();
+            var total = $('#subteam_function option').length;
+            var count = 0;
+            $('#subteam_function option').each(function() {
+            if ($(this).text() == filter) {
+            $('#subteam_function').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#subteam_function').val(filter);
+            });
+            if (count === total){
+                $('#subteam_function').attr("disabled", true)
+            }
+        });
+        $('#subteam_function').change(function() {
+            var filter = $(this).val();
+            var total = $('#subteam_team option').length;
+            var count = 0;
+            $('#subteam_team option').each(function() {
+            if ($(this).text() == filter) {
+            $('#subteam_team').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#subteam_team').val(filter);
+            });
+            if (count === total){
+                $('#subteam_team').attr("disabled", true)
+            }
+        });
+    })
+</script>
+{% endblock %}

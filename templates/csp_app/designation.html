@@ -1,0 +1,207 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Designation {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:agency' %}" class="tab-btns">Agency</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns  active-tab">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_designation" class="add-new-btn">New Designation</button> 
+    <ul>
+        {% if designation_list %}
+            {% for eachdesignation in designation_list %}
+                <li>{{ eachdesignation.designation_name }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+</div>
+<div id="designation_form" class="form_modal">
+    <div class="form_header">
+      <div class="forms-heading" style="text-align: center;">
+          <h2>Create New Designation</h2>
+      </div>
+      <div class="hr_line">&nbsp;</div>
+     
+    </div>
+    <div class="form_content">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="">Entity</label>
+            <div class="forms-input-holder">
+                <select name="desg_entity" id="desg_entity" required="true">
+                    <option value="" disabled selected>Select Entity</option>
+                    {% if entity_list %}
+                        {% for eachentity in entity_list %}
+                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+        
+            <label for="">Department</label>
+            <div class="forms-input-holder">
+                <select name="desg_dept" id="desg_dept" required="true" disabled="true">
+                    <option value="" disabled selected>Select department</option>
+                    {% if department_list %}
+                        {% for eachdepartment in department_list %}
+                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Function</label>
+            <div class="forms-input-holder">
+                <select name="desg_function" id="desg_function" required="true" disabled="true">
+                    <option value="" disabled selected>Select Function</option>
+                    {% if function_list %}
+                        {% for eachfunction in function_list %}
+                            <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Team</label>
+            <div class="forms-input-holder">
+                <select name="desg_team" id="desg_team" required="true"  disabled="true">
+                    <option value="" disabled selected>Select Team</option>
+                    {% if team_list %}
+                        {% for eachteam in team_list %}
+                            <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Sub Team</label>
+            <div class="forms-input-holder">
+                <select name="desg_subteam" id="desg_subteam" required="true" disabled="true">
+                    <option value="" disabled selected>Select Sub Team</option>
+                    {% if sub_team_list %}
+                        {% for eachsubteam in sub_team_list %}
+                            <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Designation" name="desg_name" required="true">
+            </div>
+               
+    </div>
+    <div class="form_footer">
+        <button type="submit" formaction="{% url 'csp_app:create_designation' %}" class="forms-save-btn">Save Designation</button>
+    </form> 
+    </div>
+  
+  </div>
+
+<script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#designation_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'designation_form'){
+            $("#designation_form").css("display", "none");
+        }   
+        });  
+        $('#new_designation').click(function(){
+            $("#designation_form").css("display", "block");
+        });
+
+        $('#desg_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#desg_dept option').length;
+            var count = 0;
+            $('#desg_dept option').each(function() {
+            if ($(this).text() == filter) {
+            $('#desg_dept').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#desg_dept').val(filter);
+            });
+            if (count === total){
+                $('#desg_dept').attr("disabled", true)
+            }
+        });
+
+        $('#desg_dept').change(function() {
+            var filter = $(this).val();
+            var total = $('#desg_function option').length;
+            var count = 0;
+            $('#desg_function option').each(function() {
+            if ($(this).text() == filter) {
+            $('#desg_function').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#desg_function').val(filter);
+            });
+            if (count === total){
+                $('#desg_function').attr("disabled", true)
+            }
+        });
+        $('#desg_function').change(function() {
+            var filter = $(this).val();
+            var total = $('#desg_team option').length;
+            var count = 0;
+            $('#desg_team option').each(function() {
+            if ($(this).text() == filter) {
+            $('#desg_team').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#desg_team').val(filter);
+            });
+            if (count === total){
+                $('#desg_team').attr("disabled", true)
+            }
+        });
+
+        $('#desg_team').change(function() {
+            var filter = $(this).val();
+            var total = $('#desg_subteam option').length;
+            var count = 0;
+            $('#desg_subteam option').each(function() {
+            if ($(this).text() == filter) {
+            $('#desg_subteam').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#desg_subteam').val(filter);
+            });
+            if (count === total){
+                $('#desg_subteam').attr("disabled", true)
+            }
+        });
+    })
+</script>
+{% endblock %}

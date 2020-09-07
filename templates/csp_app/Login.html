@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login!</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/login.css' %}">
+    <style>
+
+    </style>
+</head>
+<body>
+ <div class="login-wrapper">
+    <div>
+        <h2>Login</h2> 
+    </div>
+    <form method="POST">
+        {% csrf_token %}   
+        <div class="login-input-holder">
+            <input type="text" placeholder="Username" class="login-input" name="username" >
+        </div>
+        <div class="login-input-holder">
+            <input type="password" placeholder="Password" class="login-input" name="password">
+        </div>
+        <div class="login-btn-holder">
+            <button class="login-btn" formaction="{% url 'csp_app:login' %}" type="submit">Login</button>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style: none;">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </form>
+ </div>
+
+</body>
+</html>

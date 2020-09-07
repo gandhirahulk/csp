@@ -1,0 +1,82 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Create User {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:create_user' %}" class="tab-btns active-tab">Create User</a>
+        <a href="{% url 'csp_app:disable_user' %}" class="tab-btns">Disable User</a>   
+    </div>
+
+{% endblock %}
+
+
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_user" class="add-new-btn">New User</button>
+    
+    <ul>
+        {% if user_list %}
+            {% for eachuser in user_list %}
+                <li>{{ eachuser.user_name }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul> 
+  
+</div>
+<div id="newuser_form" class="form_modal" style="padding-top: 10%;">
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Create New User</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>
+     
+    </div>
+    <div class="form_content">
+        <form method="POST">
+            {% csrf_token %}   
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Username" name="username" required="true">
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="First Name" name="firstname" required="true">
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Last Name" name="lastname" required="true">
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Email Address" name="email" required="true">
+            </div>
+           
+        </form>     
+              
+    </div>
+    <div class="form_footer">
+            <button class="forms-save-btn" formaction="{% url 'csp_app:create_user' %}" type="submit">Create User</button>
+ </form>
+    </div>
+  
+  </div>
+
+<script>
+    $(document).ready(function(){
+        showMe('User', 'user-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#newuser_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'newuser_form'){
+            $("#newuser_form").css("display", "none");
+        }   
+        });  
+        $('#new_user').click(function(){
+            $("#newuser_form").css("display", "block");
+        });
+    })
+</script>
+
+{% endblock %}

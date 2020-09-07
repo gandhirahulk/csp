@@ -1,0 +1,236 @@
+
+*{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body{
+  background: #f5f5fa;
+}
+/* .wrapper{
+  margin: 10px;
+} */
+.wrapper .top_navbar{
+  width: 100%;
+  height: 60px;
+  display: flex;
+  position: fixed;
+  top: 0px;
+}
+
+/* .wrapper .top_navbar .hamburger{
+  width: 70px;
+  height: 100%;
+  background: #bf0711;
+  padding: 15px 17px;
+  border-top-left-radius: 20px;
+  cursor: pointer;
+} */
+
+/* .wrapper .top_navbar .hamburger div{
+  width: 35px;
+  height: 4px;
+  background: #92a6e2;
+  margin: 5px 0;
+  border-radius: 5px;
+} */
+
+.wrapper .top_navbar .top_menu{
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.wrapper .top_navbar .top_menu .logo{
+  color: #bf0711;
+  line-height: 1px;
+  padding-left: 3rem;
+}
+
+.wrapper .top_navbar .top_menu ul{
+  display: flex;
+}
+
+.wrapper .top_navbar .top_menu ul li a{
+  display: block;
+  margin: 0 10px;
+  /* width: 35px;
+  height: 35px; */
+  line-height: 35px;
+  text-align: center;
+  /* border: 1px solid #bf0711; */
+  /* border-radius: 50%; */
+  color: #bf0711;
+}
+
+/* .wrapper .top_navbar .top_menu ul li a:hover{
+  background: #4360b5;
+  color: #fff;
+} */
+
+.wrapper .top_navbar .top_menu ul li a:hover i{
+  color: #fff;
+}
+
+.wrapper .sidebar{
+  position: fixed;
+  top: 61px;
+  /* left: 10px; */
+  background: #bf0711;
+  width: 200px;
+  height: calc(100% - 60px);
+  transition: all 0.3s ease;
+}
+
+.wrapper .sidebar ul li a{
+    display: block;
+    padding: 20px;
+    color: #f5f5fa;
+    position: relative;
+    margin-bottom: 1px;
+    /* color: #92a6e2; */
+    white-space: nowrap;
+}
+
+.wrapper .sidebar ul li{
+    transition: .2s ease;
+}
+
+/* .wrapper .sidebar ul li a:before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: #f5f5fa;
+  display: none;
+} */
+
+.wrapper .sidebar ul li a span.icon{
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.wrapper .sidebar ul li a span.title{
+  display: inline-block;
+}
+
+.wrapper .sidebar ul li a span.expand{
+    float: right;
+    display: none;
+  }
+
+/* .wrapper .sidebar ul li a:hover,
+.wrapper .sidebar ul li a.active{
+  color: #bf0711;
+} */
+
+.wrapper .sidebar ul li:hover{
+    /* border-left: 5px solid #bf0711; */
+    background: #D91C22;
+}
+
+.active{
+    background: #D91C22;
+}
+
+.wrapper .sidebar ul li.active{
+    background: #D91C22;
+    border-left: 5px solid #f5f5fa
+  }
+
+.wrapper .sidebar ul li a:hover:before,
+.wrapper .sidebar ul li a.active:before{
+  display: block;
+}
+
+.wrapper .main_container{
+  width: (100% - 200px);
+  margin-top: 70px;
+  margin-left: 200px;
+  padding: 10px;
+  transition: all 0.3s ease;
+  padding-top: 0px;
+}
+
+.wrapper .main_container .item{
+  background: #fff;
+  margin-bottom: 10px;
+  padding: 15px;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+/* .wrapper.collapse .sidebar{
+  width: 70px;
+}
+
+.wrapper.collapse .sidebar ul li a{
+  text-align: center; 
+}
+
+.wrapper.collapse .sidebar ul li a span.icon{
+  margin: 0;
+}
+
+.wrapper.collapse .sidebar ul li a span.title{
+  display: none;
+}
+
+.wrapper.collapse .main_container{
+  width: (100% - 70px);
+  margin-left: 70px;
+} */
+
+
+
+.tab_content_block_cls::-webkit-scrollbar {
+    display: none;
+  }
+
+.tab_content_block_cls{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    top:115px;
+    /* width: inherit; */
+    position: fixed;
+    overflow: auto;
+    overflow-x: hidden;
+    height: 82%;
+
+}
+
+.tabs a{
+    text-decoration: none;
+    color: #000;
+    background: #fff;
+}
+
+.tab-btns{
+    outline: none;
+    border: none;
+    padding: 7px;
+    background: none;
+    border-bottom: 3px solid #fff;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.tab-btns:hover{
+    border-bottom: 4px solid #bf0711;
+    color: #bf0711;
+}
+
+.active-tab{
+    border-bottom: 4px solid #bf0711;
+    color: #bf0711 !important;
+}

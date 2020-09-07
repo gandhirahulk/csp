@@ -1,0 +1,123 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Function {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns "> Entity</a>
+        <a href="{% url 'csp_app:agency' %}" class="tab-btns">Agency</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns active-tab">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_function" class="add-new-btn">New Function</button> 
+    <ul>
+        {% if function_list %}
+            {% for eachfunction in function_list %}
+                <li>{{ eachfunction.function_name }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+</div>
+
+<div id="function_form" class="form_modal" style="padding-top: 10%;">
+    <div class="form_header">
+      <div class="forms-heading" style="text-align: center;">
+          <h2>Create New Function</h2>
+      </div>
+      <div class="hr_line">&nbsp;</div>     
+    </div>
+    <div class="form_content">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="">Entity</label>
+            <div class="forms-input-holder">
+                <select name="function_entity" id="function_entity">
+                    <option value="" disabled selected>Select Entity</option>
+                    {% if entity_list %}
+                        {% for eachentity in entity_list %}
+                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>     
+            <label for="">Department</label>
+            <div class="forms-input-holder">
+                <select name="function_dept" id="function_dept" required="true" disabled="true">
+                    <option value="" disabled selected>Select Department</option>
+                    {% if department_list %}
+                        {% for eachdepartment in department_list %}
+                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Function</label>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Function" name="function_name" required="true" maxlength="50">
+            </div>
+            
+    </div>
+    <div class="form_footer">
+            <button type="submit" formaction="{% url 'csp_app:create_function' %}" class="forms-save-btn">Save Function</button>
+        </form>
+    </div>
+  
+  </div>
+
+<div>
+    
+</div>
+<script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#function_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'function_form'){
+            $("#function_form").css("display", "none");
+        }   
+        });  
+        $('#new_function').click(function(){
+            $("#function_form").css("display", "block");
+        });
+
+        $('#function_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#function_dept option').length;
+            // alert(total);
+            var count = 0;
+            $('#function_dept option').each(function() {
+            if ($(this).text() == filter) {
+            $('#function_dept').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#function_dept').val(filter);
+            });
+            // alert(count)
+            if (count === total){
+                $('#function_dept').attr("disabled", true)
+            }
+        });
+    })
+</script>
+{% endblock %}

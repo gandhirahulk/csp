@@ -1,0 +1,280 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Entity {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:agency' %}" class="tab-btns">Agency</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns active-tab">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_city" class="add-new-btn">New City</button> 
+    <ul>
+        {% if city_list %}
+            {% for eachcity in city_list %}
+                <li>{{ eachcity.city_name }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+</div>
+<div id="city_form" class="form_modal" style="padding-top: 2%;">
+    <div class="form_header">
+      <div class="forms-heading" style="text-align: center;">
+          <h2>Create New City</h2>
+      </div>
+      <div class="hr_line">&nbsp;</div>
+     
+    </div>
+    <div class="form_content">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="">Entity</label>
+            <div class="forms-input-holder">
+                <select name="city_entity" id="city_entity" required="true">
+                    <option value="" disabled selected>Select Entity</option>
+                    {% if entity_list %}
+                        {% for eachentity in entity_list %}
+                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+        
+            <label for="">Department</label>
+            <div class="forms-input-holder">
+                <select name="city_dept" id="city_dept" required="true" disabled="true">
+                    <option value="" disabled selected>Select department</option>
+                    {% if department_list %}
+                        {% for eachdepartment in department_list %}
+                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Function</label>
+            <div class="forms-input-holder">
+                <select name="city_function" id="city_function" required="true" disabled="true">
+                    <option value="" disabled selected>Select Function</option>
+                    {% if function_list %}
+                        {% for eachfunction in function_list %}
+                            <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Team</label>
+            <div class="forms-input-holder">
+                <select name="city_team" id="city_team" required="true"  disabled="true">
+                    <option value="" disabled selected>Select Team</option>
+                    {% if team_list %}
+                        {% for eachteam in team_list %}
+                            <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Sub Team</label>
+            <div class="forms-input-holder">
+                <select name="city_subteam" id="city_subteam" required="true" disabled="true">
+                    <option value="" disabled selected>Select Sub Team</option>
+                    {% if sub_team_list %}
+                        {% for eachsubteam in sub_team_list %}
+                            <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Designation</label>
+            <div class="forms-input-holder">
+                <select name="city_desg" id="city_desg" required="true" disabled="true">
+                    <option value="" disabled selected>Select Designation</option>
+                    {% if designation_list %}
+                        {% for eachdesignation in designation_list %}
+                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Region</label>
+            <div class="forms-input-holder">
+                <select name="city_region" id="city_region" required="true" disabled="true">
+                    <option value="" disabled selected>Select Region</option>
+                    {% if region_list %}
+                        {% for eachregion in region_list %}
+                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_designation_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">State</label>
+            <div class="forms-input-holder">
+                <select name="city_state" id="city_state" required="true" disabled="true">
+                    <option value="" disabled selected>Select State</option>
+                    {% if state_list %}
+                        {% for eachstate in state_list %}
+                            <option value="{{ eachstate.pk }}" label="{{ eachstate.city_name }}">{{ eachstate.fk_city_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="City Name" name="city_name" required="true">
+            </div>
+               
+    </div>
+    <div class="form_footer">
+        <button type="submit" formaction="{% url 'csp_app:create_city' %}" class="forms-save-btn">Save City</button>
+    </form> 
+    </div>
+  
+  </div>
+
+
+  <script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#city_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'city_form'){
+            $("#city_form").css("display", "none");
+        }   
+        });  
+        $('#new_city').click(function(){
+            $("#city_form").css("display", "block");
+        });
+
+        $('#city_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#city_dept option').length;
+            var count = 0;
+            $('#city_dept option').each(function() {
+            if ($(this).text() == filter) {
+            $('#city_dept').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#city_dept').val(filter);
+            });
+            if (count === total){
+                $('#city_dept').attr("disabled", true)
+            }
+        });
+
+        $('#city_dept').change(function() {
+            var filter = $(this).val();
+            var total = $('#city_function option').length;
+            var count = 0;
+            $('#city_function option').each(function() {
+            if ($(this).text() == filter) {
+            $('#city_function').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#city_function').val(filter);
+            });
+            if (count === total){
+                $('#city_function').attr("disabled", true)
+            }
+        });
+        $('#city_function').change(function() {
+            var filter = $(this).val();
+            var total = $('#city_team option').length;
+            var count = 0;
+            $('#city_team option').each(function() {
+            if ($(this).text() == filter) {
+            $('#city_team').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#city_team').val(filter);
+            });
+            if (count === total){
+                $('#city_team').attr("disabled", true)
+            }
+        });
+
+        $('#city_team').change(function() {
+            var filter = $(this).val();
+            var total = $('#city_subteam option').length;
+            var count = 0;
+            $('#city_subteam option').each(function() {
+            if ($(this).text() == filter) {
+            $('#city_subteam').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#city_subteam').val(filter);
+            });
+            if (count === total){
+                $('#city_subteam').attr("disabled", true)
+            }
+        });
+
+        
+        $('#city_subteam').change(function() {
+            var filter = $(this).val();
+            var total = $('#city_desg option').length;
+            var count = 0;
+            $('#city_desg option').each(function() {
+            if ($(this).text() == filter) {
+            $('#city_desg').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#city_desg').val(filter);
+            });
+            if (count === total){
+                $('#city_desg').attr("disabled", true)
+            }
+        });
+
+        $('#city_desg').change(function() {
+            var filter = $(this).val();
+            var total = $('#city_region option').length;
+            var count = 0;
+            $('#city_region option').each(function() {
+            if ($(this).text() == filter) {
+            $('#city_region').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#city_region').val(filter);
+            });
+            if (count === total){
+                $('#city_region').attr("disabled", true)
+            }
+        });
+    })
+</script>
+{% endblock %}

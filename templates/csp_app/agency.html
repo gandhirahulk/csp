@@ -1,0 +1,108 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Agency {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:agency' %}" class="tab-btns active-tab">Agency</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_agency" class="add-new-btn">New Agency</button> 
+    <ul>
+        {% if agency_list %}
+            {% for eachagency in agency_list %}
+                <li>{{ eachagency.agency_name }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+</div>
+
+
+<div id="agency_form" class="form_modal">
+  <div class="form_header">
+    <div class="forms-heading" style="text-align: center;">
+        <h2>Create New Agency</h2>
+    </div>
+    <div class="hr_line">&nbsp;</div>
+   
+  </div>
+  <div class="form_content">
+    <form method="POST">
+        {% csrf_token %}
+        <label for="">Entity</label>
+
+        <div class="forms-input-holder">
+            <select name="agency_entity" required="true">
+                <option value="" disabled selected>Select Entity</option>
+                {% if entity_list %}
+                    {% for eachentity in entity_list %}
+                        <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                    {% endfor %}                
+                {% endif %}
+            </select>
+        </div>
+        <label for="">Agency</label>
+        <div class="forms-input-holder">
+            <input type="text" placeholder="Agency Name" name="agency_name" maxlength="82" required="true">
+        </div>
+        <label for="">SPOC Name</label>
+        <div class="forms-input-holder">
+            <input type="text" placeholder="SPOC Name" name="agency_spoc" pattern="[A-Za-z\s]{2,}" title="Numbers are not allowed" required="true">
+        </div>
+        <label for="">Phone Number</label>
+        <div class="forms-input-holder">
+            <input type="text" placeholder="Agency Phone Number" name="agency_phone" pattern="[6-9]{1}[0-9]{9}" maxlength="10" required="true">
+        </div>
+        <label for="">Agency Email ID</label>
+        <div class="forms-input-holder">
+            <input type="email" placeholder="Agency Email ID" name="agency_email" required="true">
+        </div>
+        <label for="">Agency Email ID Password</label>
+        <div class="forms-input-holder">
+            <input type="text" placeholder="Email Password" name="agency_email_pwd" required="true">
+        </div>
+        
+  </div>
+  <div class="form_footer">
+        <button type="submit" formaction="{% url 'csp_app:create_agency' %}" class="forms-save-btn">Save Agency</button>
+    </form>
+  </div>
+
+</div>
+<script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#agency_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'agency_form'){
+            $("#agency_form").css("display", "none");
+        }   
+        });  
+        $('#new_agency').click(function(){
+            $("#agency_form").css("display", "block");
+        });
+    });
+
+</script>
+
+{% endblock %}

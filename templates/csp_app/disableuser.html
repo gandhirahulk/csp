@@ -1,0 +1,24 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Create User {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:create_user' %}" class="tab-btns">Create User</a>
+        <a href="{% url 'csp_app:disable_user' %}" class="tab-btns active-tab">Disable User</a>   
+    </div>
+
+{% endblock %}
+
+
+
+{% block tabcontentblock %}
+<script>
+    $(document).ready(function(){
+        showMe('User', 'user-expand');
+    })
+</script>
+
+
+{% endblock %}

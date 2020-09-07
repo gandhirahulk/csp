@@ -1,0 +1,79 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Entity {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns active-tab"> Entity</a>
+        <a href="{% url 'csp_app:agency' %}" class="tab-btns">Agency</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_entity" class="add-new-btn">New Entity</button>
+    
+    <ul>
+        {% if entity_list %}
+            {% for eachentity in entity_list %}
+                <li>{{ eachentity.entity_name }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul> 
+  
+</div>
+
+<div id="entity_form" class="form_modal" style="padding-top: 15%;">
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Create New Entity</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>
+     
+    </div>
+    <div class="form_content">
+        <form method="POST" action="{% url 'csp_app:create_entity' %}">
+            {% csrf_token %}
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Entity Name" name="entity_name" title="Enity Name" required="true" oninvalid="CheckForOnlyNumbers(this, 'Entity Name')" oninput="CheckForOnlyNumbers(this, 'Entity Name')" maxlength="50S">
+            </div>           
+              
+    </div>
+    <div class="form_footer">
+            <button type="submit" formaction="{% url 'csp_app:create_entity' %}" class="forms-save-btn">Save Entity</button>
+        </form>
+    </div>
+  
+  </div>
+
+<script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#entity_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'entity_form'){
+            $("#entity_form").css("display", "none");
+        }   
+        });  
+        $('#new_entity').click(function(){
+            $("#entity_form").css("display", "block");
+        });
+    })
+</script>
+
+{% endblock %}
