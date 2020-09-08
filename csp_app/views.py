@@ -241,7 +241,6 @@ def region(request):
     region_list = master_region.objects.filter(status = active_status)
     return render(request, 'csp_app/region.html', {'entity_list': entity_list,'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
-
 def create_region(request):
     if request.method == 'POST':
         region_name = request.POST.get("region_name")
@@ -312,6 +311,12 @@ def location(request):
 def create_location(request):
     return render(request, 'csp_app/location.html', {})
 
+def create_user_view(request):
+    user_list = User.objects.all()
+    return render(request, 'csp_app/create_user.html', {'user_list': user_list})
+
+
+
 def create_user(request):
     if request.method == 'POST':
         usrname = request.POST.get('username')
@@ -330,7 +335,8 @@ def create_user(request):
             user.save()
             msg = 'username ' + usrname + " | password " + password
             send_mail('Account Created', msg,'sadaf.shaikh@udaan.com',[email],fail_silently=False,)
-            return HttpResponse("user created try to login or check django admin users")
+            messages.success(request, "User Created Successfully")
+            return render(request, 'csp_app/create_user.html', {})
         except IntegrityError:
             return HttpResponse("choose unique username")
     return render(request, 'csp_app/create_user.html', {})
