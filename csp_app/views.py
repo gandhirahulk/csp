@@ -2,24 +2,26 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.db.utils import IntegrityError
 from csp_app.models import status, master_candidate, master_entity, master_designation, master_agency, master_department, master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 
 active_status = status.objects.get(pk=1)
-
+@login_required(login_url='/notlogin/')
 def candidate(request):
     return render(request, 'csp_app/candidates.html', {})
 
+@login_required(login_url='/notlogin/')
 def entity(request):
     entity_list = master_entity.objects.filter(status = active_status)
     return render(request, 'csp_app/entity.html', {'entity_list': entity_list})
 
+@login_required(login_url='/notlogin/')
 def create_entity(request):
     if request.method == 'POST':
         entity_name = request.POST.get("entity_name")
@@ -37,13 +39,15 @@ def create_entity(request):
             return redirect('csp_app:entity')
     return render(request, 'csp_app/entity.html', {})
 
+@login_required(login_url='/notlogin/')
 def agency(request):
     entity_list = master_entity.objects.filter(status = active_status)
     agency_list = master_agency.objects.filter(status = active_status)
 
     return render(request, 'csp_app/agency.html', {'entity_list': entity_list, 'agency_list': agency_list})
 
-def create_agency(request):
+@login_required(login_url='/notlogin/')
+def create_agency(request):    
     if request.method == 'POST':
         agency_name = request.POST.get("agency_name")
         agency_spoc = request.POST.get("agency_spoc")
@@ -55,38 +59,47 @@ def create_agency(request):
             messages.warning(request, "Choose Entity And Try Again")
             return redirect('csp_app:agency')
         entity_fk = master_entity.objects.get(pk=entity)
+        
         try:
+            print(1)
             duplicate_agency_entity_spoc = master_agency.objects.filter(agency_name=agency_name, fk_entity_code= entity, spoc_name=agency_spoc, status = active_status)
             if duplicate_agency_entity_spoc:
                 messages.error(request, "Agency Already Exist")
                 return redirect('csp_app:agency')
+           
         except ObjectDoesNotExist:
-            pass
+            print(2)
         try:
             duplicate_agency_email = master_agency.objects.filter( agency_email_id= agency_email, status = active_status)
             if duplicate_agency_email:
                 messages.error(request, "Agency Email ID Already Exist")
                 return redirect('csp_app:agency')
+            print(3)
         except ObjectDoesNotExist:
-            pass
+            print(4)
         try:
             duplicate_agency_entity = master_agency.objects.filter( agency_name=agency_name, fk_entity_code= entity, status = active_status)
             if duplicate_agency_entity:                
                 messages.error(request, "Agency Already Exist")
                 return redirect('csp_app:agency')
-        except ObjectDoesNotExist:            
-            new_agency = master_agency(agency_name= agency_name, spoc_name= agency_spoc, agency_phone_number= agency_phone, agency_email_id= agency_email, agency_email_id_password= agency_email_pwd, fk_entity_code= entity_fk, created_by = "user")
-            new_agency.save()
-            messages.success(request, "Agency Saved Successfully")
-            return redirect('csp_app:agency')
+            print(5)
+        except ObjectDoesNotExist:   
+            print('here')
+
+        new_agency = master_agency(agency_name= agency_name, spoc_name= agency_spoc, agency_phone_number= agency_phone, agency_email_id= agency_email, agency_email_id_password= agency_email_pwd, fk_entity_code= entity_fk, created_by = "user")
+        new_agency.save()
+        messages.success(request, "Agency Saved Successfully")
+        return redirect('csp_app:agency')
     return render(request, 'csp_app/agency.html', {})
 
-def department(request):
+@login_required(login_url='/notlogin/')
+def  department(request):
     entity_list = master_entity.objects.filter(status = active_status)
     dept_list = master_department.objects.filter(status = active_status)
     return render(request, 'csp_app/department.html', {'entity_list': entity_list, 'department_list': dept_list})
 
-def create_department(request):
+@login_required(login_url='/notlogin/')
+def  create_department(request):
     
     if request.method == 'POST':
         dept_name = request.POST.get("dept_name")
@@ -108,13 +121,15 @@ def create_department(request):
             return redirect('csp_app:department')
     return render(request, 'csp_app/department.html', {})
 
-def function(request):
+@login_required(login_url='/notlogin/')
+def  function(request):
     entity_list = master_entity.objects.filter(status = active_status)
     dept_list = master_department.objects.filter(status = active_status)
     function_list = master_function.objects.filter(status = active_status)
     return render(request, 'csp_app/function.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list})
 
-def create_function(request):
+@login_required(login_url='/notlogin/')
+def  create_function(request):
     if request.method == 'POST':
         function_name = request.POST.get("function_name")
         function_dept = request.POST.get("function_dept")
@@ -136,7 +151,8 @@ def create_function(request):
             return redirect('csp_app:function')
     return render(request, 'csp_app/function.html', {})
 
-def team(request):
+@login_required(login_url='/notlogin/')
+def  team(request):
     entity_list = master_entity.objects.filter(status = active_status)
     dept_list = master_department.objects.filter(status = active_status)
     function_list = master_function.objects.filter(status = active_status)
@@ -144,7 +160,8 @@ def team(request):
 
     return render(request, 'csp_app/team.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list})
 
-def create_team(request):
+@login_required(login_url='/notlogin/')
+def  create_team(request):
     if request.method == 'POST':
         team_name = request.POST.get("team_name")
         team_function = request.POST.get("team_function")
@@ -167,7 +184,8 @@ def create_team(request):
             return redirect('csp_app:team')
     return render(request, 'csp_app/team.html', {})
 
-def subteam(request):
+@login_required(login_url='/notlogin/')
+def  subteam(request):
     entity_list = master_entity.objects.filter(status = active_status)
     dept_list = master_department.objects.filter(status = active_status)
     function_list = master_function.objects.filter(status = active_status)
@@ -175,7 +193,8 @@ def subteam(request):
     subteam_list = master_sub_team.objects.filter(status = active_status)
     return render(request, 'csp_app/subteam.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list})
 
-def create_subteam(request):
+@login_required(login_url='/notlogin/')
+def  create_subteam(request):
 
     if request.method == 'POST':
         subteam_name = request.POST.get("subteam_name")
@@ -198,7 +217,8 @@ def create_subteam(request):
             return redirect('csp_app:subteam')
     return render(request, 'csp_app/subteam.html', {})
 
-def designation(request):
+@login_required(login_url='/notlogin/')
+def  designation(request):
     entity_list = master_entity.objects.filter(status = active_status)
     dept_list = master_department.objects.filter(status = active_status)
     function_list = master_function.objects.filter(status = active_status)
@@ -207,7 +227,8 @@ def designation(request):
     desg_list = master_designation.objects.filter(status = active_status)
     return render(request, 'csp_app/designation.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
-def create_designation(request):
+@login_required(login_url='/notlogin/')
+def  create_designation(request):
     if request.method == 'POST':
         designation_name = request.POST.get("desg_name")
         subteam = request.POST.get("desg_subteam")
@@ -231,7 +252,8 @@ def create_designation(request):
             return redirect('csp_app:designation')
     return render(request, 'csp_app/designation.html', {})
 
-def region(request):
+@login_required(login_url='/notlogin/')
+def  region(request):
     entity_list = master_entity.objects.filter(status = active_status)
     dept_list = master_department.objects.filter(status = active_status)
     function_list = master_function.objects.filter(status = active_status)
@@ -241,7 +263,8 @@ def region(request):
     region_list = master_region.objects.filter(status = active_status)
     return render(request, 'csp_app/region.html', {'entity_list': entity_list,'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
-def create_region(request):
+@login_required(login_url='/notlogin/')
+def  create_region(request):
     if request.method == 'POST':
         region_name = request.POST.get("region_name")
         desg = request.POST.get("region_desg")
@@ -265,7 +288,8 @@ def create_region(request):
             return redirect('csp_app:region')
     return render(request, 'csp_app/region.html', {})
 
-def state(request):
+@login_required(login_url='/notlogin/')
+def  state(request):
     entity_list = master_entity.objects.filter(status = active_status)
     dept_list = master_department.objects.filter(status = active_status)
     function_list = master_function.objects.filter(status = active_status)
@@ -276,7 +300,8 @@ def state(request):
     state_list = master_state.objects.filter(status = active_status)
     return render(request, 'csp_app/state.html', {'entity_list': entity_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
-def create_state(request):
+@login_required(login_url='/notlogin/')
+def  create_state(request):
     if request.method == 'POST':
         state_name = request.POST.get("state_name")
         region = request.POST.get("state_region")
@@ -299,60 +324,81 @@ def create_state(request):
             return redirect('csp_app:state')
     return render(request, 'csp_app/state.html', {})
 
-def city(request):
+@login_required(login_url='/notlogin/')
+def  city(request):
     return render(request, 'csp_app/city.html', {})
 
-def create_city(request):
+@login_required(login_url='/notlogin/')
+def  create_city(request):
     return render(request, 'csp_app/city.html', {})
 
-def location(request):
+@login_required(login_url='/notlogin/')
+def  location(request):
     return render(request, 'csp_app/location.html', {})
 
-def create_location(request):
+@login_required(login_url='/notlogin/')
+def  create_location(request):
     return render(request, 'csp_app/location.html', {})
 
-def create_user_view(request):
-    user_list = User.objects.all()
-    return render(request, 'csp_app/create_user.html', {'user_list': user_list})
+@login_required(login_url='/notlogin/')
+def  create_user_view(request):
+    user_list = User.objects.all().exclude(is_superuser=True)
+    group_list = Group.objects.all()
+    
+    return render(request, 'csp_app/create_user.html', {'user_list': user_list, 'group_list': group_list})
 
 
 
-def create_user(request):
+@login_required(login_url='/notlogin/')
+def  create_user(request):
     if request.method == 'POST':
         usrname = request.POST.get('username')
         firstname = request.POST.get('firstname')
         lastname = request.POST.get('lastname')
         email = request.POST.get('email')
-        try:
-            user = User.objects.create_user(usrname)
-            password = User.objects.make_random_password()
-            print(password)
-            user.password = password
-            user.set_password(user.password)
-            user.first_name = firstname
-            user.last_name = lastname
-            user.email = email
-            user.save()
-            msg = 'username ' + usrname + " | password " + password
-            send_mail('Account Created', msg,'sadaf.shaikh@udaan.com',[email],fail_silently=False,)
-            messages.success(request, "User Created Successfully")
-            return render(request, 'csp_app/create_user.html', {})
-        except IntegrityError:
-            return HttpResponse("choose unique username")
+        group = request.POST.get('usergroup')
+        # try:
+        password = User.objects.make_random_password()
+        assign_group = Group.objects.get(name=group) 
+        
+        # new_user = User(username= usrname, password=password, first_name= firstname, last_name=lastname, email=email, groups.set_group(group))        
+        # new_user.save()
+        # print("saved")
+        user = User.objects.create_user(usrname)
+        password = User.objects.make_random_password()
+        print(password)
+        user.password = password
+        user.set_password(user.password)
+        user.first_name = firstname
+        user.last_name = lastname
+        user.email = email
+        # user.groups = group
+        assign_group.user_set.add(user)
+        user.save()
+        msg = 'username ' + usrname + " | password " + password
+        send_mail('Account Created', msg,'sadaf.shaikh@udaan.com',[email],fail_silently=False,)
+        messages.success(request, "User Created Successfully")
+        return redirect('csp_app:user')
+        # except IntegrityError:
+        #     return HttpResponse("choose unique username")
     return render(request, 'csp_app/create_user.html', {})
 
 
-def disable_user(request):
+@login_required(login_url='/notlogin/')
+def  disable_user(request):
     return render(request, 'csp_app/disableuser.html', {})
 
-def index(request):
+@login_required(login_url='/notlogin/')
+def  index(request):
     return HttpResponse("Hello Sdf")
 
-def admin(request):
+@login_required(login_url='/notlogin/')
+def  admin(request):
     return render(request, 'csp_app/adminhome.html', {})
 
-def vendor(request):
-    return HttpResponse("Hello Vendor")
+@login_required(login_url='/notlogin/')
+def  vendor(request):
+    return render(request, 'csp_app/vendordashboard.html', {})
 
 
 def csp_login(request):
@@ -369,16 +415,23 @@ def csp_login(request):
             user = authenticate(request, username=usrname, password=pwd)
             if user is not None:
                 login(request, user)
-                if request.user.is_staff:
+                group = request.user.groups.all()
+                for groupname in group:
+                    group_name = groupname
+                print(group_name)
+                # print(type(group_name))
+                # print(str(group_name))
+                # print(str(group_name) == 'Admin')
+                if str(group_name) == 'Admin':
+                    print("here")
+                    messages.success(request, "Login Successfull")
                     return redirect('csp_app:entity')
-                # if user.is_s
-                if usrname == 'vendor':
+                elif str(group_name) == 'Vendor':
+                    print("here 2")
                     messages.success(request, "Login Successfull")
                     return redirect('csp_app:vendor')
-                # elif usrname == 'admin':
-                #     messages.success(request, "Login Successfull")
-                #     return redirect('csp_app:admin')
                 else:
+                    print("here3")
                     messages.success(request, "Login Successfull")
                     return redirect('csp_app:candidate')
             else:
@@ -386,7 +439,12 @@ def csp_login(request):
                 return redirect('csp_app:login')
     return render(request, 'csp_app/Login.html', {})
 
-def csp_logout(request):
+@login_required(login_url='/notlogin/')
+def  csp_logout(request):
     logout(request)
     return redirect('csp_app:login')
+
+
+def notlogin(request):
+    return HttpResponse("Please Login To Continue....")
 

@@ -183,7 +183,14 @@
                 $('#subteam_function').attr("disabled", true)
             }
         });
+        // $('#subteam_function').click(function() {
+        //     alert("here")
+        // })
+        $('#subteam_function').select(function() {
+            alert("there")
+        })
         $('#subteam_function').change(function() {
+            alert("ok")
             var filter = $(this).val();
             var total = $('#subteam_team option').length;
             var count = 0;

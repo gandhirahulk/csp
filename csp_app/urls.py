@@ -6,11 +6,13 @@ urlpatterns = [
 
     path('', views.csp_login, name= 'login'),
     path('logout/', views.csp_logout, name= 'csp_logout'),
+    path('notlogin/', views.notlogin, name='notlogin'),
+
     path('csp_admin/', views.admin, name= 'admin'),
     path('csp_admin/csp_create_user/', views.create_user_view, name= 'user'),
     path('csp_admin/csp_create_user/new_user', views.create_user, name= 'create_user'),
     path('csp_admin/csp_disable_user/', views.disable_user, name= 'disable_user'),
-
+    
     path('csp_vendor/', views.vendor, name= 'vendor'),
     path('csp_candidates/', views.candidate, name= 'candidate'),
 
