@@ -33,7 +33,7 @@
                 {% for eachuser in user_list %}
 
                     <tr>
-                        <td>{{ eachuser.first_name }}</td>
+                        <td>{{ eachuser.username }}</td>
                         <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
                     </tr>
 
@@ -62,10 +62,7 @@
     </div>
     <div class="form_content">
         <form method="POST">
-            {% csrf_token %}   
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Username" name="username" required="true">
-            </div>
+            {% csrf_token %}             
             <div class="forms-input-holder">
                 <input type="text" placeholder="First Name" name="firstname" required="true">
             </div>
@@ -73,9 +70,21 @@
                 <input type="text" placeholder="Last Name" name="lastname" required="true">
             </div>
             <div class="forms-input-holder">
+                <input type="text" placeholder="Username" name="username" required="true">
+            </div>
+            <div class="forms-input-holder">
                 <input type="text" placeholder="Email Address" name="email" required="true">
             </div>
-             
+            <div class="forms-input-holder">
+                <select name="usergroup" id="" >
+                    <option value="" disabled selected>User Type</option>
+                    {% if group_list %}
+                        {% for eachgroup in group_list %}
+                            <option value="{{ eachgroup.name }}">{{ eachgroup.name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
               
     </div>
     <div class="form_footer">
