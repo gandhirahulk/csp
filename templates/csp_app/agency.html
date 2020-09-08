@@ -23,14 +23,44 @@
 {% block tabcontentblock %}
 <div class="tab-container">
     <button id="new_agency" class="add-new-btn">New Agency</button> 
-    <ul>
-        {% if agency_list %}
-            {% for eachagency in agency_list %}
-                <li>{{ eachagency.agency_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul>
+   
 
+</div>
+
+
+<div class="table-container">
+  
+    <table id="agency-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Agency Name</th>
+                <th>Entity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if agency_list %}
+                {% for eachagency in agency_list %}
+
+                    <tr>
+                        <td>{{ eachagency.agency_name }}</td>
+                        <td>{{ eachagency.fk_entity_code }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachagency in agency_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
 </div>
 
 

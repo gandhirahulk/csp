@@ -16,13 +16,36 @@
     <script src="{% static 'csp_app/js/forms.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <!-- datatable -->
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/tables.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+  
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/zf-5.5.2/jqc-1.11.3,dt-1.10.8/datatables.min.css"/>
+ 
+		<script type="text/javascript" src="https://cdn.datatables.net/r/zf-5.5.2/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script> -->
+
     <!-- datatable end -->
-    <!-- <script>
+    <script>
       $(document).ready(function(){
-        $('#myTable').DataTable();
+        $('#entity-table').DataTable();
+        $('#agency-table').DataTable();
+        $('#department-table').DataTable();
+        $('#function-table').DataTable();
+        $('#team-table').DataTable();
+        $('#subteam-table').DataTable();
+        $('#designation-table').DataTable();
+        $('#region-table').DataTable();
+        $('#state-table').DataTable();
+        $('#city-table').DataTable();
+        $('#location-table').DataTable();
+        $('#user-table').DataTable();
+        $('#candidate-table').DataTable();
+
+
+
       });
-    </script> -->
+    </script>
 </head>
 <body>
     <div class="wrapper">

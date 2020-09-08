@@ -15,17 +15,43 @@
 
 {% block tabcontentblock %}
 <div class="tab-container">
-    <button id="new_user" class="add-new-btn">New User</button>
-    
-    <ul>
-        {% if user_list %}
-            {% for eachuser in user_list %}
-                <li>{{ eachuser.user_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul> 
+    <button id="new_user" class="add-new-btn">New User</button> 
   
 </div>
+
+<div class="table-container">
+  
+    <table id="user-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if user_list %}
+                {% for eachuser in user_list %}
+
+                    <tr>
+                        <td>{{ eachuser.First_name }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachuser in user_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
 <div id="newuser_form" class="form_modal" style="padding-top: 10%;">
     <div class="form_header">
         <div class="forms-heading">

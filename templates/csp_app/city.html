@@ -23,14 +23,41 @@
 {% block tabcontentblock %}
 <div class="tab-container">
     <button id="new_city" class="add-new-btn">New City</button> 
-    <ul>
-        {% if city_list %}
-            {% for eachcity in city_list %}
-                <li>{{ eachcity.city_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul>
+</div>
 
+<div class="table-container">
+  
+    <table id="city-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>City Name</th>
+                <th>State</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if city_list %}
+                {% for eachcity in city_list %}
+
+                    <tr>
+                        <td>{{ eachcity.city_name }}</td>
+                        <td>{{ eachcity.fk_statecode }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachcity in city_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
 </div>
 <div id="city_form" class="form_modal" style="padding-top: 2%;">
     <div class="form_header">

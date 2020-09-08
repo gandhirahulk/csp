@@ -32,7 +32,40 @@
     </ul>
 
 </div>
+<div class="table-container">
+  
+    <table id="team-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Team Name</th>
+                <th>Function</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if team_list %}
+                {% for eachteam in team_list %}
 
+                    <tr>
+                        <td>{{ eachteam.team_name }}</td>
+                        <td>{{ eachteam.fk_function_code }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachteam in team_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
 
 <div id="team_form" class="form_modal">
     <div class="form_header">

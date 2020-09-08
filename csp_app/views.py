@@ -5,16 +5,19 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.utils import IntegrityError
-from csp_app.models import master_entity, master_designation, master_agency, master_department, master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location
+from csp_app.models import status, master_candidate, master_entity, master_designation, master_agency, master_department, master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+
+
+active_status = status.objects.get(pk=1)
 
 def candidate(request):
     return render(request, 'csp_app/candidates.html', {})
 
 def entity(request):
-    entity_list = master_entity.objects.filter(status="Active")
+    entity_list = master_entity.objects.filter(status = active_status)
     return render(request, 'csp_app/entity.html', {'entity_list': entity_list})
 
 def create_entity(request):
@@ -24,7 +27,7 @@ def create_entity(request):
             messages.warning(request, "Entity Name Expected")
             return redirect('csp_app:entity')
         try:
-            duplicate_entity = master_entity.objects.get(entity_name=entity_name, status="Active")
+            duplicate_entity = master_entity.objects.get(entity_name=entity_name, status = active_status)
             messages.error(request, "Entity Already Exist")
             return redirect('csp_app:entity')
         except ObjectDoesNotExist:
@@ -35,8 +38,8 @@ def create_entity(request):
     return render(request, 'csp_app/entity.html', {})
 
 def agency(request):
-    entity_list = master_entity.objects.filter(status="Active")
-    agency_list = master_agency.objects.filter(status="Active")
+    entity_list = master_entity.objects.filter(status = active_status)
+    agency_list = master_agency.objects.filter(status = active_status)
 
     return render(request, 'csp_app/agency.html', {'entity_list': entity_list, 'agency_list': agency_list})
 
@@ -53,21 +56,21 @@ def create_agency(request):
             return redirect('csp_app:agency')
         entity_fk = master_entity.objects.get(pk=entity)
         try:
-            duplicate_agency_entity_spoc = master_agency.objects.filter(agency_name=agency_name, fk_entity_code= entity, spoc_name=agency_spoc, status="Active")
+            duplicate_agency_entity_spoc = master_agency.objects.filter(agency_name=agency_name, fk_entity_code= entity, spoc_name=agency_spoc, status = active_status)
             if duplicate_agency_entity_spoc:
                 messages.error(request, "Agency Already Exist")
                 return redirect('csp_app:agency')
         except ObjectDoesNotExist:
             pass
         try:
-            duplicate_agency_email = master_agency.objects.filter( agency_email_id= agency_email, status="Active")
+            duplicate_agency_email = master_agency.objects.filter( agency_email_id= agency_email, status = active_status)
             if duplicate_agency_email:
                 messages.error(request, "Agency Email ID Already Exist")
                 return redirect('csp_app:agency')
         except ObjectDoesNotExist:
             pass
         try:
-            duplicate_agency_entity = master_agency.objects.filter( agency_name=agency_name, fk_entity_code= entity, status="Active")
+            duplicate_agency_entity = master_agency.objects.filter( agency_name=agency_name, fk_entity_code= entity, status = active_status)
             if duplicate_agency_entity:                
                 messages.error(request, "Agency Already Exist")
                 return redirect('csp_app:agency')
@@ -79,8 +82,8 @@ def create_agency(request):
     return render(request, 'csp_app/agency.html', {})
 
 def department(request):
-    entity_list = master_entity.objects.filter(status="Active")
-    dept_list = master_department.objects.filter(status="Active")
+    entity_list = master_entity.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
     return render(request, 'csp_app/department.html', {'entity_list': entity_list, 'department_list': dept_list})
 
 def create_department(request):
@@ -96,7 +99,7 @@ def create_department(request):
             return redirect('csp_app:department')
         entity_fk = master_entity.objects.get(pk=entity)
         try:
-            duplicate_dept = master_department.objects.get(department_name=dept_name, fk_entity_code= entity_fk, status="Active")
+            duplicate_dept = master_department.objects.get(department_name=dept_name, fk_entity_code= entity_fk, status = active_status)
             messages.error(request, "Department Already Exist")
             return redirect('csp_app:department')
         except ObjectDoesNotExist:
@@ -106,9 +109,9 @@ def create_department(request):
     return render(request, 'csp_app/department.html', {})
 
 def function(request):
-    entity_list = master_entity.objects.filter(status="Active")
-    dept_list = master_department.objects.filter(status="Active")
-    function_list = master_function.objects.filter(status="Active")
+    entity_list = master_entity.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
     return render(request, 'csp_app/function.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list})
 
 def create_function(request):
@@ -123,7 +126,7 @@ def create_function(request):
             return redirect('csp_app:function')
         department_fk = master_department.objects.get(pk=function_dept)
         try:
-            duplicate_function = master_function.objects.get(function_name=function_name, fk_department_code= department_fk, status="Active")
+            duplicate_function = master_function.objects.get(function_name=function_name, fk_department_code= department_fk, status = active_status)
             messages.error(request, "Function Already Exist")
             return redirect('csp_app:function')
         except ObjectDoesNotExist:            
@@ -134,10 +137,10 @@ def create_function(request):
     return render(request, 'csp_app/function.html', {})
 
 def team(request):
-    entity_list = master_entity.objects.filter(status="Active")
-    dept_list = master_department.objects.filter(status="Active")
-    function_list = master_function.objects.filter(status="Active")
-    team_list = master_team.objects.filter(status="Active")
+    entity_list = master_entity.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
+    team_list = master_team.objects.filter(status = active_status)
 
     return render(request, 'csp_app/team.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list})
 
@@ -165,11 +168,11 @@ def create_team(request):
     return render(request, 'csp_app/team.html', {})
 
 def subteam(request):
-    entity_list = master_entity.objects.filter(status="Active")
-    dept_list = master_department.objects.filter(status="Active")
-    function_list = master_function.objects.filter(status="Active")
-    team_list = master_team.objects.filter(status="Active")
-    subteam_list = master_sub_team.objects.filter(status="Active")
+    entity_list = master_entity.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
+    team_list = master_team.objects.filter(status = active_status)
+    subteam_list = master_sub_team.objects.filter(status = active_status)
     return render(request, 'csp_app/subteam.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list})
 
 def create_subteam(request):
@@ -185,7 +188,7 @@ def create_subteam(request):
             return redirect('csp_app:subteam')
         team_fk = master_team.objects.get(pk= team)
         try:
-            duplicate_subteam = master_sub_team.objects.get( sub_team_name= subteam_name, fk_team_code=team_fk, status="Active")
+            duplicate_subteam = master_sub_team.objects.get( sub_team_name= subteam_name, fk_team_code=team_fk, status = active_status)
             messages.error(request, "Sub Team Already Exist")
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
@@ -196,12 +199,12 @@ def create_subteam(request):
     return render(request, 'csp_app/subteam.html', {})
 
 def designation(request):
-    entity_list = master_entity.objects.filter(status="Active")
-    dept_list = master_department.objects.filter(status="Active")
-    function_list = master_function.objects.filter(status="Active")
-    team_list = master_team.objects.filter(status="Active")
-    subteam_list = master_sub_team.objects.filter(status="Active")
-    desg_list = master_designation.objects.filter(status="Active")
+    entity_list = master_entity.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
+    team_list = master_team.objects.filter(status = active_status)
+    subteam_list = master_sub_team.objects.filter(status = active_status)
+    desg_list = master_designation.objects.filter(status = active_status)
     return render(request, 'csp_app/designation.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
 def create_designation(request):
@@ -216,7 +219,7 @@ def create_designation(request):
             return redirect('csp_app:designation')
         subteam_fk = master_sub_team.objects.get(pk=subteam)
         try:
-            dup_designation = master_designation.objects.get( designation_name= designation_name, fk_sub_team_code=subteam_fk, status="Active")
+            dup_designation = master_designation.objects.get( designation_name= designation_name, fk_sub_team_code=subteam_fk, status = active_status)
            
             messages.error(request, "Designation Already Exist")
             return redirect('csp_app:subteam')
@@ -229,13 +232,13 @@ def create_designation(request):
     return render(request, 'csp_app/designation.html', {})
 
 def region(request):
-    entity_list = master_entity.objects.filter(status="Active")
-    dept_list = master_department.objects.filter(status="Active")
-    function_list = master_function.objects.filter(status="Active")
-    team_list = master_team.objects.filter(status="Active")
-    subteam_list = master_sub_team.objects.filter(status="Active")
-    desg_list = master_designation.objects.filter(status="Active")
-    region_list = master_region.objects.filter(status="Active")
+    entity_list = master_entity.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
+    team_list = master_team.objects.filter(status = active_status)
+    subteam_list = master_sub_team.objects.filter(status = active_status)
+    desg_list = master_designation.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status = active_status)
     return render(request, 'csp_app/region.html', {'entity_list': entity_list,'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
 
@@ -251,7 +254,7 @@ def create_region(request):
             return redirect('csp_app:region')
         desg_fk = master_designation.objects.get(pk=desg)
         try:
-            dup_region = master_region.objects.get( region_name= region_name, fk_designation_code =desg_fk, status="Active")
+            dup_region = master_region.objects.get( region_name= region_name, fk_designation_code =desg_fk, status = active_status)
 
             messages.error(request, "Region Already Exist")
             return redirect('csp_app:region')
@@ -264,14 +267,14 @@ def create_region(request):
     return render(request, 'csp_app/region.html', {})
 
 def state(request):
-    entity_list = master_entity.objects.filter(status="Active")
-    dept_list = master_department.objects.filter(status="Active")
-    function_list = master_function.objects.filter(status="Active")
-    team_list = master_team.objects.filter(status="Active")
-    subteam_list = master_sub_team.objects.filter(status="Active")
-    desg_list = master_designation.objects.filter(status="Active")
-    region_list = master_region.objects.filter(status="Active")
-    state_list = master_state.objects.filter(status="Active")
+    entity_list = master_entity.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
+    team_list = master_team.objects.filter(status = active_status)
+    subteam_list = master_sub_team.objects.filter(status = active_status)
+    desg_list = master_designation.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status = active_status)
+    state_list = master_state.objects.filter(status = active_status)
     return render(request, 'csp_app/state.html', {'entity_list': entity_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
 def create_state(request):
@@ -286,7 +289,7 @@ def create_state(request):
             return redirect('csp_app:state')
         region_fk = master_region.objects.get(pk=region)
         try:
-            dup_region = master_state.objects.get( state_name= state_name, fk_region_code =region_fk,status="Active")
+            dup_region = master_state.objects.get( state_name= state_name, fk_region_code =region_fk,status = active_status)
 
             messages.error(request, "State Already Exist")
             return redirect('csp_app:state')
@@ -361,7 +364,7 @@ def csp_login(request):
             if user is not None:
                 login(request, user)
                 if request.user.is_staff:
-                    return redirect('csp_app:admin')
+                    return redirect('csp_app:entity')
                 # if user.is_s
                 if usrname == 'vendor':
                     messages.success(request, "Login Successfull")

@@ -23,14 +23,39 @@
 {% block tabcontentblock %}
 <div class="tab-container">
     <button id="new_entity" class="add-new-btn">New Entity</button>
-    
-    <ul>
-        {% if entity_list %}
-            {% for eachentity in entity_list %}
-                <li>{{ eachentity.entity_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul> 
+
+</div>
+
+<div class="table-container">
+  
+    <table id="entity-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Entity Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if entity_list %}
+                {% for eachentity in entity_list %}
+
+                    <tr>
+                        <td>{{ eachentity.entity_name }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachentity in entity_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
   
 </div>
 

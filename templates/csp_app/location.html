@@ -23,15 +23,43 @@
 {% block tabcontentblock %}
 <div class="tab-container">
     <button id="new_location" class="add-new-btn">New Location</button> 
-    <ul>
-        {% if location_list %}
-            {% for eachcity in location_list %}
-                <li>{{ eachcity.location_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul>
-
 </div>
+
+<div class="table-container">
+  
+    <table id="location-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Location Name</th>
+                <th>City</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if location_list %}
+                {% for eachlocation in location_list %}
+
+                    <tr>
+                        <td>{{ eachlocation.location_name }}</td>
+                        <td>{{ eachlocation.fk_city_code }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachlocation in location_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
 <div id="location_form" class="form_modal" style="padding-top: 2%;">
     <div class="form_header">
       <div class="forms-heading" style="text-align: center;">

@@ -23,15 +23,45 @@
 {% block tabcontentblock %}
 <div class="tab-container">
     <button id="new_designation" class="add-new-btn">New Designation</button> 
-    <ul>
-        {% if designation_list %}
-            {% for eachdesignation in designation_list %}
-                <li>{{ eachdesignation.designation_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul>
+ 
 
 </div>
+
+<div class="table-container">
+  
+    <table id="designation-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Designation Name</th>
+                <th>Sub Team</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if designation_list %}
+                {% for eachdesignation in designation_list %}
+
+                    <tr>
+                        <td>{{ eachdesignation.designation_name }}</td>
+                        <td>{{ eachdesignation.fk_sub_team_code }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachdesignation in designation_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
 <div id="designation_form" class="form_modal">
     <div class="form_header">
       <div class="forms-heading" style="text-align: center;">

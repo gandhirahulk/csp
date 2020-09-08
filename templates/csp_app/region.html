@@ -23,15 +23,43 @@
 {% block tabcontentblock %}
 <div class="tab-container">
     <button id="new_region" class="add-new-btn">New Region</button> 
-    <ul>
-        {% if region_list %}
-            {% for eachregion in region_list %}
-                <li>{{ eachregion.region_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul>
-
 </div>
+
+<div class="table-container">
+  
+    <table id="region-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Region Name</th>
+                <th>Designation</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if region_list %}
+                {% for eachregion in region_list %}
+
+                    <tr>
+                        <td>{{ eachregion.region_name }}</td>
+                        <td>{{ eachregion.fk_designation_code }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachregion in region_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
 <div id="region_form" class="form_modal">
     <div class="form_header">
       <div class="forms-heading" style="text-align: center;">

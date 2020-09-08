@@ -23,14 +23,41 @@
 {% block tabcontentblock %}
 <div class="tab-container">
     <button id="new_function" class="add-new-btn">New Function</button> 
-    <ul>
-        {% if function_list %}
-            {% for eachfunction in function_list %}
-                <li>{{ eachfunction.function_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul>
+</div>
 
+<div class="table-container">
+  
+    <table id="function-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Function Name</th>
+                <th>Department</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if function_list %}
+                {% for eachfunction in function_list %}
+
+                    <tr>
+                        <td>{{ eachfunction.function_name }}</td>
+                        <td>{{ eachfunction.fk_department_code }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachfunction in function_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
 </div>
 
 <div id="function_form" class="form_modal" style="padding-top: 10%;">

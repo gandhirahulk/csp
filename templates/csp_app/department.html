@@ -23,14 +23,40 @@
 {% block tabcontentblock %}
 <div class="tab-container">
     <button id="new_department" class="add-new-btn">New Department</button> 
-    <ul>
-        {% if department_list %}
-            {% for eachdepartment in department_list %}
-                <li>{{ eachdepartment.department_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul>
+</div>
+<div class="table-container">
+  
+    <table id="department-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Department Name</th>
+                <th>Entity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if department_list %}
+                {% for eachdepartment in department_list %}
 
+                    <tr>
+                        <td>{{ eachdepartment.department_name }}</td>
+                        <td>{{ eachdepartment.fk_entity_code }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachdepartment in department_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
 </div>
 <div id="department_form" class="form_modal" style="padding-top: 10%;">
     <div class="form_header">

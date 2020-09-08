@@ -23,14 +23,42 @@
 {% block tabcontentblock %}
 <div class="tab-container">
     <button id="new_sub_team" class="add-new-btn">New Sub Team</button> 
-    <ul>
-        {% if sub_team_list %}
-            {% for eachsub_team in sub_team_list %}
-                <li>{{ eachsub_team.sub_team_name }}</li>
-            {% endfor %}
-        {% endif %}
-    </ul>
 
+
+</div>
+<div class="table-container">
+  
+    <table id="subteam-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Sub Team Name</th>
+                <th>Team</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if subteam_list %}
+                {% for eachsubteam in subteam_list %}
+
+                    <tr>
+                        <td>{{ eachsubteam.sub_team_name }}</td>
+                        <td>{{ eachsubteam.fk_team_code }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachsubteam in subteam_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
 </div>
 <div id="sub_team_form" class="form_modal">
     <div class="form_header">
