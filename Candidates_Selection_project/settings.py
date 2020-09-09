@@ -72,7 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Candidates_Selection_project.wsgi.application'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -132,6 +132,13 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "workmail052020@gmail.com"
+EMAIL_HOST_PASSWORD = "workmail05"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 
 INACTIVE_TIME = 30*60  # 15 minutes 
 SESSION_EXPIRE_AT_BROWSER_CLOSE= True

@@ -581,7 +581,7 @@ def  create_user(request):
         assign_group.user_set.add(user)
         user.save()
         msg = 'username ' + usrname + " | password " + password
-        send_mail('Account Created', msg,'sadaf.shaikh@udaan.com',[email],fail_silently=False,)
+        send_mail('Account Created', msg,'workmail052020@gmail.com',[email],fail_silently=False,)
         messages.success(request, "User Created Successfully")
         return redirect('csp_app:user')
         # except IntegrityError:
