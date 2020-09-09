@@ -102,6 +102,8 @@ body{
 
 .wrapper .sidebar ul li{
     transition: .2s ease;
+    border-bottom: 1px solid #ac030c;
+    margin-bottom: 2px;
 }
 
 /* .wrapper .sidebar ul li a:before{
@@ -136,16 +138,16 @@ body{
 
 .wrapper .sidebar ul li:hover{
     /* border-left: 5px solid #bf0711; */
-    background: #D91C22;
+    background: #AC030C;
 }
 
 .active{
-    background: #D91C22;
+    background: #AC030C;
 }
 
 .wrapper .sidebar ul li.active{
-    background: #D91C22;
-    border-left: 5px solid #f5f5fa
+    background: #AC030C;
+    /* border-left: 5px solid #f5f5fa; */
   }
 
 .wrapper .sidebar ul li a:hover:before,

@@ -84,7 +84,7 @@
             <label for="">Department</label>
             <div class="forms-input-holder">
                 <select name="function_dept" id="function_dept" required="true" disabled="true">
-                    <option value="" disabled selected>Select Department</option>
+                    <option value="" disabled>Select Department</option>
                     {% if department_list %}
                         {% for eachdepartment in department_list %}
                             <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>

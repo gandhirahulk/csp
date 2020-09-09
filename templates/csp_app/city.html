@@ -41,7 +41,7 @@
 
                     <tr>
                         <td>{{ eachcity.city_name }}</td>
-                        <td>{{ eachcity.fk_statecode }}</td>
+                        <td>{{ eachcity.fk_state_code }}</td>
                         <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
                     </tr>
 
@@ -67,7 +67,7 @@
       <div class="hr_line">&nbsp;</div>
      
     </div>
-    <div class="form_content">
+    <div class="form_content" style="height: 72vh;">
         <form method="POST">
             {% csrf_token %}
             <label for="">Entity</label>
@@ -154,7 +154,7 @@
                     <option value="" disabled selected>Select State</option>
                     {% if state_list %}
                         {% for eachstate in state_list %}
-                            <option value="{{ eachstate.pk }}" label="{{ eachstate.city_name }}">{{ eachstate.fk_city_code_id }}</option>
+                            <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -300,6 +300,25 @@
             });
             if (count === total){
                 $('#city_region').attr("disabled", true)
+            }
+        });
+
+        $('#city_region').change(function() {
+            var filter = $(this).val();
+            var total = $('#city_state option').length;
+            var count = 0;
+            $('#city_state option').each(function() {
+            if ($(this).text() == filter) {
+            $('#city_state').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#city_state').val(filter);
+            });
+            if (count === total){
+                $('#city_state').attr("disabled", true)
             }
         });
     })

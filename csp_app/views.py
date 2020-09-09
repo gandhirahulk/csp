@@ -191,7 +191,7 @@ def  subteam(request):
     function_list = master_function.objects.filter(status = active_status)
     team_list = master_team.objects.filter(status = active_status)
     subteam_list = master_sub_team.objects.filter(status = active_status)
-    return render(request, 'csp_app/subteam.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list})
+    return render(request, 'csp_app/subteam.html', {'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'subteam_list': subteam_list})
 
 @login_required(login_url='/notlogin/')
 def  create_subteam(request):
@@ -318,7 +318,7 @@ def  create_state(request):
             messages.error(request, "State Already Exist")
             return redirect('csp_app:state')
         except ObjectDoesNotExist: 
-            new_state = master_region( state_name= state_name, fk_region_code =region_fk, created_by = "user")
+            new_state = master_state( state_name= state_name, fk_region_code =region_fk, created_by = "user")
             new_state.save()
             messages.success(request, "State Saved Successfully")
             return redirect('csp_app:state')
@@ -326,18 +326,77 @@ def  create_state(request):
 
 @login_required(login_url='/notlogin/')
 def  city(request):
-    return render(request, 'csp_app/city.html', {})
+    entity_list = master_entity.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
+    team_list = master_team.objects.filter(status = active_status)
+    subteam_list = master_sub_team.objects.filter(status = active_status)
+    desg_list = master_designation.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status = active_status)
+    state_list = master_state.objects.filter(status = active_status)
+    city_list = master_city.objects.filter(status= active_status)
+    return render(request, 'csp_app/city.html', {'entity_list': entity_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
 @login_required(login_url='/notlogin/')
 def  create_city(request):
+    if request.method == 'POST':
+        city_name = request.POST.get("city_name")
+        state = request.POST.get("city_state")
+        if state == None:
+            messages.warning(request, "Choose State And Try Again")
+            return redirect('csp_app:city')
+        if city_name == None:
+            messages.warning(request, "City Cannot Be Blank")
+            return redirect('csp_app:city')
+        state_fk = master_state.objects.get(pk=state)
+        try:
+            dup_city = master_city.objects.get( city_name= city_name, fk_state_code =state_fk,status = active_status)
+
+            messages.error(request, "City Already Exist")
+            return redirect('csp_app:city')
+        except ObjectDoesNotExist: 
+            new_city = master_city( city_name= city_name, fk_state_code =state_fk, created_by = "user")
+            new_city.save()
+            messages.success(request, "City Saved Successfully")
+            return redirect('csp_app:city')
     return render(request, 'csp_app/city.html', {})
 
 @login_required(login_url='/notlogin/')
 def  location(request):
-    return render(request, 'csp_app/location.html', {})
+    entity_list = master_entity.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
+    team_list = master_team.objects.filter(status = active_status)
+    subteam_list = master_sub_team.objects.filter(status = active_status)
+    desg_list = master_designation.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status = active_status)
+    state_list = master_state.objects.filter(status = active_status)
+    city_list = master_city.objects.filter(status= active_status)
+    location_list = master_location.objects.filter(status= active_status)
+    return render(request, 'csp_app/location.html', {'entity_list': entity_list, 'location_list': location_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
 @login_required(login_url='/notlogin/')
 def  create_location(request):
+    if request.method == 'POST':
+        location_name = request.POST.get("location_name")
+        city = request.POST.get("location_city")
+        if city == None:
+            messages.warning(request, "Choose City And Try Again")
+            return redirect('csp_app:location')
+        if location_name == None:
+            messages.warning(request, "Location Cannot Be Blank")
+            return redirect('csp_app:location')
+        city_fk = master_city.objects.get(pk=city)
+        try:
+            dup_location = master_location.objects.get( location_name= location_name, fk_city_code =city_fk,status = active_status)
+
+            messages.error(request, "City Already Exist")
+            return redirect('csp_app:location')
+        except ObjectDoesNotExist: 
+            new_location = master_location( location_name= location_name, fk_city_code =city_fk, created_by = "user")
+            new_location.save()
+            messages.success(request, "Location Saved Successfully")
+            return redirect('csp_app:location')
     return render(request, 'csp_app/location.html', {})
 
 @login_required(login_url='/notlogin/')

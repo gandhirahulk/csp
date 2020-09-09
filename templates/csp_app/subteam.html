@@ -85,10 +85,10 @@
             <label for="">Department</label>
             <div class="forms-input-holder">
                 <select name="subteam_dept" id="subteam_dept" required="true" disabled="true">
-                    <option value="" disabled selected>Select Department</option>
+                    <option value="" disabled selected id="default_dept">Select Department</option>
                     {% if department_list %}
                         {% for eachdepartment in department_list %}
-                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                            <option value="{{ eachdepartment.pk }}" class="options" label="{{ eachdepartment.department_name }}" style="display: none;">{{ eachdepartment.fk_entity_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -148,21 +148,34 @@
 
         $('#subteam_entity').change(function() {
             var filter = $(this).val();
+            // alert(filter);
             var total = $('#subteam_dept option').length;
+            // alert(total);
             var count = 0;
             $('#subteam_dept option').each(function() {
+            // $('#default_dept').attr('selected',true);
+
+            // alert($(this).text());
             if ($(this).text() == filter) {
-            $('#subteam_dept').attr("disabled", false);
+            $('#subteam_dept').attr("disabled", false);        
+               
                 $(this).show();
+                // alert($(this).attr());
+
             } else {
                 $(this).hide();
                 count += 1;
             }
             $('#subteam_dept').val(filter);
             });
+            // alert(count);
             if (count === total){
                 $('#subteam_dept').attr("disabled", true)
-            }
+            } 
+            // else {
+            //     $('#default_dept').show();
+            //     $('#default_dept').attr('selected',true);
+            // }
         });
 
         $('#subteam_dept').change(function() {
@@ -173,6 +186,7 @@
             if ($(this).text() == filter) {
             $('#subteam_function').attr("disabled", false);
                 $(this).show();
+                $(this).attr("selected", true);
             } else {
                 $(this).hide();
                 count += 1;

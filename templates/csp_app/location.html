@@ -60,7 +60,7 @@
   
 </div>
 
-<div id="location_form" class="form_modal" style="padding-top: 2%;height: 72vh;">
+<div id="location_form" class="form_modal" style="padding-top: 2%;">
     <div class="form_header">
       <div class="forms-heading" style="text-align: center;">
           <h2>Create New Location</h2>
@@ -68,7 +68,7 @@
       <div class="hr_line">&nbsp;</div>
      
     </div>
-    <div class="form_content">
+    <div class="form_content" style="height: 72vh;">
         <form method="POST">
             {% csrf_token %}
             <label for="">Entity</label>
@@ -142,9 +142,9 @@
             <div class="forms-input-holder">
                 <select name="location_region" id="location_region" required="true" disabled="true">
                     <option value="" disabled selected>Select Region</option>
-                    {% if location_list %}
-                        {% for eachregion in location_list %}
-                            <option value="{{ eachregion.pk }}" label="{{ eachregion.location_name }}">{{ eachregion.fk_designation_code_id }}</option>
+                    {% if region_list %}
+                        {% for eachregion in region_list %}
+                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_designation_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -153,9 +153,9 @@
             <div class="forms-input-holder">
                 <select name="location_state" id="location_state" required="true" disabled="true">
                     <option value="" disabled selected>Select State</option>
-                    {% if location_list %}
-                        {% for eachstate in location_list %}
-                            <option value="{{ eachstate.pk }}" label="{{ eachstate.location_name }}">{{ eachstate.fk_location_code_id }}</option>
+                    {% if state_list %}
+                        {% for eachstate in state_list %}
+                            <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -166,7 +166,7 @@
                     <option value="" disabled selected>Select City</option>
                     {% if city_list %}
                         {% for eachcity in city_list %}
-                            <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_city_code_id }}</option>
+                            <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -177,7 +177,7 @@
                
     </div>
     <div class="form_footer">
-        <button type="submit" formaction="{% url 'csp_app:create_city' %}" class="forms-save-btn">Save City</button>
+        <button type="submit" formaction="{% url 'csp_app:create_location' %}" class="forms-save-btn">Save Location</button>
     </form> 
     </div>
   
@@ -312,6 +312,44 @@
             });
             if (count === total){
                 $('#location_region').attr("disabled", true)
+            }
+        });
+
+        $('#location_region').change(function() {
+            var filter = $(this).val();
+            var total = $('#location_state option').length;
+            var count = 0;
+            $('#location_state option').each(function() {
+            if ($(this).text() == filter) {
+            $('#location_state').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#location_state').val(filter);
+            });
+            if (count === total){
+                $('#location_state').attr("disabled", true)
+            }
+        });
+
+        $('#location_state').change(function() {
+            var filter = $(this).val();
+            var total = $('#location_city option').length;
+            var count = 0;
+            $('#location_city option').each(function() {
+            if ($(this).text() == filter) {
+            $('#location_city').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#location_city').val(filter);
+            });
+            if (count === total){
+                $('#location_city').attr("disabled", true)
             }
         });
     })
