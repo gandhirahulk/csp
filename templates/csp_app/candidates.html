@@ -56,37 +56,37 @@
      
     </div>
     <div class="form_content" style="height: 75vh;">
-        <form method="POST">
+        <form method="POST" autocomplete="off">
             {% csrf_token %}
             <div class="forms-input-holder">
-                <input type="text" placeholder="First Name" name="firstname" required="true">
+                <input type="text" placeholder="First Name" name="firstname" id="c_firstname" required="true" autocapitalize="on" autofocus="true" tabindex="1"  >
             </div>
             <div class="forms-input-holder">
-                <input type="text" placeholder="Middle Name" name="middlename" required="true">
+                <input type="text" placeholder="Middle Name" name="middlename" id="c_middlename" required="true" autocapitalize="on" tabindex="2">
             </div>
             <div class="forms-input-holder">
-                <input type="text" placeholder="Last Name" name="lastname" required="true">
+                <input type="text" placeholder="Last Name" name="lastname" id="c_lastname" required="true" autocapitalize="on" tabindex="3">
             </div>
             <div class="forms-input-holder">
-                <input type="date" placeholder="Date Of Joining" name="doj" required="true">
+                <input type="date" placeholder="Date Of Joining" name="doj" required="true" id="datefield" tabindex="4">
             </div>
             <div class="forms-input-holder">
-                <input type="text" placeholder="Father Name" name="fathername" required="true">
+                <input type="text" placeholder="Father Name" name="fathername" id="c_fathername" required="true" tabindex="5">
             </div>
             <div class="forms-input-holder">
-                <input type="date" placeholder="Date Of Birth" name="dob" required="true">
+                <input type="date" placeholder="Date Of Birth" name="dob" required="true" tabindex="6">
             </div>
             <div class="forms-input-holder">
-                <input type="text" placeholder="Aadhaar Number" name="aadhaar" required="true">
+                <input type="text" placeholder="Aadhaar Number" name="aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
             </div>
             <div class="forms-input-holder">
-                <input type="text" placeholder="PAN Number" name="pan" required="true">
+                <input type="text" placeholder="PAN Number" name="pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
             </div>
             <div class="forms-input-holder">
-                <input type="text" placeholder="Contact Number" name="contact" required="true">
+                <input type="text" placeholder="Contact Number" name="contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
             </div>
             <div class="forms-input-holder">
-                <input type="text" placeholder="Emergency Contact Number" name="emergency" required="true">
+                <input type="text" placeholder="Emergency Contact Number" name="emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
             </div>
             <div class="forms-input-holder">
                 <select name="" id="" >
@@ -107,7 +107,7 @@
             </div>
             <label for="">Entity</label>
             <div class="forms-input-holder">
-                <select name="region_entity" id="region_entity" required="true">
+                <select name="location_entity" id="location_entity" required="true">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
                         {% for eachentity in entity_list %}
@@ -119,7 +119,7 @@
         
             <label for="">Department</label>
             <div class="forms-input-holder">
-                <select name="region_dept" id="region_dept" required="true" disabled="true">
+                <select name="location_dept" id="location_dept" required="true" disabled="true">
                     <option value="" disabled selected>Select department</option>
                     {% if department_list %}
                         {% for eachdepartment in department_list %}
@@ -130,7 +130,7 @@
             </div>
             <label for="">Function</label>
             <div class="forms-input-holder">
-                <select name="region_function" id="region_function" required="true" disabled="true">
+                <select name="location_function" id="location_function" required="true" disabled="true">
                     <option value="" disabled selected>Select Function</option>
                     {% if function_list %}
                         {% for eachfunction in function_list %}
@@ -141,7 +141,7 @@
             </div>
             <label for="">Team</label>
             <div class="forms-input-holder">
-                <select name="region_team" id="region_team" required="true"  disabled="true">
+                <select name="location_team" id="location_team" required="true"  disabled="true">
                     <option value="" disabled selected>Select Team</option>
                     {% if team_list %}
                         {% for eachteam in team_list %}
@@ -152,7 +152,7 @@
             </div>
             <label for="">Sub Team</label>
             <div class="forms-input-holder">
-                <select name="region_subteam" id="region_subteam" required="true" disabled="true">
+                <select name="location_subteam" id="location_subteam" required="true" disabled="true">
                     <option value="" disabled selected>Select Sub Team</option>
                     {% if sub_team_list %}
                         {% for eachsubteam in sub_team_list %}
@@ -163,7 +163,7 @@
             </div>
             <label for="">Designation</label>
             <div class="forms-input-holder">
-                <select name="region_desg" id="region_desg" required="true" disabled="true">
+                <select name="location_desg" id="location_desg" required="true" disabled="true">
                     <option value="" disabled selected>Select Designation</option>
                     {% if designation_list %}
                         {% for eachdesignation in designation_list %}
@@ -174,33 +174,33 @@
             </div>
             <label for="">Region</label>
             <div class="forms-input-holder">
-                <select name="region_function" id="region_function" required="true" disabled="true">
+                <select name="location_region" id="location_region" required="true" disabled="true">
                     <option value="" disabled selected>Select Region</option>
-                    {% if function_list %}
-                        {% for eachfunction in function_list %}
-                            <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
+                    {% if region_list %}
+                        {% for eachregion in region_list %}
+                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_designation_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
             </div>
             <label for="">State</label>
             <div class="forms-input-holder">
-                <select name="region_team" id="region_team" required="true"  disabled="true">
+                <select name="location_state" id="location_state" required="true" disabled="true">
                     <option value="" disabled selected>Select State</option>
-                    {% if team_list %}
-                        {% for eachteam in team_list %}
-                            <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
+                    {% if state_list %}
+                        {% for eachstate in state_list %}
+                            <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
             </div>
             <label for="">City</label>
             <div class="forms-input-holder">
-                <select name="region_subteam" id="region_subteam" required="true" disabled="true">
+                <select name="location_city" id="location_city" required="true" disabled="true">
                     <option value="" disabled selected>Select City</option>
-                    {% if sub_team_list %}
-                        {% for eachsubteam in sub_team_list %}
-                            <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
+                    {% if city_list %}
+                        {% for eachcity in city_list %}
+                            <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -216,15 +216,14 @@
                     {% endif %}
                 </select>
             </div>
+
             <div class="forms-input-holder">
-                <input type="text" placeholder="Reporting Manager" name="rm" required="true">
+                <input type="text" placeholder="Reporting Manager" name="rm" required="true" pattern="[U]{1}[A-Za-z0-9]{1,5}" autocapitalize="on">
             </div>
             <div class="forms-input-holder">
                 <input type="email" placeholder="Reporting Manager Email ID" name="rmemail" required="true">
             </div>
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Emergency Contact Number" name="emergency" required="true">
-            </div>
+           
             <label for="">Gender</label>
             <div class="forms-input-holder">
                 <select name="region_desg" id="region_desg" required="true" disabled="true">
@@ -260,9 +259,9 @@
                 </select>
             </div>
             <div class="forms-input-holder">
-                <input type="text" placeholder="Gross Salary Amount" name="gsa" required="true">
+                <input type="text" placeholder="Gross Salary Amount" name="gsa" id="c_salary" required="true" maxlength="10" minlength="1">
             </div>
-        </form>     
+        
               
     </div>
     <div class="form_footer">

@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'Associate_app/images/udaanredlogonew.png' %}" />
+
     <title>Admin Dashboard | {% block titleblock %} {% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/admin_dashboard.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/dashboard.css' %}">
@@ -12,8 +14,11 @@
 
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
     <script src="{% static 'csp_app/js/sidebar.js' %}"></script>
     <script src="{% static 'csp_app/js/forms.js' %}"></script>
+    <script src="{% static 'csp_app/js/inputs.js' %}"></script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <!-- datatable -->
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/tables.css' %}">
@@ -42,8 +47,22 @@
         $('#user-table').DataTable();
         $('#candidate-table').DataTable();
 
+        $('#c_firstname').bind('keypress', onlyAlphabets);
+        $('#c_middlename').bind('keypress', onlyAlphabets);
+        $('#c_lastname').bind('keypress', onlyAlphabets);
+        $('#c_fathername').bind('keypress', onlyAlphabets);
 
+        $('#c_aadhaar').bind('keypress', onlyNumbers);
+        $('#c_contact').bind('keypress', onlyNumbers);
+        $('#c_emergency').bind('keypress', onlyNumbers);
 
+        $('#c_salary').bind('keypress', money);
+
+        $('#c_pan').keyup(function() { 
+          this.value = this.value.toLocaleUpperCase(); 
+        });
+
+        // $('#c_pan').bind('keypress', pan);
       });
     </script>
 </head>
