@@ -32,7 +32,7 @@ function sameNumber(c, e, textbox){
     var contact = document.getElementById(c).value;
     var emergency = document.getElementById(e).value;
     if (contact === emergency){
-        textbox.setCustomValidity("Contact No. and Emergency No. Can't Be Same");
+        textbox.setCustomValidity("Contact No. and Emergency No. Cannot Be Same");
         return false;
     } else {
         return true;
