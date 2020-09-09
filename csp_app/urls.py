@@ -15,6 +15,8 @@ urlpatterns = [
     
     path('csp_vendor/', views.vendor, name= 'vendor'),
     path('csp_candidates/', views.candidate, name= 'candidate'),
+    path('csp_candidates/create_new', views.create_candidate, name= 'create_candidate'),
+
 
     path('csp_entity/', views.entity, name= 'entity'),
     path('csp_entity/new_entity/', views.create_entity, name= 'create_entity'),

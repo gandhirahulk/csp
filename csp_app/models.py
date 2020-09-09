@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 
 class status(models.Model):
     pk_status_code = models.AutoField(primary_key=True)
@@ -231,9 +231,9 @@ class master_candidate(models.Model):
     Contact_Number = models.CharField(max_length=10)
     Emergency_Contact_Number = models.CharField(max_length=10)
     Type_of_Hiring = models.ForeignKey( hiring_type, on_delete=models.CASCADE)
-    If_Replacement = models.CharField(max_length=20) #should come from employees table ?
+    Replacement = models.CharField(max_length=20) #should come from employees table ?
     Sub_Source = models.ForeignKey(sub_source, on_delete=models.CASCADE)
-    If_Referral = models.CharField(max_length=20) #should come from employees table ?
+    Referral = models.CharField(max_length=20) #should come from employees table ?
     Agency = models.ForeignKey(master_agency, on_delete=models.CASCADE)
     Entity = models.ForeignKey(master_entity, on_delete=models.CASCADE)
     Department = models.ForeignKey(master_department, on_delete=models.CASCADE)
@@ -252,3 +252,8 @@ class master_candidate(models.Model):
     Laptop_Allocation = models.ForeignKey(laptop_allocation, on_delete=models.CASCADE)
     Salary_Type = models.ForeignKey(salary_type, on_delete=models.CASCADE)
     Gross_Salary_Amount = models.FloatField()
+    created_by = models.CharField(max_length=100, default="User")
+    created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)

@@ -18,6 +18,14 @@
     font-size: 14px;
 }
 
+.forms-input-holder > input[type="text"]{
+  text-transform: capitalize;
+}
+
+#c_pan{
+  text-transform: uppercase;
+}
+
 .forms-input-holder > input:focus,
 .forms-input-holder > select:focus{
     /* border: 1px solid #bf0711; */

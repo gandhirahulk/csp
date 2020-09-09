@@ -5,7 +5,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.db.utils import IntegrityError
-from csp_app.models import status, master_candidate, master_entity, master_designation, master_agency, master_department, master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location
+from csp_app.models import status, master_candidate, master_entity, master_designation, master_agency, master_department, \
+                            master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
+                            sub_source, salary_type, gender, laptop_allocation
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required
@@ -14,7 +16,151 @@ from django.contrib.auth.decorators import login_required, permission_required
 active_status = status.objects.get(pk=1)
 @login_required(login_url='/notlogin/')
 def candidate(request):
-    return render(request, 'csp_app/candidates.html', {})
+    entity_list = master_entity.objects.filter(status = active_status)
+    agency_list = master_agency.objects.filter(status = active_status)
+
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
+    team_list = master_team.objects.filter(status = active_status)
+    subteam_list = master_sub_team.objects.filter(status = active_status)
+    desg_list = master_designation.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status = active_status)
+    state_list = master_state.objects.filter(status = active_status)
+    city_list = master_city.objects.filter(status= active_status)
+    location_list = master_location.objects.filter(status= active_status)
+    hiring_type_list = hiring_type.objects.filter(status= active_status)
+    sub_source_list = sub_source.objects.filter(status= active_status)
+    salary_type_list = salary_type.objects.filter(status= active_status)
+    gender_list = gender.objects.filter(status= active_status)
+    laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+    return render(request, 'csp_app/candidates.html', {'entity_list': entity_list, 'location_list': location_list, 
+    'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+    'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+    'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'agency_list': agency_list })
+
+@login_required(login_url='/notlogin/')
+def create_candidate(request):
+    if request.method == 'POST':
+        firstname = request.POST.get("c_firstname")
+        middlename = request.POST.get("c_middlename")
+        lastname = request.POST.get("c_lastname")
+        doj = request.POST.get("c_doj")
+        fathername = request.POST.get("c_fathername")
+        dob = request.POST.get("c_dob")
+        aadhaar = request.POST.get("c_aadhaar")
+        Pan = request.POST.get("c_pan")
+        contact_no = request.POST.get("c_contact")
+        emergency_no = request.POST.get("c_emergency")
+        hiring = request.POST.get("c_hiring_type")
+        replacement = request.POST.get("c_replacement")
+        subsource = request.POST.get("c_sub_source")
+        referral = request.POST.get("c_referral")
+        entity = request.POST.get("c_entity")
+        agency = request.POST.get("c_agency")
+        department = request.POST.get("c_dept")
+        function = request.POST.get("c_function")
+        team = request.POST.get("c_team")
+        sub_team = request.POST.get("c_subteam")
+        designation = request.POST.get("c_desg")
+        region = request.POST.get("c_region")
+        state = request.POST.get("c_state")
+        city = request.POST.get("c_city")
+        location = request.POST.get("c_location")
+        reporting_manager = request.POST.get("c_reporting_manager")
+        reporting_manager_email = request.POST.get("c_reporting_manager_email")
+        c_gender = request.POST.get("c_gender")
+        email_creation = request.POST.get("c_email_creation")
+        laptopallocation = request.POST.get("c_laptop_allocation")
+        salarytype = request.POST.get("c_salary_type")
+        gross_salary = request.POST.get("c_gross_salary")
+        if hiring == None:
+            messages.warning(request, "Choose Hiring Type And Try Again")
+            return redirect("csp_app:candidate")
+        hiring_fk = hiring_type.objects.get(pk= hiring)
+        if sub_source == None:
+            messages.warning(request, "Choose  Sub Source Type And Try Again")
+            return redirect("csp_app:candidate")
+        subsource_fk = sub_source.objects.get(pk= subsource)
+        if c_gender == None:
+            messages.warning(request, "Choose  Gender And Try Again")
+            return redirect("csp_app:candidate")
+        gender_fk = gender.objects.get(pk= c_gender)
+        if laptopallocation == None:
+            messages.warning(request, "Choose  Laptop Allocation And Try Again")
+            return redirect("csp_app:candidate")
+        la_fk = laptop_allocation.objects.get(pk= laptopallocation)
+        if salarytype == None:
+            messages.warning(request, "Choose  Salary Type And Try Again")
+            return redirect("csp_app:candidate")
+        salarytype_fk = salary_type.objects.get(pk= salarytype)
+        if entity == None:
+            messages.warning(request, "Choose  Entity Type And Try Again")
+            return redirect("csp_app:candidate")
+        entity_fk = master_entity.objects.get(pk= entity)
+        if agency == None:
+            messages.warning(request, "Choose  Agency Type And Try Again")
+            return redirect("csp_app:candidate")
+        agency_fk = master_agency.objects.get(pk= agency)
+        if department == None:
+            messages.warning(request, "Choose  Department Type And Try Again")
+            return redirect("csp_app:candidate")
+        department_fk = master_department.objects.get(pk= department)
+        if function == None:
+            messages.warning(request, "Choose  Function Type And Try Again")
+            return redirect("csp_app:candidate")
+        function_fk = master_function.objects.get(pk= function)
+        if team == None:
+            messages.warning(request, "Choose  Team Type And Try Again")
+            return redirect("csp_app:candidate")
+        team_fk = master_team.objects.get(pk= team)
+        if sub_team == None:
+            messages.warning(request, "Choose  Sub Team Type And Try Again")
+            return redirect("csp_app:candidate")
+        sub_team_fk = master_sub_team.objects.get(pk= sub_team)
+        if designation == None:
+            messages.warning(request, "Choose  Designation Type And Try Again")
+            return redirect("csp_app:candidate")
+        designation_fk = master_designation.objects.get(pk= designation)
+        if region == None:
+            messages.warning(request, "Choose  Region Type And Try Again")
+            return redirect("csp_app:candidate")
+        region_fk = master_region.objects.get(pk= region)
+        if state == None:
+            messages.warning(request, "Choose  State Type And Try Again")
+            return redirect("csp_app:candidate")
+        state_fk = master_state.objects.get(pk= state)
+        if city == None:
+            messages.warning(request, "Choose  City Type And Try Again")
+            return redirect("csp_app:candidate")
+        city_fk = master_city.objects.get(pk= city)
+        if location == None:
+            messages.warning(request, "Choose  Location Type And Try Again")
+            return redirect("csp_app:candidate")
+        location_fk = master_location.objects.get(pk= location)
+        try:
+            dup_candidate_aadhaar = master_candidate.objects.filter(Aadhaar_Number= aadhaar, status= active_status)
+            messages.error("Candidate Aadhaar Number Already Exist")
+            return redirect("csp_app:candidate")
+            dup_candidate_pan = master_candidate.objects.filter(PAN_Number= Pan, status= active_status)
+            messages.error("Candidate PAN Number Already Exist")
+            return redirect("csp_app:candidate")
+            dup_candidate_pan = master_candidate.objects.filter(Contact_Number= contact_no, status= active_status)
+            messages.error("Candidate Contact Number Already Exist")
+            return redirect("csp_app:candidate")
+        except ObjectDoesNotExist:
+            new_candidate = master_candidate(First_Name=firstname, Middle_Name=middlename, Last_Name= lastname, Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername,
+            Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement,
+            Sub_Source= subsource_fk, Referral= referral, Agency= agency_fk, Entity= entity_fk, Department= department_fk, Function= function_fk, 
+            Team= team_fk, Sub_Team= sub_team_fk, Designation= designation_fk, Region= region_fk, State= state_fk, City=city_fk, Location= location_fk,
+            Reporting_Manager= reporting_manager, Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation,
+            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by= "user")
+            new_candidate.save()
+            messages.success("Candidate Saved Successfully")
+            return redirect("csp_app:candidate")
+
+        return render(request, 'csp_app/candidates.html', {})
+
 
 @login_required(login_url='/notlogin/')
 def entity(request):
