@@ -605,11 +605,13 @@ def  create_user(request):
         user.first_name = firstname
         user.last_name = lastname
         user.email = email
+        if group == 'Admin':
+            user.is_staff = True
         # user.groups = group
         assign_group.user_set.add(user)
         user.save()
-        msg = 'User account created with Username : ' + usrname + " and  Password " + password +" ."
-        send_mail('Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
+        msg = 'User account of type " ' + group +' " created with Username " ' + usrname + '" and  Password " ' + password + '" " ."'
+        send_mail('New User Account Created', msg,'workmail052020@gmail.com',[ email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
         # print("after")
         # return HttpResponse("success")
         messages.success(request, "User Created Successfully")
