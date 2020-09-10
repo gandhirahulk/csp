@@ -10,12 +10,14 @@ urlpatterns = [
 
     path('csp_admin/', views.admin, name= 'admin'),
     path('csp_admin/csp_create_user/', views.create_user_view, name= 'user'),
-    path('csp_admin/csp_create_user/new_user', views.create_user, name= 'create_user'),
+    path('csp_admin/csp_create_user/new_user/', views.create_user, name= 'create_user'),
     path('csp_admin/csp_disable_user/', views.disable_user, name= 'disable_user'),
     
     path('csp_vendor/', views.vendor, name= 'vendor'),
     path('csp_candidates/', views.candidate, name= 'candidate'),
-    path('csp_candidates/create_new', views.create_candidate, name= 'create_candidate'),
+    path('csp_candidates/create_new/', views.create_candidate, name= 'create_candidate'),
+    path('csp_candidates/view_candidate/', views.view_candidate, name= 'view_candidate'),
+
 
 
     path('csp_entity/', views.entity, name= 'entity'),
