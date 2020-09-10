@@ -226,6 +226,8 @@ class master_candidate(models.Model):
     Date_of_Joining = models.DateField()
     Father_Name = models.CharField(max_length=100)
     Date_of_Birth = models.DateField()
+    Father_Date_of_Birth = models.DateField()
+
     Aadhaar_Number = models.CharField(max_length=12)
     PAN_Number = models.CharField(max_length=10)
     Contact_Number = models.CharField(max_length=10)

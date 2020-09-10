@@ -1,3 +1,15 @@
+.action-col{
+  text-align: center;
+}
+
+.action-col form input{
+  border:none;
+  outline: none;
+  background: none;
+  color:blue;
+  cursor: pointer;
+}
+
 table.dataTable {
     width: 100%;
     margin: 0 auto;
@@ -233,31 +245,31 @@ table.dataTable {
       .dataTables_wrapper .dataTables_paginate .paginate_button {
         box-sizing: border-box;
         display: inline-block;
-        min-width: 1.5em;
-        padding: 0.5em 1em;
+        min-width: 1em;
+        padding: 0em .5em !important;
         margin-left: 2px;
         text-align: center;
         text-decoration: none !important;
         cursor: pointer;
-        *cursor: hand;
+        cursor: hand;
         color: #333333 !important;
         border: 1px solid transparent;
         border-radius: 2px; }
         .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-          color: #333333 !important;
-          border: 1px solid #3a0205;
-          background-color: #f95c64;
-          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f95c64), color-stop(100%, #bf0711));
+          color: #f5f5fa !important ;
+          /* border: 1px solid #3a0205; */
+          background-color: #bf0711;
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bf0711), color-stop(100%, #bf0711)) !important;
           /* Chrome,Safari4+ */
-          background: -webkit-linear-gradient(top, #f95c64 0%, #bf0711 100%);
+          background: -webkit-linear-gradient(top, #bf0711 0%, #bf0711 100%) !important;
           /* Chrome10+,Safari5.1+ */
-          background: -moz-linear-gradient(top, #f95c64 0%, #bf0711 100%);
+          background: -moz-linear-gradient(top, #bf0711 0%, #bf0711 100%) !important;
           /* FF3.6+ */
-          background: -ms-linear-gradient(top, #f95c64 0%, #bf0711 100%);
+          background: -ms-linear-gradient(top, #bf0711 0%, #bf0711 100%) !important;
           /* IE10+ */
-          background: -o-linear-gradient(top, #f95c64 0%, #bf0711 100%);
+          background: -o-linear-gradient(top, #bf0711 0%, #bf0711 100%) !important;
           /* Opera 11.10+ */
-          background: linear-gradient(to bottom, #f95c64 0%, #bf0711 100%);
+          background: linear-gradient(to bottom, #bf0711 0%, #bf0711 100%) !important;
           /* W3C */ }
         .dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
           cursor: default;
@@ -268,18 +280,18 @@ table.dataTable {
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
           color: white !important;
           border: 1px solid #bf0711;
-          background-color: #f95c64;
-          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f95c64), color-stop(100%, #bf0711));
+          background-color: #bf0711;
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bf0711), color-stop(100%, #bf0711));
           /* Chrome,Safari4+ */
-          background: -webkit-linear-gradient(top, #f95c64 0%, #bf0711 100%);
+          background: -webkit-linear-gradient(top, #bf0711 0%, #bf0711 100%);
           /* Chrome10+,Safari5.1+ */
-          background: -moz-linear-gradient(top, #f95c64 0%, #bf0711 100%);
+          background: -moz-linear-gradient(top, #bf0711 0%, #bf0711 100%);
           /* FF3.6+ */
-          background: -ms-linear-gradient(top, #f95c64 0%, #bf0711 100%);
+          background: -ms-linear-gradient(top, #bf0711 0%, #bf0711 100%);
           /* IE10+ */
-          background: -o-linear-gradient(top, #f95c64 0%, #bf0711 100%);
+          background: -o-linear-gradient(top, #bf0711 0%, #bf0711 100%);
           /* Opera 11.10+ */
-          background: linear-gradient(to bottom, #f95c64 0%, #bf0711 100%);
+          background: linear-gradient(to bottom, #bf0711 0%, #bf0711 100%);
           /* W3C */ }
         .dataTables_wrapper .dataTables_paginate .paginate_button:active {
           outline: none;

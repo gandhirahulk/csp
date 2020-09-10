@@ -150,7 +150,7 @@ def create_candidate(request):
             messages.error( request, "Candidate Contact Number Already Exist")
             return redirect("csp_app:candidate")
         except ObjectDoesNotExist:
-            new_candidate = master_candidate(First_Name=firstname, Middle_Name=middlename, Last_Name= lastname, Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername,
+            new_candidate = master_candidate(First_Name=firstname, Middle_Name=middlename, Last_Name= lastname, Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
             Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement,
             Sub_Source= subsource_fk, Referral= referral, Agency= agency_fk, Entity= entity_fk, Department= department_fk, Function= function_fk, 
             Team= team_fk, Sub_Team= sub_team_fk, Designation= designation_fk, Region= region_fk, State= state_fk, City=city_fk, Location= location_fk,
@@ -170,7 +170,66 @@ def create_candidate(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def entity(request):
     entity_list = master_entity.objects.filter(status = active_status)
+    # view_entity_list = []
+    # if request.method == 'GET':
+    #     print("here")
+    #     print(request.GET.get("view_id"))
+    #     # print(request.DIALOG.get)
+    #     if request.GET.get("view_id") != '':
+            
+    #         entity_id = request.POST.get("view_id")
+    #         print(entity_id)
+    #         view_entity_list = master_entity.objects.get(pk = entity_id)
+
     return render(request, 'csp_app/entity.html', {'entity_list': entity_list})
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_entity(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    try:
+        if request.method == 'POST':
+            entity_id = request.POST.get("view_id")
+            view_entity_list = master_entity.objects.filter(pk = entity_id)
+        return render(request, 'csp_app/viewentity.html', {'view_entity_list': view_entity_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_entity(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    try:
+        if request.method == 'POST':
+            entity_id = request.POST.get("view_id")
+            selected_entity = master_entity.objects.filter(pk = entity_id)         
+           
+        return render(request, 'csp_app/editentity.html', {'view_entity_list': selected_entity, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_entity(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                entity = master_entity.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_entity_name") != None:
+                    entity.entity_name = request.POST.get("e_entity_name")
+                    entity.save()
+                    messages.success(request, "Entity Updated Successfully")
+                    return redirect('csp_app:entity')
+                else:
+                    messages.warning(request, "Entity Name Cannot Be Blank")
+                    return redirect('csp_app:entity')         
+           
+        return render(request, 'csp_app/editentity.html', {'view_entity_list': selected_entity, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())

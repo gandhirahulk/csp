@@ -1,0 +1,105 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Entity {% endblock %}
+
+{% block bodyblock %} 
+
+<div class="tabs">
+    <a href="{% url 'csp_app:entity' %}" class="tab-btns active-tab"> Entity</a>
+    <a href="{% url 'csp_app:agency' %}" class="tab-btns">Agency</a>    
+    <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+    <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+    <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+    <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+    <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+    <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+    <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+    <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+    <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+</div>
+
+{% endblock %}
+
+
+{% block tabcontentblock %}
+
+<div class="tab-container">
+    <button id="new_entity" class="add-new-btn">New Entity</button>
+
+</div>
+
+<div class="table-container">
+  
+    <table id="entity-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Entity Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if entity_list %}
+                {% for eachentity in entity_list %}
+
+                    <tr>
+                        <td>{{ eachentity.entity_name }}</td>
+                        <!-- <td style="text-align: center;"><form action="" method="GET">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:entity' %}"></form> | <a href="http://">edit</a> | <a href="http://">delete</a></td> -->
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_entity' %}"></form>
+                        </td>
+                    
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachentity in entity_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+<div id="view_entity_form" class="form_modal" style="padding-top: 10%;display: block;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Entity Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_entity_list %}
+        {% for eachentity in view_entity_list %}
+            <div class="view_form_content" style="padding-left: 13rem;">
+                <div class="forms-label-holder">
+                    <label for="">Entity Name : </label> <label for="">{{ eachentity.entity_name }}</label>
+                </div>
+                <div class="forms-label-holder">
+                    <label for="">Created By : </label> <label for="">{{ eachentity.created_by }}</label>
+                </div>
+                <div class="forms-label-holder">
+                    <label for="">Created Date Time : </label> <label for="">{{ eachentity.created_date_time }}</label>
+                </div>
+                <div class="forms-label-holder">    
+                    <label for="">Modified By : </label> <label for="">{{ eachentity.modified_by }}</label>
+                </div>
+                <div class="forms-label-holder">
+                    <label for="">Modified Date Time : </label> <label for="">{{ eachentity.modified_date_time }}</label>
+                </div>              
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+        <button onclick="location.href = '/csp_entity/'" class="forms-save-btn">Close</button>
+    </div>
+             
+  
+  </div>
+
+
+{% endblock %}

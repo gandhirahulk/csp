@@ -43,7 +43,7 @@
                         <td>{{ eachentity.entity_name }}</td>
                         <!-- <td style="text-align: center;"><form action="" method="GET">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:entity' %}"></form> | <a href="http://">edit</a> | <a href="http://">delete</a></td> -->
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_entity' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_entity' %}"></form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_entity' %}"></form>
                         </td>
                     
                     </tr>
@@ -63,30 +63,35 @@
   
 </div>
 
-<div id="entity_form" class="form_modal" style="padding-top: 15%;">
+  <div id="view_entity_form" class="form_modal" style="padding-top: 15%;display: block;">
+
     <div class="form_header">
         <div class="forms-heading">
-            <h2>Create New Entity</h2>
+            <h2>Edit Entity Details</h2>
         </div>
-        <div class="hr_line">&nbsp;</div>
-     
+        <div class="hr_line">&nbsp;</div>            
     </div>
-    <div class="form_content">
-        <form method="POST" action="{% url 'csp_app:create_entity' %}">
-            {% csrf_token %}
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Entity Name" name="entity_name" title="Enity Name" required="true" maxlength="50">
-            </div>           
-              
-    </div>
+    {% if view_entity_list %}
+        {% for eachentity in view_entity_list %}
+            <div class="form_content">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="e_id" value="{{ eachentity.pk }}">
+                    <div class="forms-input-holder">
+                        <input type="text" value="{{ eachentity.entity_name }}" placeholder="Entity Name" name="e_entity_name" title="Enity Name" required="true" maxlength="50">
+                    </div>           
+                    
+            </div>
+        {% endfor %}
+    {% endif %} 
     <div class="form_footer">
-            <button type="submit" formaction="{% url 'csp_app:create_entity' %}" class="forms-save-btn">Save Entity</button>
+            <button type="submit" class="edit-forms-save-btn" formaction="{% url 'csp_app:save_edit_entity' %}">Save Changes</button>
         </form>
+        <button onclick="location.href = '/csp_entity/'" class="edit-forms-close-btn">Close</button>
     </div>
+             
   
   </div>
-
-
 
 <script>
     $(document).ready(function(){

@@ -20,6 +20,10 @@ urlpatterns = [
 
     path('csp_entity/', views.entity, name= 'entity'),
     path('csp_entity/new_entity/', views.create_entity, name= 'create_entity'),
+    path('csp_entity/edit_entity/', views.view_edit_entity, name= 'edit_entity'),
+    path('csp_entity/save_edit_entity/', views.save_edit_entity, name= 'save_edit_entity'),
+    path('csp_entity/view_entity/', views.view_entity, name= 'view_entity'),
+
 
     path('csp_agency/', views.agency, name= 'agency'),
     path('csp_agency/new_agency/', views.create_agency, name= 'create_agency'),

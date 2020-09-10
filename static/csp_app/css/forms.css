@@ -56,12 +56,41 @@
     width: 10rem;
     outline:none;
 }
-.forms-save-btn:hover{
+
+.edit-forms-close-btn{
+  font-size: 16px;
+  border:1px solid #ddd; 
+  background:#f5f5fa; 
+  color:#bf0711;
+  padding:8px;
+  width: 8rem;
+  outline:none;
+}
+
+.edit-forms-close-btn:hover{
+  background: #E7E7F2;
+}
+
+.edit-forms-save-btn{
+  font-size: 16px;
+  border:none; 
+  background:#bf0711; 
+  color:#f5f5fa;
+  padding:8px;
+  width: 8rem;
+  outline:none;
+}
+
+.forms-save-btn:hover,
+.edit-forms-save-btn:hover{
     background: #B1060F;
 }
-.forms-save-btn:focus{            
+.forms-save-btn:focus,
+.edit-forms-save-btn:focus{            
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+
 
 
 .form_modal {
@@ -94,6 +123,22 @@
   .form_content label{
       display: none;
   }
+
+  .view_form_content{
+    background-color: #f5f5fa;
+    margin: auto;
+    padding: 20px;
+    width: 50%;
+    overflow: auto;
+    /* text-align: center; */
+    padding-bottom: 0px;
+  }
+
+  .forms-label-holder{
+    margin-bottom: 20px;
+  }
+
+
 
   .form_header{
     margin: auto;
