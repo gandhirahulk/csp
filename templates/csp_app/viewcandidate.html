@@ -1,0 +1,113 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Team {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>   
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+{% if request.user.groups.all %}
+{% for eachgroup in request.user.groups.all %}
+{% if eachgroup.name != 'Vendor' %}
+<div class="tab-container">
+    <button id="new_candidate" class="add-new-btn">New Candidate</button>
+   
+</div>
+{% endif %}
+
+{% endfor %}
+
+{% endif %}
+<div class="table-container">
+  
+    <table id="candidate-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Candidate Name</th>
+                <th>Contact No.</th>
+                <th>Designation</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if candidate_list %}
+                {% for eachcandidate in candidate_list %}
+
+                    <tr>
+                        <td>{{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}</td>
+                        <td>{{ eachcandidate.Contact_Number }}</td>
+                        <td>{{ eachcandidate.Designation }}</td>
+                        <td>{{ eachcandidate.status }}</td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachcandidate in candidate_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+<div class="form_modal" style="display: block;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Create New candidate</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_candidate_list %}
+        {% for eachcandidate in view_candidate_list %}
+            <div class="view_form_content" style="padding-left: 13rem;">
+                <div class="forms-label-holder">
+                    <label for="">candidate Name : </label> <label for="">{{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</label>
+                </div>
+                <div class="forms-label-holder">
+                    <label for="">Father Name : </label> <label for="">{{ eachcandidate.Father_Name }}</label>
+                </div>
+                <div class="forms-label-holder">
+                    <label for="">Contact No. : </label> <label for="">{{ eachcandidate.Contact_Number }}</label>
+                </div>
+                <div class="forms-label-holder">
+                    <label for="">Status : </label> <label for="">{{ eachcandidate.status }}</label>
+                </div>
+                <div class="forms-label-holder">
+                    <label for="">Created By : </label> <label for="">{{ eachcandidate.created_by }}</label>
+                </div>
+                <div class="forms-label-holder">
+                    <label for="">Created Date Time : </label> <label for="">{{ eachcandidate.created_date_time }}</label>
+                </div>
+                <div class="forms-label-holder">    
+                    <label for="">Modified By : </label> <label for="">{{ eachcandidate.modified_by }}</label>
+                </div>
+                <div class="forms-label-holder">
+                    <label for="">Modified Date Time : </label> <label for="">{{ eachcandidate.modified_date_time }}</label>
+                </div>              
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+        <button onclick="location.href = '/csp_candidates/'" class="forms-save-btn">Close</button>
+    </div>
+             
+  
+  </div>
+
+{% endblock %}

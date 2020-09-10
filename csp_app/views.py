@@ -155,7 +155,7 @@ def create_candidate(request):
             Sub_Source= subsource_fk, Referral= referral, Agency= agency_fk, Entity= entity_fk, Department= department_fk, Function= function_fk, 
             Team= team_fk, Sub_Team= sub_team_fk, Designation= designation_fk, Region= region_fk, State= state_fk, City=city_fk, Location= location_fk,
             Reporting_Manager= reporting_manager, Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation,
-            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by= "user")
+            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user))
             new_candidate.save()
             msg = 'Candidate account created'
             send_mail('Candidate Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
@@ -165,6 +165,17 @@ def create_candidate(request):
 
         return render(request, 'csp_app/candidates.html', {})
 
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_candidate(request):
+    candidate_list = master_candidate.objects.filter(status = active_status)
+    try:
+        if request.method == 'POST':
+            candidate_id = request.POST.get("view_id")
+            view_candidate_list = master_candidate.objects.filter(pk = candidate_id)
+        return render(request, 'csp_app/viewcandidate.html', {'view_candidate_list': view_candidate_list, 'candidate_list': candidate_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -219,6 +230,8 @@ def save_edit_entity(request):
                 entity = master_entity.objects.get(pk = request.POST.get("e_id"))
                 if request.POST.get("e_entity_name") != None:
                     entity.entity_name = request.POST.get("e_entity_name")
+                    entity.modified_by = str(request.user)
+                    entity.modified_date_time = datetime.now()
                     entity.save()
                     messages.success(request, "Entity Updated Successfully")
                     return redirect('csp_app:entity')
@@ -244,7 +257,7 @@ def create_entity(request):
             messages.error(request, "Entity Already Exist")
             return redirect('csp_app:entity')
         except ObjectDoesNotExist:
-            new_entity = master_entity(entity_name= entity_name, created_by = "user")
+            new_entity = master_entity(entity_name= entity_name, created_by = str(request.user))
             new_entity.save()
             messages.success(request, "Entity Created Successfully")
             return redirect('csp_app:entity')
@@ -299,7 +312,7 @@ def create_agency(request):
         except ObjectDoesNotExist:   
             print('here')
 
-        new_agency = master_agency(agency_name= agency_name, spoc_name= agency_spoc, agency_phone_number= agency_phone, agency_email_id= agency_email, agency_email_id_password= agency_email_pwd, fk_entity_code= entity_fk, created_by = "user")
+        new_agency = master_agency(agency_name= agency_name, spoc_name= agency_spoc, agency_phone_number= agency_phone, agency_email_id= agency_email, agency_email_id_password= agency_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
         new_agency.save()
         messages.success(request, "Agency Saved Successfully")
         return redirect('csp_app:agency')
@@ -331,7 +344,7 @@ def  create_department(request):
             messages.error(request, "Department Already Exist")
             return redirect('csp_app:department')
         except ObjectDoesNotExist:
-            new_department = master_department(department_name= dept_name, fk_entity_code= entity_fk, created_by = "user")
+            new_department = master_department(department_name= dept_name, fk_entity_code= entity_fk, created_by = str(request.user))
             new_department.save()
             return redirect('csp_app:department')
     return render(request, 'csp_app/department.html', {})
@@ -362,7 +375,7 @@ def  create_function(request):
             messages.error(request, "Function Already Exist")
             return redirect('csp_app:function')
         except ObjectDoesNotExist:            
-            new_function = master_function( function_name= function_name, fk_department_code= department_fk, created_by = "user")
+            new_function = master_function( function_name= function_name, fk_department_code= department_fk, created_by = str(request.user))
             new_function.save()
             messages.success(request, "Function Saved Successfully")
             return redirect('csp_app:function')
@@ -393,11 +406,11 @@ def  create_team(request):
         function_fk = master_function.objects.get(pk=team_function)
        
         try:
-            duplicate_team = master_team.objects.get( team_name= team_name, fk_function_code=function_fk, created_by = "user")
+            duplicate_team = master_team.objects.get( team_name= team_name, fk_function_code=function_fk, created_by = str(request.user))
             messages.error(request, "Team Already Exist")
             return redirect('csp_app:team')
         except ObjectDoesNotExist: 
-            new_team = master_team( team_name= team_name, fk_function_code=function_fk, created_by = "user")
+            new_team = master_team( team_name= team_name, fk_function_code=function_fk, created_by = str(request.user))
             new_team.save()
             messages.success(request, "Team Saved Successfully")
             return redirect('csp_app:team')
@@ -432,7 +445,7 @@ def  create_subteam(request):
             messages.error(request, "Sub Team Already Exist")
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
-            new_subteam = master_sub_team( sub_team_name= subteam_name, fk_team_code=team_fk, created_by = "user")
+            new_subteam = master_sub_team( sub_team_name= subteam_name, fk_team_code=team_fk, created_by = str(request.user))
             new_subteam.save()
             messages.success(request, "Sub Team Saved Successfully")
             return redirect('csp_app:subteam')
@@ -469,7 +482,7 @@ def  create_designation(request):
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
 
-            new_designation = master_designation( designation_name= designation_name, fk_sub_team_code=subteam_fk, created_by = "user")
+            new_designation = master_designation( designation_name= designation_name, fk_sub_team_code=subteam_fk, created_by = str(request.user))
             new_designation.save()
             messages.success(request, "Designation Saved Successfully")
             return redirect('csp_app:designation')
@@ -506,7 +519,7 @@ def  create_region(request):
             messages.error(request, "Region Already Exist")
             return redirect('csp_app:region')
         except ObjectDoesNotExist: 
-            new_region = master_region( region_name= region_name, fk_designation_code =desg_fk, created_by = "user")
+            new_region = master_region( region_name= region_name, fk_designation_code =desg_fk, created_by = str(request.user))
             new_region.save()
             
             messages.success(request, "Region Saved Succesfully")
@@ -545,7 +558,7 @@ def  create_state(request):
             messages.error(request, "State Already Exist")
             return redirect('csp_app:state')
         except ObjectDoesNotExist: 
-            new_state = master_state( state_name= state_name, fk_region_code =region_fk, created_by = "user")
+            new_state = master_state( state_name= state_name, fk_region_code =region_fk, created_by = str(request.user))
             new_state.save()
             messages.success(request, "State Saved Successfully")
             return redirect('csp_app:state')
@@ -584,7 +597,7 @@ def  create_city(request):
             messages.error(request, "City Already Exist")
             return redirect('csp_app:city')
         except ObjectDoesNotExist: 
-            new_city = master_city( city_name= city_name, fk_state_code =state_fk, created_by = "user")
+            new_city = master_city( city_name= city_name, fk_state_code =state_fk, created_by = str(request.user))
             new_city.save()
             messages.success(request, "City Saved Successfully")
             return redirect('csp_app:city')
@@ -624,7 +637,7 @@ def  create_location(request):
             messages.error(request, "City Already Exist")
             return redirect('csp_app:location')
         except ObjectDoesNotExist: 
-            new_location = master_location( location_name= location_name, fk_city_code =city_fk, created_by = "user")
+            new_location = master_location( location_name= location_name, fk_city_code =city_fk, created_by = str(request.user))
             new_location.save()
             messages.success(request, "Location Saved Successfully")
             return redirect('csp_app:location')

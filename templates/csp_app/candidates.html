@@ -44,7 +44,9 @@
                         <td>{{ eachcandidate.Contact_Number }}</td>
                         <td>{{ eachcandidate.Designation }}</td>
                         <td>{{ eachcandidate.status }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -64,6 +66,7 @@
     </table>
   
 </div>
+
 <div id="candidates_form" class="form_modal" style="padding-top: 1%;">
     <div class="form_header">
         <div class="forms-heading">
@@ -316,6 +319,7 @@
     </div>
   
   </div>
+
 <script>
     $(document).ready(function(){
         showMe('Candidate', 'can-expand');
