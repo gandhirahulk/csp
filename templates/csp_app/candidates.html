@@ -29,6 +29,9 @@
         <thead>
             <tr>
                 <th>Candidate Name</th>
+                <th>Contact No.</th>
+                <th>Designation</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -37,7 +40,10 @@
                 {% for eachcandidate in candidate_list %}
 
                     <tr>
-                        <td>{{ eachcandidate.First_name }}</td>
+                        <td>{{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}</td>
+                        <td>{{ eachcandidate.Contact_Number }}</td>
+                        <td>{{ eachcandidate.Designation }}</td>
+                        <td>{{ eachcandidate.status }}</td>
                         <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
                     </tr>
 
@@ -46,6 +52,9 @@
             {% else %}
                 {% for eachcandidate in candidate_list %}
                 <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -108,7 +117,7 @@
             </div>
 
             <div class="forms-input-holder" style="display: none;">
-                <input type="text" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[A-Za-z0-9]{1,5}" autocapitalize="on">
+                <input type="text" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
             </div>
             <div class="forms-input-holder">
                 <select name="c_sub_source" id="" >
@@ -121,7 +130,7 @@
                 </select>
             </div>
             <div class="forms-input-holder" >
-                <input type="text" placeholder="Referral" name="c_referral" pattern="[U]{1}[A-Za-z0-9]{1,5}" autocapitalize="on">
+                <input type="text" placeholder="Referral" name="c_referral" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
             </div>
             <label for="">Entity</label>
             <div class="forms-input-holder">
@@ -248,7 +257,7 @@
             </div>
 
             <div class="forms-input-holder">
-                <input type="text" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[A-Za-z0-9]{1,5}" autocapitalize="on">
+                <input type="text" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
             </div>
             <div class="forms-input-holder">
                 <input type="email" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" required="true">

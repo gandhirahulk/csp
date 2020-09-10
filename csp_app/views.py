@@ -33,11 +33,12 @@ def candidate(request):
     salary_type_list = salary_type.objects.filter(status= active_status)
     gender_list = gender.objects.filter(status= active_status)
     laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+    candidate_list = master_candidate.objects.all()
     return render(request, 'csp_app/candidates.html', {'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'agency_list': agency_list })
+    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'agency_list': agency_list, 'candidate_list': candidate_list })
 
 @login_required(login_url='/notlogin/')
 def create_candidate(request):
@@ -139,14 +140,14 @@ def create_candidate(request):
             return redirect("csp_app:candidate")
         location_fk = master_location.objects.get(pk= location)
         try:
-            dup_candidate_aadhaar = master_candidate.objects.filter(Aadhaar_Number= aadhaar, status= active_status)
-            messages.error("Candidate Aadhaar Number Already Exist")
+            dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
+            messages.error( request, "Candidate Aadhaar Number Already Exist")
             return redirect("csp_app:candidate")
-            dup_candidate_pan = master_candidate.objects.filter(PAN_Number= Pan, status= active_status)
-            messages.error("Candidate PAN Number Already Exist")
+            dup_candidate_pan = master_candidate.objects.get(PAN_Number= Pan, status= active_status)
+            messages.error( request, "Candidate PAN Number Already Exist")
             return redirect("csp_app:candidate")
-            dup_candidate_pan = master_candidate.objects.filter(Contact_Number= contact_no, status= active_status)
-            messages.error("Candidate Contact Number Already Exist")
+            dup_candidate_pan = master_candidate.objects.get(Contact_Number= contact_no, status= active_status)
+            messages.error( request, "Candidate Contact Number Already Exist")
             return redirect("csp_app:candidate")
         except ObjectDoesNotExist:
             new_candidate = master_candidate(First_Name=firstname, Middle_Name=middlename, Last_Name= lastname, Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername,
@@ -156,7 +157,10 @@ def create_candidate(request):
             Reporting_Manager= reporting_manager, Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation,
             Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by= "user")
             new_candidate.save()
-            messages.success("Candidate Saved Successfully")
+            msg = 'Candidate account created'
+            send_mail('Candidate Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
+       
+            messages.success(request, "Candidate Saved Successfully")
             return redirect("csp_app:candidate")
 
         return render(request, 'csp_app/candidates.html', {})
@@ -604,11 +608,10 @@ def  create_user(request):
         # user.groups = group
         assign_group.user_set.add(user)
         user.save()
-        msg = 'username ' + usrname + " | password " + password
-        print("before send mail")
-        send_mail('Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com'],fail_silently=False)
-        print("after")
-        return HttpResponse("success")
+        msg = 'User account created with Username : ' + usrname + " and  Password " + password +" ."
+        send_mail('Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
+        # print("after")
+        # return HttpResponse("success")
         messages.success(request, "User Created Successfully")
         return redirect('csp_app:user')
         # except IntegrityError:
