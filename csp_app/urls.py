@@ -52,7 +52,7 @@ urlpatterns = [
     path('csp_location/new_location/', views.create_location, name= 'create_location'),
 
 
-    path('csp_admin/csp_candidates/', views.candidate, name= 'candidate'),
+    # path('csp_admin/csp_candidates/', views.candidate, name= 'candidate'),
 
    
 
