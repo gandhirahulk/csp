@@ -93,10 +93,10 @@
             </ul>
           </div>
         </div>
-        
+        {% if request.user.is_staff %}
         <div class="sidebar">
             <ul>
-              {% if request.user.is_staff %}
+            
               <li onclick="showMe('Organization', 'org-expand')" id="Organization"><a href="{% url 'csp_app:entity' %}">
                 <span class="icon"><i class="fas fa-sitemap"></i></span>
                 <span class="title">Organization</span><span class="expand"><i class="fas fa-caret-right" id="org-expand"></i></span></a></li>
@@ -104,14 +104,23 @@
                 <span class="icon"><i class="fas fa-users-cog"></i></span>
                 <span class="title">User</span>
                 <span class="expand"><i class="fas fa-caret-right" id="user-expand"></i></span></a></li>
-              {% endif %}
+             
               <li onclick="showMe('Candidate', 'can-expand')" id="Candidate"><a href="{% url 'csp_app:candidate' %}">
               <span class="icon"><i class="fas fa-users"></i></span>
               <span class="title">Candidate</span>
               <span class="expand"><i class="fas fa-caret-right" id="can-expand"></i></span></a></li>             
           </ul>
         </div>
-        <div class="main_container">
+        {% endif %}
+        {% if request.user.groups.all %}
+          {% for eachgroup in request.user.groups.all %}
+            {% if eachgroup.name != 'Admin' %}
+              <div class="main_container" style="margin-left: 0px;">
+              {% else %}
+              <div class="main_container">      
+            {% endif %}
+          {% endfor %}          
+        {% endif %}
             <div class="item" style="padding:9px;">
                 {% block bodyblock %} 
              
