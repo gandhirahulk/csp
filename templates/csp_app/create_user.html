@@ -5,7 +5,7 @@
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:create_user' %}" class="tab-btns active-tab">Create User</a>
+        <a href="{% url 'csp_app:user' %}" class="tab-btns active-tab">Create User</a>
         <!-- <a href="{% url 'csp_app:disable_user' %}" class="tab-btns">Disable User</a>    -->
     </div>
 
@@ -33,7 +33,7 @@
 
                     <tr>
                         <td>{{ eachuser.username }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">disable</a></td>
                     </tr>
 
                 {% endfor %}                

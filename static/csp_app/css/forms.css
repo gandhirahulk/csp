@@ -8,7 +8,8 @@
 }
 
 .forms-input-holder > input,
-.forms-input-holder > select{
+.forms-input-holder > select,
+.search-input > input{
     padding: 10px;
     border: none;
     outline: none;
@@ -16,6 +17,19 @@
     width: 90%;
     transition: .4s ease;
     font-size: 14px;
+}
+
+#search-bar{
+  width: 46rem;
+  padding: 10px;
+  border: 1px solid #f5f5fa;
+  border-radius: 5px;
+  background: #f5f5fa;
+}
+
+#search-bar:focus{
+  box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  background: #fff;
 }
 
 .forms-input-holder > input[type="text"]{
@@ -27,7 +41,8 @@
 }
 
 .forms-input-holder > input:focus,
-.forms-input-holder > select:focus{
+.forms-input-holder > select:focus,
+.search-input > input:focus{
     /* border: 1px solid #bf0711; */
     box-shadow: 0px 0px 1px 0px #bf0711
 }

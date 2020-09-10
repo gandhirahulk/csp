@@ -1,0 +1,10 @@
+{% if request.user.groups.all %}
+{% for eachgroup in request.user.groups.all %}
+{% if eachgroup.name == 'Admin' %}
+
+  {{ eachgroup.name }}
+{% endif %}
+
+{% endfor %}
+
+{% endif %}

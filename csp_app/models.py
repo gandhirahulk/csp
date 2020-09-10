@@ -257,3 +257,9 @@ class master_candidate(models.Model):
     modified_by = models.CharField(max_length=100, null=True,blank=True)
     modified_date_time = models.DateTimeField(null=True,blank=True)
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+
+    # def __str__(self):
+    #     return self.First_Name
+
+    
