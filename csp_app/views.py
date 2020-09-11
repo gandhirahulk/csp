@@ -5,7 +5,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.db.utils import IntegrityError
-from csp_app.models import status, master_candidate, master_entity, master_designation, master_agency, master_department, \
+from csp_app.models import status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
                             sub_source, salary_type, gender, laptop_allocation
 from django.core.exceptions import ObjectDoesNotExist
@@ -14,10 +14,13 @@ from django.contrib.auth.decorators import login_required, permission_required, 
 
 
 active_status = status.objects.get(pk=1)
+deactive_status = status.objects.get(pk=2)
+
 @login_required(login_url='/notlogin/')
 def candidate(request):
+    
     entity_list = master_entity.objects.filter(status = active_status)
-    agency_list = master_agency.objects.filter(status = active_status)
+    vendor_list = master_vendor.objects.filter(status = active_status)
 
     dept_list = master_department.objects.filter(status = active_status)
     function_list = master_function.objects.filter(status = active_status)
@@ -38,11 +41,12 @@ def candidate(request):
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'agency_list': agency_list, 'candidate_list': candidate_list })
+    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list })
 
 @login_required(login_url='/notlogin/')
 def create_candidate(request):
     if request.method == 'POST':
+
         firstname = request.POST.get("c_firstname")
         middlename = request.POST.get("c_middlename")
         lastname = request.POST.get("c_lastname")
@@ -58,7 +62,7 @@ def create_candidate(request):
         subsource = request.POST.get("c_sub_source")
         referral = request.POST.get("c_referral")
         entity = request.POST.get("c_entity")
-        agency = request.POST.get("c_agency")
+        vendor = request.POST.get("c_vendor")
         department = request.POST.get("c_dept")
         function = request.POST.get("c_function")
         team = request.POST.get("c_team")
@@ -99,10 +103,10 @@ def create_candidate(request):
             messages.warning(request, "Choose  Entity Type And Try Again")
             return redirect("csp_app:candidate")
         entity_fk = master_entity.objects.get(pk= entity)
-        if agency == None:
-            messages.warning(request, "Choose  Agency Type And Try Again")
+        if vendor == None:
+            messages.warning(request, "Choose  vendor Type And Try Again")
             return redirect("csp_app:candidate")
-        agency_fk = master_agency.objects.get(pk= agency)
+        vendor_fk = master_vendor.objects.get(pk= vendor)
         if department == None:
             messages.warning(request, "Choose  Department Type And Try Again")
             return redirect("csp_app:candidate")
@@ -150,15 +154,19 @@ def create_candidate(request):
             messages.error( request, "Candidate Contact Number Already Exist")
             return redirect("csp_app:candidate")
         except ObjectDoesNotExist:
-            new_candidate = master_candidate(First_Name=firstname, Middle_Name=middlename, Last_Name= lastname, Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
+            last_code_query = master_candidate.objects.latest('pk')
+            last_code_str = last_code_query.pk
+            next_code_int = int(last_code_str[1:])+ 1
+            new_code = 'C' + str(next_code_int).zfill(9) #pk_candidate_code
+            new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname, Middle_Name=middlename, Last_Name= lastname, Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
             Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement,
-            Sub_Source= subsource_fk, Referral= referral, Agency= agency_fk, Entity= entity_fk, Department= department_fk, Function= function_fk, 
-            Team= team_fk, Sub_Team= sub_team_fk, Designation= designation_fk, Region= region_fk, State= state_fk, City=city_fk, Location= location_fk,
+            Sub_Source= subsource_fk, Referral= referral, fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
+            fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk,
             Reporting_Manager= reporting_manager, Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation,
             Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user))
             new_candidate.save()
             msg = 'Candidate account created'
-            send_mail('Candidate Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
+            send_mail('Candidate Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com', reporting_manager_email, vendor_fk.spoc_email_id],fail_silently=False)
        
             messages.success(request, "Candidate Saved Successfully")
             return redirect("csp_app:candidate")
@@ -194,6 +202,27 @@ def entity(request):
 
     return render(request, 'csp_app/entity.html', {'entity_list': entity_list})
 
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_entity(request):
+    try:
+        if request.method == 'POST':
+            entity_id = request.POST.get("delete_id")
+            entity_a = master_vendor.objects.filter(fk_entity_code=entity_id, status=active_status)
+            entity_d = master_department.objects.filter(fk_entity_code=entity_id, status=active_status)
+            entity_c = master_candidate.objects.filter(Entity=entity_id, status=active_status)
+            if len(entity_a) >= 1 or len(entity_d) >= 1 or len(entity_c) >= 1:
+                messages.error(request, "Entity Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:entity')
+            else:
+                selected_entity = master_entity.objects.get(pk = entity_id, status= active_status)
+                selected_entity.status = deactive_status
+                selected_entity.save()
+                messages.success(request, "Entity Deleted Successfully")
+                return redirect('csp_app:entity')
+        return render(request, 'csp_app/entity.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -229,12 +258,18 @@ def save_edit_entity(request):
            if request.POST.get("e_id") != '':
                 entity = master_entity.objects.get(pk = request.POST.get("e_id"))
                 if request.POST.get("e_entity_name") != None:
-                    entity.entity_name = request.POST.get("e_entity_name")
-                    entity.modified_by = str(request.user)
-                    entity.modified_date_time = datetime.now()
-                    entity.save()
-                    messages.success(request, "Entity Updated Successfully")
-                    return redirect('csp_app:entity')
+                    name = request.POST.get("e_entity_name")
+                    try:
+                        master_entity.objects.filter(entity_name= name, status= active_status)
+                        messages.error(request, "Entity Already Exist")
+                        return redirect('csp_app:entity')
+                    except ObjectDoesNotExist:
+                        entity.entity_name = name
+                        entity.modified_by = str(request.user)
+                        entity.modified_date_time = datetime.now()
+                        entity.save()
+                        messages.success(request, "Entity Updated Successfully")
+                        return redirect('csp_app:entity')
                 else:
                     messages.warning(request, "Entity Name Cannot Be Blank")
                     return redirect('csp_app:entity')         
@@ -263,60 +298,62 @@ def create_entity(request):
             return redirect('csp_app:entity')
     return render(request, 'csp_app/entity.html', {})
 
+
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
-def agency(request):
+def vendor(request):
     entity_list = master_entity.objects.filter(status = active_status)
-    agency_list = master_agency.objects.filter(status = active_status)
+    vendor_list = master_vendor.objects.filter(status = active_status)
 
-    return render(request, 'csp_app/agency.html', {'entity_list': entity_list, 'agency_list': agency_list})
+    return render(request, 'csp_app/vendor.html', {'entity_list': entity_list, 'vendor_list': vendor_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
-def create_agency(request):    
+def create_vendor(request):    
     if request.method == 'POST':
-        agency_name = request.POST.get("agency_name")
-        agency_spoc = request.POST.get("agency_spoc")
-        agency_phone = request.POST.get("agency_phone")
-        agency_email = request.POST.get("agency_email")
-        agency_email_pwd = request.POST.get("agency_email_pwd")
-        entity = request.POST.get("agency_entity")
+        vendor_name = request.POST.get("vendor_name")
+        vendor_spoc = request.POST.get("vendor_spoc")
+        vendor_spoc_email = request.POST.get("vendor_spoc_email")
+        vendor_phone = request.POST.get("vendor_phone")
+        vendor_email = request.POST.get("vendor_email")
+        vendor_email_pwd = request.POST.get("vendor_email_pwd")
+        entity = request.POST.get("vendor_entity")
         if entity == None:
             messages.warning(request, "Choose Entity And Try Again")
-            return redirect('csp_app:agency')
+            return redirect('csp_app:vendor')
         entity_fk = master_entity.objects.get(pk=entity)
         
         try:
             print(1)
-            duplicate_agency_entity_spoc = master_agency.objects.filter(agency_name=agency_name, fk_entity_code= entity, spoc_name=agency_spoc, status = active_status)
-            if duplicate_agency_entity_spoc:
-                messages.error(request, "Agency Already Exist")
-                return redirect('csp_app:agency')
+            duplicate_vendor_entity_spoc = master_vendor.objects.filter(vendor_name=vendor_name, fk_entity_code= entity, spoc_email_id=vendor_spoc_email, status = active_status)
+            if duplicate_vendor_entity_spoc:
+                messages.error(request, "vendor Already Exist")
+                return redirect('csp_app:vendor')
            
         except ObjectDoesNotExist:
             print(2)
+        # try:
+        #     duplicate_vendor_email = master_vendor.objects.filter( vendor_email_id= vendor_email, status = active_status)
+        #     if duplicate_vendor_email:
+        #         messages.error(request, "vendor Email ID Already Exist")
+        #         return redirect('csp_app:vendor')
+        #     print(3)
+        # except ObjectDoesNotExist:
+        #     print(4)
         try:
-            duplicate_agency_email = master_agency.objects.filter( agency_email_id= agency_email, status = active_status)
-            if duplicate_agency_email:
-                messages.error(request, "Agency Email ID Already Exist")
-                return redirect('csp_app:agency')
-            print(3)
-        except ObjectDoesNotExist:
-            print(4)
-        try:
-            duplicate_agency_entity = master_agency.objects.filter( agency_name=agency_name, fk_entity_code= entity, status = active_status)
-            if duplicate_agency_entity:                
-                messages.error(request, "Agency Already Exist")
-                return redirect('csp_app:agency')
+            duplicate_vendor_entity = master_vendor.objects.filter( vendor_name=vendor_name, fk_entity_code= entity, status = active_status)
+            if duplicate_vendor_entity:                
+                messages.error(request, "vendor Already Exist")
+                return redirect('csp_app:vendor')
             print(5)
         except ObjectDoesNotExist:   
             print('here')
 
-        new_agency = master_agency(agency_name= agency_name, spoc_name= agency_spoc, agency_phone_number= agency_phone, agency_email_id= agency_email, agency_email_id_password= agency_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
-        new_agency.save()
-        messages.success(request, "Agency Saved Successfully")
-        return redirect('csp_app:agency')
-    return render(request, 'csp_app/agency.html', {})
+        new_vendor = master_vendor(vendor_name= vendor_name, spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
+        new_vendor.save()
+        messages.success(request, "vendor Saved Successfully")
+        return redirect('csp_app:vendor')
+    return render(request, 'csp_app/vendor.html', {})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -490,36 +527,31 @@ def  create_designation(request):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
-def  region(request):
+def region(request):
     entity_list = master_entity.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
-    team_list = master_team.objects.filter(status = active_status)
-    subteam_list = master_sub_team.objects.filter(status = active_status)
-    desg_list = master_designation.objects.filter(status = active_status)
     region_list = master_region.objects.filter(status = active_status)
-    return render(request, 'csp_app/region.html', {'entity_list': entity_list,'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
+    return render(request, 'csp_app/region.html', {'entity_list': entity_list,'region_list': region_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_region(request):
     if request.method == 'POST':
         region_name = request.POST.get("region_name")
-        desg = request.POST.get("region_desg")
-        if desg == None:
-            messages.warning(request, "Choose Designation And Try Again")
+        entity = request.POST.get("region_entity")
+        if entity == None:
+            messages.warning(request, "Choose Entity And Try Again")
             return redirect('csp_app:region')
         if region_name == None:
             messages.warning(request, "Region Cannot Be Blank")
             return redirect('csp_app:region')
         desg_fk = master_designation.objects.get(pk=desg)
         try:
-            dup_region = master_region.objects.get( region_name= region_name, fk_designation_code =desg_fk, status = active_status)
+            dup_region = master_region.objects.get( region_name= region_name, fk_entity_code =desg_fk, status = active_status)
 
             messages.error(request, "Region Already Exist")
             return redirect('csp_app:region')
         except ObjectDoesNotExist: 
-            new_region = master_region( region_name= region_name, fk_designation_code =desg_fk, created_by = str(request.user))
+            new_region = master_region( region_name= region_name, fk_entity_code =desg_fk, created_by = str(request.user))
             new_region.save()
             
             messages.success(request, "Region Saved Succesfully")
@@ -647,8 +679,7 @@ def  create_location(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_user_view(request):
     user_list = User.objects.all().exclude(is_superuser=True)
-    group_list = Group.objects.all()
-    
+    group_list = Group.objects.all()    
     return render(request, 'csp_app/create_user.html', {'user_list': user_list, 'group_list': group_list})
 
 
@@ -657,7 +688,7 @@ def  create_user_view(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_user(request):
     if request.method == 'POST':
-        usrname = request.POST.get('username')
+        usrname = request.POST.get('email')
         firstname = request.POST.get('firstname')
         lastname = request.POST.get('lastname')
         email = request.POST.get('email')
@@ -694,8 +725,40 @@ def  create_user(request):
 
 
 @login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  disable_user(request):
-    return render(request, 'csp_app/disableuser.html', {})
+    try:
+        if request.method == 'POST':
+            user_id = request.POST.get("disable_id")
+            if user_id == None:
+                messages.warning(request, "Username Not Found")
+                return redirect('csp_app:user')
+            selected_user = User.objects.get(pk = user_id)
+            selected_user.is_active = False
+            selected_user.save()
+            messages.success(request, "User Disabled")
+            return redirect('csp_app:user')
+        return render(request, 'csp_app/create_user.html', {})        
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def  enable_user(request):
+    try:
+        if request.method == 'POST':
+            user_id = request.POST.get("enable_id")
+            if user_id == None:
+                messages.warning(request, "Username Not Found")
+                return redirect('csp_app:user')
+            selected_user = User.objects.get(pk = user_id)
+            selected_user.is_active = True
+            selected_user.save()
+            messages.success(request, "User Enabled")
+            return redirect('csp_app:user')
+        return render(request, 'csp_app/create_user.html', {})        
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
 def  index(request):
@@ -705,9 +768,7 @@ def  index(request):
 def  admin(request):
     return render(request, 'csp_app/adminhome.html', {})
 
-@login_required(login_url='/notlogin/')
-def  vendor(request):
-    return render(request, 'csp_app/vendordashboard.html', {})
+
 
 
 def csp_login(request):
@@ -722,7 +783,7 @@ def csp_login(request):
                 messages.add_message(request, messages.WARNING, "Please Enter Password")
                 return redirect('csp_app:login')
             user = authenticate(request, username=usrname, password=pwd)
-            if user is not None:
+            if user is not None and user.is_active:
                 login(request, user)
                 group = request.user.groups.all()
                 for groupname in group:
@@ -759,5 +820,5 @@ def  csp_logout(request):
 
 
 def notlogin(request):
-    return HttpResponse("Please Login To Continue....")
+    return render(request, 'csp_app/timeout.html', {})
 

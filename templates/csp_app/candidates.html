@@ -94,7 +94,7 @@
                 <input type="text" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
             </div>
             <div class="forms-input-holder">
-                <input type="date" placeholder="Date Of Birth" name="c_dob" required="true" tabindex="6">
+                <input type="date" placeholder="Date Of Birth" name="c_dob" required="true" tabindex="6" >
             </div>
             <div class="forms-input-holder">
                 <input type="text" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
@@ -147,13 +147,13 @@
                 </select>
             </div>
 
-            <label for="">Agency</label>
+            <label for="">Vendor</label>
             <div class="forms-input-holder">
-                <select name="c_agency" id="c_agency" required="true">
-                    <option value="" disabled selected>Select agency</option>
-                    {% if agency_list %}
-                        {% for eachagency in agency_list %}
-                            <option value="{{ eachagency.pk }}" label="{{ eachagency.agency_name }}">{{ eachagency.fk_entity_code_id }}</option>
+                <select name="c_vendor" id="c_vendor" required="true">
+                    <option value="" disabled selected>Select vendor</option>
+                    {% if vendor_list %}
+                        {% for eachvendor in vendor_list %}
+                            <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -358,20 +358,20 @@
 
         $('#c_entity').change(function() {
             var filter = $(this).val();
-            var total = $('#c_agency option').length;
+            var total = $('#c_vendor option').length;
             var count = 0;
-            $('#c_agency option').each(function() {
+            $('#c_vendor option').each(function() {
             if ($(this).text() == filter) {
-            $('#c_agency').attr("disabled", false);
+            $('#c_vendor').attr("disabled", false);
                 $(this).show();
             } else {
                 $(this).hide();
                 count += 1;
             }
-            $('#c_agency').val(filter);
+            $('#c_vendor').val(filter);
             });
             if (count === total){
-                $('#c_agency').attr("disabled", true)
+                $('#c_vendor').attr("disabled", true)
             }
         });
 

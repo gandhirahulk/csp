@@ -9,9 +9,11 @@ urlpatterns = [
     path('notlogin/', views.notlogin, name='notlogin'),
 
     path('csp_admin/', views.admin, name= 'admin'),
-    path('csp_admin/csp_create_user/', views.create_user_view, name= 'user'),
-    path('csp_admin/csp_create_user/new_user/', views.create_user, name= 'create_user'),
+    path('csp_admin/csp_user/', views.create_user_view, name= 'user'),
+    path('csp_admin/csp_user/new_user/', views.create_user, name= 'create_user'),
     path('csp_admin/csp_disable_user/', views.disable_user, name= 'disable_user'),
+    path('csp_admin/csp_enable_user/', views.enable_user, name= 'enable_user'),
+
     
     path('csp_vendor/', views.vendor, name= 'vendor'),
     path('csp_candidates/', views.candidate, name= 'candidate'),
@@ -25,10 +27,12 @@ urlpatterns = [
     path('csp_entity/edit_entity/', views.view_edit_entity, name= 'edit_entity'),
     path('csp_entity/save_edit_entity/', views.save_edit_entity, name= 'save_edit_entity'),
     path('csp_entity/view_entity/', views.view_entity, name= 'view_entity'),
+    path('csp_entity/delete_entity/', views.delete_entity, name= 'delete_entity'),
 
 
-    path('csp_agency/', views.agency, name= 'agency'),
-    path('csp_agency/new_agency/', views.create_agency, name= 'create_agency'),
+
+    path('csp_vendor/', views.vendor, name= 'vendor'),
+    path('csp_vendor/new_vendor/', views.create_vendor, name= 'create_vendor'),
 
     path('csp_department/', views.department, name= 'department'),
     path('csp_department/new_dept/', views.create_department, name= 'create_department'),

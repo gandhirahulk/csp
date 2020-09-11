@@ -1,3 +1,7 @@
+.modal-msg{
+  font-size: 10px;
+  color: gray;
+}
 .forms-heading{
     padding: 10px;
     padding-bottom: 20px;
@@ -9,7 +13,8 @@
 
 .forms-input-holder > input,
 .forms-input-holder > select,
-.search-input > input{
+.search-input > input,
+.forms-input-holder > label{
     padding: 10px;
     border: none;
     outline: none;
@@ -47,7 +52,8 @@
     box-shadow: 0px 0px 1px 0px #bf0711
 }
 
-.forms-save-btn{
+.forms-save-btn,
+.forms-delete-btn{
     font-size: 16px;
     border:none; 
     background:#bf0711; 
@@ -57,7 +63,8 @@
     outline:none;
 }
 
-.edit-forms-close-btn{
+.edit-forms-close-btn,
+.delete-forms-close-btn{
   font-size: 16px;
   border:1px solid #ddd; 
   background:#f5f5fa; 
@@ -67,7 +74,14 @@
   outline:none;
 }
 
-.edit-forms-close-btn:hover{
+.delete-forms-close-btn,
+.forms-delete-btn{
+  padding: 6px;
+  width: 6rem;
+}
+
+.edit-forms-close-btn:hover,
+.delete-forms-close-btn:hover{
   background: #E7E7F2;
 }
 
@@ -82,11 +96,13 @@
 }
 
 .forms-save-btn:hover,
-.edit-forms-save-btn:hover{
+.edit-forms-save-btn:hover,
+.forms-delete-btn:hover{
     background: #B1060F;
 }
 .forms-save-btn:focus,
-.edit-forms-save-btn:focus{            
+.edit-forms-save-btn:focus,
+.forms-delete-btn:focus{            
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -106,11 +122,13 @@
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0,0.4); 
   }
-  .form_content::-webkit-scrollbar {
+  .form_content::-webkit-scrollbar,
+  .delete_form_content::-webkit-scrollbar {
     display: none;
   }
 
-  .form_content {
+  .form_content,
+  .delete_form_content {
     background-color: #f5f5fa;
     margin: auto;
     padding: 20px;
@@ -140,7 +158,8 @@
 
 
 
-  .form_header{
+  .form_header,
+  .delete_form_header{
     margin: auto;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -149,9 +168,14 @@
     text-align: center;
     padding: 5px;
   }
+
+  .delete_form_header{
+    padding: 20px;
+  }
   
 
-  .form_footer{
+  .form_footer,
+  .delete_form_footer{
     background-color: #f5f5fa;
     margin: auto;
     padding: 20px;
@@ -161,6 +185,14 @@
     text-align: center;
     padding-top: 0px;
   }
+
+  .delete_form_content,
+  .delete_form_header,
+  .delete_form_footer {
+    width: 320px;
+  }
+
+  
 
   .hr_line{
     width: 5rem; 

@@ -23,8 +23,10 @@
     <table id="user-table" class="dataTable">
         <thead>
             <tr>
-                <th>User Name</th>
-                <th>Action</th>
+                <th>Username</th>
+                <th>Last Login</th>
+                <th>Status</th>
+                <!-- <th>Action</th> -->
             </tr>
         </thead>
         <tbody>
@@ -33,7 +35,19 @@
 
                     <tr>
                         <td>{{ eachuser.username }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">disable</a></td>
+                        <td>{{ eachuser.last_login }}</td>
+                        <td class="action-col" >
+                            <!-- <form action="" method="POST"> -->
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ eachuser.pk }}" name="view_id" id="selected_id">
+                                {% if eachuser.is_active == True %} 
+                                    <i class="fas fa-check-circle" style="color: green;"></i><input type="submit" title="Disable User" style="color: green;" value="Enabled" onclick="showDelete('{{ eachuser.pk }}', 'disable_user_form', 'disable_me')"> 
+                                {% else %}
+                                    <i class="fas fa-ban" style="color:#e40b0b"></i><input type="submit" value="Disabled" formaction="{% url 'csp_app:enable_user' %}" title="Enable User" style="color:#e40b0b" onclick="showDelete('{{ eachuser.pk }}', 'enable_user_form', 'enable_me')">
+                                {% endif %}                            
+                            <!-- </form>                             -->
+                        </td>                        
+                            
                     </tr>
 
                 {% endfor %}                
@@ -41,6 +55,7 @@
             {% else %}
                 {% for eachuser in user_list %}
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -69,9 +84,6 @@
                 <input type="text" placeholder="Last Name" name="lastname" required="true">
             </div>
             <div class="forms-input-holder">
-                <input type="text" placeholder="Username" name="username" required="true">
-            </div>
-            <div class="forms-input-holder">
                 <input type="email" placeholder="Email Address" name="email" required="true">
             </div>
             <div class="forms-input-holder">
@@ -87,11 +99,52 @@
               
     </div>
     <div class="form_footer">
-            <button class="forms-save-btn" formaction="{% url 'csp_app:create_user' %}" type="submit">Create User</button>
+        <button class="forms-save-btn" formaction="{% url 'csp_app:create_user' %}" type="submit">Create User</button>
  </form>
     </div>
   
   </div>
+
+<div id="disable_user_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Disable This User?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:disable_user' %}" value="" id="disable_me" name="disable_id" class="forms-delete-btn">Confirm</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form> 
+        <br>
+        <p class="modal-msg">
+            If confirmed, this user will not be able to login to this site. 
+        </p>   
+    </div>    
+</div>
+
+
+<div id="enable_user_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Enable This User?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:enable_user' %}" value="" id="enable_me" name="enable_id" class="forms-delete-btn">Confirm</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form> 
+        <br>
+        <p class="modal-msg">
+            If confirmed, this user will be able to login to this site. 
+        </p>   
+    </div>    
+</div>
+
+
 
 <script>
     $(document).ready(function(){
@@ -99,11 +152,16 @@
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#newuser_form").css("display", "none");
+            $("#enable_user_form").css("display", "none");
+            $("#disable_user_form").css("display", "none");
+
             }
         });
         $(window).click(function(e) {
-        if (e.target.id === 'newuser_form'){
+        if (e.target.id === 'newuser_form' || e.target.id === 'enable_user_form' || e.target.id === 'disable_user_form'){
             $("#newuser_form").css("display", "none");
+            $("#enable_user_form").css("display", "none");
+            $("#disable_user_form").css("display", "none");
         }   
         });  
         $('#new_user').click(function(){
@@ -112,4 +170,10 @@
     })
 </script>
 
+<script>
+    function showDelete(itemid, formid, inputid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById(inputid).setAttribute("value", itemid);
+    }
+</script>
 {% endblock %}
