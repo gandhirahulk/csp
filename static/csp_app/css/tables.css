@@ -2,12 +2,17 @@
   text-align: center;
 }
 
-.action-col form input{
+.action-col input{
   border:none;
   outline: none;
   background: none;
   color:blue;
   cursor: pointer;
+}
+
+.action-col i{
+  margin-right: 5px;
+  font-size: 14px;
 }
 
 table.dataTable {

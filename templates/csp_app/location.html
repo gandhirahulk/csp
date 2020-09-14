@@ -6,7 +6,7 @@
 
     <div class="tabs">
         <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
-        <a href="{% url 'csp_app:agency' %}" class="tab-btns">Agency</a>    
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
         <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
@@ -42,7 +42,9 @@
                     <tr>
                         <td>{{ eachlocation.location_name }}</td>
                         <td>{{ eachlocation.fk_city_code }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -68,11 +70,12 @@
       <div class="hr_line">&nbsp;</div>
      
     </div>
-    <div class="form_content" style="height: 72vh;">
+    <div class="form_content">
         <form method="POST">
             {% csrf_token %}
-            <label for="">Entity</label>
             <div class="forms-input-holder">
+            <label for="">Entity</label>
+
                 <select name="location_entity" id="location_entity" required="true">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
@@ -83,74 +86,21 @@
                 </select>
             </div>
         
-            <label for="">Department</label>
             <div class="forms-input-holder">
-                <select name="location_dept" id="location_dept" required="true" disabled="true">
-                    <option value="" disabled selected>Select department</option>
-                    {% if department_list %}
-                        {% for eachdepartment in department_list %}
-                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-            <label for="">Function</label>
-            <div class="forms-input-holder">
-                <select name="location_function" id="location_function" required="true" disabled="true">
-                    <option value="" disabled selected>Select Function</option>
-                    {% if function_list %}
-                        {% for eachfunction in function_list %}
-                            <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-            <label for="">Team</label>
-            <div class="forms-input-holder">
-                <select name="location_team" id="location_team" required="true"  disabled="true">
-                    <option value="" disabled selected>Select Team</option>
-                    {% if team_list %}
-                        {% for eachteam in team_list %}
-                            <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-            <label for="">Sub Team</label>
-            <div class="forms-input-holder">
-                <select name="location_subteam" id="location_subteam" required="true" disabled="true">
-                    <option value="" disabled selected>Select Sub Team</option>
-                    {% if sub_team_list %}
-                        {% for eachsubteam in sub_team_list %}
-                            <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-            <label for="">Designation</label>
-            <div class="forms-input-holder">
-                <select name="location_desg" id="location_desg" required="true" disabled="true">
-                    <option value="" disabled selected>Select Designation</option>
-                    {% if designation_list %}
-                        {% for eachdesignation in designation_list %}
-                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
             <label for="">Region</label>
-            <div class="forms-input-holder">
+
                 <select name="location_region" id="location_region" required="true" disabled="true">
                     <option value="" disabled selected>Select Region</option>
                     {% if region_list %}
                         {% for eachregion in region_list %}
-                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_designation_code_id }}</option>
+                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
             </div>
-            <label for="">State</label>
             <div class="forms-input-holder">
+            <label for="">State</label>
+
                 <select name="location_state" id="location_state" required="true" disabled="true">
                     <option value="" disabled selected>Select State</option>
                     {% if state_list %}
@@ -160,8 +110,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">City</label>
             <div class="forms-input-holder">
+            <label for="">City</label>
+
                 <select name="location_city" id="location_city" required="true" disabled="true">
                     <option value="" disabled selected>Select City</option>
                     {% if city_list %}
@@ -172,9 +123,14 @@
                 </select>
             </div>
             <div class="forms-input-holder">
+                <label for="">Location Name</label>
                 <input type="text" placeholder="Location Name" name="location_name" required="true">
             </div>
-               
+             
+            <div class="forms-input-holder">
+                <label for="">Location Code</label>
+                <input type="text" placeholder="Location Code" name="location_code" required="true">
+            </div>  
     </div>
     <div class="form_footer">
         <button type="submit" formaction="{% url 'csp_app:create_location' %}" class="forms-save-btn">Save Location</button>
@@ -182,7 +138,20 @@
     </div>
   
   </div>
-
+  <div id="delete_location_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Delete This Location ?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_location' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
 
   <script>
     $(document).ready(function(){
@@ -201,102 +170,8 @@
             $("#location_form").css("display", "block");
         });
 
+
         $('#location_entity').change(function() {
-            var filter = $(this).val();
-            var total = $('#location_dept option').length;
-            var count = 0;
-            $('#location_dept option').each(function() {
-            if ($(this).text() == filter) {
-            $('#location_dept').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#location_dept').val(filter);
-            });
-            if (count === total){
-                $('#location_dept').attr("disabled", true)
-            }
-        });
-
-        $('#location_dept').change(function() {
-            var filter = $(this).val();
-            var total = $('#location_function option').length;
-            var count = 0;
-            $('#location_function option').each(function() {
-            if ($(this).text() == filter) {
-            $('#location_function').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#location_function').val(filter);
-            });
-            if (count === total){
-                $('#location_function').attr("disabled", true)
-            }
-        });
-        $('#location_function').change(function() {
-            var filter = $(this).val();
-            var total = $('#location_team option').length;
-            var count = 0;
-            $('#location_team option').each(function() {
-            if ($(this).text() == filter) {
-            $('#location_team').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#location_team').val(filter);
-            });
-            if (count === total){
-                $('#location_team').attr("disabled", true)
-            }
-        });
-
-        $('#location_team').change(function() {
-            var filter = $(this).val();
-            var total = $('#location_subteam option').length;
-            var count = 0;
-            $('#location_subteam option').each(function() {
-            if ($(this).text() == filter) {
-            $('#location_subteam').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#location_subteam').val(filter);
-            });
-            if (count === total){
-                $('#location_subteam').attr("disabled", true)
-            }
-        });
-
-        
-        $('#location_subteam').change(function() {
-            var filter = $(this).val();
-            var total = $('#location_desg option').length;
-            var count = 0;
-            $('#location_desg option').each(function() {
-            if ($(this).text() == filter) {
-            $('#location_desg').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#location_desg').val(filter);
-            });
-            if (count === total){
-                $('#location_desg').attr("disabled", true)
-            }
-        });
-
-        $('#location_desg').change(function() {
             var filter = $(this).val();
             var total = $('#location_region option').length;
             var count = 0;
@@ -352,7 +227,18 @@
                 $('#location_city').attr("disabled", true)
             }
         });
+        $('#close_delete').click(function(){
+            $("#delete_location_form").css("display", "none");
+        }); 
+        
+     
     })
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
 </script>
 
 {% endblock %}

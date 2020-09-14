@@ -6,7 +6,7 @@
 
     <div class="tabs">
         <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
-        <a href="{% url 'csp_app:agency' %}" class="tab-btns">Agency</a>    
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
         <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
@@ -42,7 +42,9 @@
                     <tr>
                         <td>{{ eachstate.state_name }}</td>
                         <td>{{ eachstate.fk_region_code }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachstate.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_state' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_state' %}"> | <input value="delete" onclick="showDelete('{{ eachstate.pk }}', 'delete_state_form')"> </form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -59,7 +61,7 @@
     </table>
   
 </div>
-<div id="state_form" class="form_modal" style="padding-top: 1%;">
+<div id="state_form" class="form_modal" style="padding-top: 10%;">
     <div class="form_header">
       <div class="forms-heading" style="text-align: center;">
           <h2>Create New State</h2>
@@ -70,8 +72,9 @@
     <div class="form_content">
         <form method="POST">
             {% csrf_token %}
-            <label for="">Entity</label>
             <div class="forms-input-holder">
+            <label for="">Entity</label>
+
                 <select name="state_entity" id="state_entity" required="true">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
@@ -82,73 +85,21 @@
                 </select>
             </div>
         
-            <label for="">Department</label>
             <div class="forms-input-holder">
-                <select name="state_dept" id="state_dept" required="true" disabled="true">
-                    <option value="" disabled selected>Select department</option>
-                    {% if department_list %}
-                        {% for eachdepartment in department_list %}
-                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-            <label for="">Function</label>
-            <div class="forms-input-holder">
-                <select name="state_function" id="state_function" required="true" disabled="true">
-                    <option value="" disabled selected>Select Function</option>
-                    {% if function_list %}
-                        {% for eachfunction in function_list %}
-                            <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-            <label for="">Team</label>
-            <div class="forms-input-holder">
-                <select name="state_team" id="state_team" required="true"  disabled="true">
-                    <option value="" disabled selected>Select Team</option>
-                    {% if team_list %}
-                        {% for eachteam in team_list %}
-                            <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-            <label for="">Sub Team</label>
-            <div class="forms-input-holder">
-                <select name="state_subteam" id="state_subteam" required="true" disabled="true">
-                    <option value="" disabled selected>Select Sub Team</option>
-                    {% if sub_team_list %}
-                        {% for eachsubteam in sub_team_list %}
-                            <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-            <label for="">Designation</label>
-            <div class="forms-input-holder">
-                <select name="state_desg" id="state_desg" required="true" disabled="true">
-                    <option value="" disabled selected>Select Designation</option>
-                    {% if designation_list %}
-                        {% for eachdesignation in designation_list %}
-                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
             <label for="">Region</label>
-            <div class="forms-input-holder">
+
                 <select name="state_region" id="state_region" required="true" disabled="true">
                     <option value="" disabled selected>Select Region</option>
                     {% if region_list %}
                         {% for eachregion in region_list %}
-                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_designation_code_id }}</option>
+                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
             </div>
             <div class="forms-input-holder">
+            <label for="">State</label>
+
                 <input type="text" placeholder="State" name="state_name" required="true">
             </div>
                
@@ -159,7 +110,20 @@
     </div>
   
   </div>
-
+  <div id="delete_state_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Delete This State?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_state' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
 <script>
     $(document).ready(function(){
         showMe('Organization', 'org-expand');
@@ -176,103 +140,10 @@
         $('#new_state').click(function(){
             $("#state_form").css("display", "block");
         });
-
+        $('#close_delete').click(function(){
+            $("#delete_state_form").css("display", "none");
+        }); 
         $('#state_entity').change(function() {
-            var filter = $(this).val();
-            var total = $('#state_dept option').length;
-            var count = 0;
-            $('#state_dept option').each(function() {
-            if ($(this).text() == filter) {
-            $('#state_dept').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#state_dept').val(filter);
-            });
-            if (count === total){
-                $('#state_dept').attr("disabled", true)
-            }
-        });
-
-        $('#state_dept').change(function() {
-            var filter = $(this).val();
-            var total = $('#state_function option').length;
-            var count = 0;
-            $('#state_function option').each(function() {
-            if ($(this).text() == filter) {
-            $('#state_function').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#state_function').val(filter);
-            });
-            if (count === total){
-                $('#state_function').attr("disabled", true)
-            }
-        });
-        $('#state_function').change(function() {
-            var filter = $(this).val();
-            var total = $('#state_team option').length;
-            var count = 0;
-            $('#state_team option').each(function() {
-            if ($(this).text() == filter) {
-            $('#state_team').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#state_team').val(filter);
-            });
-            if (count === total){
-                $('#state_team').attr("disabled", true)
-            }
-        });
-
-        $('#state_team').change(function() {
-            var filter = $(this).val();
-            var total = $('#state_subteam option').length;
-            var count = 0;
-            $('#state_subteam option').each(function() {
-            if ($(this).text() == filter) {
-            $('#state_subteam').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#state_subteam').val(filter);
-            });
-            if (count === total){
-                $('#state_subteam').attr("disabled", true)
-            }
-        });
-
-        
-        $('#state_subteam').change(function() {
-            var filter = $(this).val();
-            var total = $('#state_desg option').length;
-            var count = 0;
-            $('#state_desg option').each(function() {
-            if ($(this).text() == filter) {
-            $('#state_desg').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#state_desg').val(filter);
-            });
-            if (count === total){
-                $('#state_desg').attr("disabled", true)
-            }
-        });
-
-        $('#state_desg').change(function() {
             var filter = $(this).val();
             var total = $('#state_region option').length;
             var count = 0;
@@ -280,6 +151,11 @@
             if ($(this).text() == filter) {
             $('#state_region').attr("disabled", false);
                 $(this).show();
+                $('#state_region').append($('<option>', {
+                    value: '',
+                    text: 'Select Region',
+                    selected: true
+                }));
             } else {
                 $(this).hide();
                 count += 1;
@@ -289,7 +165,23 @@
             if (count === total){
                 $('#state_region').attr("disabled", true)
             }
+            var l = $('#state_region option').length ;
+            if (l === 1){
+                $('#state_region').append($('<option>', {
+                    value: '',
+                    text: 'Select Region',
+                    selected: true
+                }));
+            }
         });
+
+
     })
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
 </script>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'csp_app/admindashboard.html' %}
 {% load static %}
-{% block titleblock %} Team {% endblock %}
+{% block titleblock %} Candidates {% endblock %}
 
 {% block bodyblock %} 
 
@@ -11,39 +11,45 @@
 {% endblock %}
 
 {% block tabcontentblock %}
-{% if request.user.groups.all %}
-{% for eachgroup in request.user.groups.all %}
-{% if eachgroup.name != 'Vendor' %}
-<div class="tab-container">
-    <button id="new_candidate" class="add-new-btn">New Candidate</button>
-   
-</div>
-{% endif %}
+    {% if request.user.groups.all %}
+        {% for eachgroup in request.user.groups.all %}
+            {% if eachgroup.name != 'Vendor' %}
+            <div class="tab-container">
+                <button id="new_candidate" class="add-new-btn" onclick="location.href = '/csp_candidates/new_candidate/'" >New Candidate</button>
+            
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
-{% endfor %}
-
-{% endif %}
 <div class="table-container">
   
     <table id="candidate-table" class="dataTable">
         <thead>
             <tr>
                 <th>Candidate Name</th>
-                <th>Contact No.</th>
+                <th>Contact Details</th>
                 <th>Designation</th>
+                <th>Documents</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% if candidate_list %}
-                {% for eachcandidate in candidate_list %}
-
+                    {% if candidate_list %}
+                        {% for eachcandidate in candidate_list %}
+                   
                     <tr>
-                        <td>{{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}</td>
-                        <td>{{ eachcandidate.Contact_Number }}</td>
-                        <td>{{ eachcandidate.Designation }}</td>
-                        <td>{{ eachcandidate.status }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}" id="view" formaction="{% url 'csp_app:edit_candidate' %}"></form> 
+                        </td>
+                        <td>
+                            <div>{{ eachcandidate.Personal_Email_Id }}</div>
+                            <div>{{ eachcandidate.Contact_Number }}</div>
+                        </td>
+                        <td>{{ eachcandidate.fk_designation_code }}</td>
+                        <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td>
+                        <td>{{ eachcandidate.candidate_status }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
                         </td>
@@ -88,14 +94,15 @@
                 <input type="text" placeholder="Last Name" name="c_lastname" id="c_lastname" required="true" autocapitalize="on" tabindex="3">
             </div>
             <div class="forms-input-holder">
-                <input type="date" placeholder="Date Of Joining" name="c_doj" required="true" id="datefield" tabindex="4">
+                <input type="date" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
+            </div>
+            <div class="forms-input-holder">
+                <input type="date" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
             </div>
             <div class="forms-input-holder">
                 <input type="text" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
             </div>
-            <div class="forms-input-holder">
-                <input type="date" placeholder="Date Of Birth" name="c_dob" required="true" tabindex="6">
-            </div>
+            
             <div class="forms-input-holder">
                 <input type="text" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
             </div>
@@ -119,7 +126,7 @@
                 </select>
             </div>
 
-            <div class="forms-input-holder" style="display: none;">
+            <div class="forms-input-holder">
                 <input type="text" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
             </div>
             <div class="forms-input-holder">
@@ -147,13 +154,13 @@
                 </select>
             </div>
 
-            <label for="">Agency</label>
+            <label for="">Vendor</label>
             <div class="forms-input-holder">
-                <select name="c_agency" id="c_agency" required="true">
-                    <option value="" disabled selected>Select agency</option>
-                    {% if agency_list %}
-                        {% for eachagency in agency_list %}
-                            <option value="{{ eachagency.pk }}" label="{{ eachagency.agency_name }}">{{ eachagency.fk_entity_code_id }}</option>
+                <select name="c_vendor" id="c_vendor" required="true">
+                    <option value="" disabled selected>Select vendor</option>
+                    {% if vendor_list %}
+                        {% for eachvendor in vendor_list %}
+                            <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -209,7 +216,7 @@
                     <option value="" disabled selected>Select Designation</option>
                     {% if designation_list %}
                         {% for eachdesignation in designation_list %}
-                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.fk_designation_code_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -323,19 +330,20 @@
 <script>
     $(document).ready(function(){
         showMe('Candidate', 'can-expand');
-        $(document).keyup(function(){
-            if (event.keyCode === 27){
-            $("#candidates_form").css("display", "none");
-            }
-        });
-        $(window).click(function(e) {
-        if (e.target.id === 'candidates_form'){
-            $("#candidates_form").css("display", "none");
-        }   
-        });  
-        $('#new_candidate').click(function(){
-            $("#candidates_form").css("display", "block");
-        });
+        // $(document).keyup(function(){
+        //     if (event.keyCode === 27){
+        //     $("#candidates_form").css("display", "none");
+        //     }
+        // });
+        // $(window).click(function(e) {
+        // if (e.target.id === 'candidates_form'){
+        //     $("#candidates_form").css("display", "none");
+        // }   
+        // });  
+        // $('#new_candidate').click(function(){
+        //     alert("1");
+        //     $("#candidates_form").css("display", "block");
+        // });
 
         $('#c_entity').change(function() {
             var filter = $(this).val();
@@ -358,20 +366,20 @@
 
         $('#c_entity').change(function() {
             var filter = $(this).val();
-            var total = $('#c_agency option').length;
+            var total = $('#c_vendor option').length;
             var count = 0;
-            $('#c_agency option').each(function() {
+            $('#c_vendor option').each(function() {
             if ($(this).text() == filter) {
-            $('#c_agency').attr("disabled", false);
+            $('#c_vendor').attr("disabled", false);
                 $(this).show();
             } else {
                 $(this).hide();
                 count += 1;
             }
-            $('#c_agency').val(filter);
+            $('#c_vendor').val(filter);
             });
             if (count === total){
-                $('#c_agency').attr("disabled", true)
+                $('#c_vendor').attr("disabled", true)
             }
         });
 
@@ -528,4 +536,5 @@
         });
     })
 </script>
+
 {% endblock %}

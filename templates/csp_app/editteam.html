@@ -1,0 +1,195 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Team {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns active-tab">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_team" class="add-new-btn">New Team</button> 
+</div>
+<div class="table-container">  
+    <table id="team-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Team Name</th>
+                <th>Function</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if team_list %}
+                {% for eachteam in team_list %}
+
+                    <tr>
+                        <td>{{ eachteam.team_name }}</td>
+                        <td>{{ eachteam.fk_function_code }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachteam.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_team' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_team' %}"> | <input value="delete" onclick="showDelete('{{ eachteam.pk }}', 'delete_team_form')"> </form>
+                        </td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachteam in team_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+<div id="view_entity_form" class="form_modal" style="display: block;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Edit Team Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_team_list %}
+        {% for eachteam in view_team_list %}
+            <div class="form_content">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="e_id" value="{{ eachteam.pk}}">
+                    <div class="forms-input-holder">
+                        <label for="">Entity</label>
+                
+                        <select name="e_team_entity" required="true" id="team_entity">
+                            <option value="{{eachteam.fk_function_code.fk_department_code.fk_entity_code_id }}" label="{{ eachteam.fk_function_code.fk_department_code.fk_entity_code }}" selected>{{ eachteam.fk_function_code.fk_department_code.fk_entity_code }}</option>
+                            {% if entity_list %}
+                                {% for eachentity in entity_list %}
+                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">Department</label>
+                
+                        <select name="e_team_dept" id="team_dept">
+                            <option value="{{ eachteam.fk_function_code.fk_department_code_id }}" label="{{ eachteam.fk_function_code.fk_department_code }}">{{ eachteam.fk_function_code.fk_department_code.fk_entity_code_id }}</option>
+                            {% if department_list %}
+                                {% for eachdept in department_list %}
+
+                                    <option value="{{ eachdept.pk }}" label="{{ eachdept.department_name }}">{{ eachdept.fk_entity_code_id }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">Function</label>
+                
+                        <select name="e_team_function" id="team_function" required="true">
+                            <option value="{{ eachteam.fk_function_code_id }}" label="{{ eachteam.fk_function_code }}">{{ eachteam.fk_function_code.fk_department_code_id }}</option>
+                            {% if function_list %}
+                                {% for eachfunction in function_list %}
+
+                                    <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id  }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="team_phone">Team Name</label>
+                        <input type="text" value="{{ eachteam.team_name }}" placeholder="Team Name" name="e_team_name" title="Team Name" required="true" maxlength="50">
+                    </div>           
+                   
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+            <button type="submit" class="edit-forms-save-btn" formaction="{% url 'csp_app:save_edit_team' %}">Save Changes</button>
+        </form>
+        <button onclick="location.href = '/csp_team/'" class="edit-forms-close-btn">Close</button>
+    </div>
+             
+  
+  </div>
+
+
+  <script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $('#team_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#team_dept option').length;
+            var count = 0;
+            $('#team_dept option').each(function() {
+            if ($(this).text() == filter) {
+            $('#team_dept').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#team_dept').val(filter);
+            });
+            if (count === total){
+                $('#team_dept').attr("disabled", true)
+            }
+            var l = $('#team_dept option').length ;
+            if (l === 1){
+                $('#team_dept').append($('<option>', {
+                    value: '',
+                    text: 'Select Department',
+                    label: 'Select Department',
+                    selected: true
+                }));
+            }
+        });
+
+        $('#team_dept').change(function() {
+            var filter = $(this).val();
+            var total = $('#team_function option').length;
+            var count = 0;
+            $('#team_function option').each(function() {
+            if ($(this).text() == filter) {
+            $('#team_function').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#team_function').val(filter);
+            });
+            if (count === total){
+                $('#team_function').attr("disabled", true)
+            }
+            var l = $('#team_function option').length ;
+            if (l === 1){
+                $('#team_function').append($('<option>', {
+                    value: '',
+                    text: 'Select Function',
+                    label: 'Select Function',
+                    selected: true
+                }));
+            }
+        });
+
+    })
+</script>
+
+{% endblock %}

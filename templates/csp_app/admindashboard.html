@@ -11,10 +11,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/dashboard.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/forms.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/organization.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/alertmsgcss.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
 
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+    
     <script src="{% static 'csp_app/js/sidebar.js' %}"></script>
     <script src="{% static 'csp_app/js/forms.js' %}"></script>
     <script src="{% static 'csp_app/js/inputs.js' %}"></script>
@@ -34,7 +37,7 @@
     <script>
       $(document).ready(function(){
         $('#entity-table').DataTable();
-        $('#agency-table').DataTable();
+        $('#vendor-table').DataTable();
         $('#department-table').DataTable();
         $('#function-table').DataTable();
         $('#team-table').DataTable();
@@ -61,8 +64,58 @@
         $('#c_pan').keyup(function() { 
           this.value = this.value.toLocaleUpperCase(); 
         });
-
-        // $('#c_pan').bind('keypress', pan);
+        // days
+        $(function(){
+          var dtToday = new Date(); 
+          var month = dtToday.getMonth() + 1;
+          var day = dtToday.getDate();
+          var year = dtToday.getFullYear();
+          if(month < 10)
+              month = '0' + month.toString();
+          if(day < 10)
+              day = '0' + day.toString();          
+          var minDate= year + '-' + month + '-' + day; 
+          var adminDate = new Date(minDate);
+          adminDate.setDate(adminDate.getDate() - 30);
+          var m = adminDate.getMonth() + 1;
+          var d = adminDate.getDate();
+          var y = adminDate.getFullYear();
+          if(m < 10)
+              m = '0' + m.toString();
+          if(d < 10)
+              d = '0' + d.toString();          
+          var admin_date= y + '-' + m + '-' + d; 
+          var maxDate = new Date(minDate);
+          maxDate.setDate(maxDate.getDate() + 90);
+          var m = maxDate.getMonth() + 1;
+          var d = maxDate.getDate();
+          var y = maxDate.getFullYear();
+          if(m < 10)
+              m = '0' + m.toString();
+          if(d < 10)
+              d = '0' + d.toString();          
+          var max_date= y + '-' + m + '-' + d; 
+          $('#False').attr('min', minDate);
+          $('#True').attr('min', admin_date);
+          $('#True').attr('max', max_date);
+          $('#False').attr('max', max_date);
+        });
+        //years
+        $(function(){
+          var dtToday = new Date(); 
+          var month = dtToday.getMonth() + 1;
+          var day = dtToday.getDate();
+          var maxYear = dtToday.getFullYear() - 45;
+          var minYear = dtToday.getFullYear() - 18;
+          if(month < 10)
+              month = '0' + month.toString();
+          if(day < 10)
+              day = '0' + day.toString();          
+          var maxAge= maxYear + '-' + month + '-' + day;     
+          var minAge= minYear + '-' + month + '-' + day;
+          $('#c_dob').attr('min', maxAge);
+          $('#c_dob').attr('max', minAge);
+        });
       });
     </script>
 </head>
@@ -85,6 +138,8 @@
               {% if request.user.is_staff %}
                 <li><a href="#">Admin Dashboard</a></li>
                 <li><a href="#">|</a></li>
+                <!-- <li><a href="#">Requests</a></li>
+                <li><a href="#">|</a></li> -->
               {% else %}
                 <li><a href="#"> Dashboard</a></li>
                 <li><a href="#">|</a></li>
@@ -115,18 +170,18 @@
         {% if request.user.groups.all %}
           {% for eachgroup in request.user.groups.all %}
             {% if eachgroup.name != 'Admin' %}
-              <div class="main_container" style="margin-left: 0px;">
+              <div class="main_container" style="margin-left: 0px;width:calc(100% - 20px);">
               {% else %}
               <div class="main_container">      
             {% endif %}
           {% endfor %}          
         {% endif %}
-            <div class="item" style="padding:9px;">
+            <div class="item item_header">
                 {% block bodyblock %} 
              
                 {% endblock %}
             </div>
-            <div class="item" style="height: calc(100% - 60px);">
+            <div class="item item_contents">
 
                 {% block tabcontentblock %}
     
@@ -134,14 +189,76 @@
     
                 {% endblock %}  
                 {% if messages %}
+                {% for msg in messages %}
+                    {% if msg.tags == 'success' %}
+                        <div id="alerts" class="alert alert-success alert-dismissible sucess-msg-alert animate__animated animate__slideInRight animate__fast" >
+                            <table id="success-tbl">
+                            <tr>
+                                <td rowspan="2"><i class="fas fa-check-circle" style="padding: 15px; padding-left: 0px !important;"></i></td>
+                                <td style="font-size: 16px; font-weight: bold;">Success</td>
+                            </tr>
+                            <tr>
+                                <td>{{ msg }}</td>
+
+                            </tr>
+                            </table>
+                            <button type="button" class="close" data-dismiss="alert" style="outline: none !important;"> &times;</button>
+
+                        </div>
+                    {% endif %}
+                    {% if msg.tags == 'error' %}
+                        <div id="alerts" class="alert alert-danger alert-dismissible error-msg-alert animate__animated animate__slideInRight animate__fast" >
+                            <table id="failure-tbl">
+                            <tr>
+                                <td rowspan="2" style="border-bottom: none;"><i class="fas fa-times" style="padding: 15px; padding-left: 0px !important; font-family: 'Font Awesome 5 Free' !important;"></i></td>
+                                <td style="font-size: 16px; font-weight: bold;border-bottom: none;">Error</td>
+
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: none;">{{ msg }}</td>
+                            </tr>
+                            </table>
+                            <button type="button" class="close" data-dismiss="alert" style="outline: none !important;">&times;</button>
+
+                        </div>
+                    {% endif %}
+                    {% if msg.tags == 'warning' %}
+                        <div id="alerts" class="alert alert-warning alert-dismissible warning-msg-alert animate__animated animate__slideInRight animate__fast" >
+                            <table id="warning-tbl">
+                            <tr>
+                                <td rowspan="2" style="border-bottom: none;"><i class="fas fa-times" style="padding: 15px; padding-left: 0px !important; font-family: 'Font Awesome 5 Free' !important;"></i></td>
+                                <td style="font-size: 16px; font-weight: bold;border-bottom: none;">Warning</td>
+
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: none;">{{ msg }}</td>
+                            </tr>
+                            </table>
+                            <button type="button" class="close" data-dismiss="alert" style="outline: none !important;">&times;</button>
+
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            {% endif %}
+
+                <!-- {% if messages %}
                   <ul class="messages">
                       {% for message in messages %}
                       <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style: none;">{{ message }}</li>
                       {% endfor %}
                   </ul>
-                {% endif %}
+                {% endif %} -->
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+      function hidediv(){
+                  $( '#alerts' ).removeClass( 'animate__animated animate__slideOutRight animate__fast' ).show().addClass( 'animate__animated animate__slideInRight animate__fast' );
+  
+                  $( '#alerts' ).removeClass( 'animate__animated animate__slideInRight animate__fast' ).addClass( 'animate__animated animate__slideOutRight animate__fast' );
+              }
+      setTimeout("hidediv()", 3000);
+    </script>
 </body>
 </html>

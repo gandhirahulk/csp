@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login To continue</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/forms.css' %}">
+
+</head>
+<body>
+    <h2>Please <a href="{% url 'csp_app:login' %}"> Login </a> To continue. </h2>
+
+    <!-- <div class="form_modal" style="padding-top: 15%;display: block;background-color:#fff">
+        <div class="delete_form_header">
+            <div class="forms-heading">
+              <h2> Login To Continue  </h2>
+            </div>     
+        </div>
+        <div class="delete_form_footer">
+
+        </div>    
+    </div>
+    <div>
+        
+    </div> -->
+</body>
+</html>

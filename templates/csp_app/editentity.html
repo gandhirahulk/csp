@@ -6,7 +6,7 @@
 
     <div class="tabs">
         <a href="{% url 'csp_app:entity' %}" class="tab-btns active-tab"> Entity</a>
-        <a href="{% url 'csp_app:agency' %}" class="tab-btns">Agency</a>    
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
         <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
@@ -96,20 +96,7 @@
 <script>
     $(document).ready(function(){
         showMe('Organization', 'org-expand');
-        $(document).keyup(function(){
-            if (event.keyCode === 27){
-            $("#entity_form").css("display", "none");
-            }
-        });
-        $(window).click(function(e) {
-        if (e.target.id === 'entity_form'){
-            $("#entity_form").css("display", "none");
-        }   
-        });  
-        $('#new_entity').click(function(){
-            $("#entity_form").css("display", "block");
-        });
-      
+             
     })
 </script>
 

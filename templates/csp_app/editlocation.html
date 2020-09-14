@@ -1,0 +1,226 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Location {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns active-tab">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_location" class="add-new-btn">New Location</button> 
+</div>
+
+<div class="table-container">
+  
+    <table id="location-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Location Name</th>
+                <th>City</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if location_list %}
+                {% for eachlocation in location_list %}
+
+                    <tr>
+                        <td>{{ eachlocation.location_name }}</td>
+                        <td>{{ eachlocation.fk_city_code }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
+                        </td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachlocation in location_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+<div id="view_entity_form" class="form_modal" style="display: block;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Edit Location Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_location_list %}
+        {% for eachlocation in view_location_list %}
+            <div class="form_content">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="e_id" value="{{ eachlocation.pk }}">
+                    <div class="forms-input-holder">
+                        <label for="">Entity</label>
+                
+                        <select name="e_location_entity" required="true" id="location_entity">
+                            <option value="{{eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code_id }}" label="{{ eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code }}" selected>{{ eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code }}</option>
+                            {% if entity_list %}
+                                {% for eachentity in entity_list %}
+                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">region</label>
+                
+                        <select name="e_location_region" id="location_region">
+                            <option value="{{ eachlocation.fk_city_code.fk_state_code.fk_region_code_id }}" label="{{ eachlocation.fk_city_code.fk_state_code.fk_region_code }}">{{ eachlocation.fk_state_code.fk_region_code.fk_entity_code_id }}</option>
+                            {% if region_list %}
+                                {% for eachregion in region_list %}
+
+                                    <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">state</label>
+                
+                        <select name="e_location_state" id="location_state" required="true">
+                            <option value="{{ eachlocation.fk_city_code.fk_state_code_id }}" label="{{ eachlocation.fk_city_code.fk_state_code }}">{{ eachlocation.fk_city_code.fk_state_code.fk_region_code_id }}</option>
+                            {% if state_list %}
+                                {% for eachstate in state_list %}
+
+                                    <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id  }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">city</label>
+                
+                        <select name="e_location_city" id="location_city" required="true">
+                            <option value="{{ eachlocation.fk_city_code_id }}" label="{{ eachlocation.fk_city_code }}">{{ eachlocation.fk_city_code.fk_state_code_id }}</option>
+                            {% if city_list %}
+                                {% for eachcity in city_list %}
+
+                                    <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id  }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="location_phone">Location Name</label>
+                        <input type="text" value="{{ eachlocation.location_name }}" placeholder="Location Name" name="e_location_name" title="Location Name" required="true" maxlength="50">
+                    </div>           
+                   
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+            <button type="submit" class="edit-forms-save-btn" formaction="{% url 'csp_app:save_edit_location' %}">Save Changes</button>
+        </form>
+        <button onclick="location.href = '/csp_location/'" class="edit-forms-close-btn">Close</button>
+    </div>
+             
+  
+  </div>
+  <script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#location_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'location_form'){
+            $("#location_form").css("display", "none");
+        }   
+        });  
+        $('#new_location').click(function(){
+            $("#location_form").css("display", "block");
+        });
+
+
+        $('#location_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#location_region option').length;
+            var count = 0;
+            $('#location_region option').each(function() {
+            if ($(this).text() == filter) {
+            $('#location_region').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#location_region').val(filter);
+            });
+            if (count === total){
+                $('#location_region').attr("disabled", true)
+            }
+        });
+
+        $('#location_region').change(function() {
+            var filter = $(this).val();
+            var total = $('#location_state option').length;
+            var count = 0;
+            $('#location_state option').each(function() {
+            if ($(this).text() == filter) {
+            $('#location_state').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#location_state').val(filter);
+            });
+            if (count === total){
+                $('#location_state').attr("disabled", true)
+            }
+        });
+
+        $('#location_state').change(function() {
+            var filter = $(this).val();
+            var total = $('#location_city option').length;
+            var count = 0;
+            $('#location_city option').each(function() {
+            if ($(this).text() == filter) {
+            $('#location_city').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#location_city').val(filter);
+            });
+            if (count === total){
+                $('#location_city').attr("disabled", true)
+            }
+        });
+        $('#close_delete').click(function(){
+            $("#delete_location_form").css("display", "none");
+        }); 
+        
+     
+    })
+</script>
+  {% endblock %}

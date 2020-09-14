@@ -156,7 +156,7 @@ body{
 }
 
 .wrapper .main_container{
-  width: (100% - 250px);
+  width: calc(100% - 270px);
   margin-top: 70px;
   margin-left: 250px;
   padding: 10px;
@@ -167,10 +167,24 @@ body{
 .wrapper .main_container .item{
   background: #fff;
   margin-bottom: 10px;
-  padding: 15px;
+  /* padding: 15px; */
   font-size: 14px;
   line-height: 22px;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1)
+}
+
+.item_header{
+  padding: 9px;
+  position: fixed;
+  width: inherit;
+}
+
+.item_contents{
+  height: calc(100% - 60px);
+  position: fixed;
+  width: inherit;
+  top: 120px;
+  overflow: auto;
 }
 
 /* .wrapper.collapse .sidebar{
@@ -236,4 +250,44 @@ body{
 .active-tab{
     border-bottom: 4px solid #bf0711;
     color: #bf0711 !important;
+}
+
+.crumbs{
+  margin-bottom:20px;
+  padding: 10px;
+  background: #fff;
+  width: inherit;
+  position: fixed;
+  border-bottom: 1px solid lightgray;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+.crumbs span{
+  padding-right: 5px;
+  color: var(--primary-color);
+}
+
+.crumbs span a{
+  color: var(--primary-color);
+
+}
+
+.crumbs span:hover{
+  cursor: pointer;
+}
+
+.crumbs span i{
+  padding-left: 5px;
+  font-size: 12px;
+}
+
+.crumbs span i:hover{
+  cursor: default;
+}
+
+.crumbs span:last-child,
+.crumbs span:last-child:hover{
+  color: dimgray;
+  cursor: default;
+  font-weight: normal;
 }

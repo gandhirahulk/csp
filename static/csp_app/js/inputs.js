@@ -1,5 +1,5 @@
 function onlyAlphabets(event) {
-    // checkDOJ();
+    checkDOJ();
     var value = String.fromCharCode(event.which);
     var pattern = new RegExp(/[a-z ]/i);
     // var newvalue = str.replace("  ", " ");
@@ -51,7 +51,9 @@ function checkDOJ(){
         } 
 
     today = yyyy+'-'+mm+'-'+dd;
+    
     document.getElementById("datefield").setAttribute("max", today);
+
 }
 
  
