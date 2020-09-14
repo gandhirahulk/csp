@@ -78,20 +78,27 @@
         <form method="POST">
             {% csrf_token %}             
             <div class="forms-input-holder">
+                <label for="">First Name</label>
                 <input type="text" placeholder="First Name" name="firstname" required="true">
             </div>
             <div class="forms-input-holder">
+                <label for="">Last Name</label>
                 <input type="text" placeholder="Last Name" name="lastname" required="true">
             </div>
             <div class="forms-input-holder">
-                <input type="email" placeholder="Email Address" name="email" required="true">
+                <label for="">Email ID</label>
+                <input type="email" placeholder="Email Address / username" name="email" required="true">
             </div>
             <div class="forms-input-holder">
+                <label for="">User Group</label>
                 <select name="usergroup" id="" >
                     <option value="" disabled selected>User Type</option>
                     {% if group_list %}
                         {% for eachgroup in group_list %}
-                            <option value="{{ eachgroup.name }}">{{ eachgroup.name }}</option>
+                            {% if eachgroup.name != 'Vendor' %}                            
+                                <option value="{{ eachgroup.name }}">{{ eachgroup.name }}</option>
+                            {% endif %}
+                            
                         {% endfor %}
                     {% endif %}
                 </select>
