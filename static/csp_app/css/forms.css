@@ -78,6 +78,8 @@
 
 .forms-input-holder > label{
   width: 25%;
+  border: none;
+  text-align: left;
 }
 
 #c_pan{

@@ -279,6 +279,17 @@ class master_candidate(models.Model):
     def __str__(self):
         return self.pk_candidate_code
 
+class candidate_document(models.Model):
+    pk_document_code = models.AutoField(primary_key=True)
+    fk_candidate_code = models.ForeignKey(master_candidate, on_delete=models.CASCADE)
+    file_name = models.CharField(max_length=200)
+    file_upload = models.FileField()
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
 class candidate_salary(models.Model):
     pk_salary_code = models.AutoField(primary_key=True)
     candidate_code = models.ForeignKey(master_candidate, on_delete=models.CASCADE)
@@ -287,6 +298,8 @@ class candidate_salary(models.Model):
     modified_by = models.CharField(max_length=100, null=True,blank=True)
     modified_date_time = models.DateTimeField(null=True,blank=True)
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+
 
 
     
