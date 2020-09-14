@@ -1,0 +1,111 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Location {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns active-tab">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_location" class="add-new-btn">New Location</button> 
+</div>
+
+<div class="table-container">
+  
+    <table id="location-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Location Name</th>
+                <th>City</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if location_list %}
+                {% for eachlocation in location_list %}
+
+                    <tr>
+                        <td>{{ eachlocation.location_name }}</td>
+                        <td>{{ eachlocation.fk_city_code }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
+                        </td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachlocation in location_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+<div  class="form_modal" style="padding-top: 10%;display: block;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Location Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_location_list %}
+        {% for eachlocation in view_location_list %}
+            <div class="view_form_content">
+                <fieldset class="fds">
+                    <legend>Basic Details</legend>
+                    <table>
+                        <tr>
+                            <td><label for="">Location Name : </label> {{ eachlocation.location_name }}</td>
+                            <td><label for="">Location Code : </label> {{ eachlocation.location_code }}</td>
+
+                            <td><label for="">City : </label> {{ eachlocation.fk_city_code }}</td>
+                        </tr>
+                    </table>                    
+                </fieldset>
+                <fieldset class="fds">
+                    <legend>Other Details</legend>
+                    <table>
+                        <tr>
+                            <td><label for="">Created By : </label> {{ eachlocation.created_by }}</td>
+                            <td><label for="">Created Date Time : </label> {{ eachlocation.created_date_time }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">Modified By : </label> {{ eachlocation.modified_by }}</td>
+                            <td><label for="">Modified Date Time : </label> {{ eachlocation.modified_date_time }}</td>
+                        </tr>
+                       
+                    </table>                    
+                </fieldset>
+                         
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+        <button onclick="location.href = '/csp_location/'" class="forms-save-btn">Close</button>
+    </div>
+             
+  
+  </div>
+
+{% endblock %}

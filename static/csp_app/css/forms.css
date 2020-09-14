@@ -2,6 +2,28 @@
   font-size: 10px;
   color: gray;
 }
+
+.view-other-details{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  overflow-wrap: break-word;
+}
+.view-basic-details,
+.view-other-details div{
+  padding: 5px;
+}
+
+.view-basic-details div{
+  display: inline;
+}
+
+.view-basic-details label,
+.view_form_content label{
+  font-weight: bold;
+}
+
 .forms-heading{
     padding: 10px;
     padding-bottom: 20px;
@@ -9,17 +31,26 @@
 
 .forms-input-holder{
     margin-bottom: 20px;
+    display: flex;
+    justify-content: left;
 }
 
 .forms-input-holder > input,
 .forms-input-holder > select,
 .search-input > input,
 .forms-input-holder > label{
-    padding: 10px;
+    /* padding: 10px;
     border: none;
     outline: none;
     border: 1px solid #f5f5fa;
     width: 90%;
+    transition: .4s ease;
+    font-size: 14px; */
+    padding: 10px;
+    border: none;
+    outline: none;
+    border: 1px solid #f5f5fa;
+    /* width: 90%; */
     transition: .4s ease;
     font-size: 14px;
 }
@@ -37,8 +68,16 @@
   background: #fff;
 }
 
-.forms-input-holder > input[type="text"]{
-  text-transform: capitalize;
+.forms-input-holder > input{
+  width: 75%;
+}
+
+.forms-input-holder > select{
+  width: 75%;
+}
+
+.forms-input-holder > label{
+  width: 25%;
 }
 
 #c_pan{
@@ -134,13 +173,13 @@
     padding: 20px;
     width: 50%;
     overflow: auto;
-    text-align: center;
+    /* text-align: center; */
     padding-bottom: 0px;
   }
 
-  .form_content label{
+  /* .form_content label{
       display: none;
-  }
+  } */
 
   .view_form_content{
     background-color: #f5f5fa;
@@ -149,14 +188,55 @@
     width: 50%;
     overflow: auto;
     /* text-align: center; */
-    padding-bottom: 0px;
+    /* padding-bottom: 0px; */
   }
-
+/* 
   .forms-label-holder{
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+    text-align: left;
+    padding-left: 20px;
+  } */
+
+  .candidate_form{
+    padding-top: 55px;
   }
 
+  .candidate_form_header{
+    margin: auto;
+    width: 80%;
+    /* background-color: #f5f5fa; */
+    text-align: center;
+    padding: 5px;
+    border-left: 1px solid #f5f5fa;
+    border-right: 1px solid #f5f5fa;
+    border-top: 1px solid #f5f5fa;
 
+  }
+  .candidate_form_content{
+    /* background-color: #f5f5fa; */
+    margin: auto;
+    padding: 20px;
+    width: 80%;
+    overflow: auto;
+    text-align: center;
+    padding-bottom: 0px;
+    border-left: 1px solid #f5f5fa;
+    border-right: 1px solid #f5f5fa;
+
+    height: 50vh;
+  }
+
+  .candidate_form_footer{
+    margin: auto;
+    padding: 20px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 80%;
+    text-align: center;
+    border-left: 1px solid #f5f5fa;
+    border-right: 1px solid #f5f5fa;
+    border-bottom: 1px solid #f5f5fa;
+  }
 
   .form_header,
   .delete_form_header{
@@ -199,4 +279,13 @@
     height: 5px;
     margin: auto; 
     background: #bf0711;
+  }
+
+  .fds{
+    padding: 10px;
+    border-color: #f5f5fa;
+  }
+
+  .fds table tr td{
+    padding-left: 5px;
   }

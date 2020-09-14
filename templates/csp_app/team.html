@@ -6,7 +6,7 @@
 
     <div class="tabs">
         <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
-        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">vendor</a>    
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
         <a href="{% url 'csp_app:team' %}" class="tab-btns active-tab">Team</a>    
@@ -43,7 +43,9 @@
                     <tr>
                         <td>{{ eachteam.team_name }}</td>
                         <td>{{ eachteam.fk_function_code }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachteam.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_team' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_team' %}"> | <input value="delete" onclick="showDelete('{{ eachteam.pk }}', 'delete_team_form')"> </form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -72,8 +74,9 @@
     <div class="form_content">
         <form method="POST">
             {% csrf_token %}
-            <label for="">Entity</label>
             <div class="forms-input-holder">
+            <label for="">Entity</label>
+
                 <select name="team_entity" id="team_entity" required="true">
                     <option value="" disabled selected>Select Entity</option> 
                     {% if entity_list %}
@@ -84,8 +87,9 @@
                 </select>
             </div>
         
-            <label for="">Department</label>
             <div class="forms-input-holder">
+            <label for="">Department</label>
+
                 <select name="team_dept" required="true" id="team_dept" disabled="true" required="true">
                     <option value="" disabled selected>Select Department</option>
                     {% if department_list %}
@@ -95,8 +99,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">Function</label>
             <div class="forms-input-holder">
+            <label for="">Function</label>
+
                 <select  required="true" id = "team_function" name="team_function" disabled="true">
                     <option value="" disabled selected>Select Function</option>
                     {% if function_list %}
@@ -107,6 +112,8 @@
                 </select>
             </div>
             <div class="forms-input-holder">
+            <label for="">Team</label>
+
                 <input type="text" placeholder="Team" name="team_name" required="true">
             </div>
                    
@@ -118,22 +125,43 @@
   
   </div>
 
+  <div id="delete_team_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Delete This Team?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_team' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
+
 <script>
     $(document).ready(function(){
         showMe('Organization', 'org-expand');
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#team_form").css("display", "none");
+            $("#delete_team_form").css("display", "none");
+
             }
         });
         $(window).click(function(e) {
         if (e.target.id === 'team_form'){
             $("#team_form").css("display", "none");
+            $("#delete_team_form").css("display", "none");
+
         }   
         });  
         $('#new_team').click(function(){
             $("#team_form").css("display", "block");
         });
+
+  
 
         $('#team_entity').change(function() {
             var filter = $(this).val();
@@ -151,6 +179,14 @@
             });
             if (count === total){
                 $('#team_dept').attr("disabled", true)
+            }
+            var l = $('#team_dept option').length ;
+            if (l === 1){
+                $('#team_dept').append($('<option>', {
+                    value: '',
+                    text: 'Select Department',
+                    selected: true
+                }));
             }
         });
 
@@ -171,7 +207,25 @@
             if (count === total){
                 $('#team_function').attr("disabled", true)
             }
+            var l = $('#team_function option').length ;
+            if (l === 1){
+                $('#team_function').append($('<option>', {
+                    value: '',
+                    text: 'Select Function',
+                    selected: true
+                }));
+            }
+        });
+
+        $('#close_delete').click(function(){
+            $("#delete_team_form").css("display", "none");
         });
     })
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
 </script>
 {% endblock %}

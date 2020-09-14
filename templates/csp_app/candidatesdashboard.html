@@ -8,3 +8,40 @@
 {% endfor %}
 
 {% endif %}
+
+<div class="view-basic-details">
+  <div>
+      <label for="">Vendor Name : </label> {{ eachvendor.vendor_name }}
+  </div>
+  <div>
+      <label for="">Vendor Phone No. : </label> {{ eachvendor.vendor_phone_number }}
+  </div>
+  <div>
+      <label for="">Vendor Email ID : </label> {{ eachvendor.vendor_email_id }}
+  </div>
+  <div>
+      <label for="">SPOC Name : </label> {{ eachvendor.spoc_name }}
+  </div>
+  <div>
+      <label for="">SPOC Email ID : </label> {{ eachvendor.spoc_email_id }}
+  </div>
+  <div>
+      <label for="">Entity : </label> {{ eachvendor.fk_entity_code }}
+  </div>
+</div>
+<div class="view-other-details">
+
+  <div>
+      <label for="">Created By : </label> {{ eachvendor.created_by }}
+  </div>
+  <div>
+      <label for="">Created Date Time : </label> {{ eachvendor.created_date_time }}
+  </div>
+  <div>    
+      <label for="">Modified By : </label> {{ eachvendor.modified_by }}
+  </div>
+  <div>
+      <label for="">Modified Date Time : </label> {{ eachvendor.modified_date_time }}
+  </div> 
+  
+</div>

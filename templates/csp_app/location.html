@@ -42,7 +42,9 @@
                     <tr>
                         <td>{{ eachlocation.location_name }}</td>
                         <td>{{ eachlocation.fk_city_code }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -68,11 +70,12 @@
       <div class="hr_line">&nbsp;</div>
      
     </div>
-    <div class="form_content" style="height: 72vh;">
+    <div class="form_content">
         <form method="POST">
             {% csrf_token %}
-            <label for="">Entity</label>
             <div class="forms-input-holder">
+            <label for="">Entity</label>
+
                 <select name="location_entity" id="location_entity" required="true">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
@@ -83,8 +86,9 @@
                 </select>
             </div>
         
-            <label for="">Region</label>
             <div class="forms-input-holder">
+            <label for="">Region</label>
+
                 <select name="location_region" id="location_region" required="true" disabled="true">
                     <option value="" disabled selected>Select Region</option>
                     {% if region_list %}
@@ -94,8 +98,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">State</label>
             <div class="forms-input-holder">
+            <label for="">State</label>
+
                 <select name="location_state" id="location_state" required="true" disabled="true">
                     <option value="" disabled selected>Select State</option>
                     {% if state_list %}
@@ -105,8 +110,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">City</label>
             <div class="forms-input-holder">
+            <label for="">City</label>
+
                 <select name="location_city" id="location_city" required="true" disabled="true">
                     <option value="" disabled selected>Select City</option>
                     {% if city_list %}
@@ -117,10 +123,12 @@
                 </select>
             </div>
             <div class="forms-input-holder">
+                <label for="">Location Name</label>
                 <input type="text" placeholder="Location Name" name="location_name" required="true">
             </div>
              
             <div class="forms-input-holder">
+                <label for="">Location Code</label>
                 <input type="text" placeholder="Location Code" name="location_code" required="true">
             </div>  
     </div>
@@ -130,7 +138,20 @@
     </div>
   
   </div>
-
+  <div id="delete_location_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Delete This Location ?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_location' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
 
   <script>
     $(document).ready(function(){
@@ -206,7 +227,18 @@
                 $('#location_city').attr("disabled", true)
             }
         });
+        $('#close_delete').click(function(){
+            $("#delete_location_form").css("display", "none");
+        }); 
+        
+     
     })
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
 </script>
 
 {% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} State {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns active-tab">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_state" class="add-new-btn">New State</button> 
+</div>
+
+<div class="table-container">
+  
+    <table id="state-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>State Name</th>
+                <th>Region</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if state_list %}
+                {% for eachstate in state_list %}
+
+                    <tr>
+                        <td>{{ eachstate.state_name }}</td>
+                        <td>{{ eachstate.fk_region_code }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachstate.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_region' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_region' %}"> | <input value="delete" onclick="showDelete('{{ eachstate.pk }}', 'delete_region_form')"> </form>
+                        </td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachstate in state_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+<div id="view_entity_form" class="form_modal" style="display: block;padding-top: 10%;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Edit State Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_state_list %}
+        {% for eachstate in view_state_list %}
+            <div class="form_content">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="e_id" value="{{ eachstate.pk}}">
+                    <div class="forms-input-holder">
+                        <label for="">Entity</label>
+                
+                        <select name="e_state_entity" required="true" id="state_entity">
+                            <!-- {% if selected_entity %}
+                
+                                {% for eachentity in selected_entity %}
+                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}" selected>{{ eachentity.entity_name }}</option>
+                                {% endfor %}
+                                
+                            {% endif %} -->
+                            <option value="{{ eachstate.fk_region_code.fk_entity_code_id }}" label="{{ eachstate.fk_region_code.fk_entity_code }}" selected>{{ eachstate.fk_region_code.fk_entity_code }}</option>
+                            {% if entity_list %}
+                                {% for eachentity in entity_list %}
+                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">Region</label>
+                
+                        <select name="e_state_dept" id="state_dept">
+                            <option value="{{ eachstate.fk_region_code_id }}" label="{{ eachstate.fk_region_code }}">{{ eachstate.fk_region_code.fk_entity_code_id }}</option>
+                            {% if region_list %}
+                                {% for eachdept in region_list %}
+
+                                    <option value="{{ eachdept.pk }}" label="{{ eachdept.region_name }}">{{ eachdept.fk_entity_code_id }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="state_phone">state Name</label>
+                        <input type="text" value="{{ eachstate.state_name }}" placeholder="state Name" name="e_state_name" title="Enity Name" required="true" maxlength="50">
+                    </div>           
+                   
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+            <button type="submit" class="edit-forms-save-btn" formaction="{% url 'csp_app:save_edit_state' %}">Save Changes</button>
+        </form>
+        <button onclick="location.href = '/csp_state/'" class="edit-forms-close-btn">Close</button>
+    </div>
+             
+  
+  </div>
+
+
+{% endblock %}

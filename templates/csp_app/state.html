@@ -42,7 +42,9 @@
                     <tr>
                         <td>{{ eachstate.state_name }}</td>
                         <td>{{ eachstate.fk_region_code }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachstate.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_state' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_state' %}"> | <input value="delete" onclick="showDelete('{{ eachstate.pk }}', 'delete_state_form')"> </form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -70,8 +72,9 @@
     <div class="form_content">
         <form method="POST">
             {% csrf_token %}
-            <label for="">Entity</label>
             <div class="forms-input-holder">
+            <label for="">Entity</label>
+
                 <select name="state_entity" id="state_entity" required="true">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
@@ -82,8 +85,9 @@
                 </select>
             </div>
         
-            <label for="">Region</label>
             <div class="forms-input-holder">
+            <label for="">Region</label>
+
                 <select name="state_region" id="state_region" required="true" disabled="true">
                     <option value="" disabled selected>Select Region</option>
                     {% if region_list %}
@@ -94,6 +98,8 @@
                 </select>
             </div>
             <div class="forms-input-holder">
+            <label for="">State</label>
+
                 <input type="text" placeholder="State" name="state_name" required="true">
             </div>
                
@@ -104,7 +110,20 @@
     </div>
   
   </div>
-
+  <div id="delete_state_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Delete This State?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_state' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
 <script>
     $(document).ready(function(){
         showMe('Organization', 'org-expand');
@@ -121,7 +140,9 @@
         $('#new_state').click(function(){
             $("#state_form").css("display", "block");
         });
-
+        $('#close_delete').click(function(){
+            $("#delete_state_form").css("display", "none");
+        }); 
         $('#state_entity').change(function() {
             var filter = $(this).val();
             var total = $('#state_region option').length;
@@ -130,6 +151,11 @@
             if ($(this).text() == filter) {
             $('#state_region').attr("disabled", false);
                 $(this).show();
+                $('#state_region').append($('<option>', {
+                    value: '',
+                    text: 'Select Region',
+                    selected: true
+                }));
             } else {
                 $(this).hide();
                 count += 1;
@@ -139,9 +165,23 @@
             if (count === total){
                 $('#state_region').attr("disabled", true)
             }
+            var l = $('#state_region option').length ;
+            if (l === 1){
+                $('#state_region').append($('<option>', {
+                    value: '',
+                    text: 'Select Region',
+                    selected: true
+                }));
+            }
         });
 
 
     })
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
 </script>
 {% endblock %}

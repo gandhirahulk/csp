@@ -1,0 +1,135 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Vendor {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns active-tab">Vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_vendor" class="add-new-btn">New Vendor</button> 
+   
+
+</div>
+
+
+<div class="table-container">
+  
+    <table id="vendor-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Vendor Name</th>
+                <th>Contact Details</th>
+                <th>SPOC</th>
+                <th>SPOC Email</th>
+                <th>Entity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if vendor_list %}
+                {% for eachvendor in vendor_list %}
+
+                    <tr>
+                        <td>{{ eachvendor.vendor_name }}</td>
+                        <td>
+                            <div>{{ eachvendor.vendor_email_id }}</div>
+                            <div>{{ eachvendor.vendor_phone_number }}</div>
+                        </td>
+                        <td>{{ eachvendor.spoc_name }}</td>
+                        <td>{{ eachvendor.spoc_email_id }}</td>
+                        <td>{{ eachvendor.fk_entity_code }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> | <input value="delete" onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')"> </form>
+                        </td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachvendor in vendor_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+<div  class="form_modal" style="padding-top: 10%;display: block;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Vendor Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_vendor_list %}
+        {% for eachvendor in view_vendor_list %}
+            <div class="view_form_content">
+                <fieldset class="fds">
+                    <legend>Basic Details</legend>
+                    <table>
+                        <tr>
+                            <td><label for="">Vendor Name : </label> {{ eachvendor.vendor_name }}</td>
+                            <td><label for="">Entity : </label> {{ eachvendor.fk_entity_code }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">Vendor Email ID : </label> {{ eachvendor.vendor_email_id }}</td>
+                            <td><label for="">Vendor Phone No. : </label> {{ eachvendor.vendor_phone_number }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">SPOC Name : </label> {{ eachvendor.spoc_name }}</td>
+                            <td><label for="">SPOC Email ID : </label> {{ eachvendor.spoc_email_id }}</td>
+                        </tr>
+                    </table>                    
+                </fieldset>
+                <fieldset class="fds">
+                    <legend>Other Details</legend>
+                    <table>
+                        <tr>
+                            <td><label for="">Created By : </label> {{ eachvendor.created_by }}</td>
+                            <td><label for="">Created Date Time : </label> {{ eachvendor.created_date_time }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">Modified By : </label> {{ eachvendor.modified_by }}</td>
+                            <td><label for="">Modified Date Time : </label> {{ eachvendor.modified_date_time }}</td>
+                        </tr>
+                       
+                    </table>                    
+                </fieldset>
+                         
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+        <button onclick="location.href = '/csp_vendor/'" class="forms-save-btn">Close</button>
+    </div>
+             
+  
+  </div>
+
+
+{% endblock %}

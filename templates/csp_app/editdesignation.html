@@ -1,0 +1,300 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Designation {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns  active-tab">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_designation" class="add-new-btn">New Designation</button> 
+ 
+
+</div>
+
+<div class="table-container">
+  
+    <table id="designation-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Designation Name</th>
+                <th>Sub Team</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if designation_list %}
+                {% for eachdesignation in designation_list %}
+
+                    <tr>
+                        <td>{{ eachdesignation.designation_name }}</td>
+                        <td>{{ eachdesignation.fk_sub_team_code }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachdesignation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_designation' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_designation' %}"> | <input value="delete" onclick="showDelete('{{ eachdesignation.pk }}', 'delete_designation_form')"> </form>
+                        </td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachdesignation in designation_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+<div id="view_entity_form" class="form_modal" style="display: block;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Edit Designation Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_designation_list %}
+        {% for eachdesignation in view_designation_list %}
+            <div class="form_content">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="e_id" value="{{ eachdesignation.pk }}">
+                    <div class="forms-input-holder">
+                        <label for="">Entity</label>
+                
+                        <select name="e_designation_entity" required="true" id="subteam_entity">
+                            <option value="{{eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code_id }}" label="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}" selected>{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}</option>
+                            {% if entity_list %}
+                                {% for eachentity in entity_list %}
+                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">Department</label>
+                
+                        <select name="e_designation_dept" id="subteam_dept">
+                            <option value="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code_id }}" label="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code }}">{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code_id }}</option>
+                            {% if department_list %}
+                                {% for eachdept in department_list %}
+
+                                    <option value="{{ eachdept.pk }}" label="{{ eachdept.department_name }}">{{ eachdept.fk_entity_code_id }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">Function</label>
+                
+                        <select name="e_designation_function" id="subteam_function" required="true">
+                            <option value="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code_id }}" label="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code }}">{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code_id }}</option>
+                            {% if function_list %}
+                                {% for eachfunction in function_list %}
+
+                                    <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id  }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">Team</label>
+                
+                        <select name="e_designation_team" id="subteam_team" required="true">
+                            <option value="{{ eachdesignation.fk_sub_team_code.fk_team_code_id }}" label="{{ eachdesignation.fk_sub_team_code.fk_team_code }}">{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code_id }}</option>
+                            {% if team_list %}
+                                {% for eachteam in team_list %}
+
+                                    <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id  }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">Sub Team</label>
+            
+                            <select name="e_designation_subteam" id="desg_subteam" required="true">
+                            <option value="{{ eachdesignation.fk_sub_team_code_id }}" label="{{ eachdesignation.fk_sub_team_code }}">{{ eachdesignation.fk_sub_team_code.fk_team_code_id }}</option>
+
+                                <!-- <option value="" disabled selected>Select Sub Team</option> -->
+                                {% if sub_team_list %}
+                                    {% for eachsubteam in sub_team_list %}
+                                        <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="forms-input-holder">
+                        <label for="">Designation</label>
+                            <input type="text" placeholder="Designation" name="e_designation_name" required="true" value="{{ eachdesignation.designation_name }}">
+                        </div>       
+                   
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+            <button type="submit" class="edit-forms-save-btn" formaction="{% url 'csp_app:save_edit_designation' %}">Save Changes</button>
+        </form>
+        <button onclick="location.href = '/csp_designation/'" class="edit-forms-close-btn">Close</button>
+    </div>
+             
+  
+  </div>
+
+  <script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#designation_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'designation_form'){
+            $("#designation_form").css("display", "none");
+        }   
+        });  
+        $('#new_designation').click(function(){
+            $("#designation_form").css("display", "block");
+        });
+
+        $('#desg_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#desg_dept option').length;
+            var count = 0;
+            $('#desg_dept option').each(function() {
+            if ($(this).text() == filter) {
+            $('#desg_dept').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#desg_dept').val(filter);
+            });
+            if (count === total){
+                $('#desg_dept').attr("disabled", true)
+            }
+            var l = $('#desg_dept option').length ;
+            if (l === 1){
+                $('#desg_dept').append($('<option>', {
+                    value: '',
+                    text: 'Select Department',
+                    label: 'Select Department',
+                    selected: true
+                }));
+            }
+        });
+
+        $('#desg_dept').change(function() {
+            var filter = $(this).val();
+            var total = $('#desg_function option').length;
+            var count = 0;
+            $('#desg_function option').each(function() {
+            if ($(this).text() == filter) {
+            $('#desg_function').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#desg_function').val(filter);
+            });
+            if (count === total){
+                $('#desg_function').attr("disabled", true)
+            }
+            var l = $('#desg_function option').length ;
+            if (l === 1){
+                $('#desg_function').append($('<option>', {
+                    value: '',
+                    text: 'Select Function',
+                    label: 'Select Function',
+                    selected: true
+                }));
+            }
+        });
+        $('#desg_function').change(function() {
+            var filter = $(this).val();
+            var total = $('#desg_team option').length;
+            var count = 0;
+            $('#desg_team option').each(function() {
+            if ($(this).text() == filter) {
+            $('#desg_team').attr("disabled", false);
+                $(this).show();
+                $('#desg_team').append($('<option>', {
+                    value: '',
+                    text: 'Select Team',
+                    label: 'Select Team',
+                    selected: "true"
+                }));
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#desg_team').val(filter);
+            });
+            if (count === total){
+                $('#desg_team').attr("disabled", true)
+            }
+            var l = $('#desg_team option').length ;
+            if (l === 1){
+                $('#desg_team').append($('<option>', {
+                    value: '',
+                    text: 'Select Team',
+                    label: 'Select Team',
+                    selected: true
+                }));
+            }
+        });
+
+        $('#desg_team').change(function() {
+            var filter = $(this).val();
+            var total = $('#desg_subteam option').length;
+            var count = 0;
+            $('#desg_subteam option').each(function() {
+            if ($(this).text() == filter) {
+            $('#desg_subteam').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#desg_subteam').val(filter);
+            });
+            if (count === total){
+                $('#desg_subteam').attr("disabled", true)
+            }
+            var l = $('#desg_subteam option').length ;
+            if (l === 1){
+                $('#desg_subteam').append($('<option>', {
+                    value: '',
+                    text: 'Select Sub Team',
+                    label: 'Select_Sub Team',
+                    selected: true
+                }));
+            }
+        });
+    })
+</script>
+
+
+{% endblock %}

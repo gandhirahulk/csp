@@ -1,0 +1,235 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Sub Team {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns active-tab">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_sub_team" class="add-new-btn">New Sub Team</button> 
+
+
+</div>
+<div class="table-container">
+  
+    <table id="subteam-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Sub Team Name</th>
+                <th>Team</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if subteam_list %}
+                {% for eachsubteam in subteam_list %}
+
+                    <tr>
+                        <td>{{ eachsubteam.sub_team_name }}</td>
+                        <td>{{ eachsubteam.fk_team_code }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachsubteam.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_subteam' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_subteam' %}"> | <input value="delete" onclick="showDelete('{{ eachsubteam.pk }}', 'delete_subteam_form')"> </form>
+                        </td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachsubteam in subteam_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+<div  class="form_modal" style="padding-top: 10%;display: block;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Sub Team Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_subteam_list %}
+        {% for eachsubteam in view_subteam_list %}
+            <div class="view_form_content">
+                <fieldset class="fds">
+                    <legend>Basic Details</legend>
+                    <table>
+                        <tr>
+                            <td><label for="">Sub Team Name : </label> {{ eachsubteam.sub_team_name }}</td>
+                            <td><label for="">Team : </label> {{ eachsubteam.fk_team_code }}</td>
+                        </tr>
+                    </table>                    
+                </fieldset>
+                <fieldset class="fds">
+                    <legend>Other Details</legend>
+                    <table>
+                        <tr>
+                            <td><label for="">Created By : </label> {{ eachsubteam.created_by }}</td>
+                            <td><label for="">Created Date Time : </label> {{ eachsubteam.created_date_time }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">Modified By : </label> {{ eachsubteam.modified_by }}</td>
+                            <td><label for="">Modified Date Time : </label> {{ eachsubteam.modified_date_time }}</td>
+                        </tr>
+                       
+                    </table>                    
+                </fieldset>
+                         
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+        <button onclick="location.href = '/csp_sub_team/'" class="forms-save-btn">Close</button>
+    </div>
+             
+  
+  </div>
+
+<script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#sub_team_form").css("display", "none");
+            $("#delete_subteam_form").css("display", "none");
+
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'sub_team_form'){
+            $("#sub_team_form").css("display", "none");
+            $("#delete_subteam_form").css("display", "none");
+
+        }   
+        });  
+        $('#new_sub_team').click(function(){
+            $("#sub_team_form").css("display", "block");
+        });
+
+        $('#subteam_entity').change(function() {
+            var filter = $(this).val();
+            // alert(filter);
+            var total = $('#subteam_dept option').length;
+            // alert(total);
+            var count = 0;
+            $('#subteam_dept option').each(function() {
+            // $('#default_dept').attr('selected',true);
+
+            // alert($(this).text());
+            if ($(this).text() == filter) {
+            $('#subteam_dept').attr("disabled", false);        
+               
+                $(this).show();
+                // alert($(this).attr());
+
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#subteam_dept').val(filter);
+            });
+            // alert(count);
+            if (count === total){
+                $('#subteam_dept').attr("disabled", true)
+            } 
+            // else {
+            //     $('#default_dept').show();
+            //     $('#default_dept').attr('selected',true);
+            // }
+            var l = $('#subteam_dept option').length ;
+            if (l === 1){
+                $('#subteam_dept').append($('<option>', {
+                    value: '',
+                    text: 'Select Department',
+                    label: 'Select Department',
+                    selected: true
+                }));
+            }
+        });
+
+        $('#subteam_dept').change(function() {
+            var filter = $(this).val();
+            var total = $('#subteam_function option').length;
+            var count = 0;
+            $('#subteam_function option').each(function() {
+            if ($(this).text() == filter) {
+            $('#subteam_function').attr("disabled", false);
+                $(this).show();
+                $(this).attr("selected", true);
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#subteam_function').val(filter);
+            });
+            if (count === total){
+                $('#subteam_function').attr("disabled", true)
+            }
+            var l = $('#subteam_function option').length ;
+            if (l === 1){
+                $('#subteam_function').append($('<option>', {
+                    value: '',
+                    text: 'Select Function',
+                    label: 'Select FUnction',
+                    selected: true
+                }));
+            }
+        });
+        // $('#subteam_function').click(function() {
+        //     alert("here")
+        // })
+        $('#subteam_function').change(function() {
+            // alert("ok")
+            var filter = $(this).val();
+            var total = $('#subteam_team option').length;
+            var count = 0;
+            $('#subteam_team option').each(function() {
+            if ($(this).text() == filter) {
+            $('#subteam_team').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#subteam_team').val(filter);
+            });
+            if (count === total){
+                $('#subteam_team').attr("disabled", true)
+            }
+            var l = $('#subteam_team option').length ;
+            if (l === 1){
+                $('#subteam_team').append($('<option>', {
+                    value: '',
+                    text: 'Select Team',
+                    label: 'Select Team',
+                    selected: true
+                }));
+            }
+        });
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Entity {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns active-tab">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_city" class="add-new-btn">New City</button> 
+</div>
+
+<div class="table-container">
+  
+    <table id="city-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>City Name</th>
+                <th>State</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if city_list %}
+                {% for eachcity in city_list %}
+
+                    <tr>
+                        <td>{{ eachcity.city_name }}</td>
+                        <td>{{ eachcity.fk_state_code }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_city' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_city' %}"> | <input value="delete" onclick="showDelete('{{ eachcity.pk }}', 'delete_city_form')"> </form>
+                        </td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachcity in city_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+<div id="view_entity_form" class="form_modal" style="display: block;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Edit City Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_city_list %}
+        {% for eachcity in view_city_list %}
+            <div class="form_content">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="e_id" value="{{ eachcity.pk}}">
+                    <div class="forms-input-holder">
+                        <label for="">Entity</label>
+                
+                        <select name="e_city_entity" required="true" id="city_entity">
+                            <option value="{{eachcity.fk_state_code.fk_region_code.fk_entity_code_id }}" label="{{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}" selected>{{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}</option>
+                            {% if entity_list %}
+                                {% for eachentity in entity_list %}
+                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">region</label>
+                
+                        <select name="e_city_region" id="city_region">
+                            <option value="{{ eachcity.fk_state_code.fk_region_code_id }}" label="{{ eachcity.fk_state_code.fk_region_code }}">{{ eachcity.fk_state_code.fk_region_code.fk_entity_code_id }}</option>
+                            {% if region_list %}
+                                {% for eachdept in region_list %}
+
+                                    <option value="{{ eachdept.pk }}" label="{{ eachdept.region_name }}">{{ eachdept.fk_entity_code_id }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">state</label>
+                
+                        <select name="e_city_state" id="city_state" required="true">
+                            <option value="{{ eachcity.fk_state_code_id }}" label="{{ eachcity.fk_state_code }}">{{ eachcity.fk_state_code.fk_region_code_id }}</option>
+                            {% if state_list %}
+                                {% for eachstate in state_list %}
+
+                                    <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id  }}</option>
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="city_phone">city Name</label>
+                        <input type="text" value="{{ eachcity.city_name }}" placeholder="city Name" name="e_city_name" title="city Name" required="true" maxlength="50">
+                    </div>           
+                   
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+            <button type="submit" class="edit-forms-save-btn" formaction="{% url 'csp_app:save_edit_city' %}">Save Changes</button>
+        </form>
+        <button onclick="location.href = '/csp_city/'" class="edit-forms-close-btn">Close</button>
+    </div>
+             
+  
+  </div>
+  <script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#city_form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'city_form'){
+            $("#city_form").css("display", "none");
+        }   
+        });  
+        $('#new_city').click(function(){
+            $("#city_form").css("display", "block");
+        });
+
+        $('#close_delete').click(function(){
+            $("#delete_city_form").css("display", "none");
+        }); 
+
+        $('#city_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#city_region option').length;
+            var count = 0;
+            $('#city_region option').each(function() {
+            if ($(this).text() == filter) {
+            $('#city_region').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#city_region').val(filter);
+            });
+            if (count === total){
+                $('#city_region').attr("disabled", true)
+            }
+        });
+
+        $('#city_region').change(function() {
+            var filter = $(this).val();
+            var total = $('#city_state option').length;
+            var count = 0;
+            $('#city_state option').each(function() {
+            if ($(this).text() == filter) {
+            $('#city_state').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#city_state').val(filter);
+            });
+            if (count === total){
+                $('#city_state').attr("disabled", true)
+            }
+        });
+    })
+</script>
+
+{% endblock %}

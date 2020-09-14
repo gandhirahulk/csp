@@ -42,7 +42,9 @@
                     <tr>
                         <td>{{ eachregion.region_name }}</td>
                         <td>{{ eachregion.fk_entity_code }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachregion.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_region' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_region' %}"> | <input value="delete" onclick="showDelete('{{ eachregion.pk }}', 'delete_region_form')"> </form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -71,8 +73,9 @@
     <div class="form_content">
         <form method="POST">
             {% csrf_token %}
-            <label for="">Entity</label>
             <div class="forms-input-holder">
+            <label for="">Entity</label>
+
                 <select name="region_entity" id="region_entity" required="true">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
@@ -84,6 +87,8 @@
             </div>   
             
             <div class="forms-input-holder">
+            <label for="">Region</label>
+
                 <input type="text" placeholder="Region" name="region_name" required="true">
             </div>
                
@@ -95,25 +100,53 @@
   
   </div>
 
+  <div id="delete_region_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Delete This Region?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_region' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
+
+
 <script>
     $(document).ready(function(){
         showMe('Organization', 'org-expand');
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#region_form").css("display", "none");
+            $("#delete_region_form").css("display", "none");
+
             }
         });
         $(window).click(function(e) {
         if (e.target.id === 'region_form'){
             $("#region_form").css("display", "none");
+            $("#delete_region_form").css("display", "none");
+
         }   
         });  
         $('#new_region').click(function(){
             $("#region_form").css("display", "block");
         });
-
+        $('#close_delete').click(function(){
+            $("#delete_region_form").css("display", "none");
+        }); 
         
      
     })
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
 </script>
 {% endblock %}

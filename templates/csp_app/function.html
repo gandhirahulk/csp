@@ -6,7 +6,7 @@
 
     <div class="tabs">
         <a href="{% url 'csp_app:entity' %}" class="tab-btns "> Entity</a>
-        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">vendor</a>    
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns active-tab">Function</a>    
         <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
@@ -42,7 +42,9 @@
                     <tr>
                         <td>{{ eachfunction.function_name }}</td>
                         <td>{{ eachfunction.fk_department_code }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachfunction.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_function' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_function' %}"> | <input value="delete" onclick="showDelete('{{ eachfunction.pk }}', 'delete_function_form')"> </form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -50,6 +52,7 @@
             {% else %}
                 {% for eachfunction in function_list %}
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -70,8 +73,8 @@
     <div class="form_content">
         <form method="POST">
             {% csrf_token %}
-            <label for="">Entity</label>
             <div class="forms-input-holder">
+                <label for="">Entity</label>
                 <select name="function_entity" id="function_entity">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
@@ -81,8 +84,9 @@
                     {% endif %}
                 </select>
             </div>     
-            <label for="">Department</label>
             <div class="forms-input-holder">
+            <label for="">Department</label>
+
                 <select name="function_dept" id="function_dept" required="true" disabled="true">
                     <option value="" disabled>Select Department</option>
                     {% if department_list %}
@@ -92,8 +96,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">Function</label>
             <div class="forms-input-holder">
+            <label for="">Function</label>
+
                 <input type="text" placeholder="Function" name="function_name" required="true" maxlength="50">
             </div>
             
@@ -105,8 +110,19 @@
   
   </div>
 
-<div>
-    
+<div id="delete_function_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Delete This Function?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_function' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
 </div>
 <script>
     $(document).ready(function(){
@@ -114,11 +130,15 @@
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#function_form").css("display", "none");
+            $("#delete_function_form").css("display", "none");
+
             }
         });
         $(window).click(function(e) {
         if (e.target.id === 'function_form'){
             $("#function_form").css("display", "none");
+            $("#delete_function_form").css("display", "none");
+
         }   
         });  
         $('#new_function').click(function(){
@@ -145,6 +165,15 @@
                 $('#function_dept').attr("disabled", true)
             }
         });
+        $('#close_delete').click(function(){
+            $("#delete_function_form").css("display", "none");
+        });  
     })
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
 </script>
 {% endblock %}

@@ -1,0 +1,281 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} New Candidate {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>   
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="crumbs"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
+    <span><i class="fas fa-chevron-right"></i></span>
+    <span><a href="{% url 'csp_app:documents' %}">Documents</a></span>
+    <span><i class="fas fa-chevron-right"></i></span>
+    <span>New Candidate</span>
+</div>
+
+
+<div class="candidate_form">
+{% if selected_candidate %}
+    {% for candidate in selected_candidate %}
+    <div class="candidate_form_header">
+        <div class="forms-heading">
+            <h2>Edit Candidate Details</h2>
+        </div>
+        <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>     
+    </div>
+    <div class="candidate_form_content">
+        <form method="POST" autocomplete="off">
+            {% csrf_token %}
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Candidate Code" name="c_code" tabindex="1" disabled="true" value="{{ candidate.pk }}" >
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="First Name" name="c_firstname" id="c_firstname" required="true" autocapitalize="on" autofocus="true" tabindex="1"  >
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Middle Name" name="c_middlename" id="c_middlename" required="true" autocapitalize="on" tabindex="2">
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Last Name" name="c_lastname" id="c_lastname" required="true" autocapitalize="on" tabindex="3">
+            </div>
+            <div class="forms-input-holder">
+                <input type="date" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
+            </div>
+            <div class="forms-input-holder">
+                <input type="date" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
+            </div>
+            
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+            </div>
+            <div class="forms-input-holder">
+                <select name="c_hiring_type" id="" >
+                    <option value="" disabled selected>Type Of Hiring</option>
+                    {% if hiring_type_list %}
+                        {% for eachhiring_type in hiring_type_list %}
+                            <option value="{{ eachhiring_type.pk }}" label="{{ eachhiring_type.hiring_type_name }}">{{ eachhiring_type.hiring_type_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+
+            <div class="forms-input-holder" style="display: none;">
+                <input type="text" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
+            </div>
+            <div class="forms-input-holder">
+                <select name="c_sub_source" id="" >
+                    <option value="" disabled selected>Sub Source</option>
+                    {% if sub_source_list %}
+                        {% for eachsub_source in sub_source_list %}
+                            <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <div class="forms-input-holder" >
+                <input type="text" placeholder="Referral" name="c_referral" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
+            </div>
+            <label for="">Entity</label>
+            <div class="forms-input-holder">
+                <select name="c_entity" id="c_entity" required="true">
+                    <option value="" disabled selected>Select Entity</option>
+                    {% if entity_list %}
+                        {% for eachentity in entity_list %}
+                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+
+            <label for="">Vendor</label>
+            <div class="forms-input-holder">
+                <select name="c_vendor" id="c_vendor" required="true">
+                    <option value="" disabled selected>Select vendor</option>
+                    {% if vendor_list %}
+                        {% for eachvendor in vendor_list %}
+                            <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+        
+            <label for="">Department</label>
+            <div class="forms-input-holder">
+                <select name="c_dept" id="c_dept" required="true" disabled="true">
+                    <option value="" disabled selected>Select department</option>
+                    {% if department_list %}
+                        {% for eachdepartment in department_list %}
+                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Function</label>
+            <div class="forms-input-holder">
+                <select name="c_function" id="c_function" required="true" disabled="true">
+                    <option value="" disabled selected>Select Function</option>
+                    {% if function_list %}
+                        {% for eachfunction in function_list %}
+                            <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Team</label>
+            <div class="forms-input-holder">
+                <select name="c_team" id="c_team" required="true"  disabled="true">
+                    <option value="" disabled selected>Select Team</option>
+                    {% if team_list %}
+                        {% for eachteam in team_list %}
+                            <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Sub Team</label>
+            <div class="forms-input-holder">
+                <select name="c_subteam" id="c_subteam" required="true" disabled="true">
+                    <option value="" disabled selected>Select Sub Team</option>
+                    {% if sub_team_list %}
+                        {% for eachsubteam in sub_team_list %}
+                            <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Designation</label>
+            <div class="forms-input-holder">
+                <select name="c_desg" id="c_desg" required="true" disabled="true">
+                    <option value="" disabled selected>Select Designation</option>
+                    {% if designation_list %}
+                        {% for eachdesignation in designation_list %}
+                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.fk_designation_code_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Region</label>
+            <div class="forms-input-holder">
+                <select name="c_region" id="c_region" required="true" disabled="true">
+                    <option value="" disabled selected>Select Region</option>
+                    {% if region_list %}
+                        {% for eachregion in region_list %}
+                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_designation_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">State</label>
+            <div class="forms-input-holder">
+                <select name="c_state" id="c_state" required="true" disabled="true">
+                    <option value="" disabled selected>Select State</option>
+                    {% if state_list %}
+                        {% for eachstate in state_list %}
+                            <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">City</label>
+            <div class="forms-input-holder">
+                <select name="c_city" id="c_city" required="true" disabled="true">
+                    <option value="" disabled selected>Select City</option>
+                    {% if city_list %}
+                        {% for eachcity in city_list %}
+                            <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Location</label>
+            <div class="forms-input-holder">
+                <select name="c_location" id="c_location" required="true" disabled="true">
+                    <option value="" disabled selected>Select Location</option>
+                    {% if location_list %}
+                        {% for eachlocation in location_list %}
+                            <option value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
+            </div>
+            <div class="forms-input-holder">
+                <input type="email" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" required="true">
+            </div>
+           
+            <label for="">Gender</label>
+            <div class="forms-input-holder">
+                <select name="c_gender" id="c_gender" required="true">
+                    <option value="" disabled selected>Select Gender</option>
+                    {% if gender_list %}
+                        {% for eachgender in gender_list %}
+                            <option value="{{ eachgender.pk }}" label="{{ eachgender.gender_name }}">{{ eachgender.gender_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <label for="">Email ID Creation</label>
+            <div class="forms-input-holder">
+                <select name="c_email_creation" id="c_email_creation" required="true">
+                    <option value="" disabled selected>Email ID Creation</option>
+                    <option value="Yes" >Yes</option>
+                    <option value="No" >No</option>                    
+                </select>
+            </div>
+            <label for="">Laptop Allocation</label>
+            <div class="forms-input-holder">
+                <select name="c_laptop_allocation" id="c_laptop_allocation" required="true">
+                    <option value="" disabled selected>Laptop Allocation</option>
+                    {% if laptop_allocation_list %}
+                        {% for eachlaptop_allocation in laptop_allocation_list %}
+                            <option value="{{ eachlaptop_allocation.pk }}" label="{{ eachlaptop_allocation.option_name }}">{{ eachlaptop_allocation.option_name }}</option>
+                        {% endfor %}                
+                    {% endif %}                    
+                </select>
+            </div>
+            <label for="">Salary Type</label>
+            <div class="forms-input-holder">
+                <select name="c_salary_type" id="c_salary_type" required="true">
+                    <option value="" disabled selected>Select Salary Type</option>
+                    {% if salary_type_list %}
+                        {% for eachsalary_type in salary_type_list %}
+                            <option value="{{ eachsalary_type.pk }}" label="{{ eachsalary_type.salary_type_name }}">{{ eachsalary_type.salary_type_name }}</option>
+                        {% endfor %}                
+                    {% endif %}                   
+                </select>
+            </div>
+            <div class="forms-input-holder">
+                <input type="text" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
+            </div>
+        
+
+    </div>
+    <div class="candidate_form_footer">
+            <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
+ </form>
+    </div>
+  {% endfor %}
+{% endif %}
+  </div>
+
+  {% endblock %}

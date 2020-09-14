@@ -109,7 +109,7 @@ class master_designation(models.Model):
 class master_region(models.Model):
     pk_region_code = models.AutoField(primary_key=True)
     region_name = models.CharField(max_length=100)
-    fk_dentity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE, default=1)
+    fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE, default=1)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
     modified_by = models.CharField(max_length=100, null=True,blank=True)
@@ -148,6 +148,7 @@ class master_city(models.Model):
 class master_location(models.Model):
     pk_location_code = models.AutoField(primary_key=True)
     location_name = models.CharField(max_length=100)
+    location_code = models.CharField(max_length=10)
     fk_city_code = models.ForeignKey(master_city, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
@@ -244,6 +245,7 @@ class master_candidate(models.Model):
     PAN_Number = models.CharField(max_length=10)
     Contact_Number = models.CharField(max_length=10)
     Emergency_Contact_Number = models.CharField(max_length=10)
+    Personal_Email_Id = models.EmailField()
     Type_of_Hiring = models.ForeignKey( hiring_type, on_delete=models.CASCADE)
     Replacement = models.CharField(max_length=20) #should come from employees table ?
     Sub_Source = models.ForeignKey(sub_source, on_delete=models.CASCADE)

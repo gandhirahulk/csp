@@ -1,0 +1,24 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} New Candidate {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>   
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="crumbs"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
+    <span><i class="fas fa-chevron-right"></i></span>
+    <span>candidate ID</span>
+    <span><i class="fas fa-chevron-right"></i></span>
+    <span>Documents</span>
+</div>
+
+<div style="padding-top: 60px;">
+Choose Employee
+</div>
+{% endblock %}

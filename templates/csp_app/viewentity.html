@@ -75,22 +75,26 @@
     </div>
     {% if view_entity_list %}
         {% for eachentity in view_entity_list %}
-            <div class="view_form_content" style="padding-left: 13rem;">
-                <div class="forms-label-holder">
-                    <label for="">Entity Name : </label> <label for="">{{ eachentity.entity_name }}</label>
+            <div class="view_form_content">
+                <div class="view-basic-details">
+                    <label for="">Entity Name : </label> {{ eachentity.entity_name }}
                 </div>
-                <div class="forms-label-holder">
-                    <label for="">Created By : </label> <label for="">{{ eachentity.created_by }}</label>
-                </div>
-                <div class="forms-label-holder">
-                    <label for="">Created Date Time : </label> <label for="">{{ eachentity.created_date_time }}</label>
-                </div>
-                <div class="forms-label-holder">    
-                    <label for="">Modified By : </label> <label for="">{{ eachentity.modified_by }}</label>
-                </div>
-                <div class="forms-label-holder">
-                    <label for="">Modified Date Time : </label> <label for="">{{ eachentity.modified_date_time }}</label>
-                </div>              
+                <div class="view-other-details">
+            
+                    <div>
+                        <label for="">Created By : </label> {{ eachentity.created_by }}
+                    </div>
+                    <div>
+                        <label for="">Created Date Time : </label> {{ eachentity.created_date_time }}
+                    </div>
+                    <div>    
+                        <label for="">Modified By : </label> {{ eachentity.modified_by }}
+                    </div>
+                    <div>
+                        <label for="">Modified Date Time : </label> {{ eachentity.modified_date_time }}
+                    </div> 
+                    
+                </div>             
             </div>
         {% endfor %}
     {% endif %} 

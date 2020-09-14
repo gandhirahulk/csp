@@ -34,6 +34,9 @@
         <thead>
             <tr>
                 <th>Vendor Name</th>
+                <th>Contact Details</th>
+                <th>SPOC</th>
+                <th>SPOC Email</th>
                 <th>Entity</th>
                 <th>Action</th>
             </tr>
@@ -44,8 +47,16 @@
 
                     <tr>
                         <td>{{ eachvendor.vendor_name }}</td>
+                        <td>
+                            <div>{{ eachvendor.vendor_email_id }}</div>
+                            <div>{{ eachvendor.vendor_phone_number }}</div>
+                        </td>
+                        <td>{{ eachvendor.spoc_name }}</td>
+                        <td>{{ eachvendor.spoc_email_id }}</td>
                         <td>{{ eachvendor.fk_entity_code }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> | <input value="delete" onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')"> </form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -53,6 +64,10 @@
             {% else %}
                 {% for eachvendor in vendor_list %}
                 <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -72,12 +87,13 @@
     <div class="hr_line">&nbsp;</div>
    
   </div>
-  <div class="form_content" style="height: 72vh;">
+  <div class="form_content">
     <form method="POST">
         {% csrf_token %}
-        <label for="">Entity</label>
 
         <div class="forms-input-holder">
+        <label for="">Entity</label>
+
             <select name="vendor_entity" required="true">
                 <option value="" disabled selected>Select Entity</option>
                 {% if entity_list %}
@@ -87,29 +103,35 @@
                 {% endif %}
             </select>
         </div>
-        <label for="vendor_name">Vendor</label>
+        <!-- <label for="vendor_name">Vendor</label> -->
         <div class="forms-input-holder">
+            <label for="vendor_name">Vendor Name</label>
             <input type="text" placeholder="Vendor Name" name="vendor_name" maxlength="82" required="true">
         </div>
-        <label for="">SPOC Name</label>
+        <!-- <label for="">Phone Number</label> -->
         <div class="forms-input-holder">
-            <input type="text" placeholder="SPOC Name" name="vendor_spoc" pattern="[A-Za-z\s]{2,}" title="Numbers are not allowed" required="true">
-        </div>
-        <label for="">SPOC Email ID</label>
-        <div class="forms-input-holder">
-            <input type="email" placeholder="SPOC Email ID" name="vendor_spoc_email" required="true">
-        </div>
-        <label for="">Phone Number</label>
-        <div class="forms-input-holder">
+            <label for="vendor_phone">Phone Number</label>
             <input type="text" placeholder="Vendor Phone Number" name="vendor_phone" pattern="[6-9]{1}[0-9]{9}" maxlength="10" required="true">
         </div>
-        <label for="">Vendor Email ID</label>
+        <!-- <label for="">Vendor Email ID</label> -->
         <div class="forms-input-holder">
+            <label for="vendor_email">Email ID</label>
             <input type="email" placeholder="Vendor Email ID" name="vendor_email" required="true">
         </div>
-        <label for="">Vendor Email ID Password</label>
         <div class="forms-input-holder">
+        <label for="">Email ID Password</label>
+
             <input type="text" placeholder="Email Password" name="vendor_email_pwd" required="true">
+        </div>
+        <div class="forms-input-holder">
+        <label for="">SPOC Name</label>
+
+            <input type="text" placeholder="SPOC Name" name="vendor_spoc" pattern="[A-Za-z\s]{2,}" title="Numbers are not allowed" required="true">
+        </div>
+        <div class="forms-input-holder">
+        <label for="">SPOC Email ID</label>
+
+            <input type="email" placeholder="SPOC Email ID" name="vendor_spoc_email" required="true">
         </div>
         
   </div>
@@ -119,24 +141,52 @@
   </div>
 
 </div>
+
+<div id="delete_vendor_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Delete This Vendor?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_vendor' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
+
 <script>
     $(document).ready(function(){
         showMe('Organization', 'org-expand');
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#vendor_form").css("display", "none");
+            $("#delete_vendor_form").css("display", "none");
+
             }
         });
         $(window).click(function(e) {
-        if (e.target.id === 'vendor_form'){
+        if (e.target.id === 'vendor_form' || e.target.id === 'delete_vendor_form'){
             $("#vendor_form").css("display", "none");
+            $("#delete_vendor_form").css("display", "none");
+
         }   
         });  
         $('#new_vendor').click(function(){
             $("#vendor_form").css("display", "block");
         });
+        $('#close_delete').click(function(){
+            $("#delete_vendor_form").css("display", "none");
+        });
     });
 
 </script>
-
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
+</script>
 {% endblock %}

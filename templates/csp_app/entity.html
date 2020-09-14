@@ -42,7 +42,7 @@
                     <tr>
                         <td>{{ eachentity.entity_name }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_entity' %}">| <input value="delete" onclick="showDelete('{{ eachentity.pk }}', 'delete_entity_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_entity' %}"> | <input value="delete" onclick="showDelete('{{ eachentity.pk }}', 'delete_entity_form')"> </form>
                         </td>
                     
                     </tr>
@@ -73,9 +73,8 @@
     <div class="form_content">
         <form method="POST" action="{% url 'csp_app:create_entity' %}">
             {% csrf_token %}
-            <div class="forms-input-holder">       
+            <div class="forms-input-holder">   
                 <label for="entity_name">Entity Name</label>
-
                 <input type="text" placeholder="Entity Name" name="entity_name" title="Enity Name" required="true" maxlength="50">
             </div>           
               

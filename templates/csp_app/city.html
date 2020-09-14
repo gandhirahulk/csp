@@ -42,7 +42,9 @@
                     <tr>
                         <td>{{ eachcity.city_name }}</td>
                         <td>{{ eachcity.fk_state_code }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_city' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_city' %}"> | <input value="delete" onclick="showDelete('{{ eachcity.pk }}', 'delete_city_form')"> </form>
+                        </td>
                     </tr>
 
                 {% endfor %}                
@@ -70,8 +72,9 @@
     <div class="form_content">
         <form method="POST">
             {% csrf_token %}
-            <label for="">Entity</label>
             <div class="forms-input-holder">
+            <label for="">Entity</label>
+
                 <select name="city_entity" id="city_entity" required="true">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
@@ -82,8 +85,9 @@
                 </select>
             </div>
         
-            <label for="">Region</label>
             <div class="forms-input-holder">
+            <label for="">Region</label>
+
                 <select name="city_region" id="city_region" required="true" disabled="true">
                     <option value="" disabled selected>Select Region</option>
                     {% if region_list %}
@@ -93,8 +97,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">State</label>
             <div class="forms-input-holder">
+            <label for="">State</label>
+
                 <select name="city_state" id="city_state" required="true" disabled="true">
                     <option value="" disabled selected>Select State</option>
                     {% if state_list %}
@@ -105,6 +110,8 @@
                 </select>
             </div>
             <div class="forms-input-holder">
+            <label for="">City</label>
+
                 <input type="text" placeholder="City Name" name="city_name" required="true">
             </div>
                
@@ -115,7 +122,20 @@
     </div>
   
   </div>
-
+  <div id="delete_city_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Delete This City?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_city' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
 
   <script>
     $(document).ready(function(){
@@ -133,6 +153,10 @@
         $('#new_city').click(function(){
             $("#city_form").css("display", "block");
         });
+
+        $('#close_delete').click(function(){
+            $("#delete_city_form").css("display", "none");
+        }); 
 
         $('#city_entity').change(function() {
             var filter = $(this).val();
@@ -172,5 +196,11 @@
             }
         });
     })
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
 </script>
 {% endblock %}

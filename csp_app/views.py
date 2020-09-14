@@ -36,12 +36,106 @@ def candidate(request):
     salary_type_list = salary_type.objects.filter(status= active_status)
     gender_list = gender.objects.filter(status= active_status)
     laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
-    candidate_list = master_candidate.objects.all()
+    try:
+        specific_vendor = master_vendor.objects.get(vendor_email_id= request.user, status=active_status)
+        print(specific_vendor)
+        print(specific_vendor.pk)
+        vendor_specific_candidate = master_candidate.objects.filter(fk_vendor_code=specific_vendor)
+        print(vendor_specific_candidate)
+    except ObjectDoesNotExist:
+        specific_vendor = ''
+    for eachgroup in request.user.groups.all():
+        if eachgroup == 'Vendor':
+            candidate_list = vendor_specific_candidate
+            print("here")
+        else:
+            candidate_list = master_candidate.objects.all()
+
     return render(request, 'csp_app/candidates.html', {'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list})
+
+@login_required(login_url='/notlogin/')
+def new_candidate(request):    
+    entity_list = master_entity.objects.filter(status = active_status)
+    vendor_list = master_vendor.objects.filter(status = active_status)
+    dept_list = master_department.objects.filter(status = active_status)
+    function_list = master_function.objects.filter(status = active_status)
+    team_list = master_team.objects.filter(status = active_status)
+    subteam_list = master_sub_team.objects.filter(status = active_status)
+    desg_list = master_designation.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status = active_status)
+    state_list = master_state.objects.filter(status = active_status)
+    city_list = master_city.objects.filter(status= active_status)
+    location_list = master_location.objects.filter(status= active_status)
+    hiring_type_list = hiring_type.objects.filter(status= active_status)
+    sub_source_list = sub_source.objects.filter(status= active_status)
+    salary_type_list = salary_type.objects.filter(status= active_status)
+    gender_list = gender.objects.filter(status= active_status)
+    laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+    candidate_list = master_candidate.objects.all()
+    return render(request, 'csp_app/newcandidate.html', {'entity_list': entity_list, 'location_list': location_list, 
+    'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+    'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+    'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
     'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list })
+
+@login_required(login_url='/notlogin/')
+def edit_candidate(request): 
+    if request.method == 'POST':
+        candidate_id = request.POST.get("view_id")   
+        entity_list = master_entity.objects.filter(status = active_status)
+        vendor_list = master_vendor.objects.filter(status = active_status)
+        dept_list = master_department.objects.filter(status = active_status)
+        function_list = master_function.objects.filter(status = active_status)
+        team_list = master_team.objects.filter(status = active_status)
+        subteam_list = master_sub_team.objects.filter(status = active_status)
+        desg_list = master_designation.objects.filter(status = active_status)
+        region_list = master_region.objects.filter(status = active_status)
+        state_list = master_state.objects.filter(status = active_status)
+        city_list = master_city.objects.filter(status= active_status)
+        location_list = master_location.objects.filter(status= active_status)
+        hiring_type_list = hiring_type.objects.filter(status= active_status)
+        sub_source_list = sub_source.objects.filter(status= active_status)
+        salary_type_list = salary_type.objects.filter(status= active_status)
+        gender_list = gender.objects.filter(status= active_status)
+        laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+        candidate_list = master_candidate.objects.filter(pk=candidate_id)
+    return render(request, 'csp_app/editcandidate.html', {'entity_list': entity_list, 'location_list': location_list, 
+    'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+    'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+    'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'selected_candidate': candidate_list })
+
+@login_required(login_url='/notlogin/')
+def candidate_document(request): 
+    if request.method != 'POST':
+        candidate_id = request.POST.get("view_id")   
+        entity_list = master_entity.objects.filter(status = active_status)
+        vendor_list = master_vendor.objects.filter(status = active_status)
+        dept_list = master_department.objects.filter(status = active_status)
+        function_list = master_function.objects.filter(status = active_status)
+        team_list = master_team.objects.filter(status = active_status)
+        subteam_list = master_sub_team.objects.filter(status = active_status)
+        desg_list = master_designation.objects.filter(status = active_status)
+        region_list = master_region.objects.filter(status = active_status)
+        state_list = master_state.objects.filter(status = active_status)
+        city_list = master_city.objects.filter(status= active_status)
+        location_list = master_location.objects.filter(status= active_status)
+        hiring_type_list = hiring_type.objects.filter(status= active_status)
+        sub_source_list = sub_source.objects.filter(status= active_status)
+        salary_type_list = salary_type.objects.filter(status= active_status)
+        gender_list = gender.objects.filter(status= active_status)
+        laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+        candidate_list = master_candidate.objects.filter(pk=candidate_id)
+    return render(request, 'csp_app/document.html', {'entity_list': entity_list, 'location_list': location_list, 
+    'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+    'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+    'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'selected_candidate': candidate_list })
+
 
 @login_required(login_url='/notlogin/')
 def create_candidate(request):
@@ -173,6 +267,7 @@ def create_candidate(request):
 
         return render(request, 'csp_app/candidates.html', {})
 
+
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_candidate(request):
@@ -210,7 +305,7 @@ def delete_entity(request):
             entity_id = request.POST.get("delete_id")
             entity_a = master_vendor.objects.filter(fk_entity_code=entity_id, status=active_status)
             entity_d = master_department.objects.filter(fk_entity_code=entity_id, status=active_status)
-            entity_c = master_candidate.objects.filter(Entity=entity_id, status=active_status)
+            entity_c = master_candidate.objects.filter(fk_entity_code=entity_id, status=active_status)
             if len(entity_a) >= 1 or len(entity_d) >= 1 or len(entity_c) >= 1:
                 messages.error(request, "Entity Refrenced By Other Module Cannot Delete")
                 return redirect('csp_app:entity')
@@ -260,11 +355,14 @@ def save_edit_entity(request):
                 if request.POST.get("e_entity_name") != None:
                     name = request.POST.get("e_entity_name")
                     try:
-                        master_entity.objects.filter(entity_name= name, status= active_status)
+                        if entity.entity_name == name:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:entity')
+                        a = master_entity.objects.get(entity_name= name.capitalize(), status= active_status)
                         messages.error(request, "Entity Already Exist")
                         return redirect('csp_app:entity')
                     except ObjectDoesNotExist:
-                        entity.entity_name = name
+                        entity.entity_name = name.capitalize()
                         entity.modified_by = str(request.user)
                         entity.modified_date_time = datetime.now()
                         entity.save()
@@ -274,7 +372,7 @@ def save_edit_entity(request):
                     messages.warning(request, "Entity Name Cannot Be Blank")
                     return redirect('csp_app:entity')         
            
-        return render(request, 'csp_app/editentity.html', {'view_entity_list': selected_entity, 'entity_list': entity_list})
+        return render(request, 'csp_app/editentity.html', {'view_entity_list': entity, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
@@ -288,11 +386,11 @@ def create_entity(request):
             messages.warning(request, "Entity Name Expected")
             return redirect('csp_app:entity')
         try:
-            duplicate_entity = master_entity.objects.get(entity_name=entity_name, status = active_status)
+            duplicate_entity = master_entity.objects.get(entity_name=entity_name.capitalize(), status = active_status)
             messages.error(request, "Entity Already Exist")
             return redirect('csp_app:entity')
         except ObjectDoesNotExist:
-            new_entity = master_entity(entity_name= entity_name, created_by = str(request.user))
+            new_entity = master_entity(entity_name= entity_name.capitalize(), created_by = str(request.user))
             new_entity.save()
             messages.success(request, "Entity Created Successfully")
             return redirect('csp_app:entity')
@@ -306,6 +404,143 @@ def vendor(request):
     vendor_list = master_vendor.objects.filter(status = active_status)
 
     return render(request, 'csp_app/vendor.html', {'entity_list': entity_list, 'vendor_list': vendor_list})
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_vendor(request):
+    vendor_list = master_vendor.objects.filter(status = active_status)
+    try:
+        if request.method == 'POST':
+            vendor_id = request.POST.get("view_id")
+            view_vendor_list = master_vendor.objects.filter(pk = vendor_id)
+        return render(request, 'csp_app/viewvendor.html', {'view_vendor_list': view_vendor_list, 'vendor_list': vendor_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_vendor(request):
+    try:
+        if request.method == 'POST':
+            vendor_id = request.POST.get("delete_id")
+            vendor_c = master_candidate.objects.filter(fk_vendor_code=vendor_id, status=active_status)
+            if len(vendor_c) >= 1:
+                messages.error(request, "Vendor Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:vendor')
+            else:
+                selected_vendor = master_vendor.objects.get(pk = vendor_id, status= active_status)
+                selected_user = User.objects.get(username= selected_vendor.vendor_email_id)
+                selected_user.is_active = False
+                selected_user.save()
+                selected_vendor.status = deactive_status
+                selected_vendor.save()
+                msg = 'Vendor account disabled for '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' by ' + str(request.user) + ' .'
+                send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com',[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
+      
+                messages.success(request, "Vendor Deleted Successfully")
+                return redirect('csp_app:vendor')
+        return render(request, 'csp_app/vendor.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_vendor(request):
+    vendor_list = master_vendor.objects.filter(status = active_status)
+    try:
+        if request.method == 'POST':
+            vendor_id = request.POST.get("view_id")
+            selected_vendor = master_vendor.objects.filter(pk = vendor_id)         
+           
+        return render(request, 'csp_app/editvendor.html', {'view_vendor_list': selected_vendor, 'vendor_list': vendor_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_vendor(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                vendor = master_vendor.objects.get(pk = request.POST.get("e_id"))
+                vendor_name = request.POST.get("e_vendor_name")
+                print(vendor_name)
+                vendor_spoc = request.POST.get("e_vendor_spoc")
+                vendor_spoc_email = request.POST.get("e_vendor_spoc_email")
+                vendor_phone = request.POST.get("e_vendor_phone")
+                vendor_email = request.POST.get("e_vendor_email")
+                vendor_email_pwd = request.POST.get("e_vendor_email_pwd")
+                entity = request.POST.get("e_vendor_entity")
+                if entity == None or entity == '':
+                    messages.warning(request, "Choose Entity and Try Again")
+                    return redirect('csp_app:vendor')
+                entity_fk = master_entity.objects.get(pk = entity)
+                
+                try:
+                    #same data code to add
+                    a = master_vendor.objects.get(vendor_name= vendor_name, spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status)
+                    print(a)
+                    messages.error(request, "Vendor Already Exist")
+                    return redirect('csp_app:vendor')
+                except ObjectDoesNotExist:
+                    vendor.vendor_name = vendor_name.capitalize()
+                    vendor.spoc_name = vendor_spoc
+                    vendor.spoc_email_id = vendor_spoc_email
+                    vendor.vendor_email_id = vendor_email
+                    vendor.vendor_email_id_password = vendor_email_pwd
+                    vendor.modified_by = str(request.user)
+                    vendor.modified_date_time = datetime.now()
+                    vendor.save()
+                    messages.success(request, "Vendor Updated Successfully")
+                    return redirect('csp_app:vendor')
+               
+           
+        return render(request, 'csp_app/editvendor.html', {'view_vendor_list': vendor, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+# @login_required(login_url='/notlogin/')
+# @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+# def save_edit_vendor(request):
+#     vendor_list = master_vendor.objects.filter(status = active_status)
+#     try:
+#         if request.method == 'POST':
+#            if request.POST.get("e_id") != '':
+#                 print(request.POST.get("e_id"))
+#                 vendor = master_vendor.objects.filter(pk = request.POST.get("e_id"))
+#                 print(type(vendor))
+#                 vendor_name = request.POST.get("e_vendor_name")
+#                 vendor_spoc = request.POST.get("e_vendor_spoc")
+#                 vendor_spoc_email = request.POST.get("e_vendor_spoc_email")
+#                 vendor_phone = request.POST.get("e_vendor_phone")
+#                 vendor_email = request.POST.get("e_vendor_email")
+#                 vendor_email_pwd = request.POST.get("e_vendor_email_pwd")
+#                 entity = request.POST.get("e_vendor_entity")
+#                 if entity == None:
+#                     messages.warning(request, "Choose Entity And Try Again")
+#                     return redirect('csp_app:vendor')
+#                 entity_fk = master_entity.objects.get(pk=entity)
+                
+#                 try:
+#                     duplicate_vendor_entity_spoc = master_vendor.objects.filter(vendor_name=vendor_name, fk_entity_code= entity, spoc_email_id=vendor_spoc_email, vendor_email_id= vendor_email, status = active_status)
+#                     if len(duplicate_vendor_entity_spoc) >= 1:
+#                         messages.error(request, "vendor Already Exist")
+#                         return redirect('csp_app:vendor')
+                
+#                 except ObjectDoesNotExist:
+#                     print(2)                
+#                     vendor.vendor_name = name.capitalize()
+#                     vendor.modified_by = str(request.user)
+#                     vendor.modified_date_time = datetime.now()
+#                     vendor.save()
+#                     messages.success(request, "Vendor Updated Successfully")
+#                     return redirect('csp_app:vendor')       
+           
+#         return render(request, 'csp_app/editvendor.html', {'view_vendor_list': vendor,'vendor_list': vendor_list})
+#     except UnboundLocalError:
+#         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -332,14 +567,14 @@ def create_vendor(request):
            
         except ObjectDoesNotExist:
             print(2)
-        # try:
-        #     duplicate_vendor_email = master_vendor.objects.filter( vendor_email_id= vendor_email, status = active_status)
-        #     if duplicate_vendor_email:
-        #         messages.error(request, "vendor Email ID Already Exist")
-        #         return redirect('csp_app:vendor')
-        #     print(3)
-        # except ObjectDoesNotExist:
-        #     print(4)
+        try:
+            duplicate_vendor_email = master_vendor.objects.filter( vendor_email_id= vendor_email, fk_entity_code= entity, status = active_status)
+            if duplicate_vendor_email:
+                messages.error(request, "vendor Email ID Already Exist")
+                return redirect('csp_app:vendor')
+            print(3)
+        except ObjectDoesNotExist:
+            print(4)
         try:
             duplicate_vendor_entity = master_vendor.objects.filter( vendor_name=vendor_name, fk_entity_code= entity, status = active_status)
             if duplicate_vendor_entity:                
@@ -347,13 +582,29 @@ def create_vendor(request):
                 return redirect('csp_app:vendor')
             print(5)
         except ObjectDoesNotExist:   
-            print('here')
-
+            print('here') 
+        try:      
+            assign_group = Group.objects.get(name='Vendor')         
+            user = User.objects.create_user(vendor_email)
+            password = User.objects.make_random_password()
+            user.password = password
+            user.set_password(user.password)
+            user.first_name = vendor_name
+            user.email = vendor_email
+            assign_group.user_set.add(user)
+            user.save()
+        except IntegrityError:
+            messages.error(request, "username already in use.")
+            return redirect('csp_app:vendor')
+        
         new_vendor = master_vendor(vendor_name= vendor_name, spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
         new_vendor.save()
+        msg = 'New Vendor account created for '+ vendor_name +' with Username " ' + vendor_email + '" and  Password " ' + password + '" " ."'
+        send_mail('New Vendor Account Created', msg,'workmail052020@gmail.com',[ vendor_email, 'sadaf.shaikh@udaan.com'],fail_silently=False)
         messages.success(request, "vendor Saved Successfully")
         return redirect('csp_app:vendor')
     return render(request, 'csp_app/vendor.html', {})
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -361,6 +612,27 @@ def  department(request):
     entity_list = master_entity.objects.filter(status = active_status)
     dept_list = master_department.objects.filter(status = active_status)
     return render(request, 'csp_app/department.html', {'entity_list': entity_list, 'department_list': dept_list})
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_department(request):
+    try:
+        if request.method == 'POST':
+            department_id = request.POST.get("delete_id")
+            department_f = master_function.objects.filter(fk_department_code=department_id, status=active_status)
+            department_c = master_candidate.objects.filter(fk_department_code=department_id, status=active_status)
+            if len(department_f) >= 1 or len(department_c) >= 1:
+                messages.error(request, "Department Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:department')
+            else:
+                selected_department = master_department.objects.get(pk = department_id, status= active_status)
+                selected_department.status = deactive_status
+                selected_department.save()
+                messages.success(request, "Department Deleted Successfully")
+                return redirect('csp_app:department')
+        return render(request, 'csp_app/department.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -385,6 +657,75 @@ def  create_department(request):
             new_department.save()
             return redirect('csp_app:department')
     return render(request, 'csp_app/department.html', {})
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_department(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    try:
+        if request.method == 'POST':
+            department_id = request.POST.get("view_id")
+            view_dept_list = master_department.objects.filter(pk = department_id)
+        return render(request, 'csp_app/viewdepartment.html', {'view_dept_list': view_dept_list,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_department(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+
+    try:
+        if request.method == 'POST':
+            department_id = request.POST.get("view_id")
+            selected = master_department.objects.filter(pk = department_id)        
+        return render(request, 'csp_app/editdepartment.html', {'view_dept_list': selected,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_department(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_department.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_dept_name") != None:
+                    name = request.POST.get("e_dept_name")
+                    entity = request.POST.get("e_dept_entity")
+                    if entity == None or entity == '':
+                        messages.warning(request, "Choose Entity and Try Again")
+                        return redirect('csp_app:department')
+                    entity_fk = master_entity.objects.get(pk = entity)
+                    try:
+                        if selected.department_name == name and selected.fk_entity_code == entity_fk:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:department')
+                        a = master_department.objects.get(department_name= name.capitalize(), fk_entity_code= entity_fk, status= active_status)
+                        messages.error(request, "Department Already Exist")
+                        return redirect('csp_app:department')
+                    except ObjectDoesNotExist:
+                        selected.department_name = name.capitalize()
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = datetime.now()
+                        selected.save()
+                        messages.success(request, "Department Updated Successfully")
+                        return redirect('csp_app:department')
+                else:
+                    messages.warning(request, "Department Name Cannot Be Blank")
+                    return redirect('csp_app:department')         
+           
+        return render(request, 'csp_app/editdepartment.html', {'view_department_list': department, 'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
+
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -420,6 +761,103 @@ def  create_function(request):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_function(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    try:
+        if request.method == 'POST':
+            function_id = request.POST.get("view_id")
+            view_function_list = master_function.objects.filter(pk = function_id)
+        return render(request, 'csp_app/viewfunction.html', {'view_function_list': view_function_list,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_function(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    try:
+        if request.method == 'POST':
+            function_id = request.POST.get("view_id")
+            selected = master_function.objects.filter(pk = function_id)        
+        return render(request, 'csp_app/editfunction.html', {'view_function_list': selected, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_function(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_function.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_function_name") != None:
+                    name = request.POST.get("e_function_name")
+                    department = request.POST.get("e_function_dept")
+                    # entity = request.POST.get("e_function_entity")
+                    print(department)
+                    if department == None or department == '':
+                        messages.warning(request, "Choose Department and Try Again")
+                        return redirect('csp_app:function')
+                    department_fk = master_department.objects.get(pk = department)
+                    try:
+                        if selected.function_name == name and selected.fk_department_code == department_fk:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:function')
+                        a = master_function.objects.get(function_name= name.capitalize(), fk_department_code= department_fk, status= active_status)
+                        messages.error(request, "function Already Exist")
+                        return redirect('csp_app:function')
+                    except ObjectDoesNotExist:
+                        selected.function_name = name.capitalize()
+                        selected.fk_department_code = department_fk
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = datetime.now()
+                        selected.save()
+                        messages.success(request, "Function Updated Successfully")
+                        return redirect('csp_app:function')
+                else:
+                    messages.warning(request, "Department Name Cannot Be Blank")
+                    return redirect('csp_app:department')         
+           
+        return render(request, 'csp_app/editfunction.html', {'view_department_list': department, 'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_function(request):
+    try:
+        if request.method == 'POST':
+            function_id = request.POST.get("delete_id")
+            function_t = master_team.objects.filter(fk_function_code=function_id, status=active_status)
+            function_c = master_candidate.objects.filter(fk_function_code=function_id, status=active_status)
+            if len(function_t) >= 1 or len(function_c) >= 1:
+                messages.error(request, "Function Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:function')
+            else:
+                selected = master_function.objects.get(pk = function_id, status= active_status)
+                selected.status = deactive_status
+                selected.modified_by = str(request.user)
+                selected.modified_date_time = datetime.now()
+                selected.save()
+                messages.success(request, "Function Deleted Successfully")
+                return redirect('csp_app:function')
+        return render(request, 'csp_app/function.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  team(request):
     entity_list = master_entity.objects.filter(status = active_status)
     dept_list = master_department.objects.filter(status = active_status)
@@ -443,7 +881,7 @@ def  create_team(request):
         function_fk = master_function.objects.get(pk=team_function)
        
         try:
-            duplicate_team = master_team.objects.get( team_name= team_name, fk_function_code=function_fk, created_by = str(request.user))
+            duplicate_team = master_team.objects.get( team_name= team_name, fk_function_code=function_fk, status= active_status)
             messages.error(request, "Team Already Exist")
             return redirect('csp_app:team')
         except ObjectDoesNotExist: 
@@ -452,6 +890,109 @@ def  create_team(request):
             messages.success(request, "Team Saved Successfully")
             return redirect('csp_app:team')
     return render(request, 'csp_app/team.html', {})
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_team(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    team_list = master_team.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+            team_id = request.POST.get("view_id")
+            view_team_list = master_team.objects.filter(pk = team_id)
+        return render(request, 'csp_app/viewteam.html', {'view_team_list': view_team_list,'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_team(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    team_list = master_team.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+            team_id = request.POST.get("view_id")
+            selected = master_team.objects.filter(pk = team_id)        
+        return render(request, 'csp_app/editteam.html', {'view_team_list': selected,'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_team(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    team_list = master_team.objects.filter(status=active_status)
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_team.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_team_name") != None:
+                    name = request.POST.get("e_team_name")
+                    function = request.POST.get("e_team_function")
+                    # entity = request.POST.get("e_function_entity")
+                    # print(department)
+                    if function == None or function == '':
+                        messages.warning(request, "Choose Function and Try Again")
+                        return redirect('csp_app:team')
+                    function_fk = master_function.objects.get(pk = function)
+                    try:
+                        if selected.team_name == name and selected.fk_function_code == function_fk:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:team')
+                        a = master_team.objects.get(team_name= name.capitalize(), fk_function_code= function_fk, status= active_status)
+                        messages.error(request, "Team Already Exist")
+                        return redirect('csp_app:team')
+                    except ObjectDoesNotExist:
+                        selected.team_name = name.capitalize()
+                        selected.fk_function_code = function_fk
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = datetime.now()
+                        selected.save()
+                        messages.success(request, "Team Updated Successfully")
+                        return redirect('csp_app:team')
+                else:
+                    messages.warning(request, "Function Name Cannot Be Blank")
+                    return redirect('csp_app:team')         
+           
+        return render(request, 'csp_app/editteam.html', {'view_team_list': selected,'function_list': function_list, 'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_team(request):
+    try:
+        if request.method == 'POST':
+            team_id = request.POST.get("delete_id")
+            team_t = master_sub_team.objects.filter(fk_team_code=team_id, status=active_status)
+            team_c = master_candidate.objects.filter(fk_team_code=team_id, status=active_status)
+            if len(team_t) >= 1 or len(team_c) >= 1:
+                messages.error(request, "Team Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:team')
+            else:
+                selected = master_team.objects.get(pk = team_id, status= active_status)
+                selected.status = deactive_status
+                selected.modified_by = str(request.user)
+                selected.modified_date_time = datetime.now()
+                selected.save()
+                messages.success(request, "Team Deleted Successfully")
+                return redirect('csp_app:team')
+        return render(request, 'csp_app/team.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -487,6 +1028,114 @@ def  create_subteam(request):
             messages.success(request, "Sub Team Saved Successfully")
             return redirect('csp_app:subteam')
     return render(request, 'csp_app/subteam.html', {})
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_subteam(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    team_list = master_team.objects.filter(status=active_status)
+    subteam_list = master_sub_team.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+            subteam_id = request.POST.get("view_id")
+            view_subteam_list = master_sub_team.objects.filter(pk = subteam_id)
+        return render(request, 'csp_app/viewsubteam.html', {'view_subteam_list': view_subteam_list,'subteam_list': subteam_list, 'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_subteam(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    team_list = master_team.objects.filter(status=active_status)
+    subteam_list = master_sub_team.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+            subteam_id = request.POST.get("view_id")
+            selected = master_sub_team.objects.filter(pk = subteam_id)        
+        return render(request, 'csp_app/editsubteam.html', {'view_subteam_list': selected,'subteam_list': subteam_list, 'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_subteam(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    team_list = master_team.objects.filter(status=active_status)
+    subteam_list = master_sub_team.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_sub_team.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_subteam_name") != None:
+                    name = request.POST.get("e_subteam_name")
+                    team = request.POST.get("e_subteam_team")
+                    # entity = request.POST.get("e_function_entity")
+                    # print(department)
+                    if team == None or team == '':
+                        messages.warning(request, "Choose Team and Try Again")
+                        return redirect('csp_app:subteam')
+                    team_fk = master_team.objects.get(pk = team)
+                    try:
+                        if selected.sub_team_name == name and selected.fk_team_code == team_fk:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:team')
+                        a = master_sub_team.objects.get(sub_team_name= name.capitalize(), fk_team_code= team_fk, status= active_status)
+                        messages.error(request, "Team Already Exist")
+                        return redirect('csp_app:team')
+                    except ObjectDoesNotExist:
+                        selected.sub_team_name = name.capitalize()
+                        selected.fk_team_code = team_fk
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = datetime.now()
+                        selected.save()
+                        messages.success(request, "Sub Team Updated Successfully")
+                        return redirect('csp_app:subteam')
+                else:
+                    messages.warning(request, "Sub Function Name Cannot Be Blank")
+                    return redirect('csp_app:subteam')         
+           
+        return render(request, 'csp_app/editsubteam.html', {'view_subteam_list': selected,'team_list': team_list, 'function_list': function_list, 'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_subteam(request):
+    try:
+        if request.method == 'POST':
+            team_id = request.POST.get("delete_id")
+            team_t = master_sub_team.objects.filter(fk_team_code=team_id, status=active_status)
+            team_c = master_candidate.objects.filter(fk_team_code=team_id, status=active_status)
+            if len(team_t) >= 1 or len(team_c) >= 1:
+                messages.error(request, "Team Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:team')
+            else:
+                selected = master_sub_team.objects.get(pk = team_id, status= active_status)
+                selected.status = deactive_status
+                selected.modified_by = str(request.user)
+                selected.modified_date_time = datetime.now()
+                selected.save()
+                messages.success(request, "Sub Team Deleted Successfully")
+                return redirect('csp_app:subteam')
+        return render(request, 'csp_app/subteam.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -527,6 +1176,112 @@ def  create_designation(request):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_designation(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    team_list = master_team.objects.filter(status=active_status)
+    subteam_list = master_sub_team.objects.filter(status=active_status)
+    designation_list = master_designation.objects.filter(status=active_status)
+    try:
+        if request.method == 'POST':
+            designation_id = request.POST.get("view_id")
+            view_designation_list = master_designation.objects.filter(pk = designation_id)
+        return render(request, 'csp_app/viewdesignation.html', {'view_designation_list': view_designation_list,'designation_list': designation_list,  'subteam_list': subteam_list, 'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_designation(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    team_list = master_team.objects.filter(status=active_status)
+    subteam_list = master_sub_team.objects.filter(status=active_status)
+    designation_list = master_designation.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+            designation_id = request.POST.get("view_id")
+            selected = master_designation.objects.filter(pk = designation_id)        
+        return render(request, 'csp_app/editdesignation.html', {'view_designation_list': selected, 'designation_list':designation_list, 'subteam_list': subteam_list, 'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_designation(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    department_list = master_department.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    team_list = master_team.objects.filter(status=active_status)
+    subteam_list = master_sub_team.objects.filter(status=active_status)
+    designation_list = master_designation.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_designation.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_designation_name") != None:
+                    name = request.POST.get("e_designation_name")
+                    subteam = request.POST.get("e_designation_subteam")
+                    if subteam == None or subteam == '':
+                        messages.warning(request, "Choose Sub Team and Try Again")
+                        return redirect('csp_app:designation')
+                    subteam_fk = master_sub_team.objects.get(pk = subteam)
+                    try:
+                        if selected.designation_name == name and selected.fk_sub_team_code == subteam_fk:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:designation')
+                        a = master_designation.objects.get(designation_name= name.capitalize(), fk_sub_team_code= subteam_fk, status= active_status)
+                        messages.error(request, "Designation Already Exist")
+                        return redirect('csp_app:designation')
+                    except ObjectDoesNotExist:
+                        selected.designation_name = name.capitalize()
+                        selected.fk_sub_team_code = subteam_fk
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = datetime.now()
+                        selected.save()
+                        messages.success(request, "Designation Updated Successfully")
+                        return redirect('csp_app:designation')
+                else:
+                    messages.warning(request, "Sub Team Name Cannot Be Blank")
+                    return redirect('csp_app:designation')         
+           
+        return render(request, 'csp_app/editdesignation.html', {'view_designation_list': selected,'subteam_list':subteam_list, 'team_list': team_list, 'function_list': function_list, 'department_list': department_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_designation(request):
+    try:
+        if request.method == 'POST':
+            desg_id = request.POST.get("delete_id")
+            desg_c = master_candidate.objects.filter(fk_designation_code=desg_id, status=active_status)
+            if len(desg_c) >= 1:
+                messages.error(request, "Designation Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:designation')
+            else:
+                selected = master_designation.objects.get(pk = desg_id, status= active_status)
+                selected.status = deactive_status
+                selected.modified_by = str(request.user)
+                selected.modified_date_time = datetime.now()
+                selected.save()
+                messages.success(request, "Designation Deleted Successfully")
+                return redirect('csp_app:designation')
+        return render(request, 'csp_app/designation.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def region(request):
     entity_list = master_entity.objects.filter(status = active_status)
     region_list = master_region.objects.filter(status = active_status)
@@ -544,19 +1299,113 @@ def  create_region(request):
         if region_name == None:
             messages.warning(request, "Region Cannot Be Blank")
             return redirect('csp_app:region')
-        desg_fk = master_designation.objects.get(pk=desg)
+        entity_fk = master_entity.objects.get(pk=entity)
         try:
-            dup_region = master_region.objects.get( region_name= region_name, fk_entity_code =desg_fk, status = active_status)
+            dup_region = master_region.objects.get( region_name= region_name, fk_entity_code =entity_fk, status = active_status)
 
             messages.error(request, "Region Already Exist")
             return redirect('csp_app:region')
         except ObjectDoesNotExist: 
-            new_region = master_region( region_name= region_name, fk_entity_code =desg_fk, created_by = str(request.user))
+            new_region = master_region( region_name= region_name, fk_entity_code =entity_fk, created_by = str(request.user))
             new_region.save()
             
             messages.success(request, "Region Saved Succesfully")
             return redirect('csp_app:region')
     return render(request, 'csp_app/region.html', {})
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_region(request):
+    try:
+        if request.method == 'POST':
+            region_id = request.POST.get("delete_id")
+            region_s = master_state.objects.filter(fk_region_code=region_id, status=active_status)
+            region_c = master_candidate.objects.filter(fk_region_code=region_id, status=active_status)
+            if len(region_s) >= 1 or len(region_c) >= 1:
+                messages.error(request, "region Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:region')
+            else:
+                selected = master_region.objects.get(pk = region_id, status= active_status)
+                selected.status = deactive_status
+                selected.modified_by = str(request.user)
+                selected.modified_date_time = datetime.now()
+                selected.save()
+                messages.success(request, "region Deleted Successfully")
+                return redirect('csp_app:region')
+        return render(request, 'csp_app/region.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_region(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    try:
+        if request.method == 'POST':
+            region_id = request.POST.get("view_id")
+            view_region_list = master_region.objects.filter(pk = region_id)
+        return render(request, 'csp_app/viewregion.html', {'view_region_list': view_region_list,'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_region(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+
+    try:
+        if request.method == 'POST':
+            region_id = request.POST.get("view_id")
+            selected = master_region.objects.filter(pk = region_id)        
+        return render(request, 'csp_app/editregion.html', {'view_region_list': selected,'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_region(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_region.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_region_name") != None:
+                    name = request.POST.get("e_region_name")
+                    entity = request.POST.get("e_region_entity")
+                    if entity == None or entity == '':
+                        messages.warning(request, "Choose Entity and Try Again")
+                        return redirect('csp_app:region')
+                    entity_fk = master_entity.objects.get(pk = entity)
+                    try:
+                        if selected.region_name == name and selected.fk_entity_code == entity_fk:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:region')
+                        a = master_region.objects.get(region_name= name.capitalize(), fk_entity_code= entity_fk, status= active_status)
+                        messages.error(request, "region Already Exist")
+                        return redirect('csp_app:region')
+                    except ObjectDoesNotExist:
+                        selected.region_name = name.capitalize()
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = datetime.now()
+                        selected.save()
+                        messages.success(request, "region Updated Successfully")
+                        return redirect('csp_app:region')
+                else:
+                    messages.warning(request, "region Name Cannot Be Blank")
+                    return redirect('csp_app:region')         
+           
+        return render(request, 'csp_app/editregion.html', {'view_region_list': region, 'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
+
+
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -598,17 +1447,213 @@ def  create_state(request):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_state(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    state_list = master_state.objects.filter(status=active_status)
+    try:
+        if request.method == 'POST':
+            state_id = request.POST.get("view_id")
+            view_state_list = master_state.objects.filter(pk = state_id)
+        return render(request, 'csp_app/viewstate.html', {'view_state_list': view_state_list,'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_state(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    state_list = master_state.objects.filter(status=active_status)
+    try:
+        if request.method == 'POST':
+            state_id = request.POST.get("view_id")
+            selected = master_state.objects.filter(pk = state_id)        
+        return render(request, 'csp_app/editstate.html', {'view_state_list': selected, 'state_list': state_list,'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_state(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    state_list = master_state.objects.filter(status=active_status)
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_state.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_state_name") != None:
+                    name = request.POST.get("e_state_name")
+                    region = request.POST.get("e_state_dept")
+                    # entity = request.POST.get("e_state_entity")
+                    print(region)
+                    if region == None or region == '':
+                        messages.warning(request, "Choose region and Try Again")
+                        return redirect('csp_app:state')
+                    region_fk = master_region.objects.get(pk = region)
+                    try:
+                        if selected.state_name == name and selected.fk_region_code == region_fk:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:state')
+                        a = master_state.objects.get(state_name= name.capitalize(), fk_region_code= region_fk, status= active_status)
+                        messages.error(request, "state Already Exist")
+                        return redirect('csp_app:state')
+                    except ObjectDoesNotExist:
+                        selected.state_name = name.capitalize()
+                        selected.fk_region_code = region_fk
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = datetime.now()
+                        selected.save()
+                        messages.success(request, "state Updated Successfully")
+                        return redirect('csp_app:state')
+                else:
+                    messages.warning(request, "region Name Cannot Be Blank")
+                    return redirect('csp_app:region')         
+           
+        return render(request, 'csp_app/editstate.html', {'view_region_list': region, 'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_state(request):
+    try:
+        if request.method == 'POST':
+            state_id = request.POST.get("delete_id")
+            state_t = master_city.objects.filter(fk_state_code=state_id, status=active_status)
+            state_c = master_candidate.objects.filter(fk_state_code=state_id, status=active_status)
+            if len(state_t) >= 1 or len(state_c) >= 1:
+                messages.error(request, "state Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:state')
+            else:
+                selected = master_state.objects.get(pk = state_id, status= active_status)
+                selected.status = deactive_status
+                selected.modified_by = str(request.user)
+                selected.modified_date_time = datetime.now()
+                selected.save()
+                messages.success(request, "state Deleted Successfully")
+                return redirect('csp_app:state')
+        return render(request, 'csp_app/state.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  city(request):
     entity_list = master_entity.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
-    team_list = master_team.objects.filter(status = active_status)
-    subteam_list = master_sub_team.objects.filter(status = active_status)
-    desg_list = master_designation.objects.filter(status = active_status)
     region_list = master_region.objects.filter(status = active_status)
     state_list = master_state.objects.filter(status = active_status)
     city_list = master_city.objects.filter(status= active_status)
-    return render(request, 'csp_app/city.html', {'entity_list': entity_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
+    return render(request, 'csp_app/city.html', {'entity_list': entity_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list})
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_city(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    city_list = master_city.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+            city_id = request.POST.get("view_id")
+            view_city_list = master_city.objects.filter(pk = city_id)
+        return render(request, 'csp_app/viewcity.html', {'view_city_list': view_city_list,'city_list': city_list, 'function_list': function_list,'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_city(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    function_list = master_function.objects.filter(status=active_status)
+    city_list = master_city.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+            city_id = request.POST.get("view_id")
+            selected = master_city.objects.filter(pk = city_id)        
+        return render(request, 'csp_app/editcity.html', {'view_city_list': selected,'city_list': city_list, 'function_list': function_list,'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_city(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    state_list = master_state.objects.filter(status=active_status)
+    city_list = master_city.objects.filter(status=active_status)
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_city.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_city_name") != None:
+                    name = request.POST.get("e_city_name")
+                    function = request.POST.get("e_city_state")
+                    # entity = request.POST.get("e_function_entity")
+                    # print(region)
+                    if function == None or function == '':
+                        messages.warning(request, "Choose State and Try Again")
+                        return redirect('csp_app:city')
+                    state_fk = master_state.objects.get(pk = function)
+                    try:
+                        if selected.city_name == name and selected.fk_state_code == state_fk:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:city')
+                        a = master_city.objects.get(city_name= name.capitalize(), fk_state_code= state_fk, status= active_status)
+                        messages.error(request, "city Already Exist")
+                        return redirect('csp_app:city')
+                    except ObjectDoesNotExist:
+                        selected.city_name = name.capitalize()
+                        selected.fk_state_code = state_fk
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = datetime.now()
+                        selected.save()
+                        messages.success(request, "city Updated Successfully")
+                        return redirect('csp_app:city')
+                else:
+                    messages.warning(request, "City Name Cannot Be Blank")
+                    return redirect('csp_app:city')         
+           
+        return render(request, 'csp_app/editcity.html', {'view_city_list': selected,'state_list': state_list, 'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_city(request):
+    try:
+        if request.method == 'POST':
+            city_id = request.POST.get("delete_id")
+            city_t = master_location.objects.filter(fk_city_code=city_id, status=active_status)
+            city_c = master_candidate.objects.filter(fk_city_code=city_id, status=active_status)
+            if len(city_t) >= 1 or len(city_c) >= 1:
+                messages.error(request, "city Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:city')
+            else:
+                selected = master_city.objects.get(pk = city_id, status= active_status)
+                selected.status = deactive_status
+                selected.modified_by = str(request.user)
+                selected.modified_date_time = datetime.now()
+                selected.save()
+                messages.success(request, "city Deleted Successfully")
+                return redirect('csp_app:city')
+        return render(request, 'csp_app/city.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -639,41 +1684,150 @@ def  create_city(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  location(request):
     entity_list = master_entity.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
-    team_list = master_team.objects.filter(status = active_status)
-    subteam_list = master_sub_team.objects.filter(status = active_status)
-    desg_list = master_designation.objects.filter(status = active_status)
     region_list = master_region.objects.filter(status = active_status)
     state_list = master_state.objects.filter(status = active_status)
     city_list = master_city.objects.filter(status= active_status)
     location_list = master_location.objects.filter(status= active_status)
-    return render(request, 'csp_app/location.html', {'entity_list': entity_list, 'location_list': location_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
+    return render(request, 'csp_app/location.html', {'entity_list': entity_list, 'location_list': location_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_location(request):
     if request.method == 'POST':
         location_name = request.POST.get("location_name")
+        code = request.POST.get("location_code")
+
         city = request.POST.get("location_city")
-        if city == None:
+        if city == None or city == '':
             messages.warning(request, "Choose City And Try Again")
             return redirect('csp_app:location')
-        if location_name == None:
-            messages.warning(request, "Location Cannot Be Blank")
+        if location_name == None or location_name == '':
+            messages.warning(request, "Location Name Cannot Be Blank")
+            return redirect('csp_app:location')
+        if code == None or code == '':
+            messages.warning(request, "Location Code Cannot Be Blank")
             return redirect('csp_app:location')
         city_fk = master_city.objects.get(pk=city)
         try:
-            dup_location = master_location.objects.get( location_name= location_name, fk_city_code =city_fk,status = active_status)
+            dup_location = master_location.objects.get(location_name= location_name, fk_city_code =city_fk,location_code= code, status = active_status)
 
-            messages.error(request, "City Already Exist")
+            messages.error(request, "Location Already Exist")
             return redirect('csp_app:location')
         except ObjectDoesNotExist: 
-            new_location = master_location( location_name= location_name, fk_city_code =city_fk, created_by = str(request.user))
+            new_location = master_location( location_name= location_name,location_code=code, fk_city_code =city_fk, created_by = str(request.user))
             new_location.save()
             messages.success(request, "Location Saved Successfully")
             return redirect('csp_app:location')
     return render(request, 'csp_app/location.html', {})
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_location(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    state_list = master_state.objects.filter(status=active_status)
+    city_list = master_city.objects.filter(status=active_status)
+    location_list = master_location.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+            location_id = request.POST.get("view_id")
+            view_location_list = master_location.objects.filter(pk = location_id)
+        return render(request, 'csp_app/viewlocation.html', {'view_location_list': view_location_list,'location_list': location_list, 'city_list': city_list, 'state_list': state_list,'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_location(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    state_list = master_state.objects.filter(status=active_status)
+    city_list = master_city.objects.filter(status=active_status)
+    location_list = master_location.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+            location_id = request.POST.get("view_id")
+            selected = master_location.objects.filter(pk = location_id)        
+        return render(request, 'csp_app/editlocation.html', {'view_location_list': selected,'location_list': location_list, 'city_list': city_list, 'state_list': state_list,'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_location(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+    region_list = master_region.objects.filter(status= active_status)
+    state_list = master_state.objects.filter(status=active_status)
+    city_list = master_city.objects.filter(status=active_status)
+    location_list = master_location.objects.filter(status=active_status)
+
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_location.objects.get(pk = request.POST.get("e_id"))
+                if request.POST.get("e_location_name") != None:
+                    name = request.POST.get("e_location_name")
+                    city = request.POST.get("e_location_city")
+                    # entity = request.POST.get("e_state_entity")
+                    # print(region)
+                    if city == None or city == '':
+                        messages.warning(request, "Choose city and Try Again")
+                        return redirect('csp_app:location')
+                    city_fk = master_city.objects.get(pk = city)
+                    try:
+                        if selected.location_name == name and selected.fk_city_code == city_fk:
+                            messages.warning(request, "No Changes Detected")
+                            return redirect('csp_app:city')
+                        a = master_location.objects.get(location_name= name.capitalize(), fk_city_code= city_fk, status= active_status)
+                        messages.error(request, "city Already Exist")
+                        return redirect('csp_app:city')
+                    except ObjectDoesNotExist:
+                        selected.location_name = name.capitalize()
+                        selected.fk_city_code = city_fk
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = datetime.now()
+                        selected.save()
+                        messages.success(request, "Sub city Updated Successfully")
+                        return redirect('csp_app:location')
+                else:
+                    messages.warning(request, "Sub state Name Cannot Be Blank")
+                    return redirect('csp_app:location')         
+           
+        return render(request, 'csp_app/editlocation.html', {'view_location_list': selected,'city_list': city_list, 'state_list': state_list, 'region_list': region_list, 'entity_list': entity_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_location(request):
+    try:
+        if request.method == 'POST':
+            city_id = request.POST.get("delete_id")
+            city_t = master_location.objects.filter(fk_city_code=city_id, status=active_status)
+            city_c = master_candidate.objects.filter(fk_city_code=city_id, status=active_status)
+            if len(city_t) >= 1 or len(city_c) >= 1:
+                messages.error(request, "city Refrenced By Other Module Cannot Delete")
+                return redirect('csp_app:city')
+            else:
+                selected = master_location.objects.get(pk = city_id, status= active_status)
+                selected.status = deactive_status
+                selected.modified_by = str(request.user)
+                selected.modified_date_time = datetime.now()
+                selected.save()
+                messages.success(request, "Sub city Deleted Successfully")
+                return redirect('csp_app:location')
+        return render(request, 'csp_app/location.html', {})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -697,9 +1851,6 @@ def  create_user(request):
         password = User.objects.make_random_password()
         assign_group = Group.objects.get(name=group) 
         
-        # new_user = User(username= usrname, password=password, first_name= firstname, last_name=lastname, email=email, groups.set_group(group))        
-        # new_user.save()
-        # print("saved")
         user = User.objects.create_user(usrname)
         password = User.objects.make_random_password()
         print(password)
@@ -788,24 +1939,20 @@ def csp_login(request):
                 group = request.user.groups.all()
                 for groupname in group:
                     group_name = groupname
-                print(group_name)
-                print(usrname)
-
-                print(request.user.groups.all()[0].name)
-                print(request.session.session_key)
+                # print(group_name)
+                # print(usrname)
+                # print(request.user.groups.all()[0].name)
+                # print(request.session.session_key)
                 # print(type(group_name))
                 # print(str(group_name))
                 # print(str(group_name) == 'Admin')
                 if str(group_name) == 'Admin':
-                    print("here")
                     messages.success(request, "Login Successfull")
                     return redirect('csp_app:entity')
                 elif str(group_name) == 'Vendor':
-                    print("here 2")
                     messages.success(request, "Login Successfull")
                     return redirect('csp_app:candidate')
                 else:
-                    print("here3")
                     messages.success(request, "Login Successfull")
                     return redirect('csp_app:candidate')
             else:
