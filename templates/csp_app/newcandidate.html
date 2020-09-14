@@ -27,37 +27,48 @@
         <form method="POST" autocomplete="off">
             {% csrf_token %}
             <div class="forms-input-holder">
+                <label for="">First Name</label>
                 <input type="text" placeholder="First Name" name="c_firstname" id="c_firstname" required="true" autocapitalize="on" autofocus="true" tabindex="1"  >
             </div>
             <div class="forms-input-holder">
+                <label for="">Middle Name</label>
                 <input type="text" placeholder="Middle Name" name="c_middlename" id="c_middlename" required="true" autocapitalize="on" tabindex="2">
             </div>
             <div class="forms-input-holder">
+                <label for="">Last Name</label>
                 <input type="text" placeholder="Last Name" name="c_lastname" id="c_lastname" required="true" autocapitalize="on" tabindex="3">
             </div>
             <div class="forms-input-holder">
+                <label for="">Date of Birth</label>
                 <input type="date" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
             </div>
             <div class="forms-input-holder">
+                <label for="">Date of Joining</label>
                 <input type="date" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
             </div>
             <div class="forms-input-holder">
+                <label for="">Father Name</label>
                 <input type="text" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
             </div>
             
             <div class="forms-input-holder">
+                <label for="">Aadhaar Number</label>
                 <input type="text" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
             </div>
             <div class="forms-input-holder">
+                <label for="">PAN Number</label>
                 <input type="text" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
             </div>
             <div class="forms-input-holder">
+                <label for="">Contact Number</label>
                 <input type="text" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
             </div>
             <div class="forms-input-holder">
+                <label for="">Emergency Contact</label>
                 <input type="text" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
             </div>
             <div class="forms-input-holder">
+                <label for="">Type Of Hiring</label>
                 <select name="c_hiring_type" id="" >
                     <option value="" disabled selected>Type Of Hiring</option>
                     {% if hiring_type_list %}
@@ -69,9 +80,11 @@
             </div>
 
             <div class="forms-input-holder">
+                <label for="">Replacement UID </label>
                 <input type="text" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
             </div>
             <div class="forms-input-holder">
+                <label for="">Sub Source</label>
                 <select name="c_sub_source" id="" >
                     <option value="" disabled selected>Sub Source</option>
                     {% if sub_source_list %}
@@ -82,10 +95,12 @@
                 </select>
             </div>
             <div class="forms-input-holder" >
+                <label for="">Referal UID</label>
                 <input type="text" placeholder="Referral" name="c_referral" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
             </div>
-            <label for="">Entity</label>
             <div class="forms-input-holder">
+            <label for="">Entity</label>
+
                 <select name="c_entity" id="c_entity" required="true">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
@@ -96,8 +111,9 @@
                 </select>
             </div>
 
-            <label for="">Vendor</label>
             <div class="forms-input-holder">
+            <label for="">Vendor</label>
+
                 <select name="c_vendor" id="c_vendor" required="true">
                     <option value="" disabled selected>Select vendor</option>
                     {% if vendor_list %}
@@ -108,8 +124,9 @@
                 </select>
             </div>
         
-            <label for="">Department</label>
             <div class="forms-input-holder">
+            <label for="">Department</label>
+
                 <select name="c_dept" id="c_dept" required="true" disabled="true">
                     <option value="" disabled selected>Select department</option>
                     {% if department_list %}
@@ -119,8 +136,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">Function</label>
             <div class="forms-input-holder">
+            <label for="">Function</label>
+
                 <select name="c_function" id="c_function" required="true" disabled="true">
                     <option value="" disabled selected>Select Function</option>
                     {% if function_list %}
@@ -130,8 +148,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">Team</label>
             <div class="forms-input-holder">
+            <label for="">Team</label>
+
                 <select name="c_team" id="c_team" required="true"  disabled="true">
                     <option value="" disabled selected>Select Team</option>
                     {% if team_list %}
@@ -141,8 +160,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">Sub Team</label>
             <div class="forms-input-holder">
+            <label for="">Sub Team</label>
+
                 <select name="c_subteam" id="c_subteam" required="true" disabled="true">
                     <option value="" disabled selected>Select Sub Team</option>
                     {% if sub_team_list %}
@@ -152,8 +172,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">Designation</label>
             <div class="forms-input-holder">
+            <label for="">Designation</label>
+
                 <select name="c_desg" id="c_desg" required="true" disabled="true">
                     <option value="" disabled selected>Select Designation</option>
                     {% if designation_list %}
@@ -163,8 +184,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">Region</label>
             <div class="forms-input-holder">
+            <label for="">Region</label>
+
                 <select name="c_region" id="c_region" required="true" disabled="true">
                     <option value="" disabled selected>Select Region</option>
                     {% if region_list %}
@@ -174,8 +196,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">State</label>
             <div class="forms-input-holder">
+            <label for="">State</label>
+
                 <select name="c_state" id="c_state" required="true" disabled="true">
                     <option value="" disabled selected>Select State</option>
                     {% if state_list %}
@@ -185,8 +208,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">City</label>
             <div class="forms-input-holder">
+            <label for="">City</label>
+
                 <select name="c_city" id="c_city" required="true" disabled="true">
                     <option value="" disabled selected>Select City</option>
                     {% if city_list %}
@@ -196,8 +220,9 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">Location</label>
             <div class="forms-input-holder">
+            <label for="">Location</label>
+
                 <select name="c_location" id="c_location" required="true" disabled="true">
                     <option value="" disabled selected>Select Location</option>
                     {% if location_list %}
@@ -209,14 +234,19 @@
             </div>
 
             <div class="forms-input-holder">
+            <label for="">Reporting Manager</label>
+
                 <input type="text" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
             </div>
             <div class="forms-input-holder">
+            <label for="">Reporting Manager Email ID</label>
+
                 <input type="email" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" required="true">
             </div>
            
-            <label for="">Gender</label>
             <div class="forms-input-holder">
+            <label for="">Gender</label>
+
                 <select name="c_gender" id="c_gender" required="true">
                     <option value="" disabled selected>Select Gender</option>
                     {% if gender_list %}
@@ -226,16 +256,18 @@
                     {% endif %}
                 </select>
             </div>
-            <label for="">Email ID Creation</label>
             <div class="forms-input-holder">
+            <label for="">Email ID Creation</label>
+
                 <select name="c_email_creation" id="c_email_creation" required="true">
                     <option value="" disabled selected>Email ID Creation</option>
                     <option value="Yes" >Yes</option>
                     <option value="No" >No</option>                    
                 </select>
             </div>
-            <label for="">Laptop Allocation</label>
             <div class="forms-input-holder">
+            <label for="">Laptop Allocation</label>
+
                 <select name="c_laptop_allocation" id="c_laptop_allocation" required="true">
                     <option value="" disabled selected>Laptop Allocation</option>
                     {% if laptop_allocation_list %}
@@ -245,8 +277,9 @@
                     {% endif %}                    
                 </select>
             </div>
-            <label for="">Salary Type</label>
             <div class="forms-input-holder">
+            <label for="">Salary Type</label>
+
                 <select name="c_salary_type" id="c_salary_type" required="true">
                     <option value="" disabled selected>Select Salary Type</option>
                     {% if salary_type_list %}
@@ -257,6 +290,8 @@
                 </select>
             </div>
             <div class="forms-input-holder">
+            <label for="">Gross Salary</label>
+
                 <input type="text" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
             </div>
         
