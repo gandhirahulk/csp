@@ -80,11 +80,11 @@
             {% csrf_token %}             
             <div class="forms-input-holder">
                 <label for="">First Name</label>
-                <input type="text" placeholder="First Name" name="firstname" required="true">
+                <input type="text" placeholder="First Name" name="firstname" required="true" id="firstname">
             </div>
             <div class="forms-input-holder">
                 <label for="">Last Name</label>
-                <input type="text" placeholder="Last Name" name="lastname" required="true">
+                <input type="text" placeholder="Last Name" name="lastname" id="lastname" required="true">
             </div>
             <div class="forms-input-holder">
                 <label for="">Email ID</label>
@@ -92,7 +92,7 @@
             </div>
             <div class="forms-input-holder">
                 <label for="">User Group</label>
-                <select name="usergroup" id="" >
+                <select name="usergroup" id="" required="true" >
                     <option value="" disabled selected>User Type</option>
                     {% if group_list %}
                         {% for eachgroup in group_list %}

@@ -344,6 +344,8 @@ def delete_entity(request):
                 return redirect('csp_app:entity')
             else:
                 selected_entity = master_entity.objects.get(pk = entity_id, status= active_status)
+                selected_entity.modified_by = str(request.user)
+                selected_entity.modified_date_time = datetime.now()
                 selected_entity.status = deactive_status
                 selected_entity.save()
                 messages.success(request, "Entity Deleted Successfully")
@@ -461,12 +463,20 @@ def delete_vendor(request):
                 messages.error(request, "Vendor Refrenced By Other Module Cannot Delete")
                 return redirect('csp_app:vendor')
             else:
-                selected_vendor = master_vendor.objects.get(pk = vendor_id, status= active_status)
-                selected_user = User.objects.get(username= selected_vendor.vendor_email_id)
-                selected_user.is_active = False
-                selected_user.save()
-                selected_vendor.status = deactive_status
-                selected_vendor.save()
+                selected_vendor = master_vendor.objects.get(pk = vendor_id)
+                try:
+                    a = str(selected_vendor.vendor_email_id)
+                    print(a)
+                    selected_user = User.objects.get(email= a)
+                    selected_user.is_active = False
+                    selected_user.save()
+                    selected_vendor.modified_by = str(request.user)
+                    selected_vendor.modified_date_time = datetime.now()
+                    selected_vendor.status = deactive_status
+                    selected_vendor.save()
+                except ObjectDoesNotExist:
+                    messages.error("Vendor Account Not Found")
+                    return redirect('csp_app:vendor')
                 msg = 'Vendor account disabled for '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' by ' + str(request.user) + ' .'
                 send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com',[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
       
@@ -479,13 +489,15 @@ def delete_vendor(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_vendor(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+
     vendor_list = master_vendor.objects.filter(status = active_status)
     try:
         if request.method == 'POST':
             vendor_id = request.POST.get("view_id")
             selected_vendor = master_vendor.objects.filter(pk = vendor_id)         
            
-        return render(request, 'csp_app/editvendor.html', {'view_vendor_list': selected_vendor, 'vendor_list': vendor_list})
+        return render(request, 'csp_app/editvendor.html', {'view_vendor_list': selected_vendor,'entity_list':entity_list, 'vendor_list': vendor_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -526,6 +538,9 @@ def save_edit_vendor(request):
                     vendor.modified_by = str(request.user)
                     vendor.modified_date_time = datetime.now()
                     vendor.save()
+                    msg = 'Vendor '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' Updated by ' + str(request.user) + ' .'
+                    send_mail('Vendor Account Updated', msg,'workmail052020@gmail.com',[ vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
+      
                     messages.success(request, "Vendor Updated Successfully")
                     return redirect('csp_app:vendor')
                
@@ -634,7 +649,7 @@ def create_vendor(request):
         new_vendor.save()
         msg = 'New Vendor account created for '+ vendor_name +' with Username " ' + vendor_email + '" and  Password " ' + password + '" " ."'
         send_mail('New Vendor Account Created', msg,'workmail052020@gmail.com',[ vendor_email, 'sadaf.shaikh@udaan.com'],fail_silently=False)
-        messages.success(request, "vendor Saved Successfully")
+        messages.success(request, "Vendor Saved Successfully. Credentials Sent Through Mail.")
         return redirect('csp_app:vendor')
     return render(request, 'csp_app/vendor.html', {})
 
@@ -660,6 +675,8 @@ def delete_department(request):
             else:
                 selected_department = master_department.objects.get(pk = department_id, status= active_status)
                 selected_department.status = deactive_status
+                selected_department.modified_by = str(request.user)
+                selected_department.modified_date_time = datetime.now()
                 selected_department.save()
                 messages.success(request, "Department Deleted Successfully")
                 return redirect('csp_app:department')
@@ -744,6 +761,7 @@ def save_edit_department(request):
                         return redirect('csp_app:department')
                     except ObjectDoesNotExist:
                         selected.department_name = name.capitalize()
+                        selected.fk_entity_code = entity_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
                         selected.save()
@@ -1423,13 +1441,14 @@ def save_edit_region(request):
                         return redirect('csp_app:region')
                     except ObjectDoesNotExist:
                         selected.region_name = name.capitalize()
+                        selected.fk_entity_code =entity_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
                         selected.save()
-                        messages.success(request, "region Updated Successfully")
+                        messages.success(request, "Region Updated Successfully")
                         return redirect('csp_app:region')
                 else:
-                    messages.warning(request, "region Name Cannot Be Blank")
+                    messages.warning(request, "Region Name Cannot Be Blank")
                     return redirect('csp_app:region')         
            
         return render(request, 'csp_app/editregion.html', {'view_region_list': region, 'region_list': region_list, 'entity_list': entity_list})
