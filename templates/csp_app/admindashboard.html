@@ -132,7 +132,14 @@
                 <img src="{% static 'csp_app/images/udaanredlogo.png' %}" alt="Company Logo" style="width: 55px;"></a>
             </div>
             <div class="search-input">
-              <input type="search" name="" id="search-bar" placeholder="search here">
+              <input type="search" name="search_c" id="search-bar" placeholder="search name, phone, email" list="emp-panel-list" onkeyup="showDatalist('search-c-panel-input', 'hidden-c-panel-list', 'c-panel-list' )">
+              <datalist id="hidden-c-panel-list">
+                  {% if allcandidates %}          
+                      {% for eachc in allcandidates %}                 
+                          <option value="{{ eachc.pk }} "  style="outline: none !important;"> {{ eachc.pk }} | {{ eachc.First_Name }} {{ eachc.Last_Name }} | {{ eachc.Contact_Number }} | {{ eachc.Personal_Email_Id }} </option>
+                      {% endfor %}       
+                  {% endif %}
+              </datalist>
             </div>
             <ul>
               {% if request.user.is_staff %}
@@ -148,6 +155,50 @@
             </ul>
           </div>
         </div>
+        <!-- <div id="search-emp-panel" class="search-emp-panel_modal">
+          <div class="search-emp-panel_modal_header">
+              <span class="search-emp-panel-close" id="close-search-panel-span">&times;</span>
+              Employee Details
+          </div>
+          <div class="search-emp-panel_modal-content">
+              <div class="search_section">                  
+                  {% if employees %}          
+                      {% for eachemp in employees %} 
+                          <div id="{{ eachemp.emp_code }}" style="display: none;" class="search-emp-contents">
+                              <div>
+                                  <table style="width: 100%;">
+                                      <tr>
+                                          <td rowspan="3" style="border-bottom: none;">
+                                          <div>
+                                              <img src="{% static 'Associate_app/images/dummy.png' %}" alt="Employee Photo" title="{{ eachemp.first_name }} {{ eachemp.middle_name }} {{ eachemp.last_name }} Photo" style="width: 200px; border-radius: 50%;">
+                                          </div>
+                                          </td>
+                                          <td style="border-bottom: none;" ><i class="fas fa-address-card" title="UID"></i> {{ eachemp.emp_code }}</td>
+                                          <td style="border-bottom: none;"><i class="fas fa-user" title="Employee Name"></i> {{ eachemp.first_name }} {{ eachemp.middle_name }} {{ eachemp.last_name }}</td>
+                                          <td style="border-bottom: none;"><i class="fas fa-mobile-alt" title="Mobile Number"></i> {{ eachemp.mobile_number }}</td>
+                                      </tr>
+                                     <tr>                                           
+                                         <td style="border-bottom: none;"><i class="fas fa-envelope" title="Official E-mail ID"></i> {{ eachemp.official_email }}</td>
+                                         <td style="border-bottom: none;"><i class="fas fa-city" title="Company Name"></i> {{ eachemp.fk_company_code }}</td>
+                                         <td style="border-bottom: none;"><i class="fas fa-briefcase" title="Function"></i> {{ eachemp.fk_function_code }}</td>
+                                     </tr>
+                                     <tr>
+                                         <td style="border-bottom: none;"><i class="fas fa-user-tag" title="Role"></i> {{ eachemp.fk_role_code }}</td>
+                                         <td style="border-bottom: none;"><i class="fas fa-portrait" title="Designation"></i> {{ eachemp.fk_designation_code }}</td>
+                                         <td style="border-bottom: none;"></td>
+                                     </tr>
+                                 </table>
+
+                              </div>
+                          </div>
+                      {% endfor %}
+                  {% endif %}
+              </div>
+          </div>
+          <div class="search-emp-panel_modal_footer">
+              <button class="basic-save-btn" id="close-search-emp-panel" style="float: none;">Close</button>
+          </div>
+        </div> -->
         {% if request.user.is_staff %}
         <div class="sidebar">
             <ul>
@@ -259,6 +310,20 @@
                   $( '#alerts' ).removeClass( 'animate__animated animate__slideInRight animate__fast' ).addClass( 'animate__animated animate__slideOutRight animate__fast' );
               }
       setTimeout("hidediv()", 3000);
+
+      function showDatalist(inputid, listid, newlistid){
+        var datalist_input = document.getElementById(inputid);
+        var toshow_datalist = document.getElementById(listid);
+        if (datalist_input.value.length >= 1) {
+                toshow_datalist.setAttribute("id", newlistid);
+            } else {
+                toshow_datalist.setAttribute("id", "");
+            }
+        if (datalist_input.value === ''){
+          toshow_datalist.setAttribute("id", "");
+        }
+
+      }
     </script>
 </body>
 </html>

@@ -1865,6 +1865,7 @@ def delete_location(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_user_view(request):
+    print(request.user)
     user_list = User.objects.all().exclude(is_superuser=True)
     group_list = Group.objects.all()    
     return render(request, 'csp_app/create_user.html', {'user_list': user_list, 'group_list': group_list})
@@ -1914,10 +1915,13 @@ def  disable_user(request):
     try:
         if request.method == 'POST':
             user_id = request.POST.get("disable_id")
-            if user_id == None:
+            if user_id == None or user_id == '':
                 messages.warning(request, "Username Not Found")
                 return redirect('csp_app:user')
             selected_user = User.objects.get(pk = user_id)
+            if selected_user.username == request.user:
+                messages.warning(request, "Cannot Disable Self")
+                return redirect('csp_app:user')
             selected_user.is_active = False
             selected_user.save()
             messages.success(request, "User Disabled")
