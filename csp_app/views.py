@@ -464,19 +464,19 @@ def delete_vendor(request):
                 return redirect('csp_app:vendor')
             else:
                 selected_vendor = master_vendor.objects.get(pk = vendor_id)
-                try:
-                    a = str(selected_vendor.vendor_email_id)
-                    print(a)
-                    selected_user = User.objects.get(email= a)
-                    selected_user.is_active = False
-                    selected_user.save()
-                    selected_vendor.modified_by = str(request.user)
-                    selected_vendor.modified_date_time = datetime.now()
-                    selected_vendor.status = deactive_status
-                    selected_vendor.save()
-                except ObjectDoesNotExist:
-                    messages.error("Vendor Account Not Found")
-                    return redirect('csp_app:vendor')
+                # try:
+                a = str(selected_vendor.vendor_email_id)
+                print(a)
+                selected_user = User.objects.get(email= a)
+                selected_user.is_active = False
+                selected_user.save()
+                selected_vendor.modified_by = str(request.user)
+                selected_vendor.modified_date_time = datetime.now()
+                selected_vendor.status = deactive_status
+                selected_vendor.save()
+                # except ObjectDoesNotExist:
+                #     messages.error(request, "Vendor Account Not Found")
+                #     return redirect('csp_app:vendor')
                 msg = 'Vendor account disabled for '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' by ' + str(request.user) + ' .'
                 send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com',[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
       
@@ -530,6 +530,10 @@ def save_edit_vendor(request):
                     messages.error(request, "Vendor Already Exist")
                     return redirect('csp_app:vendor')
                 except ObjectDoesNotExist:
+                    selected_user = User.objects.get(email=vendor_email)
+                    selected_user.email = vendor_email
+                    selected_user.first_name = vendor_name
+                    selected_user.save()
                     vendor.vendor_name = vendor_name.capitalize()
                     vendor.spoc_name = vendor_spoc
                     vendor.spoc_email_id = vendor_spoc_email
@@ -538,7 +542,7 @@ def save_edit_vendor(request):
                     vendor.modified_by = str(request.user)
                     vendor.modified_date_time = datetime.now()
                     vendor.save()
-                    msg = 'Vendor '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' Updated by ' + str(request.user) + ' .'
+                    msg = 'Vendor '+ str(vendor.vendor_name) +' with Username " ' + str(vendor.vendor_email_id) + ' Updated by ' + str(request.user) + ' .'
                     send_mail('Vendor Account Updated', msg,'workmail052020@gmail.com',[ vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
       
                     messages.success(request, "Vendor Updated Successfully")
