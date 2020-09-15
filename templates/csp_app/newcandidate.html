@@ -28,15 +28,15 @@
             {% csrf_token %}
             <div class="forms-input-holder">
                 <label for="">First Name</label>
-                <input type="text" placeholder="First Name" name="c_firstname" id="c_firstname" required="true" autocapitalize="on" autofocus="true" tabindex="1"  >
+                <input type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true" autocapitalize="on" autofocus="true" tabindex="1"  >
             </div>
             <div class="forms-input-holder">
                 <label for="">Middle Name</label>
-                <input type="text" placeholder="Middle Name" name="c_middlename" id="c_middlename" required="true" autocapitalize="on" tabindex="2">
+                <input type="text" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename" required="true" autocapitalize="on" tabindex="2">
             </div>
             <div class="forms-input-holder">
                 <label for="">Last Name</label>
-                <input type="text" placeholder="Last Name" name="c_lastname" id="c_lastname" required="true" autocapitalize="on" tabindex="3">
+                <input type="text" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname" required="true" autocapitalize="on" tabindex="3">
             </div>
             <div class="forms-input-holder">
                 <label for="">Date of Birth</label>
@@ -81,7 +81,7 @@
 
             <div class="forms-input-holder">
                 <label for="">Replacement UID </label>
-                <input type="text" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
+                <input type="text" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
             </div>
             <div class="forms-input-holder">
                 <label for="">Sub Source</label>
@@ -96,7 +96,7 @@
             </div>
             <div class="forms-input-holder" >
                 <label for="">Referal UID</label>
-                <input type="text" placeholder="Referral" name="c_referral" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
+                <input type="text" placeholder="Referral" name="c_referral" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
             </div>
             <div class="forms-input-holder">
             <label for="">Entity</label>
@@ -191,7 +191,7 @@
                     <option value="" disabled selected>Select Region</option>
                     {% if region_list %}
                         {% for eachregion in region_list %}
-                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_designation_code_id }}</option>
+                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -236,7 +236,7 @@
             <div class="forms-input-holder">
             <label for="">Reporting Manager</label>
 
-                <input type="text" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[A-Za-z0-9]{,5}" autocapitalize="on">
+                <input type="text" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
             </div>
             <div class="forms-input-holder">
             <label for="">Reporting Manager Email ID</label>
@@ -303,5 +303,324 @@
     </div>
   
   </div>
+  <script>
+    $(document).ready(function(){
+        showMe('Candidate', 'can-expand');
+        $('#c_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_dept option').length;
+            var count = 0;
+            $('#c_dept option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_dept').append($('<option>', {
+                    value: '',
+                    text: '',
+                    label: 'Select Department',
+                    selected: true
+                }));
+            $('#c_dept').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_dept').val(filter);
+            });
+            if (count === total){
+                $('#c_dept').attr("disabled", true)
+            }
+            // var l = $('#c_dept option').length ;
+            // if (l === 1){
+            //     $('#c_dept').append($('<option>', {
+            //         value: '',
+            //         text: 'Select Department',
+            //         label: 'Select Department',
+            //         selected: true
+            //     }));
+            // }
+        });
 
+        $('#c_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_vendor option').length;
+            var count = 0;
+            $('#c_vendor option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_vendor').append($('<option>', {
+                    value: '',
+                    text: '',
+                    label: 'Select Vendor',
+                    selected: true
+                }));
+            $('#c_vendor').attr("disabled", false);
+
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_vendor').val(filter);
+            });
+            if (count === total){
+                $('#c_vendor').attr("disabled", true)
+            }
+            // var l = $('#c_vendor option').length ;
+            // if (l === 1){
+            //     $('#c_vendor').append($('<option>', {
+            //         value: '',
+            //         text: 'Select Department',
+            //         label: 'Select Department',
+            //         selected: true
+            //     }));
+            // }
+        });
+
+        
+        $('#c_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_region option').length;
+            var count = 0;
+            $('#c_region option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_region').append($('<option>', {
+                    value: '',
+                    text: '',
+                    label: 'Select Region',
+                    selected: true
+                }));
+            $('#c_region').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_region').val(filter);
+            });
+            if (count === total){
+                $('#c_region').attr("disabled", true)
+            }
+            // var l = $('#c_region option').length ;
+            // if (l === 1){
+            //     $('#c_region').append($('<option>', {
+            //         value: '',
+            //         text: 'Select Department',
+            //         label: 'Select Department',
+            //         selected: true
+            //     }));
+            // }
+        });
+
+        
+        $('#c_region').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_state option').length;
+            var count = 0;
+            $('#c_state option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_state').append($('<option>', {
+                    value: '',
+                    text: '',
+                    label: 'Select State',
+                    selected: true
+                }));
+            $('#c_state').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_state').val(filter);
+            });
+            if (count === total){
+                $('#c_state').attr("disabled", true)
+            }
+            // var l = $('#c_state option').length ;
+            // if (l === 1){
+            //     $('#c_state').append($('<option>', {
+            //         value: '',
+            //         text: '',
+            //         label: 'Select State',
+            //         selected: true
+            //     }));
+            // }
+        });
+
+        
+        $('#c_state').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_city option').length;
+            var count = 0;
+            $('#c_city option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_city').append($('<option>', {
+                    value: '',
+                    text: '',
+                    label: 'Select City',
+                    selected: true
+                }));
+            $('#c_city').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_city').val(filter);
+            });
+            if (count === total){
+                $('#c_city').attr("disabled", true)
+            }
+            // var l = $('#c_city option').length ;
+            // if (l === 1){
+            //     $('#c_city').append($('<option>', {
+            //         value: '',
+            //         text: 'Select Department',
+            //         label: 'Select Department',
+            //         selected: true
+            //     }));
+            // }
+        });
+
+        
+        $('#c_city').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_location option').length;
+            var count = 0;
+            $('#c_location option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_location').append($('<option>', {
+                    value: '',
+                    text: '',
+                    label: 'Select Location',
+                    selected: true
+                }));
+            $('#c_location').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_location').val(filter);
+            });
+            if (count === total){
+                $('#c_location').attr("disabled", true)
+            }
+            // var l = $('#c_location option').length ;
+            // if (l === 1){
+            //     $('#c_location').append($('<option>', {
+            //         value: '',
+            //         text: 'Select Department',
+            //         label: 'Select Department',
+            //         selected: true
+            //     }));
+            // }
+        });
+
+        $('#c_dept').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_function option').length;
+            var count = 0;
+            $('#c_function option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_function').append($('<option>', {
+                    value: '',
+                    text: '',
+                    label: 'Select Function',
+                    selected: true
+                }));
+            $('#c_function').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_function').val(filter);
+            });
+            if (count === total){
+                $('#c_function').attr("disabled", true)
+            }
+            // var l = $('#c_function option').length ;
+            // if (l === 1){
+            //     $('#c_function').append($('<option>', {
+            //         value: '',
+            //         text: 'Select Function',
+            //         label: 'Select Function',
+            //         selected: true
+            //     }));
+            // }
+        });
+        $('#c_function').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_team option').length;
+            var count = 0;
+            $('#c_team option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_team').append($('<option>', {
+                    value: '',
+                    text: '',
+                    label: 'Select Team',
+                    selected: true
+                }));
+            $('#c_team').attr("disabled", false);
+                $(this).show();
+                $('#c_team').append($('<option>', {
+                    value: '',
+                    text: 'Select Team',
+                    label: 'Select Team',
+                    selected: "true"
+                }));
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_team').val(filter);
+            });
+            if (count === total){
+                $('#c_team').attr("disabled", true)
+            }
+            // var l = $('#c_team option').length ;
+            // if (l === 1){
+            //     $('#c_team').append($('<option>', {
+            //         value: '',
+            //         text: 'Select Team',
+            //         label: 'Select Team',
+            //         selected: true
+            //     }));
+            // }
+        });
+
+        $('#c_team').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_subteam option').length;
+            var count = 0;
+            $('#c_subteam option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_subteam').append($('<option>', {
+                    value: '',
+                    text: '',
+                    label: 'Select Sub Team',
+                    selected: true
+                }));
+            $('#c_subteam').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_subteam').val(filter);
+            });
+            if (count === total){
+                $('#c_subteam').attr("disabled", true)
+            }
+            // var l = $('#c_subteam option').length ;
+            // if (l === 1){
+            //     $('#c_subteam').append($('<option>', {
+            //         value: '',
+            //         text: 'Select Sub Team',
+            //         label: 'Select_Sub Team',
+            //         selected: true
+            //     }));
+            // }
+        });
+    })
+</script>
   {% endblock %}

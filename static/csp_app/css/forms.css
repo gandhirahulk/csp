@@ -35,6 +35,12 @@
     justify-content: left;
 }
 
+.forms-doc-label-holder{
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: left;
+}
+
 .forms-input-holder > input,
 .forms-input-holder > select,
 .search-input > input,

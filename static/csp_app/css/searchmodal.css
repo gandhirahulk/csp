@@ -1,0 +1,100 @@
+
+.search-emp-panel_modal::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .search-emp-panel_modal {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    display: none; 
+    position: fixed;
+    z-index: 9000 !important;
+    padding-top: 7rem;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /* background-color: rgb(0,0,0); */
+    background-color: rgba(0,0,0,0.3);
+  }
+  
+  
+  .search-emp-panel_modal-content::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .search-emp-panel_modal-content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    background-color: #f5f5fa;
+    margin: auto;
+    width: 40%;
+    overflow: auto;
+    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+  
+  .search-emp-panel_modal-content span i{
+    position: absolute; 
+    color: var(--primary-forecolor); 
+    font-size: 18px; 
+    padding: 11px 10px 10px 15px;
+  }
+  
+  .search-emp-panel_modal-content input{
+    border: none;     
+    border-radius: 7px;
+    outline-width: 0px;
+    /* background: #F7F7FB;  */
+    width: 100%; 
+    padding: 10px; 
+    padding-left: 55px;
+    box-shadow: 0px 1px 3px 0px lightgrey;
+  }
+
+  
+  
+.search-emp-panel_modal_header{
+    /* background-color: #1A1F23; */
+    /* background-color: #bf0711; */
+    color: #f5f5fa;
+    background-color: #bf0711;
+    font-size: 20px;
+    margin: auto;
+    padding: 15px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 40%;
+    line-height: 0.6;
+    height: 45px;
+  } 
+  
+  
+  .search-emp-panel_modal_footer{
+    background-color: #f5f5fa;
+    margin: auto;
+    padding: 15px;
+    padding-top: 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 40%;
+    height: 60px;
+    text-align: center;
+  }
+  
+  .search-emp-panel_modal_header,
+  .search-emp-panel_modal-content,
+  .search-emp-panel_modal_footer{
+    width: 80vw;
+  }
+  
+  /* .search-emp-panel_modal-content{
+    height: 80px;
+  } */
+  
+  /* .search-emp-panel_modal{
+    padding-top: 10%;
+  } */
+  

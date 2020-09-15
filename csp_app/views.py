@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.db.utils import IntegrityError
 from csp_app.models import status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
-                            sub_source, salary_type, gender, laptop_allocation
+                            sub_source, salary_type, gender, laptop_allocation, candidate_status
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required, permission_required, 
 
 active_status = status.objects.get(pk=1)
 deactive_status = status.objects.get(pk=2)
+pending_status = candidate_status.objects.get(pk=1)
 
 @login_required(login_url='/notlogin/')
 def candidate(request):
@@ -110,7 +111,7 @@ def edit_candidate(request):
     'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'selected_candidate': candidate_list })
 
 @login_required(login_url='/notlogin/')
-def candidate_document(request): 
+def candidate_document(request, cid): 
     if request.method != 'POST':
         candidate_id = request.POST.get("view_id")   
         entity_list = master_entity.objects.filter(status = active_status)
@@ -129,12 +130,12 @@ def candidate_document(request):
         salary_type_list = salary_type.objects.filter(status= active_status)
         gender_list = gender.objects.filter(status= active_status)
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
-        candidate_list = master_candidate.objects.filter(pk=candidate_id)
+        view_candidate = master_candidate.objects.filter(pk=cid)
     return render(request, 'csp_app/document.html', {'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'selected_candidate': candidate_list })
+    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'view_candidate': candidate_list })
 
 
 @login_required(login_url='/notlogin/')
@@ -257,7 +258,7 @@ def create_candidate(request):
             Sub_Source= subsource_fk, Referral= referral, fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
             fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk,
             Reporting_Manager= reporting_manager, Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation,
-            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user))
+            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status)
             new_candidate.save()
             msg = 'Candidate account created'
             send_mail('Candidate Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com', reporting_manager_email, vendor_fk.spoc_email_id],fail_silently=False)
@@ -279,6 +280,38 @@ def view_candidate(request):
         return render(request, 'csp_app/viewcandidate.html', {'view_candidate_list': view_candidate_list, 'candidate_list': candidate_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def change_candidate_status(request):
+    candidate_list = master_candidate.objects.filter(status = active_status)
+    try:
+        if request.method == 'POST':
+            candidate_id = request.POST.get("c_id")
+            status_id = request.POST.get("change_id")
+            if status_id == None or status_id == '':
+                messages.warning(request, "Please Change Status And Try Again")
+                return redirect('csp_app:candidate')
+            status = candidate_status.objects.get(pk = status_id)
+            if candidate_id == None or candidate_id == '':
+                messages.warning(request, "Candidate Not Found")
+                return redirect('csp_app:candidate')
+            candidate = master_candidate.objects.get(pk = candidate_id)
+            vendor_id = candidate.fk_vendor_code
+            vendor = master_vendor.objects.get(pk=vendor_id)
+            candidate_vendor_mailid = vendor.vendor_email_id
+            candidate.candidate_status = status
+            candidate.save()
+            msg = 'Candidate status updated for '+ str(candidate.First_Name) +' with candidate code " ' + str(candidate.pk) + ' by ' + str(request.user) + ' .'
+            send_mail('Candidate Status Updated', msg,'workmail052020@gmail.com',[ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],fail_silently=False)
+      
+            messages.success(request, "Candidate Status Updated")
+            return redirect('csp_app:candidates')
+        return render(request, 'csp_app/candidates.html', {})        
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+   
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -311,6 +344,8 @@ def delete_entity(request):
                 return redirect('csp_app:entity')
             else:
                 selected_entity = master_entity.objects.get(pk = entity_id, status= active_status)
+                selected_entity.modified_by = str(request.user)
+                selected_entity.modified_date_time = datetime.now()
                 selected_entity.status = deactive_status
                 selected_entity.save()
                 messages.success(request, "Entity Deleted Successfully")
@@ -428,12 +463,20 @@ def delete_vendor(request):
                 messages.error(request, "Vendor Refrenced By Other Module Cannot Delete")
                 return redirect('csp_app:vendor')
             else:
-                selected_vendor = master_vendor.objects.get(pk = vendor_id, status= active_status)
-                selected_user = User.objects.get(username= selected_vendor.vendor_email_id)
-                selected_user.is_active = False
-                selected_user.save()
-                selected_vendor.status = deactive_status
-                selected_vendor.save()
+                selected_vendor = master_vendor.objects.get(pk = vendor_id)
+                try:
+                    a = str(selected_vendor.vendor_email_id)
+                    print(a)
+                    selected_user = User.objects.get(email= a)
+                    selected_user.is_active = False
+                    selected_user.save()
+                    selected_vendor.modified_by = str(request.user)
+                    selected_vendor.modified_date_time = datetime.now()
+                    selected_vendor.status = deactive_status
+                    selected_vendor.save()
+                except ObjectDoesNotExist:
+                    messages.error("Vendor Account Not Found")
+                    return redirect('csp_app:vendor')
                 msg = 'Vendor account disabled for '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' by ' + str(request.user) + ' .'
                 send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com',[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
       
@@ -446,13 +489,15 @@ def delete_vendor(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_vendor(request):
+    entity_list = master_entity.objects.filter(status = active_status)
+
     vendor_list = master_vendor.objects.filter(status = active_status)
     try:
         if request.method == 'POST':
             vendor_id = request.POST.get("view_id")
             selected_vendor = master_vendor.objects.filter(pk = vendor_id)         
            
-        return render(request, 'csp_app/editvendor.html', {'view_vendor_list': selected_vendor, 'vendor_list': vendor_list})
+        return render(request, 'csp_app/editvendor.html', {'view_vendor_list': selected_vendor,'entity_list':entity_list, 'vendor_list': vendor_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -493,6 +538,9 @@ def save_edit_vendor(request):
                     vendor.modified_by = str(request.user)
                     vendor.modified_date_time = datetime.now()
                     vendor.save()
+                    msg = 'Vendor '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' Updated by ' + str(request.user) + ' .'
+                    send_mail('Vendor Account Updated', msg,'workmail052020@gmail.com',[ vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
+      
                     messages.success(request, "Vendor Updated Successfully")
                     return redirect('csp_app:vendor')
                
@@ -601,7 +649,7 @@ def create_vendor(request):
         new_vendor.save()
         msg = 'New Vendor account created for '+ vendor_name +' with Username " ' + vendor_email + '" and  Password " ' + password + '" " ."'
         send_mail('New Vendor Account Created', msg,'workmail052020@gmail.com',[ vendor_email, 'sadaf.shaikh@udaan.com'],fail_silently=False)
-        messages.success(request, "vendor Saved Successfully")
+        messages.success(request, "Vendor Saved Successfully. Credentials Sent Through Mail.")
         return redirect('csp_app:vendor')
     return render(request, 'csp_app/vendor.html', {})
 
@@ -627,6 +675,8 @@ def delete_department(request):
             else:
                 selected_department = master_department.objects.get(pk = department_id, status= active_status)
                 selected_department.status = deactive_status
+                selected_department.modified_by = str(request.user)
+                selected_department.modified_date_time = datetime.now()
                 selected_department.save()
                 messages.success(request, "Department Deleted Successfully")
                 return redirect('csp_app:department')
@@ -711,6 +761,7 @@ def save_edit_department(request):
                         return redirect('csp_app:department')
                     except ObjectDoesNotExist:
                         selected.department_name = name.capitalize()
+                        selected.fk_entity_code = entity_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
                         selected.save()
@@ -1390,13 +1441,14 @@ def save_edit_region(request):
                         return redirect('csp_app:region')
                     except ObjectDoesNotExist:
                         selected.region_name = name.capitalize()
+                        selected.fk_entity_code =entity_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
                         selected.save()
-                        messages.success(request, "region Updated Successfully")
+                        messages.success(request, "Region Updated Successfully")
                         return redirect('csp_app:region')
                 else:
-                    messages.warning(request, "region Name Cannot Be Blank")
+                    messages.warning(request, "Region Name Cannot Be Blank")
                     return redirect('csp_app:region')         
            
         return render(request, 'csp_app/editregion.html', {'view_region_list': region, 'region_list': region_list, 'entity_list': entity_list})
@@ -1832,6 +1884,7 @@ def delete_location(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_user_view(request):
+    print(request.user)
     user_list = User.objects.all().exclude(is_superuser=True)
     group_list = Group.objects.all()    
     return render(request, 'csp_app/create_user.html', {'user_list': user_list, 'group_list': group_list})
@@ -1881,10 +1934,14 @@ def  disable_user(request):
     try:
         if request.method == 'POST':
             user_id = request.POST.get("disable_id")
-            if user_id == None:
+            if user_id == None or user_id == '':
                 messages.warning(request, "Username Not Found")
                 return redirect('csp_app:user')
             selected_user = User.objects.get(pk = user_id)
+          
+            if str(selected_user.username) == str(request.user):
+                messages.warning(request, "Cannot Disable Self")
+                return redirect('csp_app:user')
             selected_user.is_active = False
             selected_user.save()
             messages.success(request, "User Disabled")

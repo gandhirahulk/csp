@@ -30,9 +30,9 @@
                 <th>Candidate Name</th>
                 <th>Contact Details</th>
                 <th>Designation</th>
-                <th>Documents</th>
+                <!-- <th>Documents</th> -->
                 <th>Status</th>
-                <th>Action</th>
+                <!-- <th>Action</th> -->
             </tr>
         </thead>
         <tbody>
@@ -48,11 +48,23 @@
                             <div>{{ eachcandidate.Contact_Number }}</div>
                         </td>
                         <td>{{ eachcandidate.fk_designation_code }}</td>
-                        <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td>
-                        <td>{{ eachcandidate.candidate_status }}</td>
-                        <td class="action-col">
+                        <!-- <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td> -->
+                        <td>
+                            <input type="hidden" value="{{ eachcandidate.pk }}" name="view_id" id="selected_id">
+                            <select name="c_status" id="c_status" onchange="showDelete('{{ eachcandidate.pk }}', 'change_candidate_status', 'change_me')">
+                                <option value="{{ eachcandidate.candidate_status_id }}" label="{{ eachcandidate.candidate_status }}" selected="True">{{ eachcandidate.candidate_status }}</option>
+                                {% if c_status_list %}
+                                    {% for eachstatus in c_status_list %}
+                                        {% if eachstatus.status_name != eachcandidate.candidate_status %}
+                                            <option value="{{ eachstatus.pk }}" label="{{ eachstatus.status_name }}">{{ eachstatus.status_name }}</option>
+                                        {% endif %}                                        
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                           </td>
+                        <!-- <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
-                        </td>
+                        </td> -->
                     </tr>
 
                 {% endfor %}                
@@ -327,6 +339,27 @@
   
   </div>
 
+  <div id="change_candidate_status" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2><span id='c_status_name'></span> the candidate?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="c_id" value="" name="c_id">
+            <button type="submit" formaction="{% url 'csp_app:change_candidate_status' %}" value="" id="change_me" name="change_id" class="forms-delete-btn">Confirm</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form> 
+        <!-- <br>
+        <p class="modal-msg">
+            If confirmed, this user will not be able to login to this site. 
+        </p>    -->
+    </div>    
+</div>
+
+
 <script>
     $(document).ready(function(){
         showMe('Candidate', 'can-expand');
@@ -536,5 +569,14 @@
         });
     })
 </script>
+<script>
+    function showDelete(itemid, formid, inputid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById(inputid).setAttribute("value", itemid);
+        document.getElementById("c_id").setAttribute("value", itemid);
 
+        var status = document.getElementById("c_status").val();
+        document.getElementById("c_status_name").setAttribute("text", status )
+    }
+</script>
 {% endblock %}

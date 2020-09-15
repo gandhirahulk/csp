@@ -1,0 +1,56 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} New Candidate {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>   
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+{% if view_candidate %}
+    {% for eachc in  view_candidate %}
+        <div class="crumbs"><span><a href="{% url 'csp_app:candidates' %}">Candidates</a></span>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <span>{{ eachc.pk }}</span>                
+            <span><i class="fas fa-chevron-right"></i></span>
+            <span>Documents</span>
+        </div>
+
+        <div class="candidate_form">
+            <div class="candidate_form_header">
+                <div class="forms-heading">
+                    <h2>Upload Candidate Documents</h2>
+                </div>
+                <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
+             
+            </div>
+            <div class="candidate_form_content">
+                <div class="forms-doc-label-holder">
+                    <label for="">Code :</label> {{ eachc.pk }} | <label for="">Candidate Name:</label> {{ eachc.First_Name }} {{ eachc.Middle_Name }} {{ eachc.Last_Name }} 
+                </div>
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="forms-input-holder">
+                        <label for="">File Name</label>
+                        <input type="text" placeholder="File Name" name="c_filename" id="c_filename" required="true" autofocus="true" tabindex="1"  >
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">Choose File</label>
+                        <input type="file" placeholder="File" name="c_file" id="c_file" required="true" tabindex="2">
+                    </div>
+                                    
+                      
+            </div>
+            <div class="candidate_form_footer">
+                    <button class="forms-save-btn" formaction="{% url 'csp_app:document' %}" type="submit">Save Candidate</button>
+         </form>
+            </div>
+          
+          </div>
+    {% endfor %}
+{% endif %} 
+{% endblock %}
