@@ -1,7 +1,16 @@
 function onlyAlphabets(event) {
     // checkDOJ();
     var value = String.fromCharCode(event.which);
-    var pattern = new RegExp(/[a-z ]/i);
+    // var pattern = new RegExp(/[a-z ]/i);
+    var pattern = new RegExp(/^[a-zA-Z.\s]{0,30}$/)
+    // var newvalue = str.replace("  ", " ");
+    return pattern.test(value);    
+}
+
+function alphaNumeric(event) {
+    // checkDOJ();
+    var value = String.fromCharCode(event.which);
+    var pattern = new RegExp(/[a-z ][0-9]/i);
     // var newvalue = str.replace("  ", " ");
     return pattern.test(value);    
 }

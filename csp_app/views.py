@@ -1919,7 +1919,8 @@ def  disable_user(request):
                 messages.warning(request, "Username Not Found")
                 return redirect('csp_app:user')
             selected_user = User.objects.get(pk = user_id)
-            if selected_user.username == request.user:
+          
+            if str(selected_user.username) == str(request.user):
                 messages.warning(request, "Cannot Disable Self")
                 return redirect('csp_app:user')
             selected_user.is_active = False
