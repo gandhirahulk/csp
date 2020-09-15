@@ -32,23 +32,24 @@
         <tbody>
             {% if user_list %}
                 {% for eachuser in user_list %}
-
-                    <tr>
-                        <td>{{ eachuser.username }}</td>
-                        <td>{{ eachuser.last_login }}</td>
-                        <td class="action-col" >
-                            <!-- <form action="" method="POST"> -->
-                                {% csrf_token %}
-                                <input type="hidden" value="{{ eachuser.pk }}" name="view_id" id="selected_id">
-                                {% if eachuser.is_active == True %} 
-                                    <i class="fas fa-check-circle" style="color: green;"></i><input type="submit" title="Disable User" style="color: green;" value="Enabled" onclick="showDelete('{{ eachuser.pk }}', 'disable_user_form', 'disable_me')"> 
-                                {% else %}
-                                    <i class="fas fa-ban" style="color:#e40b0b"></i><input type="submit" value="Disabled" formaction="{% url 'csp_app:enable_user' %}" title="Enable User" style="color:#e40b0b" onclick="showDelete('{{ eachuser.pk }}', 'enable_user_form', 'enable_me')">
-                                {% endif %}                            
-                            <!-- </form>                             -->
-                        </td>                        
-                            
-                    </tr>
+                    {% if eachuser.username != request.user %}
+                        <tr>
+                            <td>{{ eachuser.username }}</td>
+                            <td>{{ eachuser.last_login }}</td>
+                            <td class="action-col" >
+                                <!-- <form action="" method="POST"> -->
+                                    <!-- {% csrf_token %} -->
+                                    <input type="hidden" value="{{ eachuser.pk }}" name="view_id" id="selected_id">
+                                    {% if eachuser.is_active == True %} 
+                                        <i class="fas fa-check-circle" style="color: green;"></i><input type="submit" title="Disable User" style="color: green;" value="Enabled" onclick="showDelete('{{ eachuser.pk }}', 'disable_user_form', 'disable_me')"> 
+                                    {% else %}
+                                        <i class="fas fa-ban" style="color:#e40b0b"></i><input type="submit" value="Disabled" formaction="{% url 'csp_app:enable_user' %}" title="Enable User" style="color:#e40b0b" onclick="showDelete('{{ eachuser.pk }}', 'enable_user_form', 'enable_me')">
+                                    {% endif %}                            
+                                <!-- </form>                             -->
+                            </td>                        
+                                
+                        </tr>
+                    {% endif %}
 
                 {% endfor %}                
 

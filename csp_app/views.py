@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.db.utils import IntegrityError
 from csp_app.models import status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
-                            sub_source, salary_type, gender, laptop_allocation
+                            sub_source, salary_type, gender, laptop_allocation, candidate_status
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required, permission_required, 
 
 active_status = status.objects.get(pk=1)
 deactive_status = status.objects.get(pk=2)
+pending_status = candidate_status.objects.get(pk=1)
 
 @login_required(login_url='/notlogin/')
 def candidate(request):
@@ -110,7 +111,7 @@ def edit_candidate(request):
     'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'selected_candidate': candidate_list })
 
 @login_required(login_url='/notlogin/')
-def candidate_document(request): 
+def candidate_document(request, cid): 
     if request.method != 'POST':
         candidate_id = request.POST.get("view_id")   
         entity_list = master_entity.objects.filter(status = active_status)
@@ -129,12 +130,12 @@ def candidate_document(request):
         salary_type_list = salary_type.objects.filter(status= active_status)
         gender_list = gender.objects.filter(status= active_status)
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
-        candidate_list = master_candidate.objects.filter(pk=candidate_id)
+        view_candidate = master_candidate.objects.filter(pk=cid)
     return render(request, 'csp_app/document.html', {'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'selected_candidate': candidate_list })
+    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'view_candidate': candidate_list })
 
 
 @login_required(login_url='/notlogin/')
@@ -257,7 +258,7 @@ def create_candidate(request):
             Sub_Source= subsource_fk, Referral= referral, fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
             fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk,
             Reporting_Manager= reporting_manager, Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation,
-            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user))
+            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status)
             new_candidate.save()
             msg = 'Candidate account created'
             send_mail('Candidate Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com', reporting_manager_email, vendor_fk.spoc_email_id],fail_silently=False)
@@ -279,6 +280,38 @@ def view_candidate(request):
         return render(request, 'csp_app/viewcandidate.html', {'view_candidate_list': view_candidate_list, 'candidate_list': candidate_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def change_candidate_status(request):
+    candidate_list = master_candidate.objects.filter(status = active_status)
+    try:
+        if request.method == 'POST':
+            candidate_id = request.POST.get("c_id")
+            status_id = request.POST.get("change_id")
+            if status_id == None or status_id == '':
+                messages.warning(request, "Please Change Status And Try Again")
+                return redirect('csp_app:candidate')
+            status = candidate_status.objects.get(pk = status_id)
+            if candidate_id == None or candidate_id == '':
+                messages.warning(request, "Candidate Not Found")
+                return redirect('csp_app:candidate')
+            candidate = master_candidate.objects.get(pk = candidate_id)
+            vendor_id = candidate.fk_vendor_code
+            vendor = master_vendor.objects.get(pk=vendor_id)
+            candidate_vendor_mailid = vendor.vendor_email_id
+            candidate.candidate_status = status
+            candidate.save()
+            msg = 'Candidate status updated for '+ str(candidate.First_Name) +' with candidate code " ' + str(candidate.pk) + ' by ' + str(request.user) + ' .'
+            send_mail('Candidate Status Updated', msg,'workmail052020@gmail.com',[ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],fail_silently=False)
+      
+            messages.success(request, "Candidate Status Updated")
+            return redirect('csp_app:candidates')
+        return render(request, 'csp_app/candidates.html', {})        
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+   
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
