@@ -31,6 +31,7 @@
         <thead>
             <tr>
                 <th>Location Name</th>
+                <th>Location Code</th>
                 <th>City</th>
                 <th>Action</th>
             </tr>
@@ -41,6 +42,8 @@
 
                     <tr>
                         <td>{{ eachlocation.location_name }}</td>
+                        <td>{{ eachlocation.location_code }}</td>
+
                         <td>{{ eachlocation.fk_city_code }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
@@ -90,7 +93,8 @@
             <label for="">Region</label>
 
                 <select name="location_region" id="location_region" required="true" disabled="true">
-                    <option value="" disabled selected>Select Region</option>
+                    <option value="" disabled class="empty" selected label=" ">Select Region</option>
+
                     {% if region_list %}
                         {% for eachregion in region_list %}
                             <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
@@ -102,7 +106,8 @@
             <label for="">State</label>
 
                 <select name="location_state" id="location_state" required="true" disabled="true">
-                    <option value="" disabled selected>Select State</option>
+                    <option value="" disabled selected  class="empty" label=" ">Select State</option>
+
                     {% if state_list %}
                         {% for eachstate in state_list %}
                             <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
@@ -114,7 +119,8 @@
             <label for="">City</label>
 
                 <select name="location_city" id="location_city" required="true" disabled="true">
-                    <option value="" disabled selected>Select City</option>
+                    <option value="" disabled selected  class="empty" label=" ">Select City</option>
+
                     {% if city_list %}
                         {% for eachcity in city_list %}
                             <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
@@ -187,6 +193,9 @@
             });
             if (count === total){
                 $('#location_region').attr("disabled", true)
+            }else {
+                $('#location_region .empty').css("display", "");
+                $('#location_region .empty').prop("selected", true);
             }
         });
 
@@ -206,6 +215,9 @@
             });
             if (count === total){
                 $('#location_state').attr("disabled", true)
+            }else {
+                $('#location_state .empty').css("display", "");
+                $('#location_state .empty').prop("selected", true);
             }
         });
 
@@ -225,8 +237,12 @@
             });
             if (count === total){
                 $('#location_city').attr("disabled", true)
+            }else {
+                $('#location_city .empty').css("display", "");
+                $('#location_city .empty').prop("selected", true);
             }
         });
+        
         $('#close_delete').click(function(){
             $("#delete_location_form").css("display", "none");
         }); 

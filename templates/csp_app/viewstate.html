@@ -65,7 +65,7 @@
 
 <div  class="form_modal" style="padding-top: 10%;display: block;">
 
-    <div class="form_header">
+    <div class="view_form_header">
         <div class="forms-heading">
             <h2>State Details</h2>
         </div>
@@ -79,6 +79,8 @@
                     <table>
                         <tr>
                             <td><label for="">state Name : </label> {{ eachstate.state_name }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Region : </label> {{ eachstate.fk_region_code }}</td>
                         </tr>
                     </table>                    
@@ -88,10 +90,14 @@
                     <table>
                         <tr>
                             <td><label for="">Created By : </label> {{ eachstate.created_by }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Created Date Time : </label> {{ eachstate.created_date_time }}</td>
                         </tr>
                         <tr>
                             <td><label for="">Modified By : </label> {{ eachstate.modified_by }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Modified Date Time : </label> {{ eachstate.modified_date_time }}</td>
                         </tr>
                        
@@ -101,7 +107,7 @@
             </div>
         {% endfor %}
     {% endif %} 
-    <div class="form_footer">
+    <div class="view_form_footer">
         <button onclick="location.href = '/csp_state/'" class="forms-save-btn">Close</button>
     </div>
              

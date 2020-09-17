@@ -82,8 +82,12 @@
                             <option value="{{eachcity.fk_state_code.fk_region_code.fk_entity_code_id }}" label="{{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}" selected>{{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
+                                {% if eachentity.pk != eachcity.fk_state_code.fk_region_code.fk_entity_code_id %}
+
                                     <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -91,12 +95,17 @@
                         <label for="">region</label>
                 
                         <select name="e_city_region" id="city_region">
+                    <option value="" disabled class="empty" label=" ">Select Region</option>
+                            
                             <option value="{{ eachcity.fk_state_code.fk_region_code_id }}" label="{{ eachcity.fk_state_code.fk_region_code }}">{{ eachcity.fk_state_code.fk_region_code.fk_entity_code_id }}</option>
                             {% if region_list %}
                                 {% for eachdept in region_list %}
+                                {% if eachdept.pk != eachcity.fk_state_code.fk_region_code_id %}
 
                                     <option value="{{ eachdept.pk }}" label="{{ eachdept.region_name }}">{{ eachdept.fk_entity_code_id }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -104,12 +113,17 @@
                         <label for="">state</label>
                 
                         <select name="e_city_state" id="city_state" required="true">
+                    <option value="" disabled class="empty" label=" ">Select State</option>
+
                             <option value="{{ eachcity.fk_state_code_id }}" label="{{ eachcity.fk_state_code }}">{{ eachcity.fk_state_code.fk_region_code_id }}</option>
                             {% if state_list %}
                                 {% for eachstate in state_list %}
+                                {% if eachstate.pk != eachcity.fk_state_code_id %}
 
                                     <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id  }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -166,6 +180,9 @@
             });
             if (count === total){
                 $('#city_region').attr("disabled", true)
+            }else {
+                $('#city_region .empty').css("display", "");
+                $('#city_region .empty').prop("selected", true);
             }
         });
 
@@ -185,8 +202,12 @@
             });
             if (count === total){
                 $('#city_state').attr("disabled", true)
+            }else {
+                $('#city_state .empty').css("display", "");
+                $('#city_state .empty').prop("selected", true);
             }
         });
+    
     })
 </script>
 

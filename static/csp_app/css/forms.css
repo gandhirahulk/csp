@@ -1,3 +1,26 @@
+/* label.move-out {
+  position: absolute;
+  top: 35px;
+  left: 15px;
+  color: lightgrey;
+  transition: top 0.4s, left 0.4s
+}
+
+input:focus+label.move-out,
+input:not( :placeholder-shown)+label.move-out,
+input:-webkit-autofill+label.move-out {
+  top: 0px;
+  left: 0px;
+  transition: top 0.4s, left 0.4s;
+  color: black;
+}
+.container {
+  position: relative;
+  padding-top: 25px;
+  margin-top: 10px;
+} */
+
+
 .modal-msg{
   font-size: 10px;
   color: gray;
@@ -29,7 +52,8 @@
     padding-bottom: 20px;
 }
 
-.forms-input-holder{
+.forms-input-holder,
+.candidate-forms-input-holder{
     margin-bottom: 20px;
     display: flex;
     justify-content: left;
@@ -44,7 +68,9 @@
 .forms-input-holder > input,
 .forms-input-holder > select,
 .search-input > input,
-.forms-input-holder > label{
+.forms-input-holder > label,
+.candidate-forms-input-holder select,
+.candidate-forms-input-holder input{
     /* padding: 10px;
     border: none;
     outline: none;
@@ -73,9 +99,40 @@
 
 .forms-input-holder > label{
   width: 25%;
-  width: 25%;
   border: none;
   text-align: left;
+}
+
+.margin-left{
+  margin-left: 10px;
+}
+
+.candidate-forms-input-holder > label:last-child{
+  margin-left: 10px;
+}
+
+.candidate-forms-input-holder select,
+.candidate-forms-input-holder input{
+  /* width: 75%; */
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+.candidate-forms-input-holder div{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.candidate-forms-input-holder select:focus,
+.candidate-forms-input-holder input:focus{
+  border-bottom: 1px solid #bf0711;
+}
+
+.candidate-forms-input-holder label{
+  border: none;
+  text-align: left;
+  margin-left: 10px;
 }
 
 #c_pan{
@@ -86,7 +143,7 @@
 .forms-input-holder > select:focus,
 .search-input > input:focus{
     /* border: 1px solid #bf0711; */
-    box-shadow: 0px 0px 1px 0px #bf0711
+    box-shadow: 0px 0px 1px 0px #bf0711;
 }
 
 .forms-save-btn,
@@ -178,16 +235,38 @@
   /* .form_content label{
       display: none;
   } */
+.view_form_header{
+  margin: auto;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  width: 30%;
+  background-color: #f5f5fa;
+  text-align: center;
+  padding: 5px;
+}
 
   .view_form_content{
     background-color: #f5f5fa;
     margin: auto;
     padding: 20px;
-    width: 50%;
+    width: 30%;
     overflow: auto;
     /* text-align: center; */
     /* padding-bottom: 0px; */
   }
+
+  .view_form_footer{
+    background-color: #f5f5fa;
+    margin: auto;
+    padding: 20px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 30%;
+    text-align: center;
+    padding-top: 0px;
+  }
+
+
 /* 
   .forms-label-holder{
     margin-bottom: 5px;
@@ -196,12 +275,12 @@
   } */
 
   .candidate_form{
-    padding-top: 55px;
+    padding-top: 40px;
   }
 
   .candidate_form_header{
     margin: auto;
-    width: 80%;
+    /* width: 80%; */
     /* background-color: #f5f5fa; */
     text-align: center;
     padding: 5px;
@@ -214,14 +293,14 @@
     /* background-color: #f5f5fa; */
     margin: auto;
     padding: 20px;
-    width: 80%;
+    /* width: 80%; */
     overflow: auto;
     text-align: center;
     padding-bottom: 0px;
     border-left: 1px solid #f5f5fa;
     border-right: 1px solid #f5f5fa;
 
-    height: 50vh;
+    /* height: 50vh; */
   }
 
   .candidate_form_footer{
@@ -229,11 +308,12 @@
     padding: 20px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    width: 80%;
+    /* width: 80%; */
     text-align: center;
     border-left: 1px solid #f5f5fa;
     border-right: 1px solid #f5f5fa;
     border-bottom: 1px solid #f5f5fa;
+    margin-bottom: 80px;
   }
 
   .form_header,
@@ -284,7 +364,11 @@
     border-color: #f5f5fa;
   }
 
+  .fds table{
+    width: 100%;
+  }
+
   .fds table tr td{
     padding-left: 5px;
-    width: 50%;
+    width: 100%;
   }

@@ -55,7 +55,7 @@
                                 <option value="{{ eachcandidate.candidate_status_id }}" label="{{ eachcandidate.candidate_status }}" selected="True">{{ eachcandidate.candidate_status }}</option>
                                 {% if c_status_list %}
                                     {% for eachstatus in c_status_list %}
-                                        {% if eachstatus.status_name != eachcandidate.candidate_status %}
+                                        {% if eachstatus.pk != eachcandidate.candidate_status_id %}
                                             <option value="{{ eachstatus.pk }}" label="{{ eachstatus.status_name }}">{{ eachstatus.status_name }}</option>
                                         {% endif %}                                        
                                     {% endfor %}
@@ -342,7 +342,7 @@
   <div id="change_candidate_status" class="form_modal" style="padding-top: 15%;">
     <div class="delete_form_header">
         <div class="forms-heading">
-            <h2><span id='c_status_name'></span> the candidate?</h2>
+            <h2>Are You Sure?</h2>
         </div>     
     </div>
     <div class="delete_form_footer">
@@ -571,12 +571,21 @@
 </script>
 <script>
     function showDelete(itemid, formid, inputid){
+        console.log("in here");
+        var status_id = document.getElementById('c_status').value;
+        var sel = document.getElementById('c_status');
+        var text= sel.options[sel.selectedIndex].text;
+        // var status = document.getElementById("c_status");
+        
+        console.log(status_id);
+        console.log(text);
         document.getElementById(formid).style.display = "block";
-        document.getElementById(inputid).setAttribute("value", itemid);
+        document.getElementById(inputid).setAttribute("value", status_id);
         document.getElementById("c_id").setAttribute("value", itemid);
+       
 
-        var status = document.getElementById("c_status").val();
-        document.getElementById("c_status_name").setAttribute("text", status )
+
+      
     }
 </script>
 {% endblock %}

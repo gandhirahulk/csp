@@ -63,7 +63,7 @@
   
 </div>
 
-<div id="team_form" class="form_modal">
+<div id="team_form" class="form_modal" style="padding-top: 10%;">
     <div class="form_header">
       <div class="forms-heading" style="text-align: center;">
           <h2>Create New Team</h2>
@@ -91,7 +91,7 @@
             <label for="">Department</label>
 
                 <select name="team_dept" required="true" id="team_dept" disabled="true" required="true">
-                    <option value="" disabled selected>Select Department</option>
+                    <option value="" disabled selected class="empty" label=" ">Select Department</option>
                     {% if department_list %}
                         {% for eachdept in department_list %}
                             <option value="{{ eachdept.pk }}" label="{{ eachdept.department_name }}">{{ eachdept.fk_entity_code_id }}</option>
@@ -103,7 +103,7 @@
             <label for="">Function</label>
 
                 <select  required="true" id = "team_function" name="team_function" disabled="true">
-                    <option value="" disabled selected>Select Function</option>
+                    <option value="" disabled class="empty" selected label=" ">Select Function</option>
                     {% if function_list %}
                         {% for eachfunction in function_list %}
                             <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
@@ -179,15 +179,11 @@
             });
             if (count === total){
                 $('#team_dept').attr("disabled", true)
-            }
-            var l = $('#team_dept option').length ;
-            if (l === 1){
-                $('#team_dept').append($('<option>', {
-                    value: '',
-                    text: 'Select Department',
-                    selected: true
-                }));
-            }
+               
+            } else {
+                $('#team_dept .empty').css("display", "");
+                $('#team_dept .empty').prop("selected", true);
+           }
         });
 
         $('#team_dept').change(function() {
@@ -206,14 +202,10 @@
             });
             if (count === total){
                 $('#team_function').attr("disabled", true)
-            }
-            var l = $('#team_function option').length ;
-            if (l === 1){
-                $('#team_function').append($('<option>', {
-                    value: '',
-                    text: 'Select Function',
-                    selected: true
-                }));
+            
+            } else {
+                $('#team_function .empty').css("display", "");
+                $('#team_function .empty').prop("selected", true);
             }
         });
 

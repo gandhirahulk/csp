@@ -91,7 +91,10 @@
                             <option value="{{ eachfunction.fk_department_code.fk_entity_code_id }}" label="{{ eachfunction.fk_department_code.fk_entity_code }}" selected>{{ eachfunction.fk_department_code.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
+                                    {% if eachentity.pk != eachfunction.fk_department_code.fk_entity_code_id %}
                                     <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
+                            {% endif %}
+
                                 {% endfor %}                
                             {% endif %}
                         </select>
@@ -100,11 +103,13 @@
                         <label for="">Department</label>
                 
                         <select name="e_function_dept" id="function_dept">
+                            <option value="" disabled class="empty" label=" ">Select Department</option>
                             <option value="{{ eachfunction.fk_department_code_id }}" label="{{ eachfunction.fk_department_code }}">{{ eachfunction.fk_department_code.fk_entity_code_id }}</option>
                             {% if department_list %}
                                 {% for eachdept in department_list %}
-
-                                    <option value="{{ eachdept.pk }}" label="{{ eachdept.department_name }}">{{ eachdept.fk_entity_code_id }}</option>
+                                    {% if eachdept.pk != eachfunction.fk_department_code_id %}
+                                        <option value="{{ eachdept.pk }}" label="{{ eachdept.department_name }}">{{ eachdept.fk_entity_code_id }}</option>
+                                    {% endif %}                                
                                 {% endfor %}                
                             {% endif %}
                         </select>
@@ -131,32 +136,26 @@
   <script>
     $(document).ready(function(){
         showMe('Organization', 'org-expand');
-        var l = $('#function_entity option').length ;
-        if (l === 1){
-            $('#function_entity').append($('<option>', {
-                value: '',
-                text: 'Select Entity',
-                selected: true
-            }));
-        }
         $('#function_entity').change(function() {
             var filter = $(this).val();
             var total = $('#function_dept option').length;
-            // alert(total);
             var count = 0;
             $('#function_dept option').each(function() {
             if ($(this).text() == filter) {
-            $('#function_dept').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#function_dept').val(filter);
+                $('#function_dept').attr("disabled", false);
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                    count += 1;
+                }
+                $('#function_dept').val(filter);
             });
-            // alert(count)
             if (count === total){
-                $('#function_dept').attr("disabled", true)
+                $('#function_dept').attr("disabled", true);
+            } else {
+                $('#function_dept .empty').css("display", "");
+                $('#function_dept .empty').prop("selected", true);
+
             }
         });
              

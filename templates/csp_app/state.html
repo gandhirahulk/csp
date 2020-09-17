@@ -89,7 +89,8 @@
             <label for="">Region</label>
 
                 <select name="state_region" id="state_region" required="true" disabled="true">
-                    <option value="" disabled selected>Select Region</option>
+                    <option value="" disabled class="empty" label=" " selected>Select Region</option>
+
                     {% if region_list %}
                         {% for eachregion in region_list %}
                             <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
@@ -151,11 +152,7 @@
             if ($(this).text() == filter) {
             $('#state_region').attr("disabled", false);
                 $(this).show();
-                $('#state_region').append($('<option>', {
-                    value: '',
-                    text: 'Select Region',
-                    selected: true
-                }));
+              
             } else {
                 $(this).hide();
                 count += 1;
@@ -164,14 +161,9 @@
             });
             if (count === total){
                 $('#state_region').attr("disabled", true)
-            }
-            var l = $('#state_region option').length ;
-            if (l === 1){
-                $('#state_region').append($('<option>', {
-                    value: '',
-                    text: 'Select Region',
-                    selected: true
-                }));
+            }else {
+                $('#state_region .empty').css("display", "");
+                $('#state_region .empty').prop("selected", true);
             }
         });
 

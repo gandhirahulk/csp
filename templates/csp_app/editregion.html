@@ -62,7 +62,7 @@
   
 </div>
 
-<div id="view_entity_form" class="form_modal" style="display: block;">
+<div id="view_entity_form" class="form_modal" style="padding-top: 13%;display: block;">
 
     <div class="form_header">
         <div class="forms-heading">
@@ -83,7 +83,9 @@
                                 <option value="{{ eachregion.fk_entity_code_id }}" selected>{{ eachregion.fk_entity_code }}</option>
                                 {% if entity_list %}
                                     {% for eachentity in entity_list %}
-                                        <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                                        {% if eachentity.pk != eachregion.fk_entity_code_id %}  
+                                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                                        {% endif %}                                    
                                     {% endfor %}                
                                 {% endif %}
                             </select>

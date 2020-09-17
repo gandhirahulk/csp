@@ -83,8 +83,12 @@
                             <option value="{{eachsubteam.fk_team_code.fk_function_code.fk_department_code.fk_entity_code_id }}" label="{{ eachsubteam.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}" selected>{{ eachsubteam.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
+                                {% if eachentity.pk != eachsubteam.fk_team_code.fk_function_code.fk_department_code.fk_entity_code_id %}
+
                                     <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                               
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -92,12 +96,16 @@
                         <label for="">Department</label>
                 
                         <select name="e_subteam_dept" id="subteam_dept">
+                            <option value="" disabled class="empty" label=" ">Select Department</option>
+
                             <option value="{{ eachsubteam.fk_team_code.fk_function_code.fk_department_code_id }}" label="{{ eachsubteam.fk_team_code.fk_function_code.fk_department_code }}">{{ eachsubteam.fk_function_code.fk_department_code.fk_entity_code_id }}</option>
                             {% if department_list %}
                                 {% for eachdept in department_list %}
-
+                                {% if eachdept.pk != eachsubteam.fk_team_code.fk_function_code.fk_department_code_id %}
                                     <option value="{{ eachdept.pk }}" label="{{ eachdept.department_name }}">{{ eachdept.fk_entity_code_id }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -105,12 +113,15 @@
                         <label for="">Function</label>
                 
                         <select name="e_subteam_function" id="subteam_function" required="true">
+                            <option value="" disabled class="empty" label=" ">Select Function</option>
+
                             <option value="{{ eachsubteam.fk_team_code.fk_function_code_id }}" label="{{ eachsubteam.fk_team_code.fk_function_code }}">{{ eachsubteam.fk_team_code.fk_function_code.fk_department_code_id }}</option>
                             {% if function_list %}
                                 {% for eachfunction in function_list %}
-
+                                {% if eachfunction.pk != eachsubteam.fk_team_code.fk_function_code_id %}
                                     <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id  }}</option>
-                                {% endfor %}                
+                                {% endif %}
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -118,12 +129,17 @@
                         <label for="">Team</label>
                 
                         <select name="e_subteam_team" id="subteam_team" required="true">
+                            <option value="" disabled class="empty" label=" ">Select Team</option>
+
                             <option value="{{ eachsubteam.fk_team_code_id }}" label="{{ eachsubteam.fk_team_code }}">{{ eachsubteam.fk_team_code.fk_function_code_id }}</option>
                             {% if team_list %}
                                 {% for eachteam in team_list %}
+                                {% if eachteam.pk != eachsubteam.fk_function_code_id %}
 
                                     <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id  }}</option>
-                                {% endfor %}                
+                                    {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -168,19 +184,13 @@
 
         $('#subteam_entity').change(function() {
             var filter = $(this).val();
-            // alert(filter);
             var total = $('#subteam_dept option').length;
-            // alert(total);
             var count = 0;
             $('#subteam_dept option').each(function() {
-            // $('#default_dept').attr('selected',true);
-
-            // alert($(this).text());
             if ($(this).text() == filter) {
             $('#subteam_dept').attr("disabled", false);        
                
                 $(this).show();
-                // alert($(this).attr());
 
             } else {
                 $(this).hide();
@@ -188,22 +198,12 @@
             }
             $('#subteam_dept').val(filter);
             });
-            // alert(count);
             if (count === total){
                 $('#subteam_dept').attr("disabled", true)
-            } 
-            // else {
-            //     $('#default_dept').show();
-            //     $('#default_dept').attr('selected',true);
-            // }
-            var l = $('#subteam_dept option').length ;
-            if (l === 1){
-                $('#subteam_dept').append($('<option>', {
-                    value: '',
-                    text: 'Select Department',
-                    label: 'Select Department',
-                    selected: true
-                }));
+             
+            } else {
+                $('#subteam_dept .empty').css("display", "");
+                $('#subteam_dept .empty').prop("selected", true);
             }
         });
 
@@ -224,20 +224,13 @@
             });
             if (count === total){
                 $('#subteam_function').attr("disabled", true)
-            }
-            var l = $('#subteam_function option').length ;
-            if (l === 1){
-                $('#subteam_function').append($('<option>', {
-                    value: '',
-                    text: 'Select Function',
-                    label: 'Select FUnction',
-                    selected: true
-                }));
+               
+            } else {
+                $('#subteam_function .empty').css("display", "");
+                $('#subteam_function .empty').prop("selected", true);
             }
         });
-        // $('#subteam_function').click(function() {
-        //     alert("here")
-        // })
+      
         $('#subteam_function').change(function() {
             // alert("ok")
             var filter = $(this).val();
@@ -255,17 +248,13 @@
             });
             if (count === total){
                 $('#subteam_team').attr("disabled", true)
-            }
-            var l = $('#subteam_team option').length ;
-            if (l === 1){
-                $('#subteam_team').append($('<option>', {
-                    value: '',
-                    text: 'Select Team',
-                    label: 'Select Team',
-                    selected: true
-                }));
+           
+            } else {
+                $('#subteam_team .empty').css("display", "");
+                $('#subteam_team .empty').prop("selected", true);
             }
         });
+    
     })
 </script>
 {% endblock %}
