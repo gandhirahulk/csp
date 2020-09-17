@@ -6,12 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{% static 'Associate_app/images/udaanredlogonew.png' %}" />
 
-    <title>Admin Dashboard | {% block titleblock %} {% endblock %}</title>
+    <title>
+        {% if request.user.is_staff %}
+            Admin Dashboard
+        {% else %}
+            Dashboard
+        {% endif %}
+        
+        | {% block titleblock %} {% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/admin_dashboard.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/dashboard.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/forms.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/organization.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/alertmsgcss.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/media.css' %}">    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
 
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
@@ -60,6 +68,7 @@
         $('#lastname').bind('keypress', onlyAlphabets);
 
         $('#name').bind('keypress', alphaNumeric);
+        $('#search-bar').bind('keypress', noSpecial);
 
         $('#c_aadhaar').bind('keypress', onlyNumbers);
         $('#c_contact').bind('keypress', onlyNumbers);
@@ -121,6 +130,20 @@
           var minAge= minYear + '-' + month + '-' + day;
           $('#c_dob').attr('min', maxAge);
           $('#c_dob').attr('max', minAge);
+
+          var fToday = new Date(); 
+          var month = fToday.getMonth() + 1;
+          var day = fToday.getDate();
+          var maxYear = fToday.getFullYear() - 100;
+          var minYear = fToday.getFullYear() - 45;
+          if(month < 10)
+              month = '0' + month.toString();
+          if(day < 10)
+              day = '0' + day.toString();          
+          var maxAge= maxYear + '-' + month + '-' + day;     
+          var minAge= minYear + '-' + month + '-' + day;
+          $('#c_father_dob').attr('min', maxAge);
+          $('#c_father_dob').attr('max', minAge);
         });
       });
     </script>
@@ -128,18 +151,13 @@
 <body>
     <div class="wrapper">
         <div class="top_navbar">
-          <!-- <div class="hamburger">
-             <div class="one"></div>
-             <div class="two"></div>
-             <div class="three"></div>
-          </div> -->
           <div class="top_menu">
             <div class="logo">
                 <img src="{% static 'csp_app/images/udaanredlogo.png' %}" alt="Company Logo" style="width: 55px;"></a>
             </div>
             <div class="search-input">
-              <input type="search" name="search_c" id="search-bar" placeholder="search name, phone, email" list="emp-panel-list" onkeyup="showDatalist('search-c-panel-input', 'hidden-c-panel-list', 'c-panel-list' )">
-              <datalist id="hidden-c-panel-list">
+              <input type="search" name="search_c" id="search-bar" maxlength="300" placeholder="search name, phone, email" list="all_candidates">
+              <datalist id="hide" class="c_datalist">
                   {% if allcandidates %}          
                       {% for eachc in allcandidates %}                 
                           <option value="{{ eachc.pk }} "  style="outline: none !important;"> {{ eachc.pk }} | {{ eachc.First_Name }} {{ eachc.Last_Name }} | {{ eachc.Contact_Number }} | {{ eachc.Personal_Email_Id }} </option>
@@ -147,20 +165,80 @@
                   {% endif %}
               </datalist>
             </div>
-            <ul>
-              {% if request.user.is_staff %}
-                <li><a href="#">Admin Dashboard</a></li>
-                <li><a href="#">|</a></li>
-                <!-- <li><a href="#">Requests</a></li>
-                <li><a href="#">|</a></li> -->
-              {% else %}
-                <li><a href="#"> Dashboard</a></li>
-                <li><a href="#">|</a></li>
-              {% endif %}
-                <li><a href="{% url 'csp_app:csp_logout' %}">Logout</a></li>
-            </ul>
+            <div class="user-div">
+                <ul>
+                {% if request.user.is_staff %}
+                    <li><a href="{% url 'csp_app:entity' %}" title="Admin Dashboard"><i class="fas fa-user-shield"></i></a></li>
+                    <!-- <li><a href="#">|</a></li> -->
+                    <!-- <li><a href="#">Requests</a></li>
+                    <li><a href="#">|</a></li> -->
+                {% else %}
+                    <li><a href="{% url 'csp_app:candidate' %}"><i class="fas fa-user"></i></a></li>
+                {% endif %}
+                    <li title="Logout"><a href="{% url 'csp_app:csp_logout' %}"><i class="fas fa-sign-out-alt"></i></a></li>
+                </ul>
+            </div>
           </div>
         </div>
+
+        {% if allcandidates %}          
+            {% for eachcandidate in allcandidates %} 
+            <div  class="form_modal" id="{{ eachcandidate.pk }}">
+
+                <div class="view_form_header">
+                    <div class="forms-heading">
+                        <h2>Candidate Details</h2>
+                    </div>
+                    <div class="hr_line">&nbsp;</div>            
+                </div>
+                <div class="view_form_content">
+                    <fieldset class="fds">
+                        <legend>Basic Details</legend>
+                        <table>
+                            <tr>
+                                <td><label for="">Full Name : </label> {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="">Contact : </label> {{ eachcandidate.Contact_Number }} / {{ eachcandidate.Personal_Email_Id }}</td>
+                            </tr>                        
+                            <tr>
+                                <td><label for="">Onboarding Status : </label> {{ eachcandidate.onboarding_status }}</td>
+                            </tr>
+                            
+                        </table>                    
+                    </fieldset>
+                    <fieldset class="fds">
+                        <legend>Other Details</legend>
+                        <table>
+                            <tr>
+                                <td><label for="">Created By : </label> {{ eachcandidate.created_by }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="">Created Date Time : </label> {{ eachcandidate.created_date_time }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="">Modified By : </label> {{ eachcandidate.modified_by }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="">Modified Date Time : </label> {{ eachcandidate.modified_date_time }}</td>
+                            </tr>
+                            
+                        </table>                    
+                    </fieldset>
+                                
+                </div>
+                    
+                <div class="view_form_footer">
+                    <button onclick="window.location.reload();" class="forms-save-btn">Close</button>
+                </div>
+                        
+            
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        
+
         <!-- <div id="search-emp-panel" class="search-emp-panel_modal">
           <div class="search-emp-panel_modal_header">
               <span class="search-emp-panel-close" id="close-search-panel-span">&times;</span>
@@ -317,19 +395,29 @@
               }
       setTimeout("hidediv()", 3000);
 
-      function showDatalist(inputid, listid, newlistid){
-        var datalist_input = document.getElementById(inputid);
-        var toshow_datalist = document.getElementById(listid);
-        if (datalist_input.value.length >= 1) {
-                toshow_datalist.setAttribute("id", newlistid);
-            } else {
-                toshow_datalist.setAttribute("id", "");
-            }
-        if (datalist_input.value === ''){
-          toshow_datalist.setAttribute("id", "");
-        }
-
-      }
+      
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('#search-bar').on('input', function() {
+               
+                if (this.value == ''){ 
+                    $('.c_datalist').prop("id","hide");
+                }
+                if (this.value.length < 2){
+                    $('.c_datalist').prop("id","hide");
+                } else {
+                    $('.c_datalist').prop("id","all_candidates");
+                }
+               
+            });
+            $('#search-bar').on('change', function() {
+                console.log(this.value);
+                var c_code = $('#search-bar').value;
+                console.log(c_code);
+               $('#' + this.value).css("display", "block");              
+           });
+        });
     </script>
 </body>
 </html>

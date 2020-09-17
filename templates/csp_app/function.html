@@ -88,7 +88,7 @@
             <label for="">Department</label>
 
                 <select name="function_dept" id="function_dept" required="true" disabled="true">
-                    <option value="" disabled>Select Department</option>
+                    <option value="" disabled selected class="empty" label=" ">Select Department</option>
                     {% if department_list %}
                         {% for eachdepartment in department_list %}
                             <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
@@ -152,17 +152,21 @@
             var count = 0;
             $('#function_dept option').each(function() {
             if ($(this).text() == filter) {
-            $('#function_dept').attr("disabled", false);
-                $(this).show();
-            } else {
-                $(this).hide();
-                count += 1;
-            }
-            $('#function_dept').val(filter);
+                $('#function_dept').attr("disabled", false);
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                    count += 1;
+                }
+                $('#function_dept').val(filter);
             });
             // alert(count)
             if (count === total){
-                $('#function_dept').attr("disabled", true)
+                $('#function_dept').attr("disabled", true);
+            } else {
+                $('#function_dept .empty').css("display", "");
+                $('#function_dept .empty').prop("selected", true);
+
             }
         });
         $('#close_delete').click(function(){

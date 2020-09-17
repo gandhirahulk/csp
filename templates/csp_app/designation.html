@@ -92,7 +92,8 @@
             <label for="">Department</label>
 
                 <select name="desg_dept" id="desg_dept" required="true" disabled="true">
-                    <option value="" disabled selected>Select department</option>
+                    <option value="" disabled selected class="empty" label=" ">Select department</option>
+
                     {% if department_list %}
                         {% for eachdepartment in department_list %}
                             <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
@@ -104,7 +105,8 @@
             <label for="">Function</label>
 
                 <select name="desg_function" id="desg_function" required="true" disabled="true">
-                    <option value="" disabled selected>Select Function</option>
+                    <option value="" disabled selected class="empty" label=" ">Select Function</option>
+
                     {% if function_list %}
                         {% for eachfunction in function_list %}
                             <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
@@ -116,7 +118,8 @@
             <label for="">Team</label>
 
                 <select name="desg_team" id="desg_team" required="true"  disabled="true">
-                    <option value="" disabled selected>Select Team</option>
+                    <option value="" disabled selected  class="empty" label=" ">Select Team</option>
+
                     {% if team_list %}
                         {% for eachteam in team_list %}
                             <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
@@ -129,7 +132,8 @@
             <label for="">Sub Team</label>
 
                 <select name="desg_subteam" id="desg_subteam" required="true" disabled="true">
-                    <option value="" disabled selected>Select Sub Team</option>
+                    <option value="" disabled selected  class="empty" label=" ">Select Sub Team</option>
+
                     {% if sub_team_list %}
                         {% for eachsubteam in sub_team_list %}
                             <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
@@ -198,15 +202,9 @@
             });
             if (count === total){
                 $('#desg_dept').attr("disabled", true)
-            }
-            var l = $('#desg_dept option').length ;
-            if (l === 1){
-                $('#desg_dept').append($('<option>', {
-                    value: '',
-                    text: 'Select Department',
-                    label: 'Select Department',
-                    selected: true
-                }));
+            }else {
+                $('#desg_dept .empty').css("display", "");
+                $('#desg_dept .empty').prop("selected", true);
             }
         });
 
@@ -226,15 +224,9 @@
             });
             if (count === total){
                 $('#desg_function').attr("disabled", true)
-            }
-            var l = $('#desg_function option').length ;
-            if (l === 1){
-                $('#desg_function').append($('<option>', {
-                    value: '',
-                    text: 'Select Function',
-                    label: 'Select Function',
-                    selected: true
-                }));
+            }else {
+                $('#desg_function .empty').css("display", "");
+                $('#desg_function .empty').prop("selected", true);
             }
         });
         $('#desg_function').change(function() {
@@ -245,12 +237,7 @@
             if ($(this).text() == filter) {
             $('#desg_team').attr("disabled", false);
                 $(this).show();
-                $('#desg_team').append($('<option>', {
-                    value: '',
-                    text: 'Select Team',
-                    label: 'Select Team',
-                    selected: "true"
-                }));
+                
             } else {
                 $(this).hide();
                 count += 1;
@@ -259,15 +246,9 @@
             });
             if (count === total){
                 $('#desg_team').attr("disabled", true)
-            }
-            var l = $('#desg_team option').length ;
-            if (l === 1){
-                $('#desg_team').append($('<option>', {
-                    value: '',
-                    text: 'Select Team',
-                    label: 'Select Team',
-                    selected: true
-                }));
+            }else {
+                $('#desg_team .empty').css("display", "");
+                $('#desg_team .empty').prop("selected", true);
             }
         });
 
@@ -287,17 +268,12 @@
             });
             if (count === total){
                 $('#desg_subteam').attr("disabled", true)
-            }
-            var l = $('#desg_subteam option').length ;
-            if (l === 1){
-                $('#desg_subteam').append($('<option>', {
-                    value: '',
-                    text: 'Select Sub Team',
-                    label: 'Select_Sub Team',
-                    selected: true
-                }));
+            }else {
+                $('#desg_subteam .empty').css("display", "");
+                $('#desg_subteam .empty').prop("selected", true);
             }
         });
+    
     })
 </script>
 <script>

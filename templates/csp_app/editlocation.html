@@ -31,6 +31,7 @@
         <thead>
             <tr>
                 <th>Location Name</th>
+                <th>Location Code</th>
                 <th>City</th>
                 <th>Action</th>
             </tr>
@@ -41,6 +42,8 @@
 
                     <tr>
                         <td>{{ eachlocation.location_name }}</td>
+                        <td>{{ eachlocation.location_code }}</td>
+
                         <td>{{ eachlocation.fk_city_code }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
@@ -82,8 +85,12 @@
                             <option value="{{eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code_id }}" label="{{ eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code }}" selected>{{ eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
+                                {% if eachentity.pk != eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code_id %}
+
                                     <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -92,11 +99,16 @@
                 
                         <select name="e_location_region" id="location_region">
                             <option value="{{ eachlocation.fk_city_code.fk_state_code.fk_region_code_id }}" label="{{ eachlocation.fk_city_code.fk_state_code.fk_region_code }}">{{ eachlocation.fk_state_code.fk_region_code.fk_entity_code_id }}</option>
+                    <option value="" disabled class="empty" label=" ">Select Region</option>
+                            
                             {% if region_list %}
                                 {% for eachregion in region_list %}
+                                {% if eachregion.pk != eachlocation.fk_city_code.fk_state_code.fk_region_code_id %}
 
                                     <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -105,11 +117,16 @@
                 
                         <select name="e_location_state" id="location_state" required="true">
                             <option value="{{ eachlocation.fk_city_code.fk_state_code_id }}" label="{{ eachlocation.fk_city_code.fk_state_code }}">{{ eachlocation.fk_city_code.fk_state_code.fk_region_code_id }}</option>
+                    <option value="" disabled class="empty"label=" ">Select State</option>
+                            
                             {% if state_list %}
                                 {% for eachstate in state_list %}
+                                {% if eachstate.pk != eachlocation.fk_city_code.fk_state_code_id %}
 
                                     <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id  }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                               
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -118,11 +135,16 @@
                 
                         <select name="e_location_city" id="location_city" required="true">
                             <option value="{{ eachlocation.fk_city_code_id }}" label="{{ eachlocation.fk_city_code }}">{{ eachlocation.fk_city_code.fk_state_code_id }}</option>
+                    <option value="" disabled class="empty"label=" ">Select City</option>
+                            
                             {% if city_list %}
                                 {% for eachcity in city_list %}
+                                {% if eachcity.pk != eachlocation.fk_city_code_id %}
 
                                     <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id  }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -160,6 +182,7 @@
         });
 
 
+      
         $('#location_entity').change(function() {
             var filter = $(this).val();
             var total = $('#location_region option').length;
@@ -176,6 +199,9 @@
             });
             if (count === total){
                 $('#location_region').attr("disabled", true)
+            }else {
+                $('#location_region .empty').css("display", "");
+                $('#location_region .empty').prop("selected", true);
             }
         });
 
@@ -195,6 +221,9 @@
             });
             if (count === total){
                 $('#location_state').attr("disabled", true)
+            }else {
+                $('#location_state .empty').css("display", "");
+                $('#location_state .empty').prop("selected", true);
             }
         });
 
@@ -214,8 +243,12 @@
             });
             if (count === total){
                 $('#location_city').attr("disabled", true)
+            }else {
+                $('#location_city .empty').css("display", "");
+                $('#location_city .empty').prop("selected", true);
             }
         });
+        
         $('#close_delete').click(function(){
             $("#delete_location_form").css("display", "none");
         }); 

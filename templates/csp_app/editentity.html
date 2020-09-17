@@ -78,6 +78,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="e_id" value="{{ eachentity.pk }}">
                     <div class="forms-input-holder">
+                        <label for="">Entity</label>
                         <input type="text" value="{{ eachentity.entity_name }}" placeholder="Entity Name" name="e_entity_name" title="Enity Name" id="name" required="true" maxlength="50">
                     </div>           
                     

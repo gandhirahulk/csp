@@ -100,7 +100,9 @@
                                 <option value="{{ eachvendor.fk_entity_code_id }}" selected>{{ eachvendor.fk_entity_code }}</option>
                                 {% if entity_list %}
                                     {% for eachentity in entity_list %}
-                                        <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                                        {% if eachentity.pk != eachvendor.fk_entity_code_id %}                                        
+                                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                                        {% endif %}                                    
                                     {% endfor %}                
                                 {% endif %}
                             </select>

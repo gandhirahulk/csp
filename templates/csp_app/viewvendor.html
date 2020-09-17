@@ -78,9 +78,9 @@
   
 </div>
 
-<div  class="form_modal" style="padding-top: 10%;display: block;">
+<div  class="form_modal" style="display: block;">
 
-    <div class="form_header">
+    <div class="view_form_header">
         <div class="forms-heading">
             <h2>Vendor Details</h2>
         </div>
@@ -94,14 +94,20 @@
                     <table>
                         <tr>
                             <td><label for="">Vendor Name : </label> {{ eachvendor.vendor_name }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Entity : </label> {{ eachvendor.fk_entity_code }}</td>
                         </tr>
                         <tr>
                             <td><label for="">Vendor Email ID : </label> {{ eachvendor.vendor_email_id }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Vendor Phone No. : </label> {{ eachvendor.vendor_phone_number }}</td>
                         </tr>
                         <tr>
                             <td><label for="">SPOC Name : </label> {{ eachvendor.spoc_name }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">SPOC Email ID : </label> {{ eachvendor.spoc_email_id }}</td>
                         </tr>
                     </table>                    
@@ -111,10 +117,14 @@
                     <table>
                         <tr>
                             <td><label for="">Created By : </label> {{ eachvendor.created_by }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Created Date Time : </label> {{ eachvendor.created_date_time }}</td>
                         </tr>
                         <tr>
                             <td><label for="">Modified By : </label> {{ eachvendor.modified_by }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Modified Date Time : </label> {{ eachvendor.modified_date_time }}</td>
                         </tr>
                        
@@ -124,7 +134,7 @@
             </div>
         {% endfor %}
     {% endif %} 
-    <div class="form_footer">
+    <div class="view_form_footer">
         <button onclick="location.href = '/csp_vendor/'" class="forms-save-btn">Close</button>
     </div>
              

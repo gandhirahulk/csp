@@ -89,7 +89,8 @@
             <label for="">Region</label>
 
                 <select name="city_region" id="city_region" required="true" disabled="true">
-                    <option value="" disabled selected>Select Region</option>
+                    <option value="" disabled class="empty" label=" " selected>Select Region</option>
+
                     {% if region_list %}
                         {% for eachregion in region_list %}
                             <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
@@ -101,7 +102,8 @@
             <label for="">State</label>
 
                 <select name="city_state" id="city_state" required="true" disabled="true">
-                    <option value="" disabled selected>Select State</option>
+                    <option value="" disabled class="empty" label=" " selected>Select State</option>
+
                     {% if state_list %}
                         {% for eachstate in state_list %}
                             <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
@@ -174,6 +176,9 @@
             });
             if (count === total){
                 $('#city_region').attr("disabled", true)
+            }else {
+                $('#city_region .empty').css("display", "");
+                $('#city_region .empty').prop("selected", true);
             }
         });
 
@@ -193,8 +198,12 @@
             });
             if (count === total){
                 $('#city_state').attr("disabled", true)
+            }else {
+                $('#city_state .empty').css("display", "");
+                $('#city_state .empty').prop("selected", true);
             }
         });
+    
     })
 </script>
 <script>

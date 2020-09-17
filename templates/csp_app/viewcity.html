@@ -63,7 +63,7 @@
 </div>
 <div  class="form_modal" style="padding-top: 10%;display: block;">
 
-    <div class="form_header">
+    <div class="view_form_header">
         <div class="forms-heading">
             <h2>City Details</h2>
         </div>
@@ -77,6 +77,8 @@
                     <table>
                         <tr>
                             <td><label for="">City Name : </label> {{ eachcity.city_name }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">state : </label> {{ eachcity.fk_state_code }}</td>
                         </tr>
                     </table>                    
@@ -86,10 +88,14 @@
                     <table>
                         <tr>
                             <td><label for="">Created By : </label> {{ eachcity.created_by }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Created Date Time : </label> {{ eachcity.created_date_time }}</td>
                         </tr>
                         <tr>
                             <td><label for="">Modified By : </label> {{ eachcity.modified_by }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Modified Date Time : </label> {{ eachcity.modified_date_time }}</td>
                         </tr>
                        
@@ -99,7 +105,7 @@
             </div>
         {% endfor %}
     {% endif %} 
-    <div class="form_footer">
+    <div class="view_form_footer">
         <button onclick="location.href = '/csp_city/'" class="forms-save-btn">Close</button>
     </div>
              

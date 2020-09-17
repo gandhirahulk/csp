@@ -12,271 +12,751 @@
 
 {% block tabcontentblock %}
 {% if selected_candidate %}
-    {% for candidate in selected_candidate %}
+{% for eachc in selected_candidate %}
 <div class="crumbs"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
     <span><i class="fas fa-chevron-right"></i></span>
-    <span><a href="{% url 'csp_app:documents' candidate.id %}">Documents</a></span>
+    <span >Edit Candidate</span>
     <span><i class="fas fa-chevron-right"></i></span>
-    <span>New Candidate</span>
+    <span style="color: dimgray;">{{ eachc.pk }} | {{ eachc.First_Name }} {{ eachc.Middle_Name }} {{ eachc.Last_Name }}</span>
 </div>
-
-
 <div class="candidate_form">
-
     <div class="candidate_form_header">
         <div class="forms-heading">
-            <h2>Edit Candidate Details</h2>
+            <h2>Edit Candidate</h2>
         </div>
-        <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>     
+        <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
+     
     </div>
     <div class="candidate_form_content">
         <form method="POST" autocomplete="off">
             {% csrf_token %}
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Candidate Code" name="c_code" tabindex="1" disabled="true" value="{{ candidate.pk }}" >
+            <div class="candidate-forms-input-holder">
+                <div>
+                <label class="move-out" for="c_firstname">Candidate Code</label>
+
+                <input class="input-text" value="{{ eachc.pk }}" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" disabled ="true"  >
+                </div>
+                <div class="margin-left">
+                    <label for="">Middle Name</label>
+                    <input type="text" value="{{ eachc.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename" required="true" autocapitalize="on" tabindex="2">
+                </div>
             </div>
-            <div class="forms-input-holder">
-                <input type="text" placeholder="First Name" name="c_firstname" id="c_firstname" required="true" autocapitalize="on" autofocus="true" tabindex="1"  >
+            <div class="candidate-forms-input-holder">
+                <div>
+                <label class="move-out" for="c_firstname">First Name</label>
+
+                <input class="input-text" value="{{ eachc.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true" autocapitalize="on" autofocus="true" tabindex="1"  >
+                </div>
+                <div class="margin-left">
+                    <label for="">Middle Name</label>
+                    <input type="text" value="{{ eachc.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename" required="true" autocapitalize="on" tabindex="2">
+                </div>
             </div>
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Middle Name" name="c_middlename" id="c_middlename" required="true" autocapitalize="on" tabindex="2">
-            </div>
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Last Name" name="c_lastname" id="c_lastname" required="true" autocapitalize="on" tabindex="3">
-            </div>
-            <div class="forms-input-holder">
-                <input type="date" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
-            </div>
-            <div class="forms-input-holder">
-                <input type="date" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
-            </div>
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
-            </div>
+            <div class="candidate-forms-input-holder">
+                <div>
+                <label for="">Last Name</label>
+                <input type="text" value="{{ eachc.Last_Name }}" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname" required="true" autocapitalize="on" tabindex="3">
             
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+                </div>
+                <div class="margin-left">
+                    <label for="" >Date of Birth</label>
+                    <input type="date" value='{{ eachc.Date_Of_Birth|date:"Y-m-d" }}' placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
+                </div>
             </div>
-            <div class="forms-input-holder">
-                <input type="text" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+               <div class="candidate-forms-input-holder">
+                <div>
+                <label for="">Contact Number</label>
+                <input type="text" value="{{ eachc.Contact_Number }}" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Emergency Number</label>
+                <input type="text" value="{{ eachc.Emergency_Contact_Number }}" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                </div>
             </div>
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+               <div class="candidate-forms-input-holder">
+                <div>
+                <label for="">Email ID</label>
+                <input type="email" value="{{ eachc.Personal_Email_Id }}" maxlength="50" placeholder="Email Id">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Gender</label>
+
+                <select name="c_gender" id="c_gender" required="true">
+                    <!-- <option value="" disabled selected>Select Gender</option> -->
+                    <option value="{{ eachc.Gender_id }}" label="{{ eachc.Gender }}" selected>{{ eachc.Gender }}</option>
+
+                    {% if gender_list %}
+                        {% for eachgender in gender_list %}                            
+                            {% if eachgender.pk != eachc.Gender_id %}
+                                <option value="{{ eachgender.pk }}" label="{{ eachgender.gender_name }}">{{ eachgender.gender_name }}</option>
+                            {% endif %}
+                        {% endfor %}                
+                    {% endif %}
+                </select>
             </div>
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+        </div>
+           
+               <div class="candidate-forms-input-holder">
+                <div>
+                <label for="">Father Name</label>
+                <input type="text" value="{{ eachc.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Date of Birth</label>
+                <input type="date" value="{{ eachc.Father_Date_of_Birth }}" name="c_father_dob" id="c_father_dob" required="true" tabindex="4" >
+       
             </div>
-            <div class="forms-input-holder">
+        </div>
+            
+               <div class="candidate-forms-input-holder">
+                <div>
+                <label for="">Aadhaar Number</label>
+                <input type="text" value="{{ eachc.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+                 </div>
+                <div class="margin-left">
+                <label for="" >PAN Number</label>
+                <input type="text" value="{{ eachc.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+      
+            </div>
+        </div>
+               <div class="candidate-forms-input-holder">
+                <div>               
+                <label for="">Type Of Hiring</label>
                 <select name="c_hiring_type" id="" >
-                    <option value="" disabled selected>Type Of Hiring</option>
+                    <option value="{{ eachc.Type_of_Hiring_id }}" selected label="{{ eachc.Type_of_Hiring }}">{{ eachc.Type_of_Hiring }}</option>
                     {% if hiring_type_list %}
                         {% for eachhiring_type in hiring_type_list %}
-                            <option value="{{ eachhiring_type.pk }}" label="{{ eachhiring_type.hiring_type_name }}">{{ eachhiring_type.hiring_type_name }}</option>
+                            {% if eachhiring_type.pk !=  eachc.Type_of_Hiring_id %}
+                                <option value="{{ eachhiring_type.pk }}" label="{{ eachhiring_type.hiring_type_name }}">{{ eachhiring_type.hiring_type_name }}</option>
+                            {% endif %}
                         {% endfor %}                
                     {% endif %}
                 </select>
+                 </div>
+                <div class="margin-left">
+                <label for="" >Date of Joining</label>
+                <input type="date" value="{{ eachc.Date_of_Joining }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+           
             </div>
+        </div>
 
-            <div class="forms-input-holder" style="display: none;">
-                <input type="text" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+               <div class="candidate-forms-input-holder">
+                <div>
+                <label for="">Replacement UID </label>
+                <input type="text" value="{{ eachc.Replacement }}" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Referal UID</label>
+                <input type="text" value="{{ eachc.Referral }}" placeholder="Referral" name="c_referral" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+          
             </div>
-            <div class="forms-input-holder">
+        </div>
+               <div class="candidate-forms-input-holder">
+                <div>
+                <label for="">Sub Source</label>
                 <select name="c_sub_source" id="" >
-                    <option value="" disabled selected>Sub Source</option>
+                    <option value="{{ eachc.Sub_Source_id }}" label="{{ eachc.Sub_Source }}" selected>{{ eachc.Sub_Source }}</option>
                     {% if sub_source_list %}
                         {% for eachsub_source in sub_source_list %}
+                            {% if eachsub_source.pk != eachc.Sub_Source_id %}
                             <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
+                            {% endif %}                       
                         {% endfor %}                
                     {% endif %}
                 </select>
-            </div>
-            <div class="forms-input-holder" >
-                <input type="text" placeholder="Referral" name="c_referral" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
-            </div>
-            <label for="">Entity</label>
-            <div class="forms-input-holder">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Entity</label>
+
                 <select name="c_entity" id="c_entity" required="true">
-                    <option value="" disabled selected>Select Entity</option>
+                    <option value="{{ eachc.fk_entity_code_id }}" label="{{ eachc.fk_entity_code }}" selected>{{eachc.fk_entity_code}}</option>
                     {% if entity_list %}
                         {% for eachentity in entity_list %}
-                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                            {% if eachentity.pk != eachc.fk_entity_code_id %}
+                                <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                            {% endif %}                        
                         {% endfor %}                
                     {% endif %}
                 </select>
             </div>
+        </div>
 
-            <label for="">Vendor</label>
-            <div class="forms-input-holder">
-                <select name="c_vendor" id="c_vendor" required="true">
-                    <option value="" disabled selected>Select vendor</option>
-                    {% if vendor_list %}
-                        {% for eachvendor in vendor_list %}
-                            <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-        
-            <label for="">Department</label>
-            <div class="forms-input-holder">
+            <div class="candidate-forms-input-holder">
+                <div>
+                    <label for="">Vendor</label>
+
+                    <select name="c_vendor" id="c_vendor" required="true" disabled="true">
+                        <option value="{{ eachc.fk_vendor_code_id }}" label="{{ eachc.fk_vendor_code }}" selected>{{eachc.fk_vendor_code}}</option>
+
+                        <option value="" label="" class="empty">Select Vendor</option>
+
+                        {% if vendor_list %}
+                            {% for eachvendor in vendor_list %}
+                            {% if eachvendor.pk != eachc.fk_vendor_code_id %}
+
+                                <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
+                        {% endif %}
+                            
+                                {% endfor %}                
+                        {% endif %}
+                    </select>
+                 </div>
+                <div class="margin-left">
+                <label for="" >Department</label>
+
                 <select name="c_dept" id="c_dept" required="true" disabled="true">
-                    <option value="" disabled selected>Select department</option>
+                    <option value="{{ eachc.fk_department_code_id }}" label="{{ eachc.fk_department_code }}" selected>{{eachc.fk_department_code}}</option>
+
+                    <option value="" label="" class="empty">Select Department</option>
+
                     {% if department_list %}
                         {% for eachdepartment in department_list %}
+                        {% if eachdepartment.pk != eachc.fk_department_code_id %}
+
                             <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
-                        {% endfor %}                
+                            {% endif %}                
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
+        </div>
+               <div class="candidate-forms-input-holder">
+                <div>
             <label for="">Function</label>
-            <div class="forms-input-holder">
+
                 <select name="c_function" id="c_function" required="true" disabled="true">
-                    <option value="" disabled selected>Select Function</option>
+                    <option value="{{ eachc.fk_function_code_id }}" label="{{ eachc.fk_function_code }}" selected>{{ eachc.fk_function_code.fk_department_code_id }}</option>
+                    <option value="" label="" class="empty">Select Function</option>
+
                     {% if function_list %}
                         {% for eachfunction in function_list %}
+                        {% if eachfunction.pk != eachc.fk_function_code_id %}
+
                             <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
-            </div>
-            <label for="">Team</label>
-            <div class="forms-input-holder">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Team</label>
+
                 <select name="c_team" id="c_team" required="true"  disabled="true">
-                    <option value="" disabled selected>Select Team</option>
+                    <option value="{{ eachc.fk_team_code_id }}" label="{{ eachc.fk_team_code }}" selected>{{ eachc.fk_team_code.fk_function_code_id }}</option>
+                    <option value="" label="" class="empty">Select Team</option>
+
                     {% if team_list %}
                         {% for eachteam in team_list %}
+                        {% if eachteam.pk != eachc.fk_team_code_id %}
+
                             <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
+        </div>
+               <div class="candidate-forms-input-holder">
+                <div>
             <label for="">Sub Team</label>
-            <div class="forms-input-holder">
+
                 <select name="c_subteam" id="c_subteam" required="true" disabled="true">
-                    <option value="" disabled selected>Select Sub Team</option>
+                    <option value="{{ eachc.fk_subteam_code_id }}" label="{{ eachc.fk_subteam_code }}" selected>{{ eachc.fk_subteam_code.fk_team_code_id }}</option>
+                    <option value="" label="" class="empty">Select Sub Team</option>
+
                     {% if sub_team_list %}
                         {% for eachsubteam in sub_team_list %}
+                        {% if eachsubteam.pk != eachc.fk_subteam_code_id %}
+
                             <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
-            </div>
-            <label for="">Designation</label>
-            <div class="forms-input-holder">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Designation</label>
+
                 <select name="c_desg" id="c_desg" required="true" disabled="true">
-                    <option value="" disabled selected>Select Designation</option>
+                    <option value="{{ eachc.fk_designation_code_id }}" label="{{ eachc.fk_designation_code }}" selected>{{ eachc.fk_designation_code.fk_sub_team_code_id }}</option>
+                    <option value="" label="" class="empty">Select Designation</option>
+
                     {% if designation_list %}
                         {% for eachdesignation in designation_list %}
-                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.fk_designation_code_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
-                        {% endfor %}                
+                        {% if eachdesignation.pk != eachc.fk_designation_code_id %}
+
+                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.fk_designation_code }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
+        </div>
+               <div class="candidate-forms-input-holder">
+                <div>
             <label for="">Region</label>
-            <div class="forms-input-holder">
+
                 <select name="c_region" id="c_region" required="true" disabled="true">
-                    <option value="" disabled selected>Select Region</option>
+                    <option value="{{ eachc.fk_region_code_id }}" label="{{ eachc.fk_region_code }}" selected>{{ eachc.fk_region_code.fk_entity_code_id }}</option>
+
+                    <option value="" label="" class="empty">Select Region</option>
+
                     {% if region_list %}
                         {% for eachregion in region_list %}
-                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_designation_code_id }}</option>
-                        {% endfor %}                
+                        {% if eachregion.pk != eachc.fk_region_code_id %}
+
+                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
+                    {% endif %}
+                       
+                            {% endfor %}                
                     {% endif %}
                 </select>
-            </div>
-            <label for="">State</label>
-            <div class="forms-input-holder">
+                 </div>
+                <div class="margin-left">
+                <label for="" >State</label>
+
                 <select name="c_state" id="c_state" required="true" disabled="true">
-                    <option value="" disabled selected>Select State</option>
+                    <option value="{{ eachc.fk_state_code_id }}" label="{{ eachc.fk_state_code }}" selected>{{ eachc.fk_state_code.fk_region_code_id }}</option>
+
+                    <option value="" label="" class="empty">Select State</option>
+
                     {% if state_list %}
                         {% for eachstate in state_list %}
+                        {% if eachstate.pk != eachc.fk_state_code_id %}
+
                             <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                       
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
+        </div>
+               <div class="candidate-forms-input-holder">
+                <div>
             <label for="">City</label>
-            <div class="forms-input-holder">
+
                 <select name="c_city" id="c_city" required="true" disabled="true">
-                    <option value="" disabled selected>Select City</option>
+                    <option value="{{ eachc.fk_city_code_id }}" label="{{ eachc.fk_city_code }}" selected>{{ eachc.fk_city_code.fk_state_code_id }}</option>
+
+                    <option value="" label="" class="empty">Select City</option>
+
                     {% if city_list %}
                         {% for eachcity in city_list %}
+                        {% if eachcity.pk != eachc.fk_city_code_id %}
+
                             <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
-            </div>
-            <label for="">Location</label>
-            <div class="forms-input-holder">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Location</label>
+
                 <select name="c_location" id="c_location" required="true" disabled="true">
-                    <option value="" disabled selected>Select Location</option>
+                    <option value="{{ eachc.fk_location_code_id }}" label="{{ eachc.fk_location_code }}" selected>{{ eachc.fk_location_code.fk_city_code_id }}</option>
+
+                    <option value="" label="" class="empty">Select Location</option>
+
                     {% if location_list %}
                         {% for eachlocation in location_list %}
-                            <option value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
+                        {% if eachlocation.pk != eachc.fk_location_code_id %}
 
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
-            </div>
-            <div class="forms-input-holder">
-                <input type="email" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" required="true">
-            </div>
-           
-            <label for="">Gender</label>
-            <div class="forms-input-holder">
-                <select name="c_gender" id="c_gender" required="true">
-                    <option value="" disabled selected>Select Gender</option>
-                    {% if gender_list %}
-                        {% for eachgender in gender_list %}
-                            <option value="{{ eachgender.pk }}" label="{{ eachgender.gender_name }}">{{ eachgender.gender_name }}</option>
-                        {% endfor %}                
+                            <option value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
+                <label for="" >TA SPOC Email ID</label>
+                <input type="email" value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
+            </div>
+            <div class="margin-left">
+                <label for="" >Onboarding SPOC Email ID</label>
+                <input type="email" value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
+            </div>
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
+                <label for="">Reporting Manager</label>
+                <input type="text" value="{{ eachc.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Reporting Manager Email ID</label>
+
+                <input type="email" value="{{ eachc.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" required="true">
+         
+            </div>
+        </div>
+            
+               <div class="candidate-forms-input-holder">
+                <div>
             <label for="">Email ID Creation</label>
-            <div class="forms-input-holder">
+
                 <select name="c_email_creation" id="c_email_creation" required="true">
-                    <option value="" disabled selected>Email ID Creation</option>
+                    <option value="{{ eachc.E_Mail_ID_Creation }}" label="{{ eachc.E_Mail_ID_Creation }}" selected>{{ eachc.E_Mail_ID_Creation }}</option>
                     <option value="Yes" >Yes</option>
                     <option value="No" >No</option>                    
                 </select>
-            </div>
-            <label for="">Laptop Allocation</label>
-            <div class="forms-input-holder">
+                 </div>
+                <div class="margin-left">
+                <label for="" >Laptop Allocation</label>
+
                 <select name="c_laptop_allocation" id="c_laptop_allocation" required="true">
-                    <option value="" disabled selected>Laptop Allocation</option>
+                    <option value="{{ eachc.Laptop_Allocation_id }}" label="{{ eachc.Laptop_Allocation }}" selected>{{ eachc.Laptop_Allocation }}</option>
                     {% if laptop_allocation_list %}
                         {% for eachlaptop_allocation in laptop_allocation_list %}
+                        {% if eachlaptop_allocation.pk != eachc.Laptop_Allocation_id %}
+
                             <option value="{{ eachlaptop_allocation.pk }}" label="{{ eachlaptop_allocation.option_name }}">{{ eachlaptop_allocation.option_name }}</option>
-                        {% endfor %}                
+                    {% endif %}                    
+                       
+                            {% endfor %}                
                     {% endif %}                    
                 </select>
             </div>
+        </div>
+               <div class="candidate-forms-input-holder">
+                <div>
             <label for="">Salary Type</label>
-            <div class="forms-input-holder">
+
                 <select name="c_salary_type" id="c_salary_type" required="true">
-                    <option value="" disabled selected>Select Salary Type</option>
+                    <option value="{{ eachc.Salary_Type_id }}" label="{{ eachc.Salary_Type }}" selected>{{ eachc.Salary_Type }}</option>
+
                     {% if salary_type_list %}
                         {% for eachsalary_type in salary_type_list %}
+                        {% if eachsalary_type.pk != eachc.Salary_Type_id %}
+
                             <option value="{{ eachsalary_type.pk }}" label="{{ eachsalary_type.salary_type_name }}">{{ eachsalary_type.salary_type_name }}</option>
-                        {% endfor %}                
+                    {% endif %}                   
+                       
+                            {% endfor %}                
                     {% endif %}                   
                 </select>
+                 </div>
+                <div class="margin-left">
+                <label for="" >Gross Salary</label>
+                <input type="text" value="{{ eachc.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
+       
             </div>
-            <div class="forms-input-holder">
-                <input type="text" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
-            </div>
-        
 
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
+                <label for="" >Onboarding Status</label>
+                <input type="text" value="{{ eachc.onboarding_status }}" placeholder="Onboarding Status" disabled="true">
+            </div>
+            <div class="margin-left">
+                <label for="" >Vendor Status</label>
+                <input type="text" value="{{ eachc.vendor_status }}" placeholder="Vendor Status" disabled="true">
+            </div>
+        </div>
+              
     </div>
     <div class="candidate_form_footer">
             <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
  </form>
     </div>
+  
+  </div>
   {% endfor %}
 {% endif %}
-  </div>
+  <script>
+    $(document).ready(function(){
+        showMe('Candidate', 'can-expand');
+        $('#c_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_dept option').length;
+            var count = 0;
+            $('#c_dept option').each(function() {
+                if ($(this).text() == filter) {
+                $('#c_dept').attr("disabled", false);
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                    count += 1;
+                }
+                $('#c_dept').val(filter);
+            });
+         
+            var vcount = 0;
+            var vtotal = $('#c_vendor option').length;
+            $('#c_vendor option').each(function() {
+                if ($(this).text() == filter) {
+                $('#c_vendor').attr("disabled", false);
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                    vcount += 1;
+                }
+                $('#c_vendor').val(filter);
+            });
+            var rcount = 0;
+            var rtotal = $('#c_region option').length;
+            $('#c_region option').each(function() {
+            if ($(this).text() == filter) {
+                $('#c_region').attr("disabled", false);
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                    rcount += 1;
+                }
+                $('#c_region').val(filter);
+            });
+            if (vcount === vtotal){
+                $('#c_vendor').attr("disabled", true);
+                $('#c_vendor').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_vendor .empty').attr("selected", true);
+            }
+            if (count === total){
+                $('#c_dept').attr("disabled", true);
+                $('#c_dept').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_dept .empty').attr("selected", true);
+            }
+            if (rcount === rtotal){
+                $('#c_region').attr("disabled", true);
+                $('#c_region').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_region .empty').attr("selected", true);
+            }
 
+        });
+
+      
+        $('#c_region').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_state option').length;
+            var count = 0;
+            $('#c_state option').each(function() {
+            if ($(this).text() == filter) {
+            $('#c_state').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_state').val(filter);
+            });
+            if (count === total){
+                $('#c_state').attr("disabled", true)
+                $('#c_state').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_state .empty').attr("selected", true);
+            }
+        });
+
+        
+        $('#c_state').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_city option').length;
+            var count = 0;
+            $('#c_city option').each(function() {
+            if ($(this).text() == filter) {
+                
+            $('#c_city').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_city').val(filter);
+            });
+            if (count === total){
+                $('#c_city').attr("disabled", true)
+                $('#c_city').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_city .empty').attr("selected", true);
+            }
+        });
+
+        
+        $('#c_city').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_location option').length;
+            var count = 0;
+            $('#c_location option').each(function() {
+            if ($(this).text() == filter) {
+                
+            $('#c_location').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_location').val(filter);
+            });
+            if (count === total){
+                $('#c_location').attr("disabled", true)
+                $('#c_location').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_location .empty').attr("selected", true);
+            }
+        });
+
+        $('#c_dept').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_function option').length;
+            var count = 0;
+            $('#c_function option').each(function() {
+            if ($(this).text() == filter) {
+                
+            $('#c_function').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_function').val(filter);
+            });
+            if (count === total){
+                $('#c_function').attr("disabled", true)
+                $('#c_function').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_function .empty').attr("selected", true);
+            }
+        });
+        $('#c_function').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_team option').length;
+            var count = 0;
+            $('#c_team option').each(function() {
+            if ($(this).text() == filter) {
+               
+            $('#c_team').attr("disabled", false);
+                $(this).show();
+                
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_team').val(filter);
+            });
+            if (count === total){
+                $('#c_team').attr("disabled", true)
+                $('#c_team').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_team .empty').attr("selected", true);
+            }
+        });
+
+        $('#c_team').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_subteam option').length;
+            var count = 0;
+            $('#c_subteam option').each(function() {
+            if ($(this).text() == filter) {
+                
+            $('#c_subteam').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_subteam').val(filter);
+            });
+            if (count === total){
+                $('#c_subteam').attr("disabled", true)
+                $('#c_subteam').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_subteam .empty').attr("selected", true);
+            }
+        });
+
+        $('#c_subteam').change(function() {
+            var filter = $(this).val();
+            var total = $('#c_desg option').length;
+            var count = 0;
+            $('#c_desg option').each(function() {
+            if ($(this).text() == filter) {
+                
+            $('#c_desg').attr("disabled", false);
+                $(this).show();
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#c_desg').val(filter);
+            });
+            if (count === total){
+                $('#c_desg').attr("disabled", true)
+                $('#c_desg').append($('<option>', {
+                value: '',
+                text: '',
+                label: '',
+                selected: true,
+                selected: "true"
+                }));
+            } else {
+                $('#c_desg .empty').attr("selected", true);
+            }
+        });
+    })
+</script>
   {% endblock %}

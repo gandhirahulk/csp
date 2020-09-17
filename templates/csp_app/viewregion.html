@@ -64,7 +64,7 @@
 
 <div  class="form_modal" style="padding-top: 10%;display: block;">
 
-    <div class="form_header">
+    <div class="view_form_header">
         <div class="forms-heading">
             <h2>Region Details</h2>
         </div>
@@ -78,6 +78,8 @@
                     <table>
                         <tr>
                             <td><label for="">Region Name : </label> {{ eachregion.region_name }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Entity : </label> {{ eachregion.fk_entity_code }}</td>
                         </tr>
                     </table>                    
@@ -87,10 +89,14 @@
                     <table>
                         <tr>
                             <td><label for="">Created By : </label> {{ eachregion.created_by }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Created Date Time : </label> {{ eachregion.created_date_time }}</td>
                         </tr>
                         <tr>
                             <td><label for="">Modified By : </label> {{ eachregion.modified_by }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Modified Date Time : </label> {{ eachregion.modified_date_time }}</td>
                         </tr>
                        
@@ -100,7 +106,7 @@
             </div>
         {% endfor %}
     {% endif %} 
-    <div class="form_footer">
+    <div class="view_form_footer">
         <button onclick="location.href = '/csp_region/'" class="forms-save-btn">Close</button>
     </div>
              

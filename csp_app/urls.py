@@ -22,6 +22,8 @@ urlpatterns = [
     path('csp_candidates/change_status/', views.change_candidate_status, name= 'change_candidate_status'),
 
     path('csp_candidates/candidate_document/', views.candidate_document, name= 'documents'),
+    path('csp_candidates/candidate_document/<str:cid>', views.candidate_document, name= 'documents'),
+
 
     path('csp_entity/', views.entity, name= 'entity'),
     path('csp_entity/new_entity/', views.create_entity, name= 'create_entity'),

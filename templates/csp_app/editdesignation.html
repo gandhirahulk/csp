@@ -81,51 +81,69 @@
                     <div class="forms-input-holder">
                         <label for="">Entity</label>
                 
-                        <select name="e_designation_entity" required="true" id="subteam_entity">
+                        <select name="e_designation_entity" required="true" id="desg_entity">
                             <option value="{{eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code_id }}" label="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}" selected>{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
+                                {% if eachentity.pk != eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code_id %}
+
                                     <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
                     <div class="forms-input-holder">
                         <label for="">Department</label>
                 
-                        <select name="e_designation_dept" id="subteam_dept">
+                        <select name="e_designation_dept" id="desg_dept">
+                    <option value="" disabled  class="empty" label=" ">Select Department</option>
+
                             <option value="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code_id }}" label="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code }}">{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code_id }}</option>
                             {% if department_list %}
                                 {% for eachdept in department_list %}
+                                {% if eachdept.pk != eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code_id %}
 
                                     <option value="{{ eachdept.pk }}" label="{{ eachdept.department_name }}">{{ eachdept.fk_entity_code_id }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
                     <div class="forms-input-holder">
                         <label for="">Function</label>
                 
-                        <select name="e_designation_function" id="subteam_function" required="true">
+                        <select name="e_designation_function" id="desg_function" required="true">
+                    <option value="" disabled  class="empty" label=" ">Select Function</option>
+
                             <option value="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code_id }}" label="{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code }}">{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code_id }}</option>
                             {% if function_list %}
                                 {% for eachfunction in function_list %}
+                                {% if eachfunction.pk != eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code_id %}
 
                                     <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id  }}</option>
-                                {% endfor %}                
+                            {% endif %}
+                                
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
                     <div class="forms-input-holder">
                         <label for="">Team</label>
                 
-                        <select name="e_designation_team" id="subteam_team" required="true">
+                        <select name="e_designation_team" id="desg_team" required="true">
+                    <option value="" disabled  class="empty" label=" ">Select Team</option>
+
                             <option value="{{ eachdesignation.fk_sub_team_code.fk_team_code_id }}" label="{{ eachdesignation.fk_sub_team_code.fk_team_code }}">{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code_id }}</option>
                             {% if team_list %}
                                 {% for eachteam in team_list %}
+                                {% if eachteam.pk != eachdesignation.fk_sub_team_code.fk_team_code_id %}
 
                                     <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id  }}</option>
-                                {% endfor %}                
+                                {% endif %}
+                                    {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
@@ -133,13 +151,19 @@
                         <label for="">Sub Team</label>
             
                             <select name="e_designation_subteam" id="desg_subteam" required="true">
+                    <option value="" disabled class="empty" label=" ">Select Sub Team</option>
+
                             <option value="{{ eachdesignation.fk_sub_team_code_id }}" label="{{ eachdesignation.fk_sub_team_code }}">{{ eachdesignation.fk_sub_team_code.fk_team_code_id }}</option>
 
                                 <!-- <option value="" disabled selected>Select Sub Team</option> -->
                                 {% if sub_team_list %}
                                     {% for eachsubteam in sub_team_list %}
+                                {% if eachsubteam.pk != eachdesignation.fk_sub_team_code_id %}
+
                                         <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
-                                    {% endfor %}                
+                                {% endif %}
+                                    
+                                        {% endfor %}                
                                 {% endif %}
                             </select>
                         </div>
@@ -193,15 +217,9 @@
             });
             if (count === total){
                 $('#desg_dept').attr("disabled", true)
-            }
-            var l = $('#desg_dept option').length ;
-            if (l === 1){
-                $('#desg_dept').append($('<option>', {
-                    value: '',
-                    text: 'Select Department',
-                    label: 'Select Department',
-                    selected: true
-                }));
+            }else {
+                $('#desg_dept .empty').css("display", "");
+                $('#desg_dept .empty').prop("selected", true);
             }
         });
 
@@ -221,15 +239,9 @@
             });
             if (count === total){
                 $('#desg_function').attr("disabled", true)
-            }
-            var l = $('#desg_function option').length ;
-            if (l === 1){
-                $('#desg_function').append($('<option>', {
-                    value: '',
-                    text: 'Select Function',
-                    label: 'Select Function',
-                    selected: true
-                }));
+            }else {
+                $('#desg_function .empty').css("display", "");
+                $('#desg_function .empty').prop("selected", true);
             }
         });
         $('#desg_function').change(function() {
@@ -240,12 +252,7 @@
             if ($(this).text() == filter) {
             $('#desg_team').attr("disabled", false);
                 $(this).show();
-                $('#desg_team').append($('<option>', {
-                    value: '',
-                    text: 'Select Team',
-                    label: 'Select Team',
-                    selected: "true"
-                }));
+                
             } else {
                 $(this).hide();
                 count += 1;
@@ -254,15 +261,9 @@
             });
             if (count === total){
                 $('#desg_team').attr("disabled", true)
-            }
-            var l = $('#desg_team option').length ;
-            if (l === 1){
-                $('#desg_team').append($('<option>', {
-                    value: '',
-                    text: 'Select Team',
-                    label: 'Select Team',
-                    selected: true
-                }));
+            }else {
+                $('#desg_team .empty').css("display", "");
+                $('#desg_team .empty').prop("selected", true);
             }
         });
 
@@ -282,17 +283,12 @@
             });
             if (count === total){
                 $('#desg_subteam').attr("disabled", true)
-            }
-            var l = $('#desg_subteam option').length ;
-            if (l === 1){
-                $('#desg_subteam').append($('<option>', {
-                    value: '',
-                    text: 'Select Sub Team',
-                    label: 'Select_Sub Team',
-                    selected: true
-                }));
+            }else {
+                $('#desg_subteam .empty').css("display", "");
+                $('#desg_subteam .empty').prop("selected", true);
             }
         });
+    
     })
 </script>
 

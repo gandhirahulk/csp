@@ -80,17 +80,14 @@
                         <label for="">Entity</label>
                 
                         <select name="e_state_entity" required="true" id="state_entity">
-                            <!-- {% if selected_entity %}
-                
-                                {% for eachentity in selected_entity %}
-                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}" selected>{{ eachentity.entity_name }}</option>
-                                {% endfor %}
-                                
-                            {% endif %} -->
+                       
                             <option value="{{ eachstate.fk_region_code.fk_entity_code_id }}" label="{{ eachstate.fk_region_code.fk_entity_code }}" selected>{{ eachstate.fk_region_code.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
-                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
+                                    {% if eachentity.pk != eachstate.fk_region_code.fk_entity_code_id %}
+
+                                        <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.pk }}</option>
+                                    {% endif %}
                                 {% endfor %}                
                             {% endif %}
                         </select>
@@ -98,12 +95,18 @@
                     <div class="forms-input-holder">
                         <label for="">Region</label>
                 
-                        <select name="e_state_dept" id="state_dept">
+                        <select name="e_state_dept" id="state_region" required="true">
                             <option value="{{ eachstate.fk_region_code_id }}" label="{{ eachstate.fk_region_code }}">{{ eachstate.fk_region_code.fk_entity_code_id }}</option>
-                            {% if region_list %}
-                                {% for eachdept in region_list %}
+                            <option value="" disabled class="empty" label=" ">Select Region</option>
 
-                                    <option value="{{ eachdept.pk }}" label="{{ eachdept.region_name }}">{{ eachdept.fk_entity_code_id }}</option>
+
+                            {% if region_list %}
+                                {% for eachreg in region_list %}
+                                    {% if eachreg.pk != eachstate.fk_region_code_id %}
+
+                                        <option value="{{ eachreg.pk }}" label="{{ eachreg.region_name }}" style="display: none;">{{ eachreg.fk_entity_code_id }}</option>
+                                    {% endif %}
+                                
                                 {% endfor %}                
                             {% endif %}
                         </select>
@@ -125,5 +128,35 @@
   
   </div>
 
+  <script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+    
+        $('#state_entity').change(function() {
+            var filter = $(this).val();
+            var total = $('#state_region option').length;
+            var count = 0;
+            $('#state_region option').each(function() {
+            if ($(this).text() == filter) {
+            $('#state_region').attr("disabled", false);
+                $(this).show();
+              
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#state_region').val(filter);
+            });
+            if (count === total){
+                $('#state_region').attr("disabled", true)
+            }else {
+                $('#state_region .empty').css("display", "");
+                $('#state_region .empty').prop("selected", true);
+            }
+        });
+
+
+    })
+</script>
 
 {% endblock %}
