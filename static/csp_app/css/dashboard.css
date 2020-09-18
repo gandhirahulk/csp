@@ -9,6 +9,7 @@
 }
 body{
   background: #f5f5fa;
+  /* overflow: hidden; */
 }
 /* .wrapper{
   margin: 10px;
@@ -212,7 +213,7 @@ body{
   position: fixed;
   width: inherit;
   top: 120px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 /* .wrapper.collapse .sidebar{

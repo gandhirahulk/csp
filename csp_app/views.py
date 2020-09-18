@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.db.utils import IntegrityError
 from csp_app.models import status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
-                            sub_source, salary_type, gender, laptop_allocation, candidate_status, candidate_code, onboarding_status, vendor_status
+                            sub_source, salary_type, gender, laptop_allocation, candidate_status, onboarding_status, vendor_status, csp_candidate_code
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required, permission_required, 
 deactive_status = status.objects.get(pk=2)
 active_status = status.objects.get(pk=1)
 pending_status = candidate_status.objects.get(pk=2)
-approve_onboarding = onboarding_status.objects.get(pk = 0)
+approve_onboarding = onboarding_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 print(all_active_candidates) 
 # def remind_vendor():
@@ -46,53 +46,59 @@ def candidate(request):
     gender_list = gender.objects.filter(status= active_status)
     laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
     c_status_list = candidate_status.objects.all()
+    v_status_list = vendor_status.objects.all()
     try:
         specific_vendor = master_vendor.objects.get(vendor_email_id= request.user, status=active_status)
         print(specific_vendor)
         print(specific_vendor.pk)
-        vendor_specific_candidate = master_candidate.objects.filter(fk_vendor_code=specific_vendor, onboarding_status= approve_onboarding)
+        vendor_specific_candidate = master_candidate.objects.filter(fk_vendor_code=specific_vendor.pk, onboarding_status= approve_onboarding)
         print(vendor_specific_candidate)
     except ObjectDoesNotExist:
         specific_vendor = ''
     for eachgroup in request.user.groups.all():
+        print(eachgroup)
         if str(eachgroup) == 'Vendor':
             candidate_list = vendor_specific_candidate
         else:
-            candidate_list = master_candidate.objects.all()
+            candidate_list = master_candidate.objects.filter(status=active_status)
 
     return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 'c_status_list': c_status_list,
-    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list})
+    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list, 'v_status_list': v_status_list})
 
 @login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists())
 def new_candidate(request):    
-    entity_list = master_entity.objects.filter(status = active_status)
-    vendor_list = master_vendor.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
-    team_list = master_team.objects.filter(status = active_status)
-    subteam_list = master_sub_team.objects.filter(status = active_status)
-    desg_list = master_designation.objects.filter(status = active_status)
-    region_list = master_region.objects.filter(status = active_status)
-    state_list = master_state.objects.filter(status = active_status)
-    city_list = master_city.objects.filter(status= active_status)
-    location_list = master_location.objects.filter(status= active_status)
-    hiring_type_list = hiring_type.objects.filter(status= active_status)
-    sub_source_list = sub_source.objects.filter(status= active_status)
-    salary_type_list = salary_type.objects.filter(status= active_status)
-    gender_list = gender.objects.filter(status= active_status)
-    laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
-    candidate_list = master_candidate.objects.all()
-    return render(request, 'csp_app/newcandidate.html', {'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
-    'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
-    'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
-    'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list })
+    try:
+        entity_list = master_entity.objects.filter(status = active_status)
+        vendor_list = master_vendor.objects.filter(status = active_status)
+        dept_list = master_department.objects.filter(status = active_status)
+        function_list = master_function.objects.filter(status = active_status)
+        team_list = master_team.objects.filter(status = active_status)
+        subteam_list = master_sub_team.objects.filter(status = active_status)
+        desg_list = master_designation.objects.filter(status = active_status)
+        region_list = master_region.objects.filter(status = active_status)
+        state_list = master_state.objects.filter(status = active_status)
+        city_list = master_city.objects.filter(status= active_status)
+        location_list = master_location.objects.filter(status= active_status)
+        hiring_type_list = hiring_type.objects.filter(status= active_status)
+        sub_source_list = sub_source.objects.filter(status= active_status)
+        salary_type_list = salary_type.objects.filter(status= active_status)
+        gender_list = gender.objects.filter(status= active_status)
+        laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+        candidate_list = master_candidate.objects.all()
+        return render(request, 'csp_app/newcandidate.html', {'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+        'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+        'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+        'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list })
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists() )
 def edit_candidate(request): 
     try:
         if request.method == 'POST':
@@ -308,163 +314,167 @@ def candidate_document(request, cid):
 
 
 @login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists())
 def create_candidate(request):
-    if request.method == 'POST':
+    try:
+        if request.method == 'POST':
 
-        firstname = request.POST.get("c_firstname")
-        middlename = request.POST.get("c_middlename")
-        lastname = request.POST.get("c_lastname")
-        dob = request.POST.get("c_dob")
-        contact_no = request.POST.get("c_contact")
-        emergency_no = request.POST.get("c_emergency")
-        email = request.POST.get("c_email")
-        c_gender = request.POST.get("c_gender")
-        fathername = request.POST.get("c_fathername")
-        father_dob = request.POST.get("c_father_dob")
-        aadhaar = request.POST.get("c_aadhaar")
-        Pan = request.POST.get("c_pan")
-        hiring = request.POST.get("c_hiring_type")
-        doj = request.POST.get("c_doj")        
-        replacement = request.POST.get("c_replacement")
-        referral = request.POST.get("c_referral")
-        subsource = request.POST.get("c_sub_source")
-        entity = request.POST.get("c_entity")
-        vendor = request.POST.get("c_vendor")
-        department = request.POST.get("c_dept")
-        function = request.POST.get("c_function")
-        team = request.POST.get("c_team")
-        sub_team = request.POST.get("c_subteam")
-        designation = request.POST.get("c_desg")
-        region = request.POST.get("c_region")
-        state = request.POST.get("c_state")
-        city = request.POST.get("c_city")
-        location = request.POST.get("c_location")
-        # loc_code = request.POST.get("c_location_code") #check
-        loc_code = 'GGG' #check
+            firstname = request.POST.get("c_firstname")
+            middlename = request.POST.get("c_middlename")
+            lastname = request.POST.get("c_lastname")
+            dob = request.POST.get("c_dob")
+            contact_no = request.POST.get("c_contact")
+            emergency_no = request.POST.get("c_emergency")
+            email = request.POST.get("c_email")
+            c_gender = request.POST.get("c_gender")
+            fathername = request.POST.get("c_fathername")
+            father_dob = request.POST.get("c_father_dob")
+            aadhaar = request.POST.get("c_aadhaar")
+            Pan = request.POST.get("c_pan")
+            hiring = request.POST.get("c_hiring_type")
+            doj = request.POST.get("c_doj")        
+            replacement = request.POST.get("c_replacement")
+            referral = request.POST.get("c_referral")
+            subsource = request.POST.get("c_sub_source")
+            entity = request.POST.get("c_entity")
+            vendor = request.POST.get("c_vendor")
+            department = request.POST.get("c_dept")
+            function = request.POST.get("c_function")
+            team = request.POST.get("c_team")
+            sub_team = request.POST.get("c_subteam")
+            designation = request.POST.get("c_desg")
+            region = request.POST.get("c_region")
+            state = request.POST.get("c_state")
+            city = request.POST.get("c_city")
+            location = request.POST.get("c_location")
+            # loc_code = request.POST.get("c_location_code") #check
+            loc_code = 'GGG' #check
 
-        ta_spoc = request.POST.get("c_ta_spoc") #check
-        onboarding_spoc = request.POST.get("c_onboarding_spoc") #check
-        reporting_manager = request.POST.get("c_reporting_manager")
-        reporting_manager_email = request.POST.get("c_reporting_manager_email")
-        email_creation = request.POST.get("c_email_creation")
-        laptopallocation = request.POST.get("c_laptop_allocation")
-        salarytype = request.POST.get("c_salary_type")
-        gross_salary = request.POST.get("c_gross_salary")
-        if hiring == None or hiring == '':
-            messages.warning(request, "Choose Hiring Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        hiring_fk = hiring_type.objects.get(pk= hiring)
-        if sub_source == None or sub_source == '':
-            messages.warning(request, "Choose  Sub Source Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        subsource_fk = sub_source.objects.get(pk= subsource)
-        if c_gender == None or c_gender == '':
-            messages.warning(request, "Choose  Gender And Try Again")
-            return redirect("csp_app:new_candidate")
-        gender_fk = gender.objects.get(pk= c_gender)
-        if laptopallocation == None or laptopallocation == '':
-            messages.warning(request, "Choose  Laptop Allocation And Try Again")
-            return redirect("csp_app:new_candidate")
-        la_fk = laptop_allocation.objects.get(pk= laptopallocation)
-        if salarytype == None or salarytype == '':
-            messages.warning(request, "Choose  Salary Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        salarytype_fk = salary_type.objects.get(pk= salarytype)
-        if entity == None or entity == '':
-            messages.warning(request, "Choose  Entity Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        entity_fk = master_entity.objects.get(pk= entity)
-        if vendor == None or vendor == '':
-            messages.warning(request, "Choose  vendor Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        vendor_fk = master_vendor.objects.get(pk= vendor)
-        if department == None or department == '':
-            messages.warning(request, "Choose  Department Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        department_fk = master_department.objects.get(pk= department)
-        if function == None or function == '':
-            messages.warning(request, "Choose  Function Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        function_fk = master_function.objects.get(pk= function)
-        if team == None or team == '':
-            messages.warning(request, "Choose  Team Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        team_fk = master_team.objects.get(pk= team)
-        if sub_team == None or sub_team == '':
-            messages.warning(request, "Choose  Sub Team Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        sub_team_fk = master_sub_team.objects.get(pk= sub_team)
-        if designation == None or designation == '':
-            messages.warning(request, "Choose  Designation Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        designation_fk = master_designation.objects.get(pk= designation)
-        if region == None or region == '':
-            messages.warning(request, "Choose  Region Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        region_fk = master_region.objects.get(pk= region)
-        if state == None or state == '':
-            messages.warning(request, "Choose  State Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        state_fk = master_state.objects.get(pk= state)
-        if city == None or city == '':
-            messages.warning(request, "Choose  City Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        city_fk = master_city.objects.get(pk= city)
-        if location == None or location == '':
-            messages.warning(request, "Choose  Location Type And Try Again")
-            return redirect("csp_app:new_candidate")
-        location_fk = master_location.objects.get(pk= location)
-        try:
-            dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
-            messages.error( request, "Candidate Aadhaar Number Already Exist")
-            return redirect("csp_app:new_candidate")
-            dup_candidate_pan = master_candidate.objects.get(PAN_Number= Pan, status= active_status)
-            messages.error( request, "Candidate PAN Number Already Exist")
-            return redirect("csp_app:new_candidate")
-            dup_candidate_pan = master_candidate.objects.get(Contact_Number= contact_no, status= active_status)
-            messages.error( request, "Candidate Contact Number Already Exist")
-            return redirect("csp_app:new_candidate")
-        except ObjectDoesNotExist:
-            # try:
-            last_code_query = candidate_code.objects.latest('pk_candidate_code')
-            
-            last_code_str = last_code_query.pk_candidate_code
-            next_code_int = int(last_code_str[1:]) + 1
-            new_code = 'C' + str(next_code_int).zfill(9) #pk_candidate_code
-            print(new_code)
-            new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname, Middle_Name=middlename, Last_Name= lastname, Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
-            Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement,
-            Sub_Source= subsource_fk, Referral= referral, fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
-            fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
-            Reporting_Manager= reporting_manager, Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=datetime.now())
-            new_candidate.save()
-            save_new_code = candidate_code(pk_candidate_code=new_code)
-            save_new_code.save()
-            limtemplate = render_to_string('csp_app/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
-            our_email = EmailMessage(
-                'Candidate account created action required.',
-                limtemplate,
-                settings.EMAIL_HOST_USER,
-                [ reporting_manager_email, 'sadaf.shaikh@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()
-            alltemplate = render_to_string('csp_app/candidate_saved_et_all.html', {'candidate_code':new_code ,'user': request.user})
-            our_email = EmailMessage(
-                'Candidate account created action required.',
-                alltemplate,
-                settings.EMAIL_HOST_USER,
-                [ ta_spoc, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()
-            
-            messages.success(request, "Candidate Saved Successfully")
-            return redirect("csp_app:candidate")
+            ta_spoc = request.POST.get("c_ta_spoc") #check
+            onboarding_spoc = request.POST.get("c_onboarding_spoc") #check
+            reporting_manager = request.POST.get("c_reporting_manager")
+            reporting_manager_email = request.POST.get("c_reporting_manager_email")
+            email_creation = request.POST.get("c_email_creation")
+            laptopallocation = request.POST.get("c_laptop_allocation")
+            salarytype = request.POST.get("c_salary_type")
+            gross_salary = request.POST.get("c_gross_salary")
+            if hiring == None or hiring == '':
+                messages.warning(request, "Choose Hiring Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            hiring_fk = hiring_type.objects.get(pk= hiring)
+            if sub_source == None or sub_source == '':
+                messages.warning(request, "Choose  Sub Source Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            subsource_fk = sub_source.objects.get(pk= subsource)
+            if c_gender == None or c_gender == '':
+                messages.warning(request, "Choose  Gender And Try Again")
+                return redirect("csp_app:new_candidate")
+            gender_fk = gender.objects.get(pk= c_gender)
+            if laptopallocation == None or laptopallocation == '':
+                messages.warning(request, "Choose  Laptop Allocation And Try Again")
+                return redirect("csp_app:new_candidate")
+            la_fk = laptop_allocation.objects.get(pk= laptopallocation)
+            if salarytype == None or salarytype == '':
+                messages.warning(request, "Choose  Salary Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            salarytype_fk = salary_type.objects.get(pk= salarytype)
+            if entity == None or entity == '':
+                messages.warning(request, "Choose  Entity Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            entity_fk = master_entity.objects.get(pk= entity)
+            if vendor == None or vendor == '':
+                messages.warning(request, "Choose  vendor And Try Again")
+                return redirect("csp_app:new_candidate")
+            vendor_fk = master_vendor.objects.get(pk= vendor)
+            if department == None or department == '':
+                messages.warning(request, "Choose  Department Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            department_fk = master_department.objects.get(pk= department)
+            if function == None or function == '':
+                messages.warning(request, "Choose  Function Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            function_fk = master_function.objects.get(pk= function)
+            if team == None or team == '':
+                messages.warning(request, "Choose  Team Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            team_fk = master_team.objects.get(pk= team)
+            if sub_team == None or sub_team == '':
+                messages.warning(request, "Choose  Sub Team Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            sub_team_fk = master_sub_team.objects.get(pk= sub_team)
+            if designation == None or designation == '':
+                messages.warning(request, "Choose  Designation Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            designation_fk = master_designation.objects.get(pk= designation)
+            if region == None or region == '':
+                messages.warning(request, "Choose  Region Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            region_fk = master_region.objects.get(pk= region)
+            if state == None or state == '':
+                messages.warning(request, "Choose  State Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            state_fk = master_state.objects.get(pk= state)
+            if city == None or city == '':
+                messages.warning(request, "Choose  City Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            city_fk = master_city.objects.get(pk= city)
+            if location == None or location == '':
+                messages.warning(request, "Choose  Location Type And Try Again")
+                return redirect("csp_app:new_candidate")
+            location_fk = master_location.objects.get(pk= location)
+            try:
+                dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
+                messages.error( request, "Candidate Aadhaar Number Already Exist")
+                return redirect("csp_app:new_candidate")
+                dup_candidate_pan = master_candidate.objects.get(PAN_Number= Pan, status= active_status)
+                messages.error( request, "Candidate PAN Number Already Exist")
+                return redirect("csp_app:new_candidate")
+                dup_candidate_pan = master_candidate.objects.get(Contact_Number= contact_no, status= active_status)
+                messages.error( request, "Candidate Contact Number Already Exist")
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                # try:
+                last_code_query = csp_candidate_code.objects.latest('candidate_code')
+                
+                last_code_str = last_code_query.candidate_code
+                next_code_int = int(last_code_str[1:]) + 1
+                new_code = 'C' + str(next_code_int).zfill(9) #pk_candidate_code
+                print(new_code)
+                new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname.capitalize(), Middle_Name=middlename.capitalize(), Last_Name= lastname.capitalize(), Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
+                Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement.capitalize(),
+                Sub_Source= subsource_fk, Referral= referral.capitalize(), fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
+                fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
+                Reporting_Manager= reporting_manager.capitalize(), Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
+                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=datetime.now())
+                new_candidate.save()
+                save_new_code = csp_candidate_code(candidate_code= new_code)
+                save_new_code.save()
+                limtemplate = render_to_string('csp_app/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
+                our_email = EmailMessage(
+                    'Candidate account created action required.',
+                    limtemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ reporting_manager_email, 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+                alltemplate = render_to_string('csp_app/candidate_saved_et_all.html', {'candidate_code':new_code ,'user': request.user})
+                our_email = EmailMessage(
+                    'Candidate account created action required.',
+                    alltemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ ta_spoc, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+                
+                messages.success(request, "Candidate Saved Successfully")
+                return redirect("csp_app:candidate")
 
-        return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,})
+            return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,})
 
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -498,6 +508,10 @@ def change_candidate_status(request):
             vendor_id = candidate.fk_vendor_code_id
             vendor = master_vendor.objects.get(pk=vendor_id)
             candidate_vendor_mailid = vendor.vendor_email_id
+            print(status.status_name)
+            if str(status.status_name) == 'Hold':
+                print("done")
+                candidate.status = deactive_status
             candidate.candidate_status = status
             candidate.save()
             template = render_to_string('csp_app/status_change_email_temlate.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name.capitalize(), 'user': request.user})
@@ -514,7 +528,7 @@ def change_candidate_status(request):
       
             messages.success(request, "Candidate Status Updated")
             return redirect('csp_app:candidate')
-        return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,})        
+        return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
    
@@ -718,7 +732,6 @@ def save_edit_vendor(request):
            if request.POST.get("e_id") != '':
                 vendor = master_vendor.objects.get(pk = request.POST.get("e_id"))
                 vendor_name = request.POST.get("e_vendor_name")
-                print(vendor_name)
                 vendor_spoc = request.POST.get("e_vendor_spoc")
                 vendor_spoc_email = request.POST.get("e_vendor_spoc_email")
                 vendor_phone = request.POST.get("e_vendor_phone")
@@ -743,6 +756,7 @@ def save_edit_vendor(request):
                     selected_user.save()
                     vendor.vendor_name = vendor_name.capitalize()
                     vendor.spoc_name = vendor_spoc
+                    vendor.fk_entity_code = entity_fk
                     vendor.spoc_email_id = vendor_spoc_email
                     vendor.vendor_email_id = vendor_email
                     vendor.vendor_email_id_password = vendor_email_pwd
@@ -803,6 +817,20 @@ def create_vendor(request):
         except ObjectDoesNotExist:   
             print('here') 
         try:      
+            
+            
+            new_vendor = master_vendor(vendor_name= vendor_name.capitalize(), spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
+            new_vendor.save()
+            
+            newadmintemplate = render_to_string('csp_app/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
+            our_email = EmailMessage(
+                'CSP_APP: New vendor account created.',
+                newadmintemplate,
+                settings.EMAIL_HOST_USER,
+                [ request.user.email, 'sadaf.shaikh@udaan.com' ],
+            ) 
+            our_email.fail_silently = False
+            our_email.send() 
             assign_group = Group.objects.get(name='Vendor')         
             user = User.objects.create_user(vendor_email)
             # password = User.objects.make_random_password()
@@ -810,21 +838,33 @@ def create_vendor(request):
             user.set_password(user.password)
             user.first_name = vendor_name.capitalize()
             user.email = vendor_email
-            assign_group.user_set.add(user)
+            assign_group.user_set.add(user)     
             user.save()
-        except IntegrityError:
-            messages.error(request, "Username already in use.")
+            newtemplate = render_to_string('csp_app/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': vendor_email_pwd})
+            our_email = EmailMessage(
+                'CSP_APP: New vendor account created.',
+                newtemplate,
+                settings.EMAIL_HOST_USER,
+                [ vendor_email],
+            ) 
+            our_email.fail_silently = False
+            our_email.send()
+            messages.success(request, "Vendor Account Created. Check Mail For Credentials")            
             return redirect('csp_app:vendor')
-        
-        new_vendor = master_vendor(vendor_name= vendor_name.capitalize(), spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
-        new_vendor.save()
-        msg = 'New Vendor account created for '+ str(vendor_name.capitalize()) +' with Username " ' + str(vendor_email) + '" ."'
-        send_mail('New Vendor Account Created', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com'],fail_silently=False)
-        msg = 'Hi '+ vendor_name +', A Vendor Account Has Been Created with Username " ' + vendor_email + '" and  Password " ' + vendor_email_pwd + '" " ."'
-        send_mail('Vendor Account Created With Udaan CSP', msg,'workmail052020@gmail.com',[ vendor_email ],fail_silently=False)
-        messages.success(request, "Vendor Saved Successfully. Credentials Sent Through Mail.")
-        return redirect('csp_app:vendor')
-    return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates,})
+        except IntegrityError:
+            template = render_to_string('csp_app/use_old_password_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk})
+            our_email = EmailMessage(
+                'CSP_APP',
+                template,
+                settings.EMAIL_HOST_USER,
+                [ vendor_email, 'sadaf.shaikh@udaan.com'],
+            ) 
+            our_email.fail_silently = False
+            our_email.send()      
+            messages.success(request, "Vendor Account Created. Check Mail For Credentials")            
+            return redirect('csp_app:vendor')
+       
+    return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates})
 
 
 @login_required(login_url='/notlogin/')
@@ -2072,31 +2112,51 @@ def  create_user(request):
         lastname = request.POST.get('lastname')
         email = request.POST.get('email')
         group = request.POST.get('usergroup')
-        # try:
-        password = User.objects.make_random_password()
-        assign_group = Group.objects.get(name=group) 
+        try:
         
-        user = User.objects.create_user(usrname)
-        password = User.objects.make_random_password()
-        print(password)
-        user.password = password
-        user.set_password(user.password)
-        user.first_name = firstname
-        user.last_name = lastname
-        user.email = email
-        if group == 'Admin':
-            user.is_staff = True
-        # user.groups = group
-        assign_group.user_set.add(user)
-        user.save()
-        msg = 'User account of type " ' + group +' " created with Username " ' + usrname + '" and  Password " ' + password + '" " ."'
-        send_mail('New User Account Created', msg,'workmail052020@gmail.com',[ email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
-        # print("after")
-        # return HttpResponse("success")
-        messages.success(request, "User Created Successfully")
-        return redirect('csp_app:user')
-        # except IntegrityError:
-        #     return HttpResponse("choose unique username")
+            password = User.objects.make_random_password()
+            assign_group = Group.objects.get(name=group) 
+            
+            user = User.objects.create_user(usrname)
+            password = User.objects.make_random_password()
+            print(password)
+            user.password = password
+            user.set_password(user.password)
+            user.first_name = firstname
+            user.last_name = lastname
+            user.email = email
+            if group == 'Admin':
+                user.is_staff = True
+            # user.groups = group
+            assign_group.user_set.add(user)
+            user.save()
+            template = render_to_string('csp_app/new_user_et.html', {'user': firstname ,'username': email, 'password': password})
+            our_email = EmailMessage(
+                'Account Created with UDAAN CSP_APP.',
+                template,
+                settings.EMAIL_HOST_USER,
+                [ email, 'sadaf.shaikh@udaan.com'],
+            ) 
+            our_email.fail_silently = False
+            our_email.send()
+            admintemplate = render_to_string('csp_app/new_user_admin_et.html', {'user': firstname ,'username': email, 'password': password})
+            our_email = EmailMessage(
+                'Account Created with UDAAN CSP_APP.',
+                admintemplate,
+                settings.EMAIL_HOST_USER,
+                [ request.user.email , 'sadaf.shaikh@udaan.com'],
+            ) 
+            our_email.fail_silently = False
+            our_email.send()
+            # msg = 'User account of type " ' + group +' " created with Username " ' + usrname + '" and  Password " ' + password + '" " ."'
+            # send_mail('New User Account Created', msg,'workmail052020@gmail.com',[ email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
+            # print("after")
+            # return HttpResponse("success")
+            messages.success(request, "User Created Successfully")
+            return redirect('csp_app:user')
+        except IntegrityError:
+            messages.error(request, "Username Already Exist")
+            return redirect('csp_app:user')
     return render(request, 'csp_app/create_user.html', {'allcandidates': all_active_candidates,})
 
 

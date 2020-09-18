@@ -13,6 +13,7 @@ html, body{
 }
 body{
     background: #f5f5fa;
+    overflow: hidden;
 }
 .login-wrapper{
     background:#fff;

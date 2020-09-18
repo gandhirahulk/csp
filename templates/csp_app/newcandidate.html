@@ -45,28 +45,28 @@
                 </div>
                 <div class="margin-left">
                     <label for="" >Date of Birth</label>
-                    <input type="date" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
+                    <input type="date" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="4" >
                 </div>
             </div>
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Contact Number</label>
-                <input type="text" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                <input type="text" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
                  </div>
                 <div class="margin-left">
                 <label for="" >Emergency Number</label>
-                <input type="text" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                <input type="text" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
                 </div>
             </div>
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Email ID</label>
-                <input type="email" name="c_email" placeholder="Email Id">
+                <input type="email" tabindex="7" name="c_email" placeholder="Email Id">
                  </div>
                 <div class="margin-left">
                 <label for="" >Gender</label>
 
-                <select name="c_gender" id="c_gender" required="true">
+                <select name="c_gender" id="c_gender" required="true" tabindex="8">
                     <option value="" disabled selected>Select Gender</option>
                     {% if gender_list %}
                         {% for eachgender in gender_list %}
@@ -80,11 +80,11 @@
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Father Name</label>
-                <input type="text" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
+                <input type="text" tabindex="9" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
                  </div>
                 <div class="margin-left">
                 <label for="" >Date of Birth</label>
-                <input type="date" placeholder="Date Of Joining" name="c_father_dob" id="c_father_dob" required="true" tabindex="4" >
+                <input type="date" tabindex="10" placeholder="Date Of Joining" name="c_father_dob" id="c_father_dob" required="true" tabindex="4" >
        
             </div>
         </div>
@@ -92,18 +92,18 @@
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Aadhaar Number</label>
-                <input type="text" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+                <input type="text" tabindex="11" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
                  </div>
                 <div class="margin-left">
                 <label for="" >PAN Number</label>
-                <input type="text" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+                <input type="text" tabindex="12" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
       
             </div>
         </div>
                <div class="candidate-forms-input-holder">
                 <div>               
                 <label for="">Type Of Hiring</label>
-                <select name="c_hiring_type" id="" >
+                <select name="c_hiring_type" id="" tabindex="13" >
                     <option value="" disabled selected>Type Of Hiring</option>
                     {% if hiring_type_list %}
                         {% for eachhiring_type in hiring_type_list %}
@@ -114,7 +114,7 @@
                  </div>
                 <div class="margin-left">
                 <label for="" >Date of Joining</label>
-                <input type="date" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+                <input type="date" tabindex="14" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
            
             </div>
         </div>
@@ -122,19 +122,19 @@
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Replacement UID </label>
-                <input type="text" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" tabindex="15" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
                  </div>
                 <div class="margin-left">
                 <label for="" >Referal UID</label>
-                <input type="text" placeholder="Referral" name="c_referral" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" tabindex="16" placeholder="Referral" name="c_referral" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
           
             </div>
         </div>
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Sub Source</label>
-                <select name="c_sub_source" id="" >
-                    <option value="" disabled selected>Sub Source</option>
+                <select name="c_sub_source" id="" tabindex="17" >
+                    <option value="" disabled selected>Select Sub Source</option>
                     {% if sub_source_list %}
                         {% for eachsub_source in sub_source_list %}
                             <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
@@ -145,7 +145,7 @@
                 <div class="margin-left">
                 <label for="" >Entity</label>
 
-                <select name="c_entity" id="c_entity" required="true">
+                <select name="c_entity" id="c_entity" required="true" tabindex="18">
                     <option value="" disabled selected>Select Entity</option>
                     {% if entity_list %}
                         {% for eachentity in entity_list %}
@@ -160,7 +160,7 @@
                 <div>
                     <label for="">Vendor</label>
 
-                    <select name="c_vendor" id="c_vendor" required="true" disabled="true">
+                    <select name="c_vendor" id="c_vendor" required="true" disabled="true" tabindex="19">
                         <option value="" disabled selected label=" " class="empty">Select vendor</option>
 
                         {% if vendor_list %}
@@ -173,7 +173,7 @@
                 <div class="margin-left">
                 <label for="" >Department</label>
 
-                <select name="c_dept" id="c_dept" required="true" disabled="true">
+                <select name="c_dept" id="c_dept" required="true" disabled="true" tabindex="20">
                     <option value="" disabled selected label=" " class="empty">Select Department</option>
 
                     {% if department_list %}
@@ -188,7 +188,7 @@
                 <div>
             <label for="">Function</label>
 
-                <select name="c_function" id="c_function" required="true" disabled="true">
+                <select name="c_function" id="c_function" required="true" disabled="true" tabindex="21">
                     <option value="" disabled selected label=" " class="empty">Select Function</option>
 
                     {% if function_list %}
@@ -201,7 +201,7 @@
                 <div class="margin-left">
                 <label for="" >Team</label>
 
-                <select name="c_team" id="c_team" required="true"  disabled="true">
+                <select name="c_team" id="c_team" required="true"  disabled="true" tabindex="22">
                     <option value="" disabled selected label=" " class="empty">Select Team</option>
 
                     {% if team_list %}
@@ -216,7 +216,7 @@
                 <div>
             <label for="">Sub Team</label>
 
-                <select name="c_subteam" id="c_subteam" required="true" disabled="true">
+                <select name="c_subteam" id="c_subteam" required="true" disabled="true" tabindex="23">
                     <option value="" disabled selected label=" " class="empty">Select Sub Team</option>
 
                     {% if sub_team_list %}
@@ -229,7 +229,7 @@
                 <div class="margin-left">
                 <label for="" >Designation</label>
 
-                <select name="c_desg" id="c_desg" required="true" disabled="true">
+                <select name="c_desg" id="c_desg" required="true" disabled="true" tabindex="24">
                     <option value="" disabled selected label=" " class="empty">Select Designation</option>
 
                     {% if designation_list %}
@@ -244,7 +244,7 @@
                 <div>
             <label for="">Region</label>
 
-                <select name="c_region" id="c_region" required="true" disabled="true">
+                <select name="c_region" id="c_region" required="true" disabled="true" tabindex="25">
                     <option value="" disabled selected label=" " class="empty" >Select Region</option>
 
                     {% if region_list %}
@@ -257,7 +257,7 @@
                 <div class="margin-left">
                 <label for="" >State</label>
 
-                <select name="c_state" id="c_state" required="true" disabled="true">
+                <select name="c_state" id="c_state" required="true" disabled="true" tabindex="26">
                     <option value="" disabled selected label=" " class="empty">Select State</option>
 
                     {% if state_list %}
@@ -272,7 +272,7 @@
                 <div>
             <label for="">City</label>
 
-                <select name="c_city" id="c_city" required="true" disabled="true">
+                <select name="c_city" id="c_city" required="true" disabled="true" tabindex="27">
                     <option value="" disabled selected label=" " class="empty">Select City</option>
 
                     {% if city_list %}
@@ -285,7 +285,7 @@
                 <div class="margin-left">
                 <label for="" >Location</label>
 
-                <select name="c_location" id="c_location" required="true" disabled="true">
+                <select name="c_location" id="c_location" required="true" disabled="true" tabindex="28">
                     <option value="" disabled selected label=" " class="empty">Select Location</option>
 
                     {% if location_list %}
@@ -299,22 +299,22 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >TA SPOC Email ID</label>
-                <input type="email" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
+                <input type="email" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true" tabindex="29">
             </div>
             <div class="margin-left">
                 <label for="" >Onboarding SPOC Email ID</label>
-                <input type="email" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
+                <input type="email" tabindex="30" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
             </div>
         </div>
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="">Reporting Manager</label>
-                <input type="text" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
                  </div>
                 <div class="margin-left">
                 <label for="" >Reporting Manager Email ID</label>
 
-                <input type="email" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" required="true">
+                <input type="email" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" required="true">
          
             </div>
         </div>
@@ -323,7 +323,7 @@
                 <div>
             <label for="">Email ID Creation</label>
 
-                <select name="c_email_creation" id="c_email_creation" required="true">
+                <select name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
                     <option value="" disabled selected>Email ID Creation</option>
                     <option value="Yes" >Yes</option>
                     <option value="No" >No</option>                    
@@ -332,7 +332,7 @@
                 <div class="margin-left">
                 <label for="" >Laptop Allocation</label>
 
-                <select name="c_laptop_allocation" id="c_laptop_allocation" required="true">
+                <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
                     <option value="" disabled selected>Laptop Allocation</option>
                     {% if laptop_allocation_list %}
                         {% for eachlaptop_allocation in laptop_allocation_list %}
@@ -346,7 +346,7 @@
                 <div>
             <label for="">Salary Type</label>
 
-                <select name="c_salary_type" id="c_salary_type" required="true">
+                <select name="c_salary_type" id="c_salary_type" required="true" tabindex="35">
                     <option value="" disabled selected>Select Salary Type</option>
                     {% if salary_type_list %}
                         {% for eachsalary_type in salary_type_list %}
@@ -357,7 +357,7 @@
                  </div>
                 <div class="margin-left">
                 <label for="" >Gross Salary</label>
-                <input type="text" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
+                <input type="text" tabindex="36" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
        
             </div>
         </div>
@@ -366,7 +366,7 @@
     </div>
     <div class="candidate_form_footer">
             <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
- </form>
+    </form>
     </div>
   
   </div>

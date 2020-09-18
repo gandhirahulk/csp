@@ -309,11 +309,12 @@ class master_candidate(models.Model):
     def __str__(self):
         return self.pk_candidate_code
 
-class candidate_code(models.Model):
-    pk_candidate_code = models.CharField(max_length=10)
+class csp_candidate_code(models.Model):
+    pk_count = models.AutoField(primary_key=True)
+    candidate_code = models.CharField(max_length=10, default='C000000004')
 
     def __str__(self):
-        return self.pk_candidate_code
+        return self.candidate_code
 
 
 class candidate_document(models.Model):

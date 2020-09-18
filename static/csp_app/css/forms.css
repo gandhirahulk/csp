@@ -141,7 +141,8 @@ input:-webkit-autofill+label.move-out {
 
 .forms-input-holder > input:focus,
 .forms-input-holder > select:focus,
-.search-input > input:focus{
+.search-input > input:focus,
+.action-col select:focus{
     /* border: 1px solid #bf0711; */
     box-shadow: 0px 0px 1px 0px #bf0711;
 }
@@ -371,4 +372,10 @@ input:-webkit-autofill+label.move-out {
   .fds table tr td{
     padding-left: 5px;
     width: 100%;
+  }
+
+
+  .action-col select{
+    border: 1px solid #ddd;
+    padding: 5px;
   }
