@@ -532,6 +532,57 @@ def change_candidate_status(request):
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
    
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists())
+def change_candidate_status_vendor(request):
+    try:
+        if request.method == 'POST':
+            candidate_id = request.POST.get("v_c_id")
+            status_id = request.POST.get("v_change_id")
+            if status_id == None or status_id == '':
+                messages.warning(request, "Please Change Status And Try Again")
+                return redirect('csp_app:candidate')
+            status = vendor_status.objects.get(pk = status_id)
+            if candidate_id == None or candidate_id == '':
+                messages.warning(request, "Candidate Not Found")
+                return redirect('csp_app:candidate')
+            candidate = master_candidate.objects.get(pk = candidate_id)
+            prev_status = candidate.candidate_status
+            candidate_vendor_mailid = candidate.fk_vendor_code.vendor_email_id
+            # vendor = master_vendor.objects.get(pk=vendor_id)
+            # candidate_vendor_mailid = vendor.vendor_email_id
+      
+            candidate.vendor_status = status
+            candidate.save()
+            template = render_to_string('csp_app/vendor_status_change_et.html', {'candidate_code':candidate.pk ,'prev':prev_status, 'current':status.status_name.capitalize(), 'user': request.user})
+            our_email = EmailMessage(
+                'Candidate Status Updated By Vendor',
+                template,
+                settings.EMAIL_HOST_USER,
+                [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],
+            ) 
+            our_email.fail_silently = False
+            our_email.send()
+            print(status_id)
+            if str(status_id) == '0':
+                print("here")
+                template = render_to_string('csp_app/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name.capitalize()})
+                our_email = EmailMessage(
+                    'LOI',
+                    template,
+                    settings.EMAIL_HOST_USER,
+                    [ candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+            # msg = 'Candidate status for '+ str(candidate.First_Name) +' updated to' + str(status.status_name) +' from ' + str(prev_status) + ' with candidate code " ' + str(candidate.pk) + ' by ' + str(request.user) + ' .'
+            # send_mail('Candidate Status Updated', msg,'workmail052020@gmail.com',[ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],fail_silently=False)
+      
+            messages.success(request, "Candidate Status Updated")
+            return redirect('csp_app:candidate')
+        return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
 
 
 @login_required(login_url='/notlogin/')

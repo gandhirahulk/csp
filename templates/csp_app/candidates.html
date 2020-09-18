@@ -65,7 +65,7 @@
                             {% if request.user.groups.all %}
                                 {% for eachgroup in request.user.groups.all %}
                                     {% if eachgroup.name == 'Admin' %}
-                                        <select name="c_status" id="c_status" onchange="showDelete('{{ eachcandidate.pk }}', 'change_candidate_status', 'change_me')">
+                                        <select name="c_status" id="c_status" onchange="statusAdmin('{{ eachcandidate.pk }}', 'change_candidate_status', 'change_me')">
                                             <option value="{{ eachcandidate.candidate_status_id }}" label="{{ eachcandidate.candidate_status }}" selected="True">{{ eachcandidate.candidate_status }}</option>
                                             {% if c_status_list %}
                                                 {% for eachstatus in c_status_list %}
@@ -77,7 +77,7 @@
                                         </select>                                    
                                     {% endif %}   
                                     {% if eachgroup.name == 'Vendor' %}
-                                        <select name="c_status" id="c_status" onchange="showDelete('{{ eachcandidate.pk }}', 'change_candidate_status', 'change_me')">
+                                        <select name="v_status" id="v_status" onchange="statusVendor('{{ eachcandidate.pk }}', 'change_candidate_status_vendor', 'v_change_me')">
                                             <option value="{{ eachcandidate.vendor_status_id }}" label="{{ eachcandidate.vendor_status }}" selected="True">{{ eachcandidate.vendor_status }}</option>
                                             {% if v_status_list %}
                                                 {% for eachstatus in v_status_list %}
@@ -388,6 +388,22 @@
     </div>    
 </div>
 
+<div id="change_candidate_status_vendor" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Are You Sure?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="v_c_id" value="" name="v_c_id">
+            <button type="submit" formaction="{% url 'csp_app:change_candidate_status_vendor' %}" value="" id="v_change_me" name="v_change_id" class="forms-delete-btn">Confirm</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form> 
+       
+    </div>    
+</div>
 
 <script>
     $(document).ready(function(){
@@ -599,22 +615,32 @@
     })
 </script>
 <script>
-    function showDelete(itemid, formid, inputid){
-        console.log("in here");
+    function statusAdmin(itemid, formid, inputid){
+        // console.log("in here");
         var status_id = document.getElementById('c_status').value;
         var sel = document.getElementById('c_status');
         var text= sel.options[sel.selectedIndex].text;
         // var status = document.getElementById("c_status");
         
-        console.log(status_id);
-        console.log(text);
+        // console.log(status_id);
+        // console.log(text);
         document.getElementById(formid).style.display = "block";
         document.getElementById(inputid).setAttribute("value", status_id);
-        document.getElementById("c_id").setAttribute("value", itemid);
-       
+        document.getElementById("c_id").setAttribute("value", itemid);   
 
 
       
+    }
+
+    function statusVendor(itemid, formid, inputid){
+        console.log("called");
+        console.log(formid);
+        var status_id = document.getElementById('v_status').value;
+        var sel = document.getElementById('v_status');
+        var text= sel.options[sel.selectedIndex].text;
+        document.getElementById(formid).style.display = "block";
+        document.getElementById(inputid).setAttribute("value", status_id);
+        document.getElementById("v_c_id").setAttribute("value", itemid);  
     }
 </script>
 {% endblock %}
