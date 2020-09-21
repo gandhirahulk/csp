@@ -57,6 +57,7 @@
         $('#location-table').DataTable();
         $('#user-table').DataTable();
         $('#candidate-table').DataTable();
+        $('#document-table').DataTable();
 
         $('#c_firstname').bind('keypress', onlyAlphabets);
         $('#c_middlename').bind('keypress', onlyAlphabets);
@@ -417,6 +418,18 @@
                 console.log(c_code);
                $('#' + this.value).css("display", "block");              
            });
+        //    $(document).keyup(function(){
+        //     if (event.keyCode === 27){
+        //         $("#entity_form").css("display", "none");
+        //         $("#delete_entity_form").css("display", "none");
+        //     }
+        //     });
+        //     $(window).click(function(e) {
+        //         if (e.target.id === 'entity_form' || e.target.id === 'delete_entity_form') {
+        //             $("#entity_form").css("display", "none");
+        //             $("#delete_entity_form").css("display", "none");
+        //         }   
+        //     }); 
         });
     </script>
 </body>

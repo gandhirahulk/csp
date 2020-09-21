@@ -13,11 +13,12 @@
 {% block tabcontentblock %}
 {% if view_candidate %}
     {% for eachc in  view_candidate %}
-        <div class="crumbs"><span><a href="{% url 'csp_app:candidates' %}">Candidates</a></span>
+        <div class="crumbs"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
             <span><i class="fas fa-chevron-right"></i></span>
-            <span>{{ eachc.pk }}</span>                
+            <span>Upload Documents</span>
             <span><i class="fas fa-chevron-right"></i></span>
-            <span>Documents</span>
+            <span>{{ eachc.pk }} | {{ eachc.First_Name }} | {{ eachc.Middle_Name }} | {{ eachc.Last_Name }}</span>                
+      
         </div>
 
         <div class="candidate_form">
@@ -29,8 +30,9 @@
              
             </div>
             <div class="candidate_form_content">
-                <div class="forms-doc-label-holder">
-                    <label for="">Code :</label> {{ eachc.pk }} | <label for="">Candidate Name:</label> {{ eachc.First_Name }} {{ eachc.Middle_Name }} {{ eachc.Last_Name }} 
+                <div class="forms-input-holder">
+                    <label for="">Selected Candidate ID </label>
+                    <input type="text" disabled value="{{ eachc.pk }}" >
                 </div>
                 <form method="POST" autocomplete="off">
                     {% csrf_token %}
@@ -46,7 +48,7 @@
                       
             </div>
             <div class="candidate_form_footer">
-                    <button class="forms-save-btn" formaction="{% url 'csp_app:document' %}" type="submit">Save Candidate</button>
+                    <button class="forms-save-btn"  type="submit">Save Candidate</button>
          </form>
             </div>
           

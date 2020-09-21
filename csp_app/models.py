@@ -316,12 +316,20 @@ class csp_candidate_code(models.Model):
     def __str__(self):
         return self.candidate_code
 
+class mandatory_documents(models.Model):
+    pk_mandatory_code = models.AutoField(primary_key=True)
+    document_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.document_name
+    
 
 class candidate_document(models.Model):
     pk_document_code = models.AutoField(primary_key=True)
     fk_candidate_code = models.ForeignKey(master_candidate, on_delete=models.CASCADE)
+    document_catagory = models.ForeignKey( mandatory_documents, on_delete=models.CASCADE, default=1)
     file_name = models.CharField(max_length=200)
-    file_upload = models.FileField()
+    file_upload = models.FileField(upload_to='documents/')
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
     modified_by = models.CharField(max_length=100, null=True,blank=True)

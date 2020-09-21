@@ -9,10 +9,13 @@ from django.template.loader import render_to_string
 from django.db.utils import IntegrityError
 from csp_app.models import status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
-                            sub_source, salary_type, gender, laptop_allocation, candidate_status, onboarding_status, vendor_status, csp_candidate_code
+                            sub_source, salary_type, gender, laptop_allocation, candidate_status, onboarding_status, vendor_status, csp_candidate_code, \
+                            mandatory_documents, candidate_document
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
+from django.core.files.storage import FileSystemStorage
+
 
 
 deactive_status = status.objects.get(pk=2)
@@ -20,8 +23,11 @@ active_status = status.objects.get(pk=1)
 pending_status = candidate_status.objects.get(pk=2)
 approve_onboarding = onboarding_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
-print(all_active_candidates) 
-# def remind_vendor():
+
+def vendor_candidates(usrname):
+    s_vendor = master_vendor.objects.get(vendor_email_id= usrname, status=active_status)
+    vs_candidates = master_candidate.objects.filter(fk_vendor_code=s_vendor.pk, status= active_status)
+    return vs_candidates
 
 
 
@@ -49,10 +55,9 @@ def candidate(request):
     v_status_list = vendor_status.objects.all()
     try:
         specific_vendor = master_vendor.objects.get(vendor_email_id= request.user, status=active_status)
-        print(specific_vendor)
-        print(specific_vendor.pk)
+    
         vendor_specific_candidate = master_candidate.objects.filter(fk_vendor_code=specific_vendor.pk, onboarding_status= approve_onboarding)
-        print(vendor_specific_candidate)
+     
     except ObjectDoesNotExist:
         specific_vendor = ''
     for eachgroup in request.user.groups.all():
@@ -61,7 +66,7 @@ def candidate(request):
             candidate_list = vendor_specific_candidate
         else:
             candidate_list = master_candidate.objects.filter(status=active_status)
-
+    all_active_candidates = vendor_candidates(request.user)
     return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
@@ -264,16 +269,25 @@ def edit_candidate(request):
                 selected_candidate.Gross_Salary_Amount= gross_salary
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time=datetime.now()
-           
-
-                msg = 'Candidate account edited by ' + str(request.user) + ' (all information)'
-                send_mail('Candidate Account Updated ', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', ta_spoc, onboarding_spoc],fail_silently=False)
-                msg = 'Candidate account edited by ' + str(request.user) + ' (limited information)'
-
-                send_mail('Candidate Account Updated ', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', reporting_manager_email],fail_silently=False)
-
-                # send_mail('Candidate Account Created : ACTION REQUIRED', msg,'workmail052020@gmail.com',['sadaf.shaikh@udaan.com', reporting_manager_email, vendor_fk.spoc_email_id, ta_spoc, onboarding_spoc],fail_silently=False)
-        
+                alltemplate = render_to_string('csp_app/candidate_edited_et.html', {'candidate_code':new_code ,'user': request.user})
+                our_email = EmailMessage(
+                    'Candidate Account Updated.',
+                    alltemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ ta_spoc, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+                limtemplate = render_to_string('csp_app/candidate_edited_et_limited.html', {'candidate_code':new_code ,'user': request.user})
+                our_email = EmailMessage(
+                    'Candidate Account Updated.',
+                    limtemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ reporting_manager_email, 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+               
                 messages.success(request, "Candidate Updated Successfully")
                 return redirect("csp_app:candidate")
 
@@ -285,32 +299,32 @@ def edit_candidate(request):
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
-@login_required(login_url='/notlogin/')
-def candidate_document(request, cid): 
-    if request.method != 'POST':
-        candidate_id = request.POST.get("view_id")   
-        entity_list = master_entity.objects.filter(status = active_status)
-        vendor_list = master_vendor.objects.filter(status = active_status)
-        dept_list = master_department.objects.filter(status = active_status)
-        function_list = master_function.objects.filter(status = active_status)
-        team_list = master_team.objects.filter(status = active_status)
-        subteam_list = master_sub_team.objects.filter(status = active_status)
-        desg_list = master_designation.objects.filter(status = active_status)
-        region_list = master_region.objects.filter(status = active_status)
-        state_list = master_state.objects.filter(status = active_status)
-        city_list = master_city.objects.filter(status= active_status)
-        location_list = master_location.objects.filter(status= active_status)
-        hiring_type_list = hiring_type.objects.filter(status= active_status)
-        sub_source_list = sub_source.objects.filter(status= active_status)
-        salary_type_list = salary_type.objects.filter(status= active_status)
-        gender_list = gender.objects.filter(status= active_status)
-        laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
-        view_candidate = master_candidate.objects.filter(pk=cid)
-    return render(request, 'csp_app/document.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'location_list': location_list, 
-    'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
-    'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
-    'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-    'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'view_candidate': candidate_list })
+# @login_required(login_url='/notlogin/')
+# def candidate_document(request, cid): 
+#     if request.method != 'POST':
+#         candidate_id = request.POST.get("view_id")   
+#         entity_list = master_entity.objects.filter(status = active_status)
+#         vendor_list = master_vendor.objects.filter(status = active_status)
+#         dept_list = master_department.objects.filter(status = active_status)
+#         function_list = master_function.objects.filter(status = active_status)
+#         team_list = master_team.objects.filter(status = active_status)
+#         subteam_list = master_sub_team.objects.filter(status = active_status)
+#         desg_list = master_designation.objects.filter(status = active_status)
+#         region_list = master_region.objects.filter(status = active_status)
+#         state_list = master_state.objects.filter(status = active_status)
+#         city_list = master_city.objects.filter(status= active_status)
+#         location_list = master_location.objects.filter(status= active_status)
+#         hiring_type_list = hiring_type.objects.filter(status= active_status)
+#         sub_source_list = sub_source.objects.filter(status= active_status)
+#         salary_type_list = salary_type.objects.filter(status= active_status)
+#         gender_list = gender.objects.filter(status= active_status)
+#         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+#         view_candidate = master_candidate.objects.filter(pk=cid)
+#     return render(request, 'csp_app/document.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'location_list': location_list, 
+#     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+#     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+#     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+#     'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'view_candidate': candidate_list })
 
 
 @login_required(login_url='/notlogin/')
@@ -504,14 +518,26 @@ def change_candidate_status(request):
                 messages.warning(request, "Candidate Not Found")
                 return redirect('csp_app:candidate')
             candidate = master_candidate.objects.get(pk = candidate_id)
-            prev_status = candidate.candidate_status
+            prev_status = status.status_name
             vendor_id = candidate.fk_vendor_code_id
             vendor = master_vendor.objects.get(pk=vendor_id)
             candidate_vendor_mailid = vendor.vendor_email_id
             print(status.status_name)
             if str(status.status_name) == 'Hold':
-                print("done")
                 candidate.status = deactive_status
+                candidate.candidate_status = status
+                candidate.save()
+                template = render_to_string('csp_app/hold_status_change_et.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name.capitalize(), 'user': request.user})
+                our_email = EmailMessage(
+                    'Candidate Status Updated',
+                    template,
+                    settings.EMAIL_HOST_USER,
+                    [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()            
+                messages.success(request, "Candidate Status Updated")
+                return redirect('csp_app:candidate')
             candidate.candidate_status = status
             candidate.save()
             template = render_to_string('csp_app/status_change_email_temlate.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name.capitalize(), 'user': request.user})
@@ -522,16 +548,78 @@ def change_candidate_status(request):
                 [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],
             ) 
             our_email.fail_silently = False
-            our_email.send()
-            msg = 'Candidate status for '+ str(candidate.First_Name) +' updated to' + str(status.status_name) +' from ' + str(prev_status) + ' with candidate code " ' + str(candidate.pk) + ' by ' + str(request.user) + ' .'
-            send_mail('Candidate Status Updated', msg,'workmail052020@gmail.com',[ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],fail_silently=False)
-      
+            our_email.send()            
             messages.success(request, "Candidate Status Updated")
             return redirect('csp_app:candidate')
         return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
-   
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists())
+def candidate_document_upload(request, candidate_id):
+    try:
+        # candidate_id = 'C000000006'
+
+        candidate = master_candidate.objects.filter(pk = candidate_id)
+        candidate_fk = master_candidate.objects.get(pk = candidate_id)
+        
+        document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+        
+        mandatory_list = mandatory_documents.objects.all()
+        if request.method == 'POST':
+            f_catogory = request.POST.get("c_catogory")
+            print(f_catogory)
+            file_name = request.POST.get("c_filename")
+            print(file_name)
+            c_file = request.FILES['file']
+            # if file_catogory == None or file_catogory == '':
+            #     messages.warning(request, "Choose File Catogory")
+            #     return redirect('csp_app:document_upload')
+            if c_file == None or c_file == '':
+                messages.warning(request, "Choose File")
+                return redirect('csp_app:document_upload')
+            file_name = c_file.name
+            fs = FileSystemStorage()
+            filename = fs.save(file_name, c_file)
+            print(fs.url(filename))
+            file_url = fs.url(filename)          
+            catogory_fk = mandatory_documents.objects.get(pk = f_catogory)
+            try:
+                duplicate_doc = candidate_document.objects.get(file_name=file_name, file_upload = c_file, fk_candidate_code= candidate_fk, status = active_status)
+                messages.error(request, "Duplicate File Name")
+                return redirect('csp_app:document_upload', candidate_id = candidate_id )
+            except ObjectDoesNotExist:
+                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= request.user)
+                new_document.save()
+                messages.success(request, "Duplicate Saved Successfully")
+                return redirect('csp_app:document_upload', candidate_id = candidate_id)
+        all_active_candidates = vendor_candidates(request.user)
+        return render(request, 'csp_app/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
+
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists())
+def delete_document(request):
+    try:
+        if request.method == 'POST':
+            document_id = request.POST.get("delete_id")          
+            selected_document = candidate_document.objects.get(pk = document_id, status= active_status)
+            selected_document.modified_by = str(request.user)
+            selected_document.modified_date_time = datetime.now()
+            selected_document.status = deactive_status
+            selected_document.save()
+            messages.success(request, "Document Deleted Successfully")
+            return redirect('csp_app:document_upload', selected_document.fk_candidate_code)
+        all_active_candidates = vendor_candidates(request.user)
+        return render(request, 'csp_app/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists())
 def change_candidate_status_vendor(request):
@@ -563,9 +651,7 @@ def change_candidate_status_vendor(request):
             ) 
             our_email.fail_silently = False
             our_email.send()
-            print(status_id)
             if str(status_id) == '0':
-                print("here")
                 template = render_to_string('csp_app/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name.capitalize()})
                 our_email = EmailMessage(
                     'LOI',
@@ -575,11 +661,17 @@ def change_candidate_status_vendor(request):
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
+                all_active_candidates = vendor_candidates(request.user)
+                candidate = master_candidate.objects.filter(pk = candidate_id)
+                messages.success(request, "Candidate Status Updated")
+                return render(request, 'csp_app/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate })        
+
             # msg = 'Candidate status for '+ str(candidate.First_Name) +' updated to' + str(status.status_name) +' from ' + str(prev_status) + ' with candidate code " ' + str(candidate.pk) + ' by ' + str(request.user) + ' .'
             # send_mail('Candidate Status Updated', msg,'workmail052020@gmail.com',[ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],fail_silently=False)
       
             messages.success(request, "Candidate Status Updated")
             return redirect('csp_app:candidate')
+        all_active_candidates = vendor_candidates(request.user)
         return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
