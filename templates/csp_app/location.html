@@ -255,6 +255,23 @@
         document.getElementById(formid).style.display = "block";
         document.getElementById("delete_me").setAttribute("value", itemid);
     }
+    document.addEventListener('DOMContentLoaded', function() {        
+        var input = document.getElementById('loc_name');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+       
+    });
 </script>
 
 {% endblock %}

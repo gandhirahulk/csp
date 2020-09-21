@@ -64,7 +64,7 @@
         $('#c_lastname').bind('keypress', onlyAlphabets);
         $('#c_fathername').bind('keypress', onlyAlphabets);
         $('#spoc').bind('keypress', onlyAlphabets);
-        $('#loc_name').bind('keypress', onlyAlphabets);
+        $('#loc_name').bind('keypress', alphaNumeric);
         $('#firstname').bind('keypress', onlyAlphabets);
         $('#lastname').bind('keypress', onlyAlphabets);
 
@@ -395,7 +395,55 @@
                   $( '#alerts' ).removeClass( 'animate__animated animate__slideInRight animate__fast' ).addClass( 'animate__animated animate__slideOutRight animate__fast' );
               }
       setTimeout("hidediv()", 3000);
-
+    document.addEventListener('DOMContentLoaded', function() {        
+        var input = document.getElementById('name');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('email');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        var input = document.getElementById('phone_no');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        var input = document.getElementById('spocemail');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+       
+       
+    });
+    
       
     </script>
     <script>

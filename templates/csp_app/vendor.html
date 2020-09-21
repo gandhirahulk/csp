@@ -111,17 +111,17 @@
         <!-- <label for="">Phone Number</label> -->
         <div class="forms-input-holder">
             <label for="vendor_phone">Phone Number</label>
-            <input type="text" placeholder="Vendor Phone Number" name="vendor_phone" pattern="[6-9]{1}[0-9]{9}" maxlength="10" required="true">
+            <input type="text" placeholder="Vendor Phone Number" name="vendor_phone" id="phone_no" pattern="[6-9]{1}[0-9]{9}" maxlength="10" required="true">
         </div>
         <!-- <label for="">Vendor Email ID</label> -->
         <div class="forms-input-holder">
             <label for="vendor_email">Email ID</label>
-            <input type="email" placeholder="Vendor Email ID" name="vendor_email" required="true">
+            <input type="email" placeholder="Vendor Email ID" id="email" name="vendor_email" required="true">
         </div>
         <div class="forms-input-holder">
         <label for="">Email ID Password</label>
 
-            <input type="password" placeholder="Email Password" name="vendor_email_pwd" required="true">
+            <input type="password" placeholder="Email Password" name="vendor_email_pwd" required="true" maxlength="20">
         </div>
         <div class="forms-input-holder">
         <label for="">SPOC Name</label>
@@ -131,7 +131,7 @@
         <div class="forms-input-holder">
         <label for="">SPOC Email ID</label>
 
-            <input type="email" placeholder="SPOC Email ID" name="vendor_spoc_email" required="true">
+            <input type="email" placeholder="SPOC Email ID" name="vendor_spoc_email" id="spocemail" required="true">
         </div>
         
   </div>
@@ -188,5 +188,38 @@
         document.getElementById(formid).style.display = "block";
         document.getElementById("delete_me").setAttribute("value", itemid);
     }
+    document.addEventListener('DOMContentLoaded', function() {        
+        var input = document.getElementById('email');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        var input = document.getElementById('phone_no');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        var input = document.getElementById('spocemail');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+       
+    });
 </script>
 {% endblock %}
