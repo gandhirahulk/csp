@@ -1,8 +1,10 @@
 from django.urls import path
 from csp_app import views
 from csp_app import execute
+
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('candidates/', views.index, name='index'),
@@ -24,6 +26,7 @@ urlpatterns = [
     path('csp_candidates/view_candidate/', views.view_candidate, name= 'view_candidate'),
     path('csp_candidates/change_status/', views.change_candidate_status, name= 'change_candidate_status'),
     path('csp_candidates/vendor_change_status/', views.change_candidate_status_vendor, name= 'change_candidate_status_vendor'),
+
     path('csp_candidates/document_upload/<str:candidate_id>/', views.candidate_document_upload, name= 'document_upload'),
     path('csp_candidates/document_upload/delete/', views.delete_document, name= 'delete_document'),
 
