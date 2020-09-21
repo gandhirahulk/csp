@@ -109,7 +109,7 @@
                         </div>
                     <div class="forms-input-holder">
                         <label for="vendor_phone">Vendor Name</label>
-                        <input type="text" value="{{ eachvendor.vendor_name }}" placeholder="Vendor Name" name="e_vendor_name" title="Enity Name" required="true" maxlength="50" id="name">
+                        <input type="text" value="{{ eachvendor.vendor_name }}" id="phone_no" placeholder="Vendor Name" name="e_vendor_name" title="Enity Name" required="true" maxlength="50" id="name">
                     </div>           
                     <div class="forms-input-holder">
                         <label for="vendor_phone">Phone Number</label>
@@ -118,7 +118,7 @@
                     <!-- <label for="">Vendor Email ID</label> -->
                     <div class="forms-input-holder">
                         <label for="vendor_email">Email ID</label>
-                        <input type="email" placeholder="Vendor Email ID" name="e_vendor_email" required="true" value="{{ eachvendor.vendor_email_id }}">
+                        <input type="email" placeholder="Vendor Email ID" name="e_vendor_email" required="true" value="{{ eachvendor.vendor_email_id }}" id="email">
                     </div>
                     <div class="forms-input-holder">
                     <label for="">Email ID Password</label>
@@ -133,7 +133,7 @@
                     <div class="forms-input-holder">
                     <label for="">SPOC Email ID</label>
             
-                        <input type="email" placeholder="SPOC Email ID" value="{{ eachvendor.spoc_email_id }}" name="e_vendor_spoc_email" required="true">
+                        <input type="email" placeholder="SPOC Email ID" value="{{ eachvendor.spoc_email_id }}" name="e_vendor_spoc_email" required="true" id="spocemail">
                     </div>
             </div>
         {% endfor %}

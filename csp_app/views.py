@@ -37,18 +37,18 @@ def vendor_candidates(usrname):
 @login_required(login_url='/notlogin/')
 def candidate(request):
     
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     vendor_list = master_vendor.objects.filter(status = active_status)
 
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
-    team_list = master_team.objects.filter(status = active_status)
-    subteam_list = master_sub_team.objects.filter(status = active_status)
-    desg_list = master_designation.objects.filter(status = active_status)
-    region_list = master_region.objects.filter(status = active_status)
-    state_list = master_state.objects.filter(status = active_status)
-    city_list = master_city.objects.filter(status= active_status)
-    location_list = master_location.objects.filter(status= active_status)
+    dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+    function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+    team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+    subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
+    desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
+    region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+    state_list = master_state.objects.filter(status = active_status).order_by('state_name')
+    city_list = master_city.objects.filter(status= active_status).order_by('city_name')
+    location_list = master_location.objects.filter(status= active_status).order_by('location_name')
     hiring_type_list = hiring_type.objects.filter(status= active_status)
     sub_source_list = sub_source.objects.filter(status= active_status)
     salary_type_list = salary_type.objects.filter(status= active_status)
@@ -67,9 +67,11 @@ def candidate(request):
         print(eachgroup)
         if str(eachgroup) == 'Vendor':
             candidate_list = vendor_specific_candidate
+            all_active_candidates = vendor_candidates(request.user)
         else:
             candidate_list = master_candidate.objects.filter(status=active_status)
-    all_active_candidates = vendor_candidates(request.user)
+            all_active_candidates = master_candidate.objects.filter(status=active_status)
+    
     return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
@@ -80,17 +82,17 @@ def candidate(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists())
 def new_candidate(request):    
     try:
-        entity_list = master_entity.objects.filter(status = active_status)
+        entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
         vendor_list = master_vendor.objects.filter(status = active_status)
-        dept_list = master_department.objects.filter(status = active_status)
-        function_list = master_function.objects.filter(status = active_status)
-        team_list = master_team.objects.filter(status = active_status)
-        subteam_list = master_sub_team.objects.filter(status = active_status)
-        desg_list = master_designation.objects.filter(status = active_status)
-        region_list = master_region.objects.filter(status = active_status)
-        state_list = master_state.objects.filter(status = active_status)
-        city_list = master_city.objects.filter(status= active_status)
-        location_list = master_location.objects.filter(status= active_status)
+        dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+        function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+        team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+        subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
+        desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
+        region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+        state_list = master_state.objects.filter(status = active_status).order_by('state_name')
+        city_list = master_city.objects.filter(status= active_status).order_by('city_name')
+        location_list = master_location.objects.filter(status= active_status).order_by('location_name')
         hiring_type_list = hiring_type.objects.filter(status= active_status)
         sub_source_list = sub_source.objects.filter(status= active_status)
         salary_type_list = salary_type.objects.filter(status= active_status)
@@ -111,17 +113,17 @@ def edit_candidate(request):
     try:
         if request.method == 'POST':
             candidate_id = request.POST.get("view_id")   
-            entity_list = master_entity.objects.filter(status = active_status)
+            entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
             vendor_list = master_vendor.objects.filter(status = active_status)
-            dept_list = master_department.objects.filter(status = active_status)
-            function_list = master_function.objects.filter(status = active_status)
-            team_list = master_team.objects.filter(status = active_status)
-            subteam_list = master_sub_team.objects.filter(status = active_status)
-            desg_list = master_designation.objects.filter(status = active_status)
-            region_list = master_region.objects.filter(status = active_status)
-            state_list = master_state.objects.filter(status = active_status)
-            city_list = master_city.objects.filter(status= active_status)
-            location_list = master_location.objects.filter(status= active_status)
+            dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+            function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+            team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+            subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
+            desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
+            region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+            state_list = master_state.objects.filter(status = active_status).order_by('state_name')
+            city_list = master_city.objects.filter(status= active_status).order_by('city_name')
+            location_list = master_location.objects.filter(status= active_status).order_by('location_name')
             hiring_type_list = hiring_type.objects.filter(status= active_status)
             sub_source_list = sub_source.objects.filter(status= active_status)
             salary_type_list = salary_type.objects.filter(status= active_status)
@@ -306,17 +308,17 @@ def edit_candidate(request):
 # def candidate_document(request, cid): 
 #     if request.method != 'POST':
 #         candidate_id = request.POST.get("view_id")   
-#         entity_list = master_entity.objects.filter(status = active_status)
+#         entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
 #         vendor_list = master_vendor.objects.filter(status = active_status)
-#         dept_list = master_department.objects.filter(status = active_status)
-#         function_list = master_function.objects.filter(status = active_status)
-#         team_list = master_team.objects.filter(status = active_status)
-#         subteam_list = master_sub_team.objects.filter(status = active_status)
-#         desg_list = master_designation.objects.filter(status = active_status)
-#         region_list = master_region.objects.filter(status = active_status)
-#         state_list = master_state.objects.filter(status = active_status)
-#         city_list = master_city.objects.filter(status= active_status)
-#         location_list = master_location.objects.filter(status= active_status)
+#         dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+#         function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+#         team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+#         subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
+#         desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
+#         region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+#         state_list = master_state.objects.filter(status = active_status).order_by('state_name')
+#         city_list = master_city.objects.filter(status= active_status).order_by('city_name')
+#         location_list = master_location.objects.filter(status= active_status).order_by('location_name')
 #         hiring_type_list = hiring_type.objects.filter(status= active_status)
 #         sub_source_list = sub_source.objects.filter(status= active_status)
 #         salary_type_list = salary_type.objects.filter(status= active_status)
@@ -457,11 +459,11 @@ def create_candidate(request):
                 next_code_int = int(last_code_str[1:]) + 1
                 new_code = 'C' + str(next_code_int).zfill(9) #pk_candidate_code
                 print(new_code)
-                new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname.capitalize(), Middle_Name=middlename.capitalize(), Last_Name= lastname.capitalize(), Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
-                Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement.capitalize(),
-                Sub_Source= subsource_fk, Referral= referral.capitalize(), fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
+                new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
+                Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement ,
+                Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
-                Reporting_Manager= reporting_manager.capitalize(), Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
+                Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
                 Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=datetime.now())
                 new_candidate.save()
                 save_new_code = csp_candidate_code(candidate_code= new_code)
@@ -530,7 +532,7 @@ def change_candidate_status(request):
                 candidate.status = deactive_status
                 candidate.candidate_status = status
                 candidate.save()
-                template = render_to_string('csp_app/hold_status_change_et.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name.capitalize(), 'user': request.user})
+                template = render_to_string('csp_app/hold_status_change_et.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name , 'user': request.user})
                 our_email = EmailMessage(
                     'Candidate Status Updated',
                     template,
@@ -543,7 +545,7 @@ def change_candidate_status(request):
                 return redirect('csp_app:candidate')
             candidate.candidate_status = status
             candidate.save()
-            template = render_to_string('csp_app/status_change_email_temlate.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name.capitalize(), 'user': request.user})
+            template = render_to_string('csp_app/status_change_email_temlate.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name , 'user': request.user})
             our_email = EmailMessage(
                 'Candidate Status Updated',
                 template,
@@ -645,7 +647,7 @@ def change_candidate_status_vendor(request):
       
             candidate.vendor_status = status
             candidate.save()
-            template = render_to_string('csp_app/vendor_status_change_et.html', {'candidate_code':candidate.pk ,'prev':prev_status, 'current':status.status_name.capitalize(), 'user': request.user})
+            template = render_to_string('csp_app/vendor_status_change_et.html', {'candidate_code':candidate.pk ,'prev':prev_status, 'current':status.status_name , 'user': request.user})
             our_email = EmailMessage(
                 'Candidate Status Updated By Vendor',
                 template,
@@ -655,7 +657,7 @@ def change_candidate_status_vendor(request):
             our_email.fail_silently = False
             our_email.send()
             if str(status_id) == '0':
-                template = render_to_string('csp_app/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name.capitalize()})
+                template = render_to_string('csp_app/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name })
                 our_email = EmailMessage(
                     'LOI',
                     template,
@@ -701,7 +703,7 @@ def change_candidate_status_vendor(request):
       
             candidate.vendor_status = status
             candidate.save()
-            template = render_to_string('csp_app/vendor_status_change_et.html', {'candidate_code':candidate.pk ,'prev':prev_status, 'current':status.status_name.capitalize(), 'user': request.user})
+            template = render_to_string('csp_app/vendor_status_change_et.html', {'candidate_code':candidate.pk ,'prev':prev_status, 'current':status.status_name , 'user': request.user})
             our_email = EmailMessage(
                 'Candidate Status Updated By Vendor',
                 template,
@@ -713,7 +715,7 @@ def change_candidate_status_vendor(request):
             print(status_id)
             if str(status_id) == '0':
                 print("here")
-                template = render_to_string('csp_app/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name.capitalize()})
+                template = render_to_string('csp_app/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name })
                 our_email = EmailMessage(
                     'LOI',
                     template,
@@ -736,7 +738,7 @@ def change_candidate_status_vendor(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def entity(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('created_date_time')
     # view_entity_list = []
     # if request.method == 'GET':
     #     print("here")
@@ -777,7 +779,7 @@ def delete_entity(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_entity(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     try:
         if request.method == 'POST':
             entity_id = request.POST.get("view_id")
@@ -789,7 +791,7 @@ def view_entity(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_entity(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     try:
         if request.method == 'POST':
             entity_id = request.POST.get("view_id")
@@ -802,7 +804,7 @@ def view_edit_entity(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_entity(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     try:
         if request.method == 'POST':
            if request.POST.get("e_id") != '':
@@ -810,14 +812,14 @@ def save_edit_entity(request):
                 if request.POST.get("e_entity_name") != None:
                     name = request.POST.get("e_entity_name")
                     try:
-                        if entity.entity_name == name.capitalize():
+                        if entity.entity_name == name :
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:entity')
-                        a = master_entity.objects.get(entity_name= name.capitalize(), status= active_status)
+                        a = master_entity.objects.get(entity_name= name , status= active_status)
                         messages.error(request, "Entity Already Exist")
                         return redirect('csp_app:entity')
                     except ObjectDoesNotExist:
-                        entity.entity_name = name.capitalize()
+                        entity.entity_name = name 
                         entity.modified_by = str(request.user)
                         entity.modified_date_time = datetime.now()
                         entity.save()
@@ -837,15 +839,15 @@ def save_edit_entity(request):
 def create_entity(request):
     if request.method == 'POST':
         entity_name = request.POST.get("entity_name")
-        if entity_name == None or entity_name == '':
+        if entity_name == None or entity_name == ' ':
             messages.warning(request, "Entity Name Expected")
             return redirect('csp_app:entity')
         try:
-            duplicate_entity = master_entity.objects.get(entity_name=entity_name.capitalize(), status = active_status)
+            duplicate_entity = master_entity.objects.get(entity_name=entity_name , status = active_status)
             messages.error(request, "Entity Already Exist")
             return redirect('csp_app:entity')
         except ObjectDoesNotExist:
-            new_entity = master_entity(entity_name= entity_name.capitalize(), created_by = str(request.user))
+            new_entity = master_entity(entity_name= entity_name , created_by = str(request.user))
             new_entity.save()
             messages.success(request, "Entity Created Successfully")
             return redirect('csp_app:entity')
@@ -855,7 +857,7 @@ def create_entity(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def vendor(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name').order_by('entity_name')
     vendor_list = master_vendor.objects.filter(status = active_status)
 
     return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list})
@@ -909,7 +911,7 @@ def delete_vendor(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_vendor(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
 
     vendor_list = master_vendor.objects.filter(status = active_status)
     try:
@@ -925,7 +927,7 @@ def view_edit_vendor(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_vendor(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     try:
         if request.method == 'POST':
            if request.POST.get("e_id") != '':
@@ -944,16 +946,16 @@ def save_edit_vendor(request):
                 
                 try:
                     #same data code to add
-                    a = master_vendor.objects.get(vendor_name= vendor_name.capitalize(), spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status)
+                    a = master_vendor.objects.get(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status)
                     print(a)
                     messages.error(request, "Vendor Already Exist")
                     return redirect('csp_app:vendor')
                 except ObjectDoesNotExist:
                     selected_user = User.objects.get(email=vendor_email)
                     selected_user.email = vendor_email
-                    selected_user.first_name = vendor_name.capitalize()
+                    selected_user.first_name = vendor_name 
                     selected_user.save()
-                    vendor.vendor_name = vendor_name.capitalize()
+                    vendor.vendor_name = vendor_name 
                     vendor.spoc_name = vendor_spoc
                     vendor.fk_entity_code = entity_fk
                     vendor.spoc_email_id = vendor_spoc_email
@@ -992,7 +994,7 @@ def create_vendor(request):
         
         try:
             print(1)
-            duplicate_vendor_entity_spoc = master_vendor.objects.filter(vendor_name=vendor_name.capitalize(), fk_entity_code= entity, spoc_email_id=vendor_spoc_email, status = active_status)
+            duplicate_vendor_entity_spoc = master_vendor.objects.filter(vendor_name=vendor_name , fk_entity_code= entity, spoc_email_id=vendor_spoc_email, status = active_status)
             if duplicate_vendor_entity_spoc:
                 messages.error(request, "Vendor Already Exist")
                 return redirect('csp_app:vendor')
@@ -1008,7 +1010,7 @@ def create_vendor(request):
         except ObjectDoesNotExist:
             print(4)
         try:
-            duplicate_vendor_entity = master_vendor.objects.filter( vendor_name=vendor_name.capitalize(), fk_entity_code= entity, status = active_status)
+            duplicate_vendor_entity = master_vendor.objects.filter( vendor_name=vendor_name , fk_entity_code= entity, status = active_status)
             if duplicate_vendor_entity:                
                 messages.error(request, "Vendor Already Exist")
                 return redirect('csp_app:vendor')
@@ -1018,7 +1020,7 @@ def create_vendor(request):
         try:      
             
             
-            new_vendor = master_vendor(vendor_name= vendor_name.capitalize(), spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
+            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
             new_vendor.save()
             
             newadmintemplate = render_to_string('csp_app/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
@@ -1035,7 +1037,7 @@ def create_vendor(request):
             # password = User.objects.make_random_password()
             user.password = vendor_email_pwd
             user.set_password(user.password)
-            user.first_name = vendor_name.capitalize()
+            user.first_name = vendor_name 
             user.email = vendor_email
             assign_group.user_set.add(user)     
             user.save()
@@ -1069,8 +1071,8 @@ def create_vendor(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  department(request):
-    entity_list = master_entity.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
     return render(request, 'csp_app/department.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list})
 
 @login_required(login_url='/notlogin/')
@@ -1111,11 +1113,11 @@ def  create_department(request):
             return redirect('csp_app:department')
         entity_fk = master_entity.objects.get(pk=entity)
         try:
-            duplicate_dept = master_department.objects.get(department_name=dept_name.capitalize(), fk_entity_code= entity_fk, status = active_status)
+            duplicate_dept = master_department.objects.get(department_name=dept_name , fk_entity_code= entity_fk, status = active_status)
             messages.error(request, "Department Already Exist")
             return redirect('csp_app:department')
         except ObjectDoesNotExist:
-            new_department = master_department(department_name= dept_name.capitalize(), fk_entity_code= entity_fk, created_by = str(request.user))
+            new_department = master_department(department_name= dept_name , fk_entity_code= entity_fk, created_by = str(request.user))
             new_department.save()
             return redirect('csp_app:department')
     return render(request, 'csp_app/department.html', {'allcandidates': all_active_candidates,})
@@ -1124,7 +1126,7 @@ def  create_department(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_department(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     try:
         if request.method == 'POST':
@@ -1137,7 +1139,7 @@ def view_department(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_department(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
 
     try:
@@ -1151,7 +1153,7 @@ def view_edit_department(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_department(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     try:
         if request.method == 'POST':
@@ -1165,14 +1167,14 @@ def save_edit_department(request):
                         return redirect('csp_app:department')
                     entity_fk = master_entity.objects.get(pk = entity)
                     try:
-                        if selected.department_name == name.capitalize() and selected.fk_entity_code == entity_fk:
+                        if selected.department_name == name  and selected.fk_entity_code == entity_fk:
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:department')
-                        a = master_department.objects.get(department_name= name.capitalize(), fk_entity_code= entity_fk, status= active_status)
+                        a = master_department.objects.get(department_name= name , fk_entity_code= entity_fk, status= active_status)
                         messages.error(request, "Department Already Exist")
                         return redirect('csp_app:department')
                     except ObjectDoesNotExist:
-                        selected.department_name = name.capitalize()
+                        selected.department_name = name 
                         selected.fk_entity_code = entity_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -1193,9 +1195,9 @@ def save_edit_department(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  function(request):
-    entity_list = master_entity.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+    function_list = master_function.objects.filter(status = active_status).order_by('function_name')
     return render(request, 'csp_app/function.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list})
 
 @login_required(login_url='/notlogin/')
@@ -1212,11 +1214,11 @@ def  create_function(request):
             return redirect('csp_app:function')
         department_fk = master_department.objects.get(pk=function_dept)
         try:
-            duplicate_function = master_function.objects.get(function_name=function_name.capitalize(), fk_department_code= department_fk, status = active_status)
+            duplicate_function = master_function.objects.get(function_name=function_name , fk_department_code= department_fk, status = active_status)
             messages.error(request, "Function Already Exist")
             return redirect('csp_app:function')
         except ObjectDoesNotExist:            
-            new_function = master_function( function_name= function_name.capitalize(), fk_department_code= department_fk, created_by = str(request.user))
+            new_function = master_function( function_name= function_name , fk_department_code= department_fk, created_by = str(request.user))
             new_function.save()
             messages.success(request, "Function Saved Successfully")
             return redirect('csp_app:function')
@@ -1225,7 +1227,7 @@ def  create_function(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_function(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     try:
@@ -1239,7 +1241,7 @@ def view_function(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_function(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     try:
@@ -1253,7 +1255,7 @@ def view_edit_function(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_function(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     try:
@@ -1270,14 +1272,14 @@ def save_edit_function(request):
                         return redirect('csp_app:function')
                     department_fk = master_department.objects.get(pk = department)
                     try:
-                        if selected.function_name == name.capitalize() and selected.fk_department_code == department_fk:
+                        if selected.function_name == name  and selected.fk_department_code == department_fk:
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:function')
-                        a = master_function.objects.get(function_name= name.capitalize(), fk_department_code= department_fk, status= active_status)
+                        a = master_function.objects.get(function_name= name , fk_department_code= department_fk, status= active_status)
                         messages.error(request, "function Already Exist")
                         return redirect('csp_app:function')
                     except ObjectDoesNotExist:
-                        selected.function_name = name.capitalize()
+                        selected.function_name = name 
                         selected.fk_department_code = department_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -1322,10 +1324,10 @@ def delete_function(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  team(request):
-    entity_list = master_entity.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
-    team_list = master_team.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+    function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+    team_list = master_team.objects.filter(status = active_status).order_by('team_name').order_by('created_date_time')
 
     return render(request, 'csp_app/team.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list})
 
@@ -1344,11 +1346,11 @@ def  create_team(request):
         function_fk = master_function.objects.get(pk=team_function)
        
         try:
-            duplicate_team = master_team.objects.get( team_name= team_name.capitalize(), fk_function_code=function_fk, status= active_status)
+            duplicate_team = master_team.objects.get( team_name= team_name , fk_function_code=function_fk, status= active_status)
             messages.error(request, "Team Already Exist")
             return redirect('csp_app:team')
         except ObjectDoesNotExist: 
-            new_team = master_team( team_name= team_name.capitalize(), fk_function_code=function_fk, created_by = str(request.user))
+            new_team = master_team( team_name= team_name , fk_function_code=function_fk, created_by = str(request.user))
             new_team.save()
             messages.success(request, "Team Saved Successfully")
             return redirect('csp_app:team')
@@ -1357,7 +1359,7 @@ def  create_team(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_team(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     team_list = master_team.objects.filter(status=active_status)
@@ -1373,7 +1375,7 @@ def view_team(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_team(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     team_list = master_team.objects.filter(status=active_status)
@@ -1389,7 +1391,7 @@ def view_edit_team(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_team(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     team_list = master_team.objects.filter(status=active_status)
@@ -1407,14 +1409,14 @@ def save_edit_team(request):
                         return redirect('csp_app:team')
                     function_fk = master_function.objects.get(pk = function)
                     try:
-                        if selected.team_name == name.capitalize() and selected.fk_function_code == function_fk:
+                        if selected.team_name == name  and selected.fk_function_code == function_fk:
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:team')
-                        a = master_team.objects.get(team_name= name.capitalize(), fk_function_code= function_fk, status= active_status)
+                        a = master_team.objects.get(team_name= name , fk_function_code= function_fk, status= active_status)
                         messages.error(request, "Team Already Exist")
                         return redirect('csp_app:team')
                     except ObjectDoesNotExist:
-                        selected.team_name = name.capitalize()
+                        selected.team_name = name 
                         selected.fk_function_code = function_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -1460,11 +1462,11 @@ def delete_team(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  subteam(request):
-    entity_list = master_entity.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
-    team_list = master_team.objects.filter(status = active_status)
-    subteam_list = master_sub_team.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+    function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+    team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+    subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
     return render(request, 'csp_app/subteam.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'subteam_list': subteam_list})
 
 @login_required(login_url='/notlogin/')
@@ -1482,11 +1484,11 @@ def  create_subteam(request):
             return redirect('csp_app:subteam')
         team_fk = master_team.objects.get(pk= team)
         try:
-            duplicate_subteam = master_sub_team.objects.get( sub_team_name= subteam_name.capitalize(), fk_team_code=team_fk, status = active_status)
+            duplicate_subteam = master_sub_team.objects.get( sub_team_name= subteam_name , fk_team_code=team_fk, status = active_status)
             messages.error(request, "Sub Team Already Exist")
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
-            new_subteam = master_sub_team( sub_team_name= subteam_name.capitalize(), fk_team_code=team_fk, created_by = str(request.user))
+            new_subteam = master_sub_team( sub_team_name= subteam_name , fk_team_code=team_fk, created_by = str(request.user))
             new_subteam.save()
             messages.success(request, "Sub Team Saved Successfully")
             return redirect('csp_app:subteam')
@@ -1496,7 +1498,7 @@ def  create_subteam(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_subteam(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     team_list = master_team.objects.filter(status=active_status)
@@ -1513,7 +1515,7 @@ def view_subteam(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_subteam(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     team_list = master_team.objects.filter(status=active_status)
@@ -1530,7 +1532,7 @@ def view_edit_subteam(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_subteam(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     team_list = master_team.objects.filter(status=active_status)
@@ -1550,14 +1552,14 @@ def save_edit_subteam(request):
                         return redirect('csp_app:subteam')
                     team_fk = master_team.objects.get(pk = team)
                     try:
-                        if selected.sub_team_name == name.capitalize() and selected.fk_team_code == team_fk:
+                        if selected.sub_team_name == name  and selected.fk_team_code == team_fk:
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:team')
-                        a = master_sub_team.objects.get(sub_team_name= name.capitalize(), fk_team_code= team_fk, status= active_status)
+                        a = master_sub_team.objects.get(sub_team_name= name , fk_team_code= team_fk, status= active_status)
                         messages.error(request, "Team Already Exist")
                         return redirect('csp_app:team')
                     except ObjectDoesNotExist:
-                        selected.sub_team_name = name.capitalize()
+                        selected.sub_team_name = name 
                         selected.fk_team_code = team_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -1603,12 +1605,12 @@ def delete_subteam(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  designation(request):
-    entity_list = master_entity.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
-    team_list = master_team.objects.filter(status = active_status)
-    subteam_list = master_sub_team.objects.filter(status = active_status)
-    desg_list = master_designation.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+    function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+    team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+    subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
+    desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
     return render(request, 'csp_app/designation.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
 @login_required(login_url='/notlogin/')
@@ -1625,13 +1627,13 @@ def  create_designation(request):
             return redirect('csp_app:designation')
         subteam_fk = master_sub_team.objects.get(pk=subteam)
         try:
-            dup_designation = master_designation.objects.get( designation_name= designation_name.capitalize(), fk_sub_team_code=subteam_fk, status = active_status)
+            dup_designation = master_designation.objects.get( designation_name= designation_name , fk_sub_team_code=subteam_fk, status = active_status)
            
             messages.error(request, "Designation Already Exist")
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
 
-            new_designation = master_designation( designation_name= designation_name.capitalize(), fk_sub_team_code=subteam_fk, created_by = str(request.user))
+            new_designation = master_designation( designation_name= designation_name , fk_sub_team_code=subteam_fk, created_by = str(request.user))
             new_designation.save()
             messages.success(request, "Designation Saved Successfully")
             return redirect('csp_app:designation')
@@ -1640,7 +1642,7 @@ def  create_designation(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_designation(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     team_list = master_team.objects.filter(status=active_status)
@@ -1657,7 +1659,7 @@ def view_designation(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_designation(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     team_list = master_team.objects.filter(status=active_status)
@@ -1675,7 +1677,7 @@ def view_edit_designation(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_designation(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     department_list = master_department.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     team_list = master_team.objects.filter(status=active_status)
@@ -1694,14 +1696,14 @@ def save_edit_designation(request):
                         return redirect('csp_app:designation')
                     subteam_fk = master_sub_team.objects.get(pk = subteam)
                     try:
-                        if selected.designation_name == name.capitalize() and selected.fk_sub_team_code == subteam_fk:
+                        if selected.designation_name == name  and selected.fk_sub_team_code == subteam_fk:
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:designation')
-                        a = master_designation.objects.get(designation_name= name.capitalize(), fk_sub_team_code= subteam_fk, status= active_status)
+                        a = master_designation.objects.get(designation_name= name , fk_sub_team_code= subteam_fk, status= active_status)
                         messages.error(request, "Designation Already Exist")
                         return redirect('csp_app:designation')
                     except ObjectDoesNotExist:
-                        selected.designation_name = name.capitalize()
+                        selected.designation_name = name 
                         selected.fk_sub_team_code = subteam_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -1746,8 +1748,8 @@ def delete_designation(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def region(request):
-    entity_list = master_entity.objects.filter(status = active_status)
-    region_list = master_region.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    region_list = master_region.objects.filter(status = active_status).order_by('region_name')
     return render(request, 'csp_app/region.html', {'allcandidates': all_active_candidates,'entity_list': entity_list,'region_list': region_list})
 
 @login_required(login_url='/notlogin/')
@@ -1764,12 +1766,12 @@ def  create_region(request):
             return redirect('csp_app:region')
         entity_fk = master_entity.objects.get(pk=entity)
         try:
-            dup_region = master_region.objects.get( region_name= region_name.capitalize(), fk_entity_code =entity_fk, status = active_status)
+            dup_region = master_region.objects.get( region_name= region_name , fk_entity_code =entity_fk, status = active_status)
 
             messages.error(request, "Region Already Exist")
             return redirect('csp_app:region')
         except ObjectDoesNotExist: 
-            new_region = master_region( region_name= region_name.capitalize(), fk_entity_code =entity_fk, created_by = str(request.user))
+            new_region = master_region( region_name= region_name , fk_entity_code =entity_fk, created_by = str(request.user))
             new_region.save()
             
             messages.success(request, "Region Saved Succesfully")
@@ -1804,7 +1806,7 @@ def delete_region(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_region(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     try:
         if request.method == 'POST':
@@ -1817,7 +1819,7 @@ def view_region(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_region(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
 
     try:
@@ -1831,7 +1833,7 @@ def view_edit_region(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_region(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     try:
         if request.method == 'POST':
@@ -1845,14 +1847,14 @@ def save_edit_region(request):
                         return redirect('csp_app:region')
                     entity_fk = master_entity.objects.get(pk = entity)
                     try:
-                        if selected.region_name == name.capitalize() and selected.fk_entity_code == entity_fk:
+                        if selected.region_name == name  and selected.fk_entity_code == entity_fk:
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:region')
-                        a = master_region.objects.get(region_name= name.capitalize(), fk_entity_code= entity_fk, status= active_status)
+                        a = master_region.objects.get(region_name= name , fk_entity_code= entity_fk, status= active_status)
                         messages.error(request, "region Already Exist")
                         return redirect('csp_app:region')
                     except ObjectDoesNotExist:
-                        selected.region_name = name.capitalize()
+                        selected.region_name = name 
                         selected.fk_entity_code =entity_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -1874,14 +1876,14 @@ def save_edit_region(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  state(request):
-    entity_list = master_entity.objects.filter(status = active_status)
-    dept_list = master_department.objects.filter(status = active_status)
-    function_list = master_function.objects.filter(status = active_status)
-    team_list = master_team.objects.filter(status = active_status)
-    subteam_list = master_sub_team.objects.filter(status = active_status)
-    desg_list = master_designation.objects.filter(status = active_status)
-    region_list = master_region.objects.filter(status = active_status)
-    state_list = master_state.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+    function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+    team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+    subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
+    desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
+    region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+    state_list = master_state.objects.filter(status = active_status).order_by('state_name')
     return render(request, 'csp_app/state.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
 @login_required(login_url='/notlogin/')
@@ -1898,12 +1900,12 @@ def  create_state(request):
             return redirect('csp_app:state')
         region_fk = master_region.objects.get(pk=region)
         try:
-            dup_region = master_state.objects.get( state_name= state_name.capitalize(), fk_region_code =region_fk,status = active_status)
+            dup_region = master_state.objects.get( state_name= state_name , fk_region_code =region_fk,status = active_status)
 
             messages.error(request, "State Already Exist")
             return redirect('csp_app:state')
         except ObjectDoesNotExist: 
-            new_state = master_state( state_name= state_name.capitalize(), fk_region_code =region_fk, created_by = str(request.user))
+            new_state = master_state( state_name= state_name , fk_region_code =region_fk, created_by = str(request.user))
             new_state.save()
             messages.success(request, "State Saved Successfully")
             return redirect('csp_app:state')
@@ -1912,7 +1914,7 @@ def  create_state(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_state(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
     try:
@@ -1926,7 +1928,7 @@ def view_state(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_state(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
     try:
@@ -1940,7 +1942,7 @@ def view_edit_state(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_state(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
     try:
@@ -1957,14 +1959,14 @@ def save_edit_state(request):
                         return redirect('csp_app:state')
                     region_fk = master_region.objects.get(pk = region)
                     try:
-                        if selected.state_name == name.capitalize() and selected.fk_region_code == region_fk:
+                        if selected.state_name == name  and selected.fk_region_code == region_fk:
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:state')
-                        a = master_state.objects.get(state_name= name.capitalize(), fk_region_code= region_fk, status= active_status)
+                        a = master_state.objects.get(state_name= name , fk_region_code= region_fk, status= active_status)
                         messages.error(request, "state Already Exist")
                         return redirect('csp_app:state')
                     except ObjectDoesNotExist:
-                        selected.state_name = name.capitalize()
+                        selected.state_name = name 
                         selected.fk_region_code = region_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -2011,17 +2013,17 @@ def delete_state(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  city(request):
-    entity_list = master_entity.objects.filter(status = active_status)
-    region_list = master_region.objects.filter(status = active_status)
-    state_list = master_state.objects.filter(status = active_status)
-    city_list = master_city.objects.filter(status= active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+    state_list = master_state.objects.filter(status = active_status).order_by('state_name')
+    city_list = master_city.objects.filter(status= active_status).order_by('city_name')
     return render(request, 'csp_app/city.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list})
 
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_city(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     city_list = master_city.objects.filter(status=active_status)
@@ -2037,7 +2039,7 @@ def view_city(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_city(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     city_list = master_city.objects.filter(status=active_status)
@@ -2053,7 +2055,7 @@ def view_edit_city(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_city(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
     city_list = master_city.objects.filter(status=active_status)
@@ -2071,14 +2073,14 @@ def save_edit_city(request):
                         return redirect('csp_app:city')
                     state_fk = master_state.objects.get(pk = function)
                     try:
-                        if selected.city_name == name.capitalize() and selected.fk_state_code == state_fk:
+                        if selected.city_name == name  and selected.fk_state_code == state_fk:
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:city')
-                        a = master_city.objects.get(city_name= name.capitalize(), fk_state_code= state_fk, status= active_status)
+                        a = master_city.objects.get(city_name= name , fk_state_code= state_fk, status= active_status)
                         messages.error(request, "city Already Exist")
                         return redirect('csp_app:city')
                     except ObjectDoesNotExist:
-                        selected.city_name = name.capitalize()
+                        selected.city_name = name 
                         selected.fk_state_code = state_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -2133,12 +2135,12 @@ def  create_city(request):
             return redirect('csp_app:city')
         state_fk = master_state.objects.get(pk=state)
         try:
-            dup_city = master_city.objects.get( city_name= city_name.capitalize(), fk_state_code =state_fk,status = active_status)
+            dup_city = master_city.objects.get( city_name= city_name , fk_state_code =state_fk,status = active_status)
 
             messages.error(request, "City Already Exist")
             return redirect('csp_app:city')
         except ObjectDoesNotExist: 
-            new_city = master_city( city_name= city_name.capitalize(), fk_state_code =state_fk, created_by = str(request.user))
+            new_city = master_city( city_name= city_name , fk_state_code =state_fk, created_by = str(request.user))
             new_city.save()
             messages.success(request, "City Saved Successfully")
             return redirect('csp_app:city')
@@ -2147,11 +2149,11 @@ def  create_city(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  location(request):
-    entity_list = master_entity.objects.filter(status = active_status)
-    region_list = master_region.objects.filter(status = active_status)
-    state_list = master_state.objects.filter(status = active_status)
-    city_list = master_city.objects.filter(status= active_status)
-    location_list = master_location.objects.filter(status= active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+    state_list = master_state.objects.filter(status = active_status).order_by('state_name')
+    city_list = master_city.objects.filter(status= active_status).order_by('city_name')
+    location_list = master_location.objects.filter(status= active_status).order_by('location_name')
     return render(request, 'csp_app/location.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'location_list': location_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list})
 
 @login_required(login_url='/notlogin/')
@@ -2173,12 +2175,12 @@ def  create_location(request):
             return redirect('csp_app:location')
         city_fk = master_city.objects.get(pk=city)
         try:
-            dup_location = master_location.objects.get(location_name= location_name.capitalize(), fk_city_code =city_fk,location_code= code, status = active_status)
+            dup_location = master_location.objects.get(location_name= location_name , fk_city_code =city_fk,location_code= code, status = active_status)
 
             messages.error(request, "Location Already Exist")
             return redirect('csp_app:location')
         except ObjectDoesNotExist: 
-            new_location = master_location( location_name= location_name.capitalize(),location_code=code, fk_city_code =city_fk, created_by = str(request.user))
+            new_location = master_location( location_name= location_name ,location_code=code, fk_city_code =city_fk, created_by = str(request.user))
             new_location.save()
             messages.success(request, "Location Saved Successfully")
             return redirect('csp_app:location')
@@ -2188,7 +2190,7 @@ def  create_location(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_location(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
     city_list = master_city.objects.filter(status=active_status)
@@ -2205,7 +2207,7 @@ def view_location(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_location(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
     city_list = master_city.objects.filter(status=active_status)
@@ -2222,7 +2224,7 @@ def view_edit_location(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_location(request):
-    entity_list = master_entity.objects.filter(status = active_status)
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
     city_list = master_city.objects.filter(status=active_status)
@@ -2242,14 +2244,14 @@ def save_edit_location(request):
                         return redirect('csp_app:location')
                     city_fk = master_city.objects.get(pk = city)
                     try:
-                        if selected.location_name == name.capitalize() and selected.fk_city_code == city_fk:
+                        if selected.location_name == name  and selected.fk_city_code == city_fk:
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:city')
-                        a = master_location.objects.get(location_name= name.capitalize(), fk_city_code= city_fk, status= active_status)
+                        a = master_location.objects.get(location_name= name , fk_city_code= city_fk, status= active_status)
                         messages.error(request, "city Already Exist")
                         return redirect('csp_app:city')
                     except ObjectDoesNotExist:
-                        selected.location_name = name.capitalize()
+                        selected.location_name = name 
                         selected.fk_city_code = city_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()

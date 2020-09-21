@@ -7,18 +7,26 @@ function onlyAlphabets(event) {
     return pattern.test(value);    
 }
 
+// /^[a-z](?!.* {2})[ \w.-]{2,24}$/gmi
+
 function alphaNumeric(event) {
     var value = String.fromCharCode(event.which);
-    var pattern = new RegExp(/[A-Za-z0-9 ]/);
+    var pattern = new RegExp(/[a-z0-9. ]/i);
     // var newvalue = str.replace("  ", " ");
     return pattern.test(value);    
 }
 // "^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$"
 function onlyNumbers(event) {
     var value = String.fromCharCode(event.which);
-    var pattern = new RegExp(/[0-9]/);
+    var pattern = new RegExp(/[0-9 ]/);
     return pattern.test(value);    
 }
+
+// function forEmail(event){
+//     var value = String.fromCharCode(event.which);
+//     var pattern = new RegExp(/[a-z0-9@._-]i/);
+//     return pattern.test(value); 
+// }
 
 function noSpecial(event) {
     var value = String.fromCharCode(event.which);
@@ -44,12 +52,17 @@ function pan(event) {
 
 
 function sameNumber(c, e, textbox){
-    var contact = document.getElementById(c).value;
-    var emergency = document.getElementById(e).value;
+    var contact = document.getElementById(c).text;
+    var emergency = document.getElementById(e).text;
     if (contact === emergency){
         textbox.setCustomValidity("Contact No. and Emergency No. Cannot Be Same");
         return false;
     } 
+    return true;
+    // if (contact != emergency){
+    //     textbox.setCustomValidity("Contact No. and Emergency No. Cannot Be Same");
+    //     return true;
+    // }
 }
 
 

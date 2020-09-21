@@ -51,17 +51,17 @@
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Contact Number</label>
-                <input type="text" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                <input type="text" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true"  oninput="sameNumber('c_contact', 'c_emergency', this)" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
                  </div>
                 <div class="margin-left">
                 <label for="" >Emergency Number</label>
-                <input type="text" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                <input type="text" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" oninput="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
                 </div>
             </div>
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Email ID</label>
-                <input type="email" tabindex="7" name="c_email" placeholder="Email Id">
+                <input type="email" tabindex="7" name="c_email" id="email" placeholder="Email Id">
                  </div>
                 <div class="margin-left">
                 <label for="" >Gender</label>
@@ -83,7 +83,7 @@
                 <input type="text" tabindex="9" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
                  </div>
                 <div class="margin-left">
-                <label for="" >Date of Birth</label>
+                <label for="" >Father Date of Birth</label>
                 <input type="date" tabindex="10" placeholder="Date Of Joining" name="c_father_dob" id="c_father_dob" required="true" tabindex="4" >
        
             </div>
@@ -122,11 +122,11 @@
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Replacement UID </label>
-                <input type="text" tabindex="15" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" tabindex="15" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{5}" maxlength="6" autocapitalize="on">
                  </div>
                 <div class="margin-left">
                 <label for="" >Referal UID</label>
-                <input type="text" tabindex="16" placeholder="Referral" name="c_referral" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{5}" maxlength="6" autocapitalize="on">
           
             </div>
         </div>
@@ -299,22 +299,22 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >TA SPOC Email ID</label>
-                <input type="email" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true" tabindex="29">
+                <input type="email" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" tabindex="29">
             </div>
             <div class="margin-left">
                 <label for="" >Onboarding SPOC Email ID</label>
-                <input type="email" tabindex="30" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
+                <input type="email" tabindex="30" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
             </div>
         </div>
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="">Reporting Manager</label>
-                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="c_reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
                  </div>
                 <div class="margin-left">
                 <label for="" >Reporting Manager Email ID</label>
 
-                <input type="email" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" required="true">
+                <input type="email" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="c_reporting_manager_email" required="true">
          
             </div>
         </div>
@@ -619,5 +619,152 @@
             }
         });
     })
+</script>
+<script>
+       document.addEventListener('DOMContentLoaded', function() {        
+        var input = document.getElementById('c_contact');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        var input = document.getElementById('c_emergency');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        var input = document.getElementById('spocemail');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        var input = document.getElementById('c_firstname');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_middlename');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_lastname');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_fathername');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('email');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_ta_spoc');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('reporting_manager');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('reporting_manager_email');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+       
+    });
 </script>
   {% endblock %}
