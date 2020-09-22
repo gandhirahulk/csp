@@ -395,8 +395,27 @@
                   $( '#alerts' ).removeClass( 'animate__animated animate__slideInRight animate__fast' ).addClass( 'animate__animated animate__slideOutRight animate__fast' );
               }
       setTimeout("hidediv()", 3000);
-    document.addEventListener('DOMContentLoaded', function() {        
-        var input = document.getElementById('name');
+    document.addEventListener('DOMContentLoaded', function() { 
+        try{
+            var input = document.getElementById('name');
+            input.addEventListener('keydown', function(e){      
+                var input = e.target;
+                var val = input.value;
+                var end = input.selectionEnd;
+                if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                    e.preventDefault();
+                    return false;
+                }   
+                if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                    e.preventDefault();
+                    return false;
+                }      
+            });
+        } catch(error) {    
+            continue;
+        }
+       
+        var input = document.getElementById('c_firstname');
         input.addEventListener('keydown', function(e){      
             var input = e.target;
             var val = input.value;
@@ -405,11 +424,54 @@
                 e.preventDefault();
                 return false;
             }   
-            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+            if(e.keyCode == 190) {
                 e.preventDefault();
                 return false;
             }      
         });
+        var input = document.getElementById('c_middlename');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_lastname');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_fathername');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        
         var input = document.getElementById('email');
         input.addEventListener('keydown', function(e){      
             var input = e.target;

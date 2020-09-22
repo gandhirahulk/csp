@@ -1,9 +1,7 @@
 function onlyAlphabets(event) {
-    // checkDOJ();
     var value = String.fromCharCode(event.which);
     var pattern = new RegExp(/[a-z ]/i);
     // var pattern = new RegExp(/^[a-zA-Z ]{2,30}$/);
-    // var newvalue = str.replace("  ", " ");
     return pattern.test(value);    
 }
 
@@ -12,7 +10,6 @@ function onlyAlphabets(event) {
 function alphaNumeric(event) {
     var value = String.fromCharCode(event.which);
     var pattern = new RegExp(/[a-z0-9. ]/i);
-    // var newvalue = str.replace("  ", " ");
     return pattern.test(value);    
 }
 // "^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$"
@@ -51,19 +48,7 @@ function pan(event) {
 }
 
 
-function sameNumber(c, e, textbox){
-    var contact = document.getElementById(c).text;
-    var emergency = document.getElementById(e).text;
-    if (contact === emergency){
-        textbox.setCustomValidity("Contact No. and Emergency No. Cannot Be Same");
-        return false;
-    } 
-    return true;
-    // if (contact != emergency){
-    //     textbox.setCustomValidity("Contact No. and Emergency No. Cannot Be Same");
-    //     return true;
-    // }
-}
+
 
 
 

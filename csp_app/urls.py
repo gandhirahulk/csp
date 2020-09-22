@@ -1,10 +1,10 @@
 from django.urls import path
 from csp_app import views
 from csp_app import execute
-
 from django.conf import settings
 from django.conf.urls.static import static
-
+#new
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('candidates/', views.index, name='index'),

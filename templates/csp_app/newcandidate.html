@@ -51,12 +51,13 @@
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Contact Number</label>
-                <input type="text" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true"  oninput="sameNumber('c_contact', 'c_emergency', this)" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
+                <input type="text" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
                  </div>
                 <div class="margin-left">
                 <label for="" >Emergency Number</label>
-                <input type="text" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" oninput="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
-                </div>
+                <input type="text" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                <span id='message'></span>
+            </div>
             </div>
                <div class="candidate-forms-input-holder">
                 <div>
@@ -373,6 +374,13 @@
   <script>
     $(document).ready(function(){
         showMe('Candidate', 'can-expand');
+        $('#c_contact, #c_emergency').on('keyup', function () {
+        if ($('#c_contact').val() == $('#c_emergency').val()) {
+            $('#message').html('Contact No. and Emergency No. Cannot be same.').css('color', 'red');
+        } else 
+            $('#message').html('').css('color', 'green');
+        });
+
         $('#c_entity').change(function() {
             var filter = $(this).val();
             var total = $('#c_dept option').length;
@@ -441,7 +449,6 @@
             }
 
         });
-
       
         $('#c_region').change(function() {
             var filter = $(this).val();
@@ -466,7 +473,6 @@
                 $('#c_state .empty').prop("selected", true);
             }
         });
-
         
         $('#c_state').change(function() {
             var filter = $(this).val();
@@ -652,62 +658,7 @@
                 return false;
             }     
         });
-        var input = document.getElementById('c_firstname');
-        input.addEventListener('keydown', function(e){      
-            var input = e.target;
-            var val = input.value;
-            var end = input.selectionEnd;
-            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
-                e.preventDefault();
-                return false;
-            }   
-            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
-                e.preventDefault();
-                return false;
-            }      
-        });
-        var input = document.getElementById('c_middlename');
-        input.addEventListener('keydown', function(e){      
-            var input = e.target;
-            var val = input.value;
-            var end = input.selectionEnd;
-            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
-                e.preventDefault();
-                return false;
-            }   
-            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
-                e.preventDefault();
-                return false;
-            }      
-        });
-        var input = document.getElementById('c_lastname');
-        input.addEventListener('keydown', function(e){      
-            var input = e.target;
-            var val = input.value;
-            var end = input.selectionEnd;
-            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
-                e.preventDefault();
-                return false;
-            }   
-            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
-                e.preventDefault();
-                return false;
-            }      
-        });
-        var input = document.getElementById('c_fathername');
-        input.addEventListener('keydown', function(e){      
-            var input = e.target;
-            var val = input.value;
-            var end = input.selectionEnd;
-            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
-                e.preventDefault();
-                return false;
-            }   
-            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
-                e.preventDefault();
-                return false;
-            }      
-        });
+        
         var input = document.getElementById('email');
         input.addEventListener('keydown', function(e){      
             var input = e.target;
