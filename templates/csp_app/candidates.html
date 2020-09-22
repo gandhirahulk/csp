@@ -27,6 +27,7 @@
     <table id="candidate-table" class="dataTable">
         <thead>
             <tr>
+                <th>Candidate ID</th>
                 <th>Candidate Name</th>
                 <th>Contact Details</th>
                 <th>Designation</th>
@@ -41,6 +42,7 @@
                         {% for eachcandidate in candidate_list %}
                    
                     <tr>
+                        <td>{{ eachcandidate.pk }}</td>
                         <td class="action-col" style="text-align: left;">
                             {% if request.user.groups.all %}
                                 {% for eachgroup in request.user.groups.all %}
