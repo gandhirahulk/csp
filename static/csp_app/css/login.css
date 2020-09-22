@@ -38,6 +38,15 @@ body{
     transition: .4s ease;
     font-size: 16px;
 }
+.forgot-input{
+    padding: 10px;
+    border: 2px solid #f5f5fa;
+    outline: none;
+    width: 90%;
+    transition: .4s ease;
+    font-size: 16px;
+    background: #f5f5fa;
+}
 .login-input:focus{
     border-bottom: 2px solid #bf0711;
     background: none !important;

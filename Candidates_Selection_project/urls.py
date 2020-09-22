@@ -20,4 +20,5 @@ from csp_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(('csp_app.urls', 'csp_app'), namespace='csp_app')),
+    path('', include('django.contrib.auth.urls')),
 ]

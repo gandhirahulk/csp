@@ -32,14 +32,13 @@ ALLOWED_HOSTS = [ '*','32.126.117.215',
 # Application definition
 
 INSTALLED_APPS = [
+    'csp_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'csp_app',
-    'apscheduler'
 ]
 
 MIDDLEWARE = [

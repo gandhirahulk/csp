@@ -26,8 +26,10 @@ all_active_candidates = master_candidate.objects.filter(status=active_status)
 
 def vendor_candidates(usrname):
     try:
-        s_vendor = master_vendor.objects.get(vendor_email_id= usrname, status=active_status)
-        vs_candidates = master_candidate.objects.filter(fk_vendor_code=s_vendor.pk, status= active_status)
+        s_vendor = master_vendor.objects.filter(vendor_email_id= usrname, status=active_status)
+        vs_candidates = []
+        for e in s_vendor:
+            vs_candidates.append(master_candidate.objects.filter(fk_vendor_code=e.pk, status= active_status))
         return vs_candidates
     except ObjectDoesNotExist:
         pass
@@ -57,9 +59,10 @@ def candidate(request):
     c_status_list = candidate_status.objects.all()
     v_status_list = vendor_status.objects.all()
     try:
-        specific_vendor = master_vendor.objects.get(vendor_email_id= request.user, status=active_status)
-    
-        vendor_specific_candidate = master_candidate.objects.filter(fk_vendor_code=specific_vendor.pk, onboarding_status= approve_onboarding)
+        specific_vendor = master_vendor.objects.filter(vendor_email_id= request.user, status=active_status)
+        vendor_specific_candidate = []
+        for e in specific_vendor:
+            vendor_specific_candidate.append(master_candidate.objects.filter(fk_vendor_code=e.pk, onboarding_status= approve_onboarding))
      
     except ObjectDoesNotExist:
         specific_vendor = ''

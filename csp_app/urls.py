@@ -3,7 +3,7 @@ from csp_app import views
 from csp_app import execute
 from django.conf import settings
 from django.conf.urls.static import static
-#new
+
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -12,6 +12,11 @@ urlpatterns = [
     path('', views.csp_login, name= 'login'),
     path('logout/', views.csp_logout, name= 'csp_logout'),
     path('notlogin/', views.notlogin, name='notlogin'),
+
+    path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),
+    path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),
+    path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
+    path('reset/done/',auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
 
     path('csp_admin/', views.admin, name= 'admin'),
     path('csp_admin/csp_user/', views.create_user_view, name= 'user'),

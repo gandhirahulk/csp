@@ -14,6 +14,8 @@
 </head>
 <body>
  <div class="login-wrapper">
+    {% block bodyblock %}             
+    
     <div>
         <h2>Login</h2> 
     </div>
@@ -25,8 +27,11 @@
         <div class="login-input-holder">
             <input type="password" placeholder="Password" class="login-input" name="password">
         </div>
-        <div class="login-btn-holder">
+        <div class="login-btn-holder" style="padding-bottom: 10px;">
             <button class="login-btn" formaction="{% url 'csp_app:login' %}" type="submit">Login</button>
+        </div>
+        <div class="login-btn-holder" style="padding-top: 0px;">
+            <a href="/password_reset/">Forgot Password?</a>
             {% if messages %}
                 {% for msg in messages %}
                     {% if msg.tags == 'success' %}
@@ -89,6 +94,7 @@
 
         </div>
     </form>
+    {% endblock %}
  </div>
  <script type="text/javascript">
     function hidediv(){
