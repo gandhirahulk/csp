@@ -30,8 +30,22 @@
         width: 55px;
     }
     
-      .wrapper .top_navbar .top_menu .search-input{
+    .wrapper .top_navbar .top_menu .search-input{
         width: calc(100% - 70px - 30%);
+    }
+
+    .candidate-forms-input-holder{
+        flex-direction: column;
+    }
+
+    .candidate-forms-input-holder div{
+        width: 100%;
+    }
+
+    .view_form_header,
+    .view_form_content,
+    .view_form_footer{
+        max-width: 320px;
     }
 }
   

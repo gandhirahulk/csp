@@ -1,0 +1,76 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Pending Requests {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>   
+        <a href="{% url 'csp_app:pending_request' %}" class="tab-btns active-tab">Pending Requests <button disabled id="request_count" >{{ count }}</button> </a>   
+
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+
+<div class="table-container">
+  
+    <table id="candidate-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Candidate ID</th>
+                <th>Candidate Name</th>
+                <th>Contact Details</th>
+                <th>Designation</th>
+                <th>Vendor</th>
+                <!-- <th>Documents</th> -->
+                <th>Onboarding Status</th>
+                <th>Status</th>
+                <!-- <th>Action</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% if candidate_list %}
+                {% for eachcandidate in candidate_list %}                   
+                    <tr>
+                        <td class="action-col"><a href="{% url 'csp_app:process_request' eachcandidate.pk %}">{{ eachcandidate.pk }}</a></td>
+                        <td class="action-col" style="text-align: left;">
+                            {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
+                        </td>
+                        <td style="text-align: center;">
+                            <div>{{ eachcandidate.Personal_Email_Id }}</div>
+                            <div>{{ eachcandidate.Contact_Number }}</div>
+                        </td>
+                        <td>{{ eachcandidate.fk_designation_code }}</td>
+                        <td>{{ eachcandidate.fk_vendor_code }}</td>
+                        <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+
+                        <!-- <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td> -->
+                       <td class="action-col">
+                        {{ eachcandidate.status }}
+                       </td>
+                        <!-- <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
+                        </td> -->
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachcandidate in candidate_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+{% endblock %}

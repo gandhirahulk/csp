@@ -53,7 +53,8 @@ input:-webkit-autofill+label.move-out {
 }
 
 .forms-input-holder,
-.candidate-forms-input-holder{
+.candidate-forms-input-holder,
+.request-forms-input-holder{
     margin-bottom: 20px;
     display: flex;
     justify-content: left;
@@ -70,7 +71,9 @@ input:-webkit-autofill+label.move-out {
 .search-input > input,
 .forms-input-holder > label,
 .candidate-forms-input-holder select,
-.candidate-forms-input-holder input{
+.candidate-forms-input-holder input,
+.request-forms-input-holder select,
+.request-forms-input-holder input{
     /* padding: 10px;
     border: none;
     outline: none;
@@ -118,7 +121,8 @@ input:-webkit-autofill+label.move-out {
   border-bottom: 1px solid #ddd;
 }
 
-.candidate-forms-input-holder div{
+.candidate-forms-input-holder div,
+.request-forms-input-holder div{
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -126,15 +130,31 @@ input:-webkit-autofill+label.move-out {
   margin-left: 10px;
 }
 
+.request-forms-input-holder div:first-child{
+  width: 30%;
+}
+
+
 .candidate-forms-input-holder select:focus,
 .candidate-forms-input-holder input:focus{
   border-bottom: 1px solid #bf0711;
 }
 
-.candidate-forms-input-holder label{
+.request-forms-input-holder select:focus,
+.request-forms-input-holder input:focus{
+  box-shadow: 0px 0px 1px 0px #bf0711;
+
+}
+
+.candidate-forms-input-holder label,
+.request-forms-input-holder label{
   border: none;
   text-align: left;
   margin-left: 10px;
+}
+
+.request-forms-input-holder label{
+  margin-left: 0px;
 }
 
 #c_pan{
@@ -380,4 +400,15 @@ input:-webkit-autofill+label.move-out {
   .action-col select{
     border: 1px solid #ddd;
     padding: 5px;
+  }
+
+  #request_count{
+    color: white;
+    background: green;
+    width: 20px;
+    border: 2px solid green;
+    border-radius: 50%;
+    height: 20px;
+    text-align: center;
+    line-height: 1;
   }

@@ -23,6 +23,8 @@ active_status = status.objects.get(pk=1)
 pending_status = candidate_status.objects.get(pk=2)
 approve_onboarding = onboarding_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
+count_it = master_candidate.objects.filter(candidate_status=pending_status)
+count = len(count_it)
 
 def vendor_candidates(usrname):
     try:
@@ -33,6 +35,70 @@ def vendor_candidates(usrname):
         return vs_candidates
     except ObjectDoesNotExist:
         pass
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists())
+def process_requests(request, cid):    
+    try:
+        selected_candidate = master_candidate.objects.filter(pk= cid)
+        # selected_candidate = ''
+        entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+        vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
+
+        dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+        function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+        team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+        subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
+        desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
+        region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+        state_list = master_state.objects.filter(status = active_status).order_by('state_name')
+        city_list = master_city.objects.filter(status= active_status).order_by('city_name')
+        location_list = master_location.objects.filter(status= active_status).order_by('location_name')
+        hiring_type_list = hiring_type.objects.filter(status= active_status)
+        sub_source_list = sub_source.objects.filter(status= active_status)
+        salary_type_list = salary_type.objects.filter(status= active_status)
+        gender_list = gender.objects.filter(status= active_status)
+        laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+        c_status_list = candidate_status.objects.all()
+        v_status_list = vendor_status.objects.all()
+        return render(request, 'csp_app/processrequests.html', {'selected_candidate': selected_candidate, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+        'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+        'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+        'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists())
+def pending_requests(request):    
+    try:
+        entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+        vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
+        dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+        function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+        team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+        subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
+        desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
+        region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+        state_list = master_state.objects.filter(status = active_status).order_by('state_name')
+        city_list = master_city.objects.filter(status= active_status).order_by('city_name')
+        location_list = master_location.objects.filter(status= active_status).order_by('location_name')
+        hiring_type_list = hiring_type.objects.filter(status= active_status)
+        sub_source_list = sub_source.objects.filter(status= active_status)
+        salary_type_list = salary_type.objects.filter(status= active_status)
+        gender_list = gender.objects.filter(status= active_status)
+        laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+        candidate_list = master_candidate.objects.all()
+        
+        return render(request, 'csp_app/pendingrequests.html', {'count':count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+        'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+        'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+        'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list })
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
 
 
 
@@ -74,8 +140,9 @@ def candidate(request):
         else:
             candidate_list = master_candidate.objects.filter(status=active_status)
             all_active_candidates = master_candidate.objects.filter(status=active_status)
-    
-    return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+    count_it = master_candidate.objects.filter(candidate_status=pending_status)
+    count = len(count_it)
+    return render(request, 'csp_app/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 'c_status_list': c_status_list,
@@ -463,7 +530,7 @@ def create_candidate(request):
                 new_code = 'C' + str(next_code_int).zfill(9) #pk_candidate_code
                 print(new_code)
                 new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
-                Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement ,
+                Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,

@@ -6,6 +6,14 @@
 
     <div class="tabs">
         <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>   
+        {% if request.user.groups.all %}
+            {% for eachgroup in request.user.groups.all %}
+                {% if eachgroup.name != 'User' %}
+                    <a href="{% url 'csp_app:pending_request' %}" class="tab-btns">Pending Requests <button disabled id="request_count" >{{ count }}</button> </a>   
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
     </div>
 
 {% endblock %}

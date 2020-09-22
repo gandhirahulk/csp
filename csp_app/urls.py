@@ -35,9 +35,10 @@ urlpatterns = [
     path('csp_candidates/document_upload/<str:candidate_id>/', views.candidate_document_upload, name= 'document_upload'),
     path('csp_candidates/document_upload/delete/', views.delete_document, name= 'delete_document'),
 
+    path('csp_candidates/pending_requests/', views.pending_requests, name= 'pending_request'),
+    path('csp_candidates/process_requests/<str:cid>/', views.process_requests, name= 'process_request'),
 
-    path('csp_candidates/candidate_document/', views.candidate_document, name= 'documents'),
-    path('csp_candidates/candidate_document/<str:cid>', views.candidate_document, name= 'documents'),
+
 
 
     path('csp_entity/', views.entity, name= 'entity'),
