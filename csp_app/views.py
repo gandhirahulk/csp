@@ -40,7 +40,7 @@ def vendor_candidates(usrname):
 def candidate(request):
     
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
-    vendor_list = master_vendor.objects.filter(status = active_status)
+    vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
 
     dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
     function_list = master_function.objects.filter(status = active_status).order_by('function_name')
@@ -86,7 +86,7 @@ def candidate(request):
 def new_candidate(request):    
     try:
         entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
-        vendor_list = master_vendor.objects.filter(status = active_status)
+        vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
         dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
         function_list = master_function.objects.filter(status = active_status).order_by('function_name')
         team_list = master_team.objects.filter(status = active_status).order_by('team_name')
@@ -117,7 +117,7 @@ def edit_candidate(request):
         if request.method == 'POST':
             candidate_id = request.POST.get("view_id")   
             entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
-            vendor_list = master_vendor.objects.filter(status = active_status)
+            vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
             dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
             function_list = master_function.objects.filter(status = active_status).order_by('function_name')
             team_list = master_team.objects.filter(status = active_status).order_by('team_name')
@@ -312,7 +312,7 @@ def edit_candidate(request):
 #     if request.method != 'POST':
 #         candidate_id = request.POST.get("view_id")   
 #         entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
-#         vendor_list = master_vendor.objects.filter(status = active_status)
+#         vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
 #         dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
 #         function_list = master_function.objects.filter(status = active_status).order_by('function_name')
 #         team_list = master_team.objects.filter(status = active_status).order_by('team_name')
@@ -861,14 +861,14 @@ def create_entity(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name').order_by('entity_name')
-    vendor_list = master_vendor.objects.filter(status = active_status)
+    vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
 
     return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_vendor(request):
-    vendor_list = master_vendor.objects.filter(status = active_status)
+    vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
     try:
         if request.method == 'POST':
             vendor_id = request.POST.get("view_id")
@@ -916,7 +916,7 @@ def delete_vendor(request):
 def view_edit_vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
 
-    vendor_list = master_vendor.objects.filter(status = active_status)
+    vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
     try:
         if request.method == 'POST':
             vendor_id = request.POST.get("view_id")
