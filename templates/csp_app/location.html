@@ -46,7 +46,7 @@
 
                         <td>{{ eachlocation.fk_city_code }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
                         </td>
                     </tr>
 

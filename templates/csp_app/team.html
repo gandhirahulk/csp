@@ -44,7 +44,7 @@
                         <td>{{ eachteam.team_name }}</td>
                         <td>{{ eachteam.fk_function_code }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachteam.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_team' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_team' %}"> | <input value="delete" onclick="showDelete('{{ eachteam.pk }}', 'delete_team_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachteam.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_team' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_team' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachteam.pk }}', 'delete_team_form')"> </form>
                         </td>
                     </tr>
 

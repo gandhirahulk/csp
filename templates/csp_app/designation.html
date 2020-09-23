@@ -45,7 +45,7 @@
                         <td>{{ eachdesignation.designation_name }}</td>
                         <td>{{ eachdesignation.fk_sub_team_code }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachdesignation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_designation' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_designation' %}"> | <input value="delete" onclick="showDelete('{{ eachdesignation.pk }}', 'delete_designation_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachdesignation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_designation' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_designation' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachdesignation.pk }}', 'delete_designation_form')"> </form>
                         </td>
                     </tr>
 
