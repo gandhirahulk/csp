@@ -14,63 +14,143 @@
 
 {% block tabcontentblock %}
 
-<div class="table-container">
-  
-    <table id="candidate-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Candidate ID</th>
-                <th>Candidate Name</th>
-                <th>Contact Details</th>
-                <th>Designation</th>
-                <th>Vendor</th>
-                <!-- <th>Documents</th> -->
-                <th>Onboarding Status</th>
-                <th>Status</th>
-                <!-- <th>Action</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            {% if pending_candidate_list %}
-                {% for eachcandidate in pending_candidate_list %}                   
-                    <tr>
-                        <td class="action-col"><a href="{% url 'csp_app:process_request' eachcandidate.pk %}">{{ eachcandidate.pk }}</a></td>
-                        <td class="action-col" style="text-align: left;">
-                            {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
-                        </td>
-                        <td style="text-align: center;">
-                            <div>{{ eachcandidate.Personal_Email_Id }}</div>
-                            <div>{{ eachcandidate.Contact_Number }}</div>
-                        </td>
-                        <td>{{ eachcandidate.fk_designation_code }}</td>
-                        <td>{{ eachcandidate.fk_vendor_code }}</td>
-                        <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+{% if request.user.groups.all %}
+    {% for eachgroup in request.user.groups.all %}
+        {% if eachgroup.name == 'Onboarding SPOC' %}
+            <div class="table-container">
+            
+                <table id="candidate-table" class="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Candidate ID</th>
+                            <th>Candidate Name</th>
+                            <th>Contact Details</th>
+                            <th>Designation</th>
+                            <th>Vendor</th>
+                            <!-- <th>Documents</th> -->
+                            <th>Onboarding Status</th>
+                            <th>Status</th>
+                            <!-- <th>Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if pending_candidate_list %}
+                            {% for eachcandidate in pending_candidate_list %}                   
+                                <tr>
+                                    <td class="action-col"><a href="{% url 'csp_app:process_request' eachcandidate.pk %}">{{ eachcandidate.pk }}</a></td>
+                                    <td class="action-col" style="text-align: left;">
+                                        {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <div>{{ eachcandidate.Personal_Email_Id }}</div>
+                                        <div>{{ eachcandidate.Contact_Number }}</div>
+                                    </td>
+                                    <td>{{ eachcandidate.fk_designation_code }}</td>
+                                    <td>{{ eachcandidate.fk_vendor_code }}</td>
+                                    <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
 
-                        <!-- <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td> -->
-                       <td class="action-col">
-                        {{ eachcandidate.status }}
-                       </td>
-                        <!-- <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
-                        </td> -->
-                    </tr>
+                                    <!-- <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td> -->
+                                <td class="action-col">
+                                    {{ eachcandidate.status }}
+                                </td>
+                                    <!-- <td class="action-col">
+                                        <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
+                                    </td> -->
+                                </tr>
 
-                {% endfor %}                
+                            {% endfor %}                
 
-            {% else %}
-                {% for eachcandidate in candidate_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
+                        {% else %}
+                            {% for eachcandidate in candidate_list %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>   
+                </table>
+            
+            </div>
+         {% endif %}
+    {% endfor %}
+{% endif %}
 
+{% if request.user.groups.all %}
+    {% for eachgroup in request.user.groups.all %}
+        {% if eachgroup.name == 'Vendor' %}
+            <div class="table-container">
+            
+                <table id="candidate-table" class="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Candidate ID</th>
+                            <th>Candidate Name</th>
+                            <th>Contact Details</th>
+                            <th>Designation</th>
+                            <th>Vendor</th>
+                            <!-- <th>Documents</th> -->
+                            <th>Onboarding Status</th>
+                            <th>Status</th>
+                            <!-- <th>Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if pending_candidate_list %}
+                            {% for eachlist in pending_candidate_list %}
+                            {% for eachcandidate in each_list %}                   
+                                <tr>
+                                    <td class="action-col"><a href="{% url 'csp_app:process_request' eachcandidate.pk %}">{{ eachcandidate.pk }}</a></td>
+                                    <td class="action-col" style="text-align: left;">
+                                        {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <div>{{ eachcandidate.Personal_Email_Id }}</div>
+                                        <div>{{ eachcandidate.Contact_Number }}</div>
+                                    </td>
+                                    <td>{{ eachcandidate.fk_designation_code }}</td>
+                                    <td>{{ eachcandidate.fk_vendor_code }}</td>
+                                    <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+
+                                    <!-- <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td> -->
+                                <td class="action-col">
+                                    {{ eachcandidate.status }}
+                                </td>
+                                    <!-- <td class="action-col">
+                                        <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
+                                    </td> -->
+                                </tr>
+
+                            {% endfor %}                
+                            {% endfor %} 
+                        {% else %}
+                            {% for eachcandidate in candidate_list %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>   
+                </table>
+            
+            </div>
+         {% endif %}
+    {% endfor %}
+{% endif %}
+
+<script type="text/javascript">
+    function hidediv(){
+                $( '#alerts' ).removeClass( 'animate__animated animate__slideOutRight animate__fast' ).show().addClass( 'animate__animated animate__slideInRight animate__fast' );
+
+                $( '#alerts' ).removeClass( 'animate__animated animate__slideInRight animate__fast' ).addClass( 'animate__animated animate__slideOutRight animate__fast' );
+            }
+    setTimeout("hidediv()", 2000);    
+</script>
 {% endblock %}

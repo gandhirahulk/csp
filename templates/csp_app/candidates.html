@@ -30,96 +30,167 @@
         {% endfor %}
     {% endif %}
 
-<div class="table-container">
-  
-    <table id="candidate-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Candidate ID</th>
-                <th>Candidate Name</th>
-                <th>Contact Details</th>
-                <th>Designation</th>
-                <th>Vendor</th>
-                <!-- <th>Documents</th> -->
-                <th>Status</th>
-                <!-- <th>Action</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            {% if candidate_list %}
-                {% for eachcandidate in candidate_list %}
-                   
-                    <tr>
-                        <td>{{ eachcandidate.pk }}</td>
-                        <td class="action-col" style="text-align: left;">
-                            {% if request.user.groups.all %}
-                                {% for eachgroup in request.user.groups.all %}
-                                    {% if eachgroup.name == 'Admin' %}
-                                        <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}" id="view" formaction="{% url 'csp_app:edit_candidate' %}"></form> 
-                                    {% else %}
-                                        {{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                        </td>
-                        <td style="text-align: center;">
-                            <div>{{ eachcandidate.Personal_Email_Id }}</div>
-                            <div>{{ eachcandidate.Contact_Number }}</div>
-                        </td>
-                        <td>{{ eachcandidate.fk_designation_code }}</td>
-                        <td>{{ eachcandidate.fk_vendor_code }}</td>
-                        <td class="action-col">{{ eachcandidate.status }}</td>
-                        <!-- <td class="action-col">
-                            <input type="hidden" value="{{ eachcandidate.pk }}" name="view_id" id="selected_id">
-                            {% if request.user.groups.all %}
-                                {% for eachgroup in request.user.groups.all %}
-                                    {% if eachgroup.name == 'Admin' %}
-                                        <select name="c_status" id="c_status" onchange="statusAdmin('{{ eachcandidate.pk }}', 'change_candidate_status', 'change_me')">
-                                            <option value="{{ eachcandidate.candidate_status_id }}" label="{{ eachcandidate.candidate_status }}" selected="True">{{ eachcandidate.candidate_status }}</option>
-                                            {% if c_status_list %}
-                                                {% for eachstatus in c_status_list %}
-                                                    {% if eachstatus.pk != eachcandidate.candidate_status_id %}
-                                                        <option value="{{ eachstatus.pk }}" label="{{ eachstatus.status_name }}">{{ eachstatus.status_name }}</option>
-                                                    {% endif %}                                        
-                                                {% endfor %}
-                                            {% endif %}
-                                        </select>                                    
-                                    {% endif %}   
-                                    {% if eachgroup.name == 'Vendor' %}
-                                        <select name="v_status" id="v_status" onchange="statusVendor('{{ eachcandidate.pk }}', 'change_candidate_status_vendor', 'v_change_me')">
-                                            <option value="{{ eachcandidate.vendor_status_id }}" label="{{ eachcandidate.vendor_status }}" selected="True">{{ eachcandidate.vendor_status }}</option>
-                                            {% if v_status_list %}
-                                                {% for eachstatus in v_status_list %}
-                                                    {% if eachstatus.pk != eachcandidate.vendor_status_id %}
-                                                        <option value="{{ eachstatus.pk }}" label="{{ eachstatus.status_name }}">{{ eachstatus.status_name }}</option>
-                                                    {% endif %}                                        
-                                                {% endfor %}
-                                            {% endif %}
-                                        </select>                                    
-                                    {% endif %}                                          
-                                {% endfor %}
-                            {% endif %}
-                        </td> -->
-                        
-                    </tr>
+    {% if request.user.groups.all %}
+    {% for eachgroup in request.user.groups.all %}
+        {% if eachgroup.name == 'Vendor' %}
+            <div class="table-container">
+            
+                <table id="candidate-table" class="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Candidate ID</th>
+                            <th>Candidate Name</th>
+                            <th>Contact Details</th>
+                            <th>Designation</th>
+                            <th>Vendor</th>
+                            <!-- <th>Documents</th> -->
+                            <th>Onboarding Status</th>
+                            <th>Status</th>
+                            <!-- <th>Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if candidate_list %}
+                            {% for eachlist in candidate_list %}
+                            {% for eachcandidate in each_list %}                   
+                                <tr>
+                                    <td class="action-col"><a href="{% url 'csp_app:process_request' eachcandidate.pk %}">{{ eachcandidate.pk }}</a></td>
+                                    <td class="action-col" style="text-align: left;">
+                                        {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <div>{{ eachcandidate.Personal_Email_Id }}</div>
+                                        <div>{{ eachcandidate.Contact_Number }}</div>
+                                    </td>
+                                    <td>{{ eachcandidate.fk_designation_code }}</td>
+                                    <td>{{ eachcandidate.fk_vendor_code }}</td>
+                                    <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
 
-                {% endfor %}                
+                                    <!-- <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td> -->
+                                <td class="action-col">
+                                    {{ eachcandidate.status }}
+                                </td>
+                                    <!-- <td class="action-col">
+                                        <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
+                                    </td> -->
+                                </tr>
+
+                            {% endfor %}                
+                            {% endfor %} 
+                        {% else %}
+                            {% for eachcandidate in candidate_list %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>   
+                </table>
+            
+            </div>
 
             {% else %}
-                {% for eachcandidate in candidate_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
+            <div class="table-container">
   
-</div>
+                <table id="candidate-table" class="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Candidate ID</th>
+                            <th>Candidate Name</th>
+                            <th>Contact Details</th>
+                            <th>Designation</th>
+                            <th>Vendor</th>
+                            <!-- <th>Documents</th> -->
+                            <th>Status</th>
+                            <!-- <th>Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if candidate_list %}
+                            {% for eachcandidate in candidate_list %}
+                               
+                                <tr>
+                                    <td>{{ eachcandidate.pk }}</td>
+                                    <td class="action-col" style="text-align: left;">
+                                        {% if request.user.groups.all %}
+                                            {% for eachgroup in request.user.groups.all %}
+                                                {% if eachgroup.name == 'Admin' %}
+                                                    <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}" id="view" formaction="{% url 'csp_app:edit_candidate' %}"></form> 
+                                                {% else %}
+                                                    {{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <div>{{ eachcandidate.Personal_Email_Id }}</div>
+                                        <div>{{ eachcandidate.Contact_Number }}</div>
+                                    </td>
+                                    <td>{{ eachcandidate.fk_designation_code }}</td>
+                                    <td>{{ eachcandidate.fk_vendor_code }}</td>
+                                    <td class="action-col">{{ eachcandidate.status }}</td>
+                                    <!-- <td class="action-col">
+                                        <input type="hidden" value="{{ eachcandidate.pk }}" name="view_id" id="selected_id">
+                                        {% if request.user.groups.all %}
+                                            {% for eachgroup in request.user.groups.all %}
+                                                {% if eachgroup.name == 'Admin' %}
+                                                    <select name="c_status" id="c_status" onchange="statusAdmin('{{ eachcandidate.pk }}', 'change_candidate_status', 'change_me')">
+                                                        <option value="{{ eachcandidate.candidate_status_id }}" label="{{ eachcandidate.candidate_status }}" selected="True">{{ eachcandidate.candidate_status }}</option>
+                                                        {% if c_status_list %}
+                                                            {% for eachstatus in c_status_list %}
+                                                                {% if eachstatus.pk != eachcandidate.candidate_status_id %}
+                                                                    <option value="{{ eachstatus.pk }}" label="{{ eachstatus.status_name }}">{{ eachstatus.status_name }}</option>
+                                                                {% endif %}                                        
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </select>                                    
+                                                {% endif %}   
+                                                {% if eachgroup.name == 'Vendor' %}
+                                                    <select name="v_status" id="v_status" onchange="statusVendor('{{ eachcandidate.pk }}', 'change_candidate_status_vendor', 'v_change_me')">
+                                                        <option value="{{ eachcandidate.vendor_status_id }}" label="{{ eachcandidate.vendor_status }}" selected="True">{{ eachcandidate.vendor_status }}</option>
+                                                        {% if v_status_list %}
+                                                            {% for eachstatus in v_status_list %}
+                                                                {% if eachstatus.pk != eachcandidate.vendor_status_id %}
+                                                                    <option value="{{ eachstatus.pk }}" label="{{ eachstatus.status_name }}">{{ eachstatus.status_name }}</option>
+                                                                {% endif %}                                        
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </select>                                    
+                                                {% endif %}                                          
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td> -->
+                                    
+                                </tr>
+            
+                            {% endfor %}                
+            
+                        {% else %}
+                            {% for eachcandidate in candidate_list %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>   
+                </table>
+              
+            </div>
+         {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+
+
 
 <div id="candidates_form" class="form_modal" style="padding-top: 1%;">
     <div class="form_header">

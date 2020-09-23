@@ -15,6 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.core.files.storage import FileSystemStorage
+from itertools import chain
 
 
 
@@ -35,6 +36,9 @@ def vendor_candidates(usrname):
         vs_candidates = []
         for e in s_vendor:
             vs_candidates.append(master_candidate.objects.filter(fk_vendor_code=e.pk, status= active_status))
+        #     a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk, status= active_status))
+        # print(a)
+        print(vs_candidates)
         return vs_candidates
     except ObjectDoesNotExist:
         pass
@@ -194,15 +198,16 @@ def process_requests(request, cid):
             location_fk = master_location.objects.get(pk= location)
             spoc_status = request.POST.get('s_status')
             try:
-                dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status).exclude(pk=cid)
-                messages.error( request, "Candidate Aadhaar Number Already Exist")
-                return redirect("csp_app:process_request", cid = cid)
-                dup_candidate_pan = master_candidate.objects.get(PAN_Number= Pan, status= active_status).exclude(pk=cid)
-                messages.error( request, "Candidate PAN Number Already Exist")
-                return redirect("csp_app:process_request", cid = cid)
-                dup_candidate_pan = master_candidate.objects.get(Contact_Number= contact_no, status= active_status).exclude(pk=cid)
-                messages.error( request, "Candidate Contact Number Already Exist")
-                return redirect("csp_app:process_request", cid = cid)
+                m = master_vendor.objects.get(pk=199)
+                # dup_candidate_aadhaar = master_candidate.objects.filter(Aadhaar_Number= aadhaar, status= active_status).exclude(pk=cid)
+                # messages.error( request, "Candidate Aadhaar Number Already Exist")
+                # return redirect("csp_app:process_request", cid = cid)
+                # dup_candidate_pan = master_candidate.objects.filter(PAN_Number= Pan, status= active_status).exclude(pk=cid)
+                # messages.error( request, "Candidate PAN Number Already Exist")
+                # return redirect("csp_app:process_request", cid = cid)
+                # dup_candidate_pan = master_candidate.objects.filter(Contact_Number= contact_no, status= active_status).exclude(pk=cid)
+                # messages.error( request, "Candidate Contact Number Already Exist")
+                # return redirect("csp_app:process_request", cid = cid)
             except ObjectDoesNotExist:
                 selected_candidate = master_candidate.objects.get(pk= cid)
                 changes_list = {}
@@ -324,7 +329,7 @@ def process_requests(request, cid):
                 selected_candidate.modified_date_time=datetime.now()
                 selected_candidate.save()
                 
-                limtemplate = render_to_string('csp_app/candidate_edited_by_onboarding_et.html', {'candidate_code':new_code ,'user': request.user, 'vendor': vendor_fk.vendor_name })
+                limtemplate = render_to_string('csp_app/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
                 our_email = EmailMessage(
                     'Candidate Edited .',
                     limtemplate,
@@ -334,9 +339,9 @@ def process_requests(request, cid):
                 our_email.fail_silently = False
                 our_email.send()
                 
-                alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':new_code ,'user': request.user, 'changes': changes_list})
+                alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                 our_email = EmailMessage(
-                    'Candidate account created action required.',
+                    'Candidate account edited.',
                     alltemplate,
                     settings.EMAIL_HOST_USER,
                     [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
@@ -392,7 +397,7 @@ def pending_requests(request):
                 pending_candidate_list = onboarding_pending_candidates(request.user)
                 count = len(pending_candidate_list)
             else:
-                candidate_list = vendor_specific_candidate
+                candidate_list = vendor_candidates(request.user)
                 all_active_candidates = vendor_candidates(request.user)
                 pending_candidate_list = vendor_pending_candidates(request.user)
                 count = len(pending_candidate_list)
@@ -651,7 +656,7 @@ def edit_candidate(request):
                 selected_candidate.Gross_Salary_Amount= gross_salary
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time=datetime.now()
-                alltemplate = render_to_string('csp_app/candidate_edited_et.html', {'candidate_code':new_code ,'user': request.user})
+                alltemplate = render_to_string('csp_app/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
                 our_email = EmailMessage(
                     'Candidate Account Updated.',
                     alltemplate,
@@ -660,7 +665,7 @@ def edit_candidate(request):
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
-                limtemplate = render_to_string('csp_app/candidate_edited_et_limited.html', {'candidate_code':new_code ,'user': request.user})
+                limtemplate = render_to_string('csp_app/candidate_edited_et_limited.html', {'candidate_code':cid ,'user': request.user})
                 our_email = EmailMessage(
                     'Candidate Account Updated.',
                     limtemplate,

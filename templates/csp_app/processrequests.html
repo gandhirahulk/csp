@@ -135,7 +135,7 @@
                         <label for="">Gender</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Gender_id }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.Gender }}" required="true" >
                           
                     </div>
                     <div>
@@ -184,7 +184,8 @@
                         <input type="text" disabled value="{{ eachcandidate.Aadhaar_Number }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="9" value="{{ eachcandidate.Aadhaar_Number }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true">
+                         <input type="text" tabindex="11" value="{{ eachcandidate.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+                
                     </div>
                 </div>
 
@@ -206,7 +207,7 @@
                         <label for="">Hiring Type</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring_id }}" required="true" >           
+                        <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
                     </div>
                     <div>
                         <select name="c_hiring_type" id="" tabindex="13" >
@@ -266,7 +267,7 @@
                         <label for="">Sub Source</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Sub_Source_id }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
                           
                     </div>
                     <div>
@@ -485,7 +486,7 @@
                         <label for="">State</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
                           
                     </div>
                     <div>
@@ -537,7 +538,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_vendor" id="c_vendor" required="true" tabindex="19">
+                        <select name="c_location" id="c_location" required="true" tabindex="19">
                             <option value="{{ eachcandidate.fk_location_code_id }}" selected  label="{{ eachcandidate.fk_location_code }}">{{ eachcandidate.fk_location_code.fk_city_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Location</option>
     
@@ -622,7 +623,7 @@
                         <label for="">Laptop Allocation</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation_id }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
                           
                     </div>
                     <div>
@@ -645,7 +646,7 @@
                         <label for="">Salary Type</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Salary_Type_id }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
                           
                     </div>
                     <div>
@@ -1037,5 +1038,15 @@
         });
        
     });
+</script>
+<script type="text/javascript">
+    function hidediv(){
+                $( '#alerts' ).removeClass( 'animate__animated animate__slideOutRight animate__fast' ).show().addClass( 'animate__animated animate__slideInRight animate__fast' );
+
+                $( '#alerts' ).removeClass( 'animate__animated animate__slideInRight animate__fast' ).addClass( 'animate__animated animate__slideOutRight animate__fast' );
+            }
+    setTimeout("hidediv()", 2000);
+
+    
 </script>
 {% endblock %}
