@@ -16,7 +16,9 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.core.files.storage import FileSystemStorage
 from itertools import chain
+from django.utils import timezone
 
+print(timezone.localtime())
 
 count = 0
 
@@ -328,7 +330,7 @@ def process_requests(request, cid):
                     changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
                     selected_candidate.Gross_Salary_Amount= gross_salary
                 selected_candidate.modified_by = str(request.user)
-                selected_candidate.modified_date_time=datetime.now()
+                selected_candidate.modified_date_time=timezone.localtime()
 
                 if request.POST.get('o_status') != None:
                     if selected_candidate.onboarding_status != approve_onboarding:
@@ -760,7 +762,7 @@ def edit_candidate(request):
                 selected_candidate.Salary_Type= salarytype_fk
                 selected_candidate.Gross_Salary_Amount= gross_salary
                 selected_candidate.modified_by = str(request.user)
-                selected_candidate.modified_date_time=datetime.now()
+                selected_candidate.modified_date_time=timezone.localtime()
                 alltemplate = render_to_string('csp_app/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
                 our_email = EmailMessage(
                     'Candidate Account Updated.',
@@ -951,7 +953,7 @@ def create_candidate(request):
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=datetime.now())
+                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=timezone.localtime())
                 new_candidate.save()
                 save_new_code = csp_candidate_code(candidate_code= new_code)
                 save_new_code.save()
@@ -1101,7 +1103,7 @@ def delete_document(request):
             document_id = request.POST.get("delete_id")          
             selected_document = candidate_document.objects.get(pk = document_id, status= active_status)
             selected_document.modified_by = str(request.user)
-            selected_document.modified_date_time = datetime.now()
+            selected_document.modified_date_time = timezone.localtime()
             selected_document.status = deactive_status
             selected_document.save()
             messages.success(request, "Document Deleted Successfully")
@@ -1254,7 +1256,7 @@ def delete_entity(request):
             else:
                 selected_entity = master_entity.objects.get(pk = entity_id, status= active_status)
                 selected_entity.modified_by = str(request.user)
-                selected_entity.modified_date_time = datetime.now()
+                selected_entity.modified_date_time = timezone.localtime()
                 selected_entity.status = deactive_status
                 selected_entity.save()
                 messages.success(request, "Entity Deleted Successfully")
@@ -1308,7 +1310,7 @@ def save_edit_entity(request):
                     except ObjectDoesNotExist:
                         entity.entity_name = name 
                         entity.modified_by = str(request.user)
-                        entity.modified_date_time = datetime.now()
+                        entity.modified_date_time = timezone.localtime()
                         entity.save()
                         messages.success(request, "Entity Updated Successfully")
                         return redirect('csp_app:entity')
@@ -1380,7 +1382,7 @@ def delete_vendor(request):
                 selected_user.is_active = False
                 selected_user.save()
                 selected_vendor.modified_by = str(request.user)
-                selected_vendor.modified_date_time = datetime.now()
+                selected_vendor.modified_date_time = timezone.localtime()
                 selected_vendor.status = deactive_status
                 selected_vendor.save()
                 # except ObjectDoesNotExist:
@@ -1449,7 +1451,7 @@ def save_edit_vendor(request):
                     vendor.vendor_email_id = vendor_email
                     vendor.vendor_email_id_password = vendor_email_pwd
                     vendor.modified_by = str(request.user)
-                    vendor.modified_date_time = datetime.now()
+                    vendor.modified_date_time = timezone.localtime()
                     vendor.save()
                     msg = 'Vendor '+ str(vendor.vendor_name) +' with Username " ' + str(vendor.vendor_email_id) + ' Updated by ' + str(request.user) + ' .'
                     send_mail('Vendor Account Updated', msg,'workmail052020@gmail.com',[ vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
@@ -1577,7 +1579,7 @@ def delete_department(request):
                 selected_department = master_department.objects.get(pk = department_id, status= active_status)
                 selected_department.status = deactive_status
                 selected_department.modified_by = str(request.user)
-                selected_department.modified_date_time = datetime.now()
+                selected_department.modified_date_time = timezone.localtime()
                 selected_department.save()
                 messages.success(request, "Department Deleted Successfully")
                 return redirect('csp_app:department')
@@ -1664,7 +1666,7 @@ def save_edit_department(request):
                         selected.department_name = name 
                         selected.fk_entity_code = entity_fk
                         selected.modified_by = str(request.user)
-                        selected.modified_date_time = datetime.now()
+                        selected.modified_date_time = timezone.localtime()
                         selected.save()
                         messages.success(request, "Department Updated Successfully")
                         return redirect('csp_app:department')
@@ -1769,7 +1771,7 @@ def save_edit_function(request):
                         selected.function_name = name 
                         selected.fk_department_code = department_fk
                         selected.modified_by = str(request.user)
-                        selected.modified_date_time = datetime.now()
+                        selected.modified_date_time = timezone.localtime()
                         selected.save()
                         messages.success(request, "Function Updated Successfully")
                         return redirect('csp_app:function')
@@ -1798,7 +1800,7 @@ def delete_function(request):
                 selected = master_function.objects.get(pk = function_id, status= active_status)
                 selected.status = deactive_status
                 selected.modified_by = str(request.user)
-                selected.modified_date_time = datetime.now()
+                selected.modified_date_time = timezone.localtime()
                 selected.save()
                 messages.success(request, "Function Deleted Successfully")
                 return redirect('csp_app:function')
@@ -1906,7 +1908,7 @@ def save_edit_team(request):
                         selected.team_name = name 
                         selected.fk_function_code = function_fk
                         selected.modified_by = str(request.user)
-                        selected.modified_date_time = datetime.now()
+                        selected.modified_date_time = timezone.localtime()
                         selected.save()
                         messages.success(request, "Team Updated Successfully")
                         return redirect('csp_app:team')
@@ -1935,7 +1937,7 @@ def delete_team(request):
                 selected = master_team.objects.get(pk = team_id, status= active_status)
                 selected.status = deactive_status
                 selected.modified_by = str(request.user)
-                selected.modified_date_time = datetime.now()
+                selected.modified_date_time = timezone.localtime()
                 selected.save()
                 messages.success(request, "Team Deleted Successfully")
                 return redirect('csp_app:team')
@@ -2049,7 +2051,7 @@ def save_edit_subteam(request):
                         selected.sub_team_name = name 
                         selected.fk_team_code = team_fk
                         selected.modified_by = str(request.user)
-                        selected.modified_date_time = datetime.now()
+                        selected.modified_date_time = timezone.localtime()
                         selected.save()
                         messages.success(request, "Sub Team Updated Successfully")
                         return redirect('csp_app:subteam')
@@ -2078,7 +2080,7 @@ def delete_subteam(request):
                 selected = master_sub_team.objects.get(pk = team_id, status= active_status)
                 selected.status = deactive_status
                 selected.modified_by = str(request.user)
-                selected.modified_date_time = datetime.now()
+                selected.modified_date_time = timezone.localtime()
                 selected.save()
                 messages.success(request, "Sub Team Deleted Successfully")
                 return redirect('csp_app:subteam')
@@ -2193,7 +2195,7 @@ def save_edit_designation(request):
                         selected.designation_name = name 
                         selected.fk_sub_team_code = subteam_fk
                         selected.modified_by = str(request.user)
-                        selected.modified_date_time = datetime.now()
+                        selected.modified_date_time = timezone.localtime()
                         selected.save()
                         messages.success(request, "Designation Updated Successfully")
                         return redirect('csp_app:designation')
@@ -2221,7 +2223,7 @@ def delete_designation(request):
                 selected = master_designation.objects.get(pk = desg_id, status= active_status)
                 selected.status = deactive_status
                 selected.modified_by = str(request.user)
-                selected.modified_date_time = datetime.now()
+                selected.modified_date_time = timezone.localtime()
                 selected.save()
                 messages.success(request, "Designation Deleted Successfully")
                 return redirect('csp_app:designation')
@@ -2280,7 +2282,7 @@ def delete_region(request):
                 selected = master_region.objects.get(pk = region_id, status= active_status)
                 selected.status = deactive_status
                 selected.modified_by = str(request.user)
-                selected.modified_date_time = datetime.now()
+                selected.modified_date_time = timezone.localtime()
                 selected.save()
                 messages.success(request, "region Deleted Successfully")
                 return redirect('csp_app:region')
@@ -2344,7 +2346,7 @@ def save_edit_region(request):
                         selected.region_name = name 
                         selected.fk_entity_code =entity_fk
                         selected.modified_by = str(request.user)
-                        selected.modified_date_time = datetime.now()
+                        selected.modified_date_time = timezone.localtime()
                         selected.save()
                         messages.success(request, "Region Updated Successfully")
                         return redirect('csp_app:region')
@@ -2456,7 +2458,7 @@ def save_edit_state(request):
                         selected.state_name = name 
                         selected.fk_region_code = region_fk
                         selected.modified_by = str(request.user)
-                        selected.modified_date_time = datetime.now()
+                        selected.modified_date_time = timezone.localtime()
                         selected.save()
                         messages.success(request, "state Updated Successfully")
                         return redirect('csp_app:state')
@@ -2485,7 +2487,7 @@ def delete_state(request):
                 selected = master_state.objects.get(pk = state_id, status= active_status)
                 selected.status = deactive_status
                 selected.modified_by = str(request.user)
-                selected.modified_date_time = datetime.now()
+                selected.modified_date_time = timezone.localtime()
                 selected.save()
                 messages.success(request, "state Deleted Successfully")
                 return redirect('csp_app:state')
@@ -2570,7 +2572,7 @@ def save_edit_city(request):
                         selected.city_name = name 
                         selected.fk_state_code = state_fk
                         selected.modified_by = str(request.user)
-                        selected.modified_date_time = datetime.now()
+                        selected.modified_date_time = timezone.localtime()
                         selected.save()
                         messages.success(request, "city Updated Successfully")
                         return redirect('csp_app:city')
@@ -2599,7 +2601,7 @@ def delete_city(request):
                 selected = master_city.objects.get(pk = city_id, status= active_status)
                 selected.status = deactive_status
                 selected.modified_by = str(request.user)
-                selected.modified_date_time = datetime.now()
+                selected.modified_date_time = timezone.localtime()
                 selected.save()
                 messages.success(request, "city Deleted Successfully")
                 return redirect('csp_app:city')
@@ -2741,7 +2743,7 @@ def save_edit_location(request):
                         selected.location_name = name 
                         selected.fk_city_code = city_fk
                         selected.modified_by = str(request.user)
-                        selected.modified_date_time = datetime.now()
+                        selected.modified_date_time = timezone.localtime()
                         selected.save()
                         messages.success(request, "Sub city Updated Successfully")
                         return redirect('csp_app:location')
@@ -2769,7 +2771,7 @@ def delete_location(request):
                 selected = master_location.objects.get(pk = loc_id, status= active_status)
                 selected.status = deactive_status
                 selected.modified_by = str(request.user)
-                selected.modified_date_time = datetime.now()
+                selected.modified_date_time = timezone.localtime()
                 selected.save()
                 messages.success(request, "Location Deleted Successfully")
                 return redirect('csp_app:location')
