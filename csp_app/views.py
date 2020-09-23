@@ -23,6 +23,8 @@ active_status = status.objects.get(pk=1)
 pending_status = candidate_status.objects.get(pk=2)
 approve_onboarding = onboarding_status.objects.get(pk = 1)
 pending_onboarding = onboarding_status.objects.get(pk=2)
+pending_vendor = vendor_status.objects.get(pk=2)
+
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 count_it = master_candidate.objects.filter( onboarding_status= pending_onboarding)
 count = len(count_it)
@@ -37,10 +39,20 @@ def vendor_candidates(usrname):
     except ObjectDoesNotExist:
         pass
 
+def vendor_pending_candidates(usrname):
+    try:
+        s_vendor = master_vendor.objects.filter(vendor_email_id= usrname, status=active_status)
+        vs_candidates = []
+        for e in s_vendor:
+            vs_candidates.append(master_candidate.objects.filter(fk_vendor_code=e.pk, vendor_status= pending_vendor, status= active_status))
+        return vs_candidates
+    except ObjectDoesNotExist:
+        pass
+
 def onboarding_candidates(usrname):
     try:
         onb_candidates = master_candidate.objects.filter( Onboarding_Spoc_Email_Id=usrname,status= active_status)
-        print(onb_candidates)
+        # print(onb_candidates)
         return onb_candidates
     except ObjectDoesNotExist:
         pass
@@ -48,7 +60,7 @@ def onboarding_candidates(usrname):
 def onboarding_pending_candidates(usrname):
     try:
         onb_candidates = master_candidate.objects.filter( Onboarding_Spoc_Email_Id=usrname, onboarding_status= pending_onboarding , status= active_status)
-        print(onb_candidates)
+        # print(onb_candidates)
         return onb_candidates
     except ObjectDoesNotExist:
         pass
@@ -57,7 +69,7 @@ def onboarding_pending_candidates(usrname):
 @user_passes_test(lambda u: u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Vendor').exists())
 def process_requests(request, cid):    
     try:
-        selected_candidate = master_candidate.objects.filter(pk= cid)
+        selected_candidate_data = master_candidate.objects.filter(pk= cid)
         # selected_candidate = ''
         entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
         vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
@@ -78,7 +90,265 @@ def process_requests(request, cid):
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
         c_status_list = candidate_status.objects.all()
         v_status_list = vendor_status.objects.all()
-        return render(request, 'csp_app/processrequests.html', {'selected_candidate': selected_candidate, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        if request.method == 'POST':
+            firstname = request.POST.get("c_firstname")
+            middlename = request.POST.get("c_middlename")
+            lastname = request.POST.get("c_lastname")
+            dob = request.POST.get("c_dob")
+            contact_no = request.POST.get("c_contact")
+            emergency_no = request.POST.get("c_emergency")
+            email = request.POST.get("c_email")
+            c_gender = request.POST.get("c_gender")
+            fathername = request.POST.get("c_fathername")
+            father_dob = request.POST.get("c_father_dob")
+            aadhaar = request.POST.get("c_aadhaar")
+            Pan = request.POST.get("c_pan")
+            hiring = request.POST.get("c_hiring_type")
+            doj = request.POST.get("c_doj")        
+            replacement = request.POST.get("c_replacement")
+            referral = request.POST.get("c_referral")
+            subsource = request.POST.get("c_sub_source")
+            entity = request.POST.get("c_entity")
+            vendor = request.POST.get("c_vendor")
+            department = request.POST.get("c_dept")
+            function = request.POST.get("c_function")
+            team = request.POST.get("c_team")
+            sub_team = request.POST.get("c_subteam")
+            designation = request.POST.get("c_desg")
+            region = request.POST.get("c_region")
+            state = request.POST.get("c_state")
+            city = request.POST.get("c_city")
+            location = request.POST.get("c_location")
+            loc_code = 'GGG' #check
+            ta_spoc = request.POST.get("c_ta_spoc") #check
+            onboarding_spoc = request.POST.get("c_onboarding_spoc") #check
+            reporting_manager = request.POST.get("c_reporting_manager")
+            reporting_manager_email = request.POST.get("c_reporting_manager_email")
+            email_creation = request.POST.get("c_email_creation")
+            laptopallocation = request.POST.get("c_laptop_allocation")
+            salarytype = request.POST.get("c_salary_type")
+            gross_salary = request.POST.get("c_gross_salary")
+            if hiring == None or hiring == '':
+                messages.warning(request, "Choose Hiring Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            hiring_fk = hiring_type.objects.get(pk= hiring)
+            if sub_source == None or sub_source == '':
+                messages.warning(request, "Choose  Sub Source And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            subsource_fk = sub_source.objects.get(pk= subsource)
+            if c_gender == None or c_gender == '':
+                messages.warning(request, "Choose  Gender And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            gender_fk = gender.objects.get(pk= c_gender)
+            if laptopallocation == None or laptopallocation == '':
+                messages.warning(request, "Choose  Laptop Allocation And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            la_fk = laptop_allocation.objects.get(pk= laptopallocation)
+            if salarytype == None or salarytype == '':
+                messages.warning(request, "Choose  Salary Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            salarytype_fk = salary_type.objects.get(pk= salarytype)
+            if entity == None or entity == '':
+                messages.warning(request, "Choose  Entity Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            entity_fk = master_entity.objects.get(pk= entity)
+            if vendor == None or vendor == '':
+                messages.warning(request, "Choose  vendor And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            vendor_fk = master_vendor.objects.get(pk= vendor)
+            if department == None or department == '':
+                messages.warning(request, "Choose  Department Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            department_fk = master_department.objects.get(pk= department)
+            if function == None or function == '':
+                messages.warning(request, "Choose  Function Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            function_fk = master_function.objects.get(pk= function)
+            if team == None or team == '':
+                messages.warning(request, "Choose  Team Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            team_fk = master_team.objects.get(pk= team)
+            if sub_team == None or sub_team == '':
+                messages.warning(request, "Choose  Sub Team Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            sub_team_fk = master_sub_team.objects.get(pk= sub_team)
+            if designation == None or designation == '':
+                messages.warning(request, "Choose  Designation Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            designation_fk = master_designation.objects.get(pk= designation)
+            if region == None or region == '':
+                messages.warning(request, "Choose  Region Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            region_fk = master_region.objects.get(pk= region)
+            if state == None or state == '':
+                messages.warning(request, "Choose  State Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            state_fk = master_state.objects.get(pk= state)
+            if city == None or city == '':
+                messages.warning(request, "Choose  City Type And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            city_fk = master_city.objects.get(pk= city)
+            if location == None or location == '':
+                messages.warning(request, "Choose  Location And Try Again")
+                return redirect("csp_app:process_request", cid = cid)
+            location_fk = master_location.objects.get(pk= location)
+            spoc_status = request.POST.get('s_status')
+            try:
+                dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status).exclude(pk=cid)
+                messages.error( request, "Candidate Aadhaar Number Already Exist")
+                return redirect("csp_app:process_request", cid = cid)
+                dup_candidate_pan = master_candidate.objects.get(PAN_Number= Pan, status= active_status).exclude(pk=cid)
+                messages.error( request, "Candidate PAN Number Already Exist")
+                return redirect("csp_app:process_request", cid = cid)
+                dup_candidate_pan = master_candidate.objects.get(Contact_Number= contact_no, status= active_status).exclude(pk=cid)
+                messages.error( request, "Candidate Contact Number Already Exist")
+                return redirect("csp_app:process_request", cid = cid)
+            except ObjectDoesNotExist:
+                selected_candidate = master_candidate.objects.get(pk= cid)
+                changes_list = {}
+                if selected_candidate.First_Name != firstname:
+                    changes_list['First Name'] = [ selected_candidate.First_Name, firstname ]
+                selected_candidate.First_Name=firstname 
+                if selected_candidate.Middle_Name != middlename:
+                    changes_list['Middle Name'] = [ selected_candidate.Middle_Name, middlename ]
+                selected_candidate.Middle_Name=middlename 
+                if selected_candidate.Last_Name != lastname: 
+                    changes_list['Last Name'] = [ selected_candidate.Last_Name, lastname ]
+                selected_candidate.Last_Name= lastname
+                if selected_candidate.Date_of_Joining != doj:
+                    changes_list['Date Of Joining'] = [ selected_candidate.Date_of_Joining, doj ]
+                selected_candidate.Date_of_Joining = doj
+                if selected_candidate.Date_of_Birth != dob:
+                    changes_list['Date Of Birth'] = [ selected_candidate.Date_of_Birth, dob ]
+                selected_candidate.Date_of_Birth= dob
+                if selected_candidate.Father_Name != fathername:
+                    changes_list['Father Name'] = [ selected_candidate.Father_Name, fathername ]
+                selected_candidate.Father_Name= fathername
+                if selected_candidate.Father_Date_of_Birth != father_dob:
+                    changes_list['Father DOB'] = [ selected_candidate.Father_Date_of_Birth, father_dob ]
+                selected_candidate.Father_Date_of_Birth= father_dob
+                if selected_candidate.Aadhaar_Number != aadhaar:
+                    changes_list['Aadhaar Number'] = [ selected_candidate.Aadhaar_Number, aadhaar ]                    
+                selected_candidate.Aadhaar_Number= aadhaar
+                if selected_candidate.PAN_Number != Pan:
+                    changes_list['PAN Number'] = [ selected_candidate.PAN_Number, Pan ]
+                    
+                selected_candidate.PAN_Number= Pan
+                if selected_candidate.Contact_Number != contact_no:
+                    changes_list['Contact Number'] = [ selected_candidate.Contact_Number, contact_no ]
+                    
+                selected_candidate.Contact_Number= contact_no
+                if selected_candidate.Emergency_Contact_Number != emergency_no:
+                    changes_list['Emergency Contact Number'] = [ selected_candidate.Emergency_Contact_Number, emergency_no ]
+                selected_candidate.Emergency_Contact_Number= emergency_no
+                if selected_candidate.Type_of_Hiring != hiring_fk:
+                    changes_list['Type of Hiring'] = [ selected_candidate.Type_of_Hiring, hiring ]
+                    
+                selected_candidate.Type_of_Hiring= hiring_fk
+                if selected_candidate.Replacement != replacement:
+                    changes_list['Replacement'] = [ selected_candidate.Replacement, replacement ]                    
+                selected_candidate.Replacement= replacement
+                if selected_candidate.Personal_Email_Id != email:
+                    changes_list['Personal Email Id'] = [ selected_candidate.Personal_Email_Id, email ]  
+                selected_candidate.Personal_Email_Id= email
+                if selected_candidate.Sub_Source != subsource_fk:
+                    changes_list['Sub Source'] = [ selected_candidate.Sub_Source, subsource_fk ]
+                selected_candidate.Sub_Source= subsource_fk
+                if selected_candidate.Referral != referral:
+                    changes_list['Referral'] = [ selected_candidate.Referral, referral ]
+                selected_candidate.Referral= referral
+                if selected_candidate.fk_vendor_code != vendor_fk:
+                    changes_list['Vendor Code'] = [ selected_candidate.fk_vendor_code, vendor_fk ]
+                selected_candidate.fk_vendor_code= vendor_fk
+                if selected_candidate.fk_entity_code != entity_fk:
+                    changes_list['entity Code'] = [ selected_candidate.fk_entity_code, entity_fk ]
+                selected_candidate.fk_entity_code= entity_fk
+                if selected_candidate.fk_department_code != department_fk:
+                    changes_list['department Code'] = [ selected_candidate.fk_department_code, department_fk ]
+                selected_candidate.fk_department_code= department_fk
+                if selected_candidate.fk_function_code != function_fk:
+                    changes_list['function Code'] = [ selected_candidate.fk_function_code, function_fk ]
+                selected_candidate.fk_function_code= function_fk
+                if selected_candidate.fk_team_code != team_fk:
+                    changes_list['team Code'] = [ selected_candidate.fk_team_code, team_fk ]
+                selected_candidate.fk_team_code= team_fk
+                if selected_candidate.fk_subteam_code != sub_team_fk:
+                    changes_list['subteam Code'] = [ selected_candidate.fk_subteam_code, sub_team_fk ]
+                selected_candidate.fk_subteam_code= sub_team_fk
+                if selected_candidate.fk_designation_code != designation_fk:
+                    changes_list['designation Code'] = [ selected_candidate.fk_designation_code, designation_fk ]
+                selected_candidate.fk_designation_code= designation_fk
+                if selected_candidate.fk_region_code != region_fk:
+                    changes_list['region Code'] = [ selected_candidate.fk_region_code, region_fk ]
+                selected_candidate.fk_region_code= region_fk
+                if selected_candidate.fk_state_code != state_fk:
+                    changes_list['state Code'] = [ selected_candidate.fk_state_code, state_fk ]
+                selected_candidate.fk_state_code= state_fk
+                if selected_candidate.fk_city_code != city_fk:
+                    changes_list['City Code'] = [ selected_candidate.fk_city_code, city_fk ]
+                selected_candidate.fk_city_code= city_fk
+                if selected_candidate.fk_location_code != location_fk:
+                    changes_list['location Code'] = [ selected_candidate.fk_location_code, location_fk ]
+                selected_candidate.fk_location_code= location_fk
+                if selected_candidate.Reporting_Manager != reporting_manager:
+                    changes_list['Reporting Manager'] = [ selected_candidate.Reporting_Manager, reporting_manager ]
+                selected_candidate.Reporting_Manager= reporting_manager
+                if selected_candidate.Reporting_Manager_E_Mail_ID != reporting_manager_email:
+                    changes_list['Reporting Manager E Mail ID'] = [ selected_candidate.Reporting_Manager_E_Mail_ID, reporting_manager_email ]
+                    selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
+                if selected_candidate.Gender != gender_fk:
+                    changes_list['Gender'] = [ selected_candidate.Gender, gender_fk ]
+                    selected_candidate.Gender= gender_fk
+                if selected_candidate.E_Mail_ID_Creation != email_creation:
+                    changes_list['E Mail ID Creation'] = [ selected_candidate.E_Mail_ID_Creation, email_creation ]
+                    selected_candidate.E_Mail_ID_Creation= email_creation
+                if selected_candidate.TA_Spoc_Email_Id != ta_spoc:
+                    changes_list['TA Spoc Email Id'] = [ selected_candidate.TA_Spoc_Email_Id, ta_spoc ]
+                    selected_candidate.TA_Spoc_Email_Id= ta_spoc
+                if selected_candidate.Onboarding_Spoc_Email_Id != onboarding_spoc:
+                    changes_list['Onboarding Spoc Email Id'] = [ selected_candidate.Onboarding_Spoc_Email_Id, onboarding_spoc ]
+                    selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
+                if selected_candidate.Laptop_Allocation != la_fk:
+                    changes_list['Laptop Allocation'] = [ selected_candidate.Laptop_Allocation, la_fk ]
+                    selected_candidate.Laptop_Allocation= la_fk
+                if selected_candidate.Salary_Type != salarytype_fk:
+                    changes_list['Salary Type'] = [ selected_candidate.Salary_Type, salarytype ]
+                    selected_candidate.Salary_Type= salarytype_fk
+                if selected_candidate.Gross_Salary_Amount != gross_salary:
+                    changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
+                    selected_candidate.Gross_Salary_Amount= gross_salary
+                selected_candidate.modified_by = str(request.user)
+                if selected_candidate.onboarding_status != approve_onboarding:
+                    changes_list['Onboarding Status'] = [ selected_candidate.onboarding_status, approve_onboarding ]
+                    selected_candidate.onboarding_status = approve_onboarding
+                selected_candidate.modified_date_time=datetime.now()
+                selected_candidate.save()
+                
+                limtemplate = render_to_string('csp_app/candidate_edited_by_onboarding_et.html', {'candidate_code':new_code ,'user': request.user, 'vendor': vendor_fk.vendor_name })
+                our_email = EmailMessage(
+                    'Candidate Edited .',
+                    limtemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+                
+                alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':new_code ,'user': request.user, 'changes': changes_list})
+                our_email = EmailMessage(
+                    'Candidate account created action required.',
+                    alltemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+                
+                messages.success(request, "Candidate details mailed to vendor.")
+                return redirect("csp_app:process_request", cid = cid)
+
+
+        return render(request, 'csp_app/processrequests.html', {'selected_candidate': selected_candidate_data, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -124,6 +394,8 @@ def pending_requests(request):
             else:
                 candidate_list = vendor_specific_candidate
                 all_active_candidates = vendor_candidates(request.user)
+                pending_candidate_list = vendor_pending_candidates(request.user)
+                count = len(pending_candidate_list)
         return render(request, 'csp_app/pendingrequests.html', {'count':count,'pending_candidate_list': pending_candidate_list, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
@@ -170,11 +442,13 @@ def candidate(request):
         if str(eachgroup) == 'Vendor':
             candidate_list = vendor_specific_candidate
             all_active_candidates = vendor_candidates(request.user)
-        else:
-            candidate_list = master_candidate.objects.filter(status=active_status)
-            all_active_candidates = master_candidate.objects.filter(status=active_status)
-    count_it = master_candidate.objects.filter(candidate_status=pending_status)
-    count = len(count_it)
+            count = len(candidate_list)
+        elif str(eachgroup) == 'Onboarding SPOC':
+            candidate_list = onboarding_candidates(request.user)
+            all_active_candidates = onboarding_candidates(request.user)
+            pending_candidate_list = onboarding_pending_candidates(request.user)
+            count = len(pending_candidate_list)
+        
     return render(request, 'csp_app/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,

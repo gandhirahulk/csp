@@ -135,12 +135,12 @@
                         <label for="">Gender</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Gender }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.Gender_id }}" required="true" >
                           
                     </div>
                     <div>
                         <select name="c_gender" id="c_gender" required="true" tabindex="8">
-                            <option value="{{ eachcandidate.Gender }}" selected>{{ eachcandidate.Gender }}</option>
+                            <option value="{{ eachcandidate.Gender_id }}" selected>{{ eachcandidate.Gender }}</option>
                             {% if gender_list %}
                                 {% for eachgender in gender_list %}
                                     {% if eachcandidate.Gender_id != eachgender.pk  %}
@@ -196,7 +196,8 @@
                         <input type="text" disabled value="{{ eachcandidate.PAN_Number }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="11" value="{{ eachcandidate.PAN_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+                        <input type="text" tabindex="12" value="{{ eachcandidate.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+      
                     </div>
                 </div>
 
@@ -205,11 +206,11 @@
                         <label for="">Hiring Type</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                        <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring_id }}" required="true" >           
                     </div>
                     <div>
                         <select name="c_hiring_type" id="" tabindex="13" >
-                            <option value="{{ eachcandidate.Type_of_Hiring }}" selected>{{ eachcandidate.Type_of_Hiring }}</option>
+                            <option value="{{ eachcandidate.Type_of_Hiring_id }}" selected>{{ eachcandidate.Type_of_Hiring }}</option>
                             {% if hiring_type_list %}
                                 {% for eachhiring_type in hiring_type_list %}
                                     {% if eachhiring_type.pk != eachcandidate.Type_of_Hiring_id %}
@@ -265,12 +266,12 @@
                         <label for="">Sub Source</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.Sub_Source_id }}" required="true" >
                           
                     </div>
                     <div>
                         <select name="c_sub_source" id="" tabindex="17" >
-                            <option value="{{ eachcandidate.Sub_Source }}" selected>{{ eachcandidate.Sub_Source }}</option>
+                            <option value="{{ eachcandidate.Sub_Source_id }}" selected>{{ eachcandidate.Sub_Source }}</option>
                             {% if sub_source_list %}
                                 {% for eachsub_source in sub_source_list %}
                                     {% if eachcandidate.Sub_Source_id != eachsub_source.pk  %}
@@ -292,7 +293,7 @@
                     </div>
                     <div>
                         <select name="c_entity" id="c_entity" required="true" tabindex="18">
-                            <option value="{{ eachcandidate.fk_entity_code }}" selected>{{ eachcandidate.fk_entity_code }}</option>
+                            <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
                                     {% if eachentity.pk != eachcandidate.fk_entity_code_id %}
@@ -313,7 +314,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_vendor" id="c_vendor" required="true" disabled="true" tabindex="19">
+                        <select name="c_vendor" id="c_vendor" required="true" tabindex="19">
                             <option value="{{ eachcandidate.fk_vendor_code_id }}" selected  label="{{ eachcandidate.fk_vendor_code }}">{{ eachcandidate.fk_vendor_code.fk_entity_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select vendor</option>
     
@@ -337,7 +338,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_dept" id="c_dept" required="true" disabled="true" tabindex="20">
+                        <select name="c_dept" id="c_dept" required="true" tabindex="20">
                             <option value="{{ eachcandidate.fk_department_code_id }}" selected  label="{{ eachcandidate.fk_department_code }}">{{ eachcandidate.fk_department_code.fk_entity_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Department</option>
 
@@ -362,7 +363,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_function" id="c_function" required="true" disabled="true" tabindex="21">
+                        <select name="c_function" id="c_function" required="true" tabindex="21">
 
                             <option value="{{ eachcandidate.fk_function_code_id }}" selected  label="{{ eachcandidate.fk_function_code }}">{{ eachcandidate.fk_function_code.fk_department_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Function</option>
@@ -384,11 +385,11 @@
                         <label for="">Team</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
                           
                     </div>
                     <div>
-                        <select name="c_team" id="c_team" required="true"  disabled="true" tabindex="22">
+                        <select name="c_team" id="c_team" required="true" tabindex="22">
                             <option value="{{ eachcandidate.fk_team_code_id }}" selected  label="{{ eachcandidate.fk_team_code }}">{{ eachcandidate.fk_team_code.fk_function_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Team</option>
 
@@ -413,7 +414,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_subteam" id="c_subteam" required="true" disabled="true" tabindex="23">
+                        <select name="c_subteam" id="c_subteam" required="true" tabindex="23">
 
                             <option value="{{ eachcandidate.fk_subteam_code_id }}" selected  label="{{ eachcandidate.fk_subteam_code }}">{{ eachcandidate.fk_subteam_code.fk_team_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Sub Team</option>
@@ -438,7 +439,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_desg" id="c_desg" required="true" disabled="true" tabindex="24">
+                        <select name="c_desg" id="c_desg" required="true" tabindex="24">
 
                             <option value="{{ eachcandidate.fk_designation_code_id }}" selected  label="{{ eachcandidate.fk_designation_code }}">{{ eachcandidate.fk_designation_code.fk_sub_team_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Designation</option>
@@ -463,7 +464,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_region" id="c_region" required="true" disabled="true" tabindex="25">
+                        <select name="c_region" id="c_region" required="true" tabindex="25">
 
                             <option value="{{ eachcandidate.fk_region_code_id }}" selected  label="{{ eachcandidate.fk_region_code }}">{{ eachcandidate.fk_region_code.fk_entity_code_id }}</option>
                             <option value="" disabled label=" " class="empty" >Select Region</option>
@@ -488,7 +489,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_state" id="c_state" required="true" disabled="true" tabindex="26">
+                        <select name="c_state" id="c_state" required="true" tabindex="26">
                             <option value="{{ eachcandidate.fk_state_code_id }}" selected  label="{{ eachcandidate.fk_state_code }}">{{ eachcandidate.fk_state_code.fk_region_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select State</option>
 
@@ -512,7 +513,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_city" id="c_city" required="true" disabled="true" tabindex="27">
+                        <select name="c_city" id="c_city" required="true" tabindex="27">
                             <option value="{{ eachcandidate.fk_city_code_id }}" selected  label="{{ eachcandidate.fk_city_code }}">{{ eachcandidate.fk_city_code.fk_state_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select City</option>
 
@@ -536,7 +537,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_vendor" id="c_vendor" required="true" disabled="true" tabindex="19">
+                        <select name="c_vendor" id="c_vendor" required="true" tabindex="19">
                             <option value="{{ eachcandidate.fk_location_code_id }}" selected  label="{{ eachcandidate.fk_location_code }}">{{ eachcandidate.fk_location_code.fk_city_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Location</option>
     
@@ -621,7 +622,7 @@
                         <label for="">Laptop Allocation</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation_id }}" required="true" >
                           
                     </div>
                     <div>
@@ -644,7 +645,7 @@
                         <label for="">Salary Type</label>    
                     </div>
                     <div>
-                        <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
+                        <input type="text" disabled value="{{ eachcandidate.Salary_Type_id }}" required="true" >
                           
                     </div>
                     <div>
@@ -678,7 +679,11 @@
 
         </div>
         <div class="candidate_form_footer">
-            <button class="forms-save-btn" formaction="" type="submit" style="width: auto;">Submit Candidate To Vendor</button> 
+            <input type="hidden" value="0" name="r_status">
+            <button class="delete-forms-close-btn" formaction="" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button> 
+    
+            <input type="hidden" value="1" name="a_status">
+            <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve And Submit Candidate To Vendor</button> 
         </form>     
         </div>
       

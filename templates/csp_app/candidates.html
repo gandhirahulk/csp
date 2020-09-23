@@ -21,7 +21,7 @@
 {% block tabcontentblock %}
     {% if request.user.groups.all %}
         {% for eachgroup in request.user.groups.all %}
-            {% if eachgroup.name != 'Vendor' or eachgroup.name != 'Onboarding SPOC' %}
+            {% if eachgroup.name == 'Admin' or eachgroup.name == 'User' %}
             <div class="tab-container">
                 <button id="new_candidate" class="add-new-btn" onclick="location.href = '/csp_candidates/new_candidate/'" >New Candidate</button>
             
@@ -46,8 +46,8 @@
             </tr>
         </thead>
         <tbody>
-                    {% if candidate_list %}
-                        {% for eachcandidate in candidate_list %}
+            {% if candidate_list %}
+                {% for eachcandidate in candidate_list %}
                    
                     <tr>
                         <td>{{ eachcandidate.pk }}</td>
@@ -68,9 +68,8 @@
                         </td>
                         <td>{{ eachcandidate.fk_designation_code }}</td>
                         <td>{{ eachcandidate.fk_vendor_code }}</td>
-
-                        <!-- <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td> -->
-                        <td class="action-col">
+                        <td class="action-col">{{ eachcandidate.status }}</td>
+                        <!-- <td class="action-col">
                             <input type="hidden" value="{{ eachcandidate.pk }}" name="view_id" id="selected_id">
                             {% if request.user.groups.all %}
                                 {% for eachgroup in request.user.groups.all %}
@@ -100,10 +99,8 @@
                                     {% endif %}                                          
                                 {% endfor %}
                             {% endif %}
-                        </td>
-                        <!-- <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
                         </td> -->
+                        
                     </tr>
 
                 {% endfor %}                

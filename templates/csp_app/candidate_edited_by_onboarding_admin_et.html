@@ -1,0 +1,11 @@
+Hi Admin,
+
+Candidate with id {{ candidate_code }} has been edited by {{ user }}.
+Following are the changes done:
+
+{% for i in changes.items() %}
+    {{ i[0] }} : {{ i[1] }}
+{% endfor %}
+
+Thank you,
+UDAAN
