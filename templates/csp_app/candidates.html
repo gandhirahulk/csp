@@ -65,7 +65,7 @@
                                         </td>
                                         <td>{{ eachcandidate.fk_designation_code }}</td>
                                         <td>{{ eachcandidate.fk_vendor_code }}</td>
-                                        <td>{{ eachcandidate.vendor_status }}</td>
+                                        <td class="action-col">{{ eachcandidate.vendor_status }}</td>
                                         <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
                                         <td class="action-col">
                                             {{ eachcandidate.status }}
@@ -108,7 +108,11 @@
                                 </td>
                                 <td>{{ eachcandidate.fk_designation_code }}</td>
                                 <td>{{ eachcandidate.fk_vendor_code }}</td>
-                                <td class="action-col">{{ eachcandidate.status }}</td>
+                                <td class="action-col">{{ eachcandidate.vendor_status }}</td>
+                                <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+                                <td class="action-col">
+                                    {{ eachcandidate.status }}
+                                </td>
                                 <!-- <td class="action-col">
                                     <input type="hidden" value="{{ eachcandidate.pk }}" name="view_id" id="selected_id">
                                     {% if request.user.groups.all %}

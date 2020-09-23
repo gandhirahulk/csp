@@ -18,9 +18,6 @@ from django.core.files.storage import FileSystemStorage
 from itertools import chain
 from django.utils import timezone
 
-print(timezone.localtime())
-
-count = 0
 
 
 deactive_status = status.objects.get(pk=2)
@@ -34,8 +31,8 @@ reject_vendor = vendor_status.objects.get(pk=0)
 approve_vendor = vendor_status.objects.get(pk = 1)
 
 all_active_candidates = master_candidate.objects.filter(status=active_status)
-count_it = master_candidate.objects.filter( onboarding_status= pending_onboarding)
-count = len(count_it)
+candidate_list = master_candidate.objects.filter(status=active_status)
+
 
 def vendor_candidates(usrname):
     try:
@@ -516,7 +513,10 @@ def pending_requests(request):
 
 @login_required(login_url='/notlogin/')
 def candidate(request):
-    
+    count = 0
+    all_active_candidates = master_candidate.objects.filter(status=active_status)
+    candidate_list = master_candidate.objects.filter(status=active_status)
+
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
 
@@ -556,11 +556,7 @@ def candidate(request):
             all_active_candidates = onboarding_candidates(request.user)
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
-    print(candidate_list)
-    for i in candidate_list:
-        print(i)
-    print(pending_candidate_list)
-    print(all_active_candidates)
+
     return render(request, 'csp_app/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
