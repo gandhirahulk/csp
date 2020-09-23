@@ -8,7 +8,7 @@
         <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>   
         {% if request.user.groups.all %}
             {% for eachgroup in request.user.groups.all %}
-                {% if eachgroup.name != 'User' %}
+                {% if eachgroup.name == 'Vendor' or eachgroup.name == 'Onboarding SPOC' %}
                     <a href="{% url 'csp_app:pending_request' %}" class="tab-btns">Pending Requests <button disabled id="request_count" >{{ count }}</button> </a>   
                 {% endif %}
             {% endfor %}
@@ -21,7 +21,7 @@
 {% block tabcontentblock %}
     {% if request.user.groups.all %}
         {% for eachgroup in request.user.groups.all %}
-            {% if eachgroup.name != 'Vendor' %}
+            {% if eachgroup.name != 'Vendor' or eachgroup.name != 'Onboarding SPOC' %}
             <div class="tab-container">
                 <button id="new_candidate" class="add-new-btn" onclick="location.href = '/csp_candidates/new_candidate/'" >New Candidate</button>
             

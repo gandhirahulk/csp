@@ -22,8 +22,9 @@ deactive_status = status.objects.get(pk=2)
 active_status = status.objects.get(pk=1)
 pending_status = candidate_status.objects.get(pk=2)
 approve_onboarding = onboarding_status.objects.get(pk = 1)
+pending_onboarding = onboarding_status.objects.get(pk=2)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
-count_it = master_candidate.objects.filter(candidate_status=pending_status)
+count_it = master_candidate.objects.filter( onboarding_status= pending_onboarding)
 count = len(count_it)
 
 def vendor_candidates(usrname):
@@ -36,8 +37,24 @@ def vendor_candidates(usrname):
     except ObjectDoesNotExist:
         pass
 
+def onboarding_candidates(usrname):
+    try:
+        onb_candidates = master_candidate.objects.filter( Onboarding_Spoc_Email_Id=usrname,status= active_status)
+        print(onb_candidates)
+        return onb_candidates
+    except ObjectDoesNotExist:
+        pass
+
+def onboarding_pending_candidates(usrname):
+    try:
+        onb_candidates = master_candidate.objects.filter( Onboarding_Spoc_Email_Id=usrname, onboarding_status= pending_onboarding , status= active_status)
+        print(onb_candidates)
+        return onb_candidates
+    except ObjectDoesNotExist:
+        pass
+
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Vendor').exists())
 def process_requests(request, cid):    
     try:
         selected_candidate = master_candidate.objects.filter(pk= cid)
@@ -70,7 +87,7 @@ def process_requests(request, cid):
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Vendor').exists())
 def pending_requests(request):    
     try:
         entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
@@ -89,9 +106,25 @@ def pending_requests(request):
         salary_type_list = salary_type.objects.filter(status= active_status)
         gender_list = gender.objects.filter(status= active_status)
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
-        candidate_list = master_candidate.objects.all()
-        
-        return render(request, 'csp_app/pendingrequests.html', {'count':count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        try:
+            specific_vendor = master_vendor.objects.filter(vendor_email_id= request.user, status=active_status)
+            vendor_specific_candidate = []
+            for e in specific_vendor:
+                vendor_specific_candidate.append(master_candidate.objects.filter(fk_vendor_code=e.pk, onboarding_status= approve_onboarding))
+     
+        except ObjectDoesNotExist:
+            specific_vendor = ''
+            vendor_specific_candidate = []
+        for eachgroup in request.user.groups.all():
+            if str(eachgroup) == 'Onboarding SPOC':
+                candidate_list = onboarding_candidates(request.user)
+                all_active_candidates = onboarding_candidates(request.user)
+                pending_candidate_list = onboarding_pending_candidates(request.user)
+                count = len(pending_candidate_list)
+            else:
+                candidate_list = vendor_specific_candidate
+                all_active_candidates = vendor_candidates(request.user)
+        return render(request, 'csp_app/pendingrequests.html', {'count':count,'pending_candidate_list': pending_candidate_list, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -132,8 +165,8 @@ def candidate(request):
      
     except ObjectDoesNotExist:
         specific_vendor = ''
+        vendor_specific_candidate = []
     for eachgroup in request.user.groups.all():
-        print(eachgroup)
         if str(eachgroup) == 'Vendor':
             candidate_list = vendor_specific_candidate
             all_active_candidates = vendor_candidates(request.user)

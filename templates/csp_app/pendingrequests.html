@@ -31,8 +31,8 @@
             </tr>
         </thead>
         <tbody>
-            {% if candidate_list %}
-                {% for eachcandidate in candidate_list %}                   
+            {% if pending_candidate_list %}
+                {% for eachcandidate in pending_candidate_list %}                   
                     <tr>
                         <td class="action-col"><a href="{% url 'csp_app:process_request' eachcandidate.pk %}">{{ eachcandidate.pk }}</a></td>
                         <td class="action-col" style="text-align: left;">
