@@ -18,6 +18,8 @@ from django.core.files.storage import FileSystemStorage
 from itertools import chain
 
 
+count = 0
+
 
 deactive_status = status.objects.get(pk=2)
 active_status = status.objects.get(pk=1)
@@ -453,7 +455,7 @@ def candidate(request):
             all_active_candidates = onboarding_candidates(request.user)
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
-        
+    
     return render(request, 'csp_app/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
