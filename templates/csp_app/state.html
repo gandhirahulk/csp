@@ -43,7 +43,7 @@
                         <td>{{ eachstate.state_name }}</td>
                         <td>{{ eachstate.fk_region_code }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachstate.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_state' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_state' %}"> | <input value="delete" onclick="showDelete('{{ eachstate.pk }}', 'delete_state_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachstate.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_state' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_state' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachstate.pk }}', 'delete_state_form')"> </form>
                         </td>
                     </tr>
 

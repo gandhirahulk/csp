@@ -42,7 +42,7 @@
                     <tr>
                         <td>{{ eachentity.entity_name }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_entity' %}"> | <input value="delete" onclick="showDelete('{{ eachentity.pk }}', 'delete_entity_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_entity' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachentity.pk }}', 'delete_entity_form')"> </form>
                         </td>
                     
                     </tr>

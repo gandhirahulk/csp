@@ -42,7 +42,7 @@
                         <td>{{ eachdepartment.department_name }}</td>
                         <td>{{ eachdepartment.fk_entity_code }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachdepartment.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_department' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_department' %}"> | <input value="delete" onclick="showDelete('{{ eachdepartment.pk }}', 'delete_department_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachdepartment.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_department' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_department' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachdepartment.pk }}', 'delete_department_form')"> </form>
                         </td>
                     </tr>
 
