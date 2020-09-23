@@ -594,6 +594,39 @@ def new_candidate(request):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists() )
+def view_edit_candidate(request): 
+    try:
+        if request.method == 'POST':
+            candidate_id = request.POST.get("view_id")   
+            entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+            vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
+            dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
+            function_list = master_function.objects.filter(status = active_status).order_by('function_name')
+            team_list = master_team.objects.filter(status = active_status).order_by('team_name')
+            subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
+            desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
+            region_list = master_region.objects.filter(status = active_status).order_by('region_name')
+            state_list = master_state.objects.filter(status = active_status).order_by('state_name')
+            city_list = master_city.objects.filter(status= active_status).order_by('city_name')
+            location_list = master_location.objects.filter(status= active_status).order_by('location_name')
+            hiring_type_list = hiring_type.objects.filter(status= active_status)
+            sub_source_list = sub_source.objects.filter(status= active_status)
+            salary_type_list = salary_type.objects.filter(status= active_status)
+            gender_list = gender.objects.filter(status= active_status)
+            laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+            candidate_list = master_candidate.objects.filter(pk=candidate_id)
+            
+        return render(request, 'csp_app/editcandidate.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'location_list': location_list, 
+        'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+        'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+        'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+        'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'selected_candidate': candidate_list })
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def edit_candidate(request): 
     try:
         if request.method == 'POST':
@@ -757,6 +790,7 @@ def edit_candidate(request):
                 selected_candidate.Laptop_Allocation= la_fk
                 selected_candidate.Salary_Type= salarytype_fk
                 selected_candidate.Gross_Salary_Amount= gross_salary
+                selected_candidate.Personal_Email_Id = email
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time=timezone.localtime()
                 alltemplate = render_to_string('csp_app/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
@@ -927,6 +961,7 @@ def create_candidate(request):
                 return redirect("csp_app:new_candidate")
             location_fk = master_location.objects.get(pk= location)
             try:
+                # a = master_candidate.objects.get(pk = 1)
                 dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
                 messages.error( request, "Candidate Aadhaar Number Already Exist")
                 return redirect("csp_app:new_candidate")

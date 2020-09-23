@@ -95,7 +95,7 @@
                                     {% if request.user.groups.all %}
                                         {% for eachgroup in request.user.groups.all %}
                                             {% if eachgroup.name == 'Admin' %}
-                                                <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}" id="view" formaction="{% url 'csp_app:edit_candidate' %}"></form> 
+                                                <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}" id="view" formaction="{% url 'csp_app:view_edit_candidate' %}"></form> 
                                             {% else %}
                                                 {{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}
                                             {% endif %}

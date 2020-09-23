@@ -34,7 +34,7 @@
                 <div>
                 <label class="move-out" for="c_firstname">Candidate Code</label>
 
-                <input class="input-text" value="{{ eachc.pk }}" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" disabled ="true"  >
+                <input class="input-text" value="{{ eachc.pk }}" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" readonly  >
                 </div>
                 <div class="margin-left">
                     <label for="">Middle Name</label>
@@ -185,7 +185,7 @@
                 <div>
                     <label for="">Vendor</label>
 
-                    <select name="c_vendor" id="c_vendor" required="true" disabled="true">
+                    <select name="c_vendor" id="c_vendor" required="true">
                         <option value="{{ eachc.fk_vendor_code_id }}" label="{{ eachc.fk_vendor_code }}" selected>{{eachc.fk_vendor_code}}</option>
 
                         <option value="" label="" class="empty">Select Vendor</option>
@@ -204,7 +204,7 @@
                 <div class="margin-left">
                 <label for="" >Department</label>
 
-                <select name="c_dept" id="c_dept" required="true" disabled="true">
+                <select name="c_dept" id="c_dept" required="true">
                     <option value="{{ eachc.fk_department_code_id }}" label="{{ eachc.fk_department_code }}" selected>{{eachc.fk_department_code}}</option>
 
                     <option value="" label="" class="empty">Select Department</option>
@@ -225,7 +225,7 @@
                 <div>
             <label for="">Function</label>
 
-                <select name="c_function" id="c_function" required="true" disabled="true">
+                <select name="c_function" id="c_function" required="true">
                     <option value="{{ eachc.fk_function_code_id }}" label="{{ eachc.fk_function_code }}" selected>{{ eachc.fk_function_code.fk_department_code_id }}</option>
                     <option value="" label="" class="empty">Select Function</option>
 
@@ -243,7 +243,7 @@
                 <div class="margin-left">
                 <label for="" >Team</label>
 
-                <select name="c_team" id="c_team" required="true"  disabled="true">
+                <select name="c_team" id="c_team" required="true">
                     <option value="{{ eachc.fk_team_code_id }}" label="{{ eachc.fk_team_code }}" selected>{{ eachc.fk_team_code.fk_function_code_id }}</option>
                     <option value="" label="" class="empty">Select Team</option>
 
@@ -263,7 +263,7 @@
                 <div>
             <label for="">Sub Team</label>
 
-                <select name="c_subteam" id="c_subteam" required="true" disabled="true">
+                <select name="c_subteam" id="c_subteam" required="true">
                     <option value="{{ eachc.fk_subteam_code_id }}" label="{{ eachc.fk_subteam_code }}" selected>{{ eachc.fk_subteam_code.fk_team_code_id }}</option>
                     <option value="" label="" class="empty">Select Sub Team</option>
 
@@ -281,7 +281,7 @@
                 <div class="margin-left">
                 <label for="" >Designation</label>
 
-                <select name="c_desg" id="c_desg" required="true" disabled="true">
+                <select name="c_desg" id="c_desg" required="true">
                     <option value="{{ eachc.fk_designation_code_id }}" label="{{ eachc.fk_designation_code }}" selected>{{ eachc.fk_designation_code.fk_sub_team_code_id }}</option>
                     <option value="" label="" class="empty">Select Designation</option>
 
@@ -301,7 +301,7 @@
                 <div>
             <label for="">Region</label>
 
-                <select name="c_region" id="c_region" required="true" disabled="true">
+                <select name="c_region" id="c_region" required="true">
                     <option value="{{ eachc.fk_region_code_id }}" label="{{ eachc.fk_region_code }}" selected>{{ eachc.fk_region_code.fk_entity_code_id }}</option>
 
                     <option value="" label="" class="empty">Select Region</option>
@@ -320,7 +320,7 @@
                 <div class="margin-left">
                 <label for="" >State</label>
 
-                <select name="c_state" id="c_state" required="true" disabled="true">
+                <select name="c_state" id="c_state" required="true">
                     <option value="{{ eachc.fk_state_code_id }}" label="{{ eachc.fk_state_code }}" selected>{{ eachc.fk_state_code.fk_region_code_id }}</option>
 
                     <option value="" label="" class="empty">Select State</option>
@@ -341,7 +341,7 @@
                 <div>
             <label for="">City</label>
 
-                <select name="c_city" id="c_city" required="true" disabled="true">
+                <select name="c_city" id="c_city" required="true">
                     <option value="{{ eachc.fk_city_code_id }}" label="{{ eachc.fk_city_code }}" selected>{{ eachc.fk_city_code.fk_state_code_id }}</option>
 
                     <option value="" label="" class="empty">Select City</option>
@@ -360,7 +360,7 @@
                 <div class="margin-left">
                 <label for="" >Location</label>
 
-                <select name="c_location" id="c_location" required="true" disabled="true">
+                <select name="c_location" id="c_location" required="true">
                     <option value="{{ eachc.fk_location_code_id }}" label="{{ eachc.fk_location_code }}" selected>{{ eachc.fk_location_code.fk_city_code_id }}</option>
 
                     <option value="" label="" class="empty">Select Location</option>
@@ -465,7 +465,7 @@
               
     </div>
     <div class="candidate_form_footer">
-            <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
+            <button class="forms-save-btn" formaction="{% url 'csp_app:edit_candidate' %}" type="submit">Save Candidate</button>
  </form>
     </div>
   
