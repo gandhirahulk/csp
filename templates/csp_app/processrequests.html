@@ -680,11 +680,21 @@
 
         </div>
         <div class="candidate_form_footer">
-            <input type="hidden" value="0" name="r_status">
-            <button class="delete-forms-close-btn" formaction="" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button> 
-    
-            <input type="hidden" value="1" name="a_status">
-            <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve And Submit Candidate To Vendor</button> 
+            {% if request.user.groups.all %}
+                {% for eachgroup in request.user.groups.all %}
+                    {% if eachgroup.name == 'Vendor' %}
+                        <input type="hidden" value="vendor" name="ve_status">
+                        <button class="delete-forms-close-btn" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button>                 
+                        <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve And Send LOI To Candidate</button> 
+                    {% else %}
+                        <input type="hidden" value="onboarding" name="o_status">
+                        <button class="delete-forms-close-btn" formaction="{% url 'csp_app:reject_candidate_onboarding' eachcandidate.pk %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button> 
+                        <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve And Submit Candidate To Vendor</button> 
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+
         </form>     
         </div>
       

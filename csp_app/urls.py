@@ -37,6 +37,10 @@ urlpatterns = [
 
     path('csp_candidates/pending_requests/', views.pending_requests, name= 'pending_request'),
     path('csp_candidates/process_requests/<str:cid>/', views.process_requests, name= 'process_request'),
+    path('csp_candidates/process_requests/reject_request/<str:cid>/', views.reject_candidate_vendor, name= 'reject_candidate_vendor'),
+
+    path('csp_candidates/process_requests/reject_request/<str:cid>/', views.reject_candidate_onboarding, name= 'reject_request'),
+
 
 
 

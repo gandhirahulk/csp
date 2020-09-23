@@ -24,9 +24,12 @@ count = 0
 deactive_status = status.objects.get(pk=2)
 active_status = status.objects.get(pk=1)
 pending_status = candidate_status.objects.get(pk=2)
+reject_onboarding = onboarding_status.objects.get(pk=0)
 approve_onboarding = onboarding_status.objects.get(pk = 1)
 pending_onboarding = onboarding_status.objects.get(pk=2)
 pending_vendor = vendor_status.objects.get(pk=2)
+reject_vendor = vendor_status.objects.get(pk=0)
+approve_vendor = vendor_status.objects.get(pk = 1)
 
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 count_it = master_candidate.objects.filter( onboarding_status= pending_onboarding)
@@ -35,12 +38,10 @@ count = len(count_it)
 def vendor_candidates(usrname):
     try:
         s_vendor = master_vendor.objects.filter(vendor_email_id= usrname, status=active_status)
-        vs_candidates = []
         for e in s_vendor:
-            vs_candidates.append(master_candidate.objects.filter(fk_vendor_code=e.pk, status= active_status))
-        #     a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk, status= active_status))
-        # print(a)
-        print(vs_candidates)
+            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk, status= active_status))
+        # print(list(a))
+        vs_candidates = list(a)
         return vs_candidates
     except ObjectDoesNotExist:
         pass
@@ -50,7 +51,9 @@ def vendor_pending_candidates(usrname):
         s_vendor = master_vendor.objects.filter(vendor_email_id= usrname, status=active_status)
         vs_candidates = []
         for e in s_vendor:
-            vs_candidates.append(master_candidate.objects.filter(fk_vendor_code=e.pk, vendor_status= pending_vendor, status= active_status))
+            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk, vendor_status= pending_vendor, status= active_status))
+        vs_candidates = list(a)
+        
         return vs_candidates
     except ObjectDoesNotExist:
         pass
@@ -325,34 +328,73 @@ def process_requests(request, cid):
                     changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
                     selected_candidate.Gross_Salary_Amount= gross_salary
                 selected_candidate.modified_by = str(request.user)
-                if selected_candidate.onboarding_status != approve_onboarding:
-                    changes_list['Onboarding Status'] = [ selected_candidate.onboarding_status, approve_onboarding ]
-                    selected_candidate.onboarding_status = approve_onboarding
                 selected_candidate.modified_date_time=datetime.now()
-                selected_candidate.save()
+
+                if request.POST.get('o_status') != None:
+                    if selected_candidate.onboarding_status != approve_onboarding:
+                        changes_list['Onboarding Status'] = [ selected_candidate.onboarding_status, approve_onboarding ]
+                        selected_candidate.onboarding_status = approve_onboarding
+                    selected_candidate.save()
+                    
+                    limtemplate = render_to_string('csp_app/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
+                    our_email = EmailMessage(
+                        'Candidate Edited .',
+                        limtemplate,
+                        settings.EMAIL_HOST_USER,
+                        [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com'],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    
+                    alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
+                    our_email = EmailMessage(
+                        'Candidate account edited.',
+                        alltemplate,
+                        settings.EMAIL_HOST_USER,
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    
+                    messages.success(request, "Candidate details mailed to vendor.")
+                    return redirect("csp_app:process_request", cid = cid)
                 
-                limtemplate = render_to_string('csp_app/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
-                our_email = EmailMessage(
-                    'Candidate Edited .',
-                    limtemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com'],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                
-                alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
-                our_email = EmailMessage(
-                    'Candidate account edited.',
-                    alltemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                
-                messages.success(request, "Candidate details mailed to vendor.")
-                return redirect("csp_app:process_request", cid = cid)
+                if request.POST.get('ve_status') != None:
+                    if selected_candidate.vendor_status != approve_vendor:
+                        changes_list['Vendor Status'] = [ selected_candidate.vendor_status, approve_vendor ]
+                    selected_candidate.vendor_status = approve_vendor
+                    selected_candidate.save()
+                    
+                    limtemplate = render_to_string('csp_app/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
+                    our_email = EmailMessage(
+                        'Candidate Edited By Vendor.',
+                        limtemplate,
+                        settings.EMAIL_HOST_USER,
+                        [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com'],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    
+                    alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
+                    our_email = EmailMessage(
+                        'Candidate account edited by vendor.',
+                        alltemplate,
+                        settings.EMAIL_HOST_USER,
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    template = render_to_string('csp_app/loi.html', {'candidate_name': selected_candidate.First_Name, 'candidate_code':selected_candidate.pk ,'status': 'Approved' })
+                    our_email = EmailMessage(
+                        'LOI',
+                        template,
+                        settings.EMAIL_HOST_USER,
+                        [ selected_candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    messages.success(request, "Candidate approved LOI sent to candidate.")
+                    return redirect("csp_app:process_request", cid = cid)
 
 
         return render(request, 'csp_app/processrequests.html', {'selected_candidate': selected_candidate_data, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
@@ -360,6 +402,61 @@ def process_requests(request, cid):
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
         'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Onboarding SPOC').exists())
+def reject_candidate_onboarding(request, cid):
+    try:
+        selected_candidate = master_candidate.objects.get(pk = cid)
+        selected_candidate.onboarding_status = reject_onboarding
+        selected_candidate.save()
+        alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
+        our_email = EmailMessage(
+            'Candidate Rejected.',
+            alltemplate,
+            settings.EMAIL_HOST_USER,
+            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+        ) 
+        our_email.fail_silently = False
+        our_email.send()
+        
+        messages.success(request, "Candidate Rejected Mail Sent To Admin.")
+        return redirect("csp_app:process_request", cid = cid)
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists())
+def reject_candidate_vendor(request, cid):
+    try:
+        selected_candidate = master_candidate.objects.get(pk = cid)
+        selected_candidate.vendor_status = reject_vendor
+        selected_candidate.save()
+        alltemplate = render_to_string('csp_app/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
+        our_email = EmailMessage(
+            'Candidate Rejected.',
+            alltemplate,
+            settings.EMAIL_HOST_USER,
+            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+        ) 
+        our_email.fail_silently = False
+        our_email.send()
+        template = render_to_string('csp_app/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
+        our_email = EmailMessage(
+            'Candidate Rejected.',
+            template,
+            settings.EMAIL_HOST_USER,
+            [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id],
+        ) 
+        our_email.fail_silently = False
+        our_email.send()
+        
+        messages.success(request, "Candidate Rejected Mail Sent To Admin.")
+        return redirect("csp_app:process_request", cid = cid)
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -383,15 +480,15 @@ def pending_requests(request):
         salary_type_list = salary_type.objects.filter(status= active_status)
         gender_list = gender.objects.filter(status= active_status)
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
-        try:
-            specific_vendor = master_vendor.objects.filter(vendor_email_id= request.user, status=active_status)
-            vendor_specific_candidate = []
-            for e in specific_vendor:
-                vendor_specific_candidate.append(master_candidate.objects.filter(fk_vendor_code=e.pk, onboarding_status= approve_onboarding))
+        # try:
+        #     specific_vendor = master_vendor.objects.filter(vendor_email_id= request.user, status=active_status)
+        #     vendor_specific_candidate = []
+        #     for e in specific_vendor:
+        #         vendor_specific_candidate.append(master_candidate.objects.filter(fk_vendor_code=e.pk, onboarding_status= approve_onboarding))
      
-        except ObjectDoesNotExist:
-            specific_vendor = ''
-            vendor_specific_candidate = []
+        # except ObjectDoesNotExist:
+        #     specific_vendor = ''
+        #     vendor_specific_candidate = []
         for eachgroup in request.user.groups.all():
             if str(eachgroup) == 'Onboarding SPOC':
                 candidate_list = onboarding_candidates(request.user)
@@ -403,6 +500,7 @@ def pending_requests(request):
                 all_active_candidates = vendor_candidates(request.user)
                 pending_candidate_list = vendor_pending_candidates(request.user)
                 count = len(pending_candidate_list)
+          
         return render(request, 'csp_app/pendingrequests.html', {'count':count,'pending_candidate_list': pending_candidate_list, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
@@ -436,26 +534,31 @@ def candidate(request):
     laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
     c_status_list = candidate_status.objects.all()
     v_status_list = vendor_status.objects.all()
-    try:
-        specific_vendor = master_vendor.objects.filter(vendor_email_id= request.user, status=active_status)
-        vendor_specific_candidate = []
-        for e in specific_vendor:
-            vendor_specific_candidate.append(master_candidate.objects.filter(fk_vendor_code=e.pk, onboarding_status= approve_onboarding))
+    # try:
+    #     specific_vendor = master_vendor.objects.filter(vendor_email_id= request.user, status=active_status)
+    #     vendor_specific_candidate = []
+    #     for e in specific_vendor:
+    #         vendor_specific_candidate.append(master_candidate.objects.filter(fk_vendor_code=e.pk, onboarding_status= approve_onboarding))
      
-    except ObjectDoesNotExist:
-        specific_vendor = ''
-        vendor_specific_candidate = []
+    # except ObjectDoesNotExist:
+    #     specific_vendor = ''
+    #     vendor_specific_candidate = []
     for eachgroup in request.user.groups.all():
         if str(eachgroup) == 'Vendor':
-            candidate_list = vendor_specific_candidate
+            candidate_list = vendor_candidates(request.user)
             all_active_candidates = vendor_candidates(request.user)
-            count = len(candidate_list)
+            pending_candidate_list = vendor_pending_candidates(request.user)
+            count = len(pending_candidate_list)
         elif str(eachgroup) == 'Onboarding SPOC':
             candidate_list = onboarding_candidates(request.user)
             all_active_candidates = onboarding_candidates(request.user)
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
-    
+    print(candidate_list)
+    for i in candidate_list:
+        print(i)
+    print(pending_candidate_list)
+    print(all_active_candidates)
     return render(request, 'csp_app/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
