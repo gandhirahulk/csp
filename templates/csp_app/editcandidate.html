@@ -71,12 +71,13 @@
                 <div class="margin-left">
                 <label for="" >Emergency Number</label>
                 <input type="text" value="{{ eachc.Emergency_Contact_Number }}" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
-                </div>
+                <span id='message'></span>    
+            </div>
             </div>
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Email ID</label>
-                <input type="email" value="{{ eachc.Personal_Email_Id }}" maxlength="50" placeholder="Email Id" name="c_email">
+                <input type="email" value="{{ eachc.Personal_Email_Id }}" maxlength="50" name="c_email" tabindex="7" id="email" placeholder="Email Id">
                  </div>
                 <div class="margin-left">
                 <label for="" >Gender</label>
@@ -390,12 +391,12 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="">Reporting Manager</label>
-                <input type="text" value="{{ eachc.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" value="{{ eachc.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
                  </div>
                 <div class="margin-left">
                 <label for="" >Reporting Manager Email ID</label>
 
-                <input type="email" value="{{ eachc.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" required="true">
+                <input type="email" value="{{ eachc.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" id="reporting_manager_email" name="c_reporting_manager_email" required="true">
          
             </div>
         </div>
@@ -468,13 +469,22 @@
             <button class="forms-save-btn" formaction="{% url 'csp_app:edit_candidate' %}" type="submit">Save Candidate</button>
  </form>
     </div>
-  
+    <input type="hidden" id="name">
+    <input type="hidden" id="phone_no">
+    <input type="hidden" id="spocemail">
   </div>
   {% endfor %}
 {% endif %}
-  <script>
+<script>
     $(document).ready(function(){
         showMe('Candidate', 'can-expand');
+        $('#c_contact, #c_emergency').on('keyup', function () {
+        if ($('#c_contact').val() == $('#c_emergency').val()) {
+            $('#message').html('Contact No. and Emergency No. Cannot be same.').css('color', 'red');
+        } else 
+            $('#message').html('').css('color', 'green');
+        });
+
         $('#c_entity').change(function() {
             var filter = $(this).val();
             var total = $('#c_dept option').length;
@@ -524,35 +534,25 @@
                 selected: "true"
                 }));
             } else {
-                $('#c_vendor .empty').attr("selected", true);
+                $('#c_vendor .empty').css("display", "");
+                $('#c_vendor .empty').prop("selected", true);
             }
             if (count === total){
                 $('#c_dept').attr("disabled", true);
-                $('#c_dept').append($('<option>', {
-                value: '',
-                text: '',
-                label: '',
-                selected: true,
-                selected: "true"
-                }));
+               
             } else {
-                $('#c_dept .empty').attr("selected", true);
+                $('#c_dept .empty').css("display", "");
+                $('#c_dept .empty').prop("selected", true);
             }
             if (rcount === rtotal){
                 $('#c_region').attr("disabled", true);
-                $('#c_region').append($('<option>', {
-                value: '',
-                text: '',
-                label: '',
-                selected: true,
-                selected: "true"
-                }));
+               
             } else {
-                $('#c_region .empty').attr("selected", true);
+                $('#c_region .empty').css("display", "");
+                $('#c_region .empty').prop("selected", true);
             }
 
         });
-
       
         $('#c_region').change(function() {
             var filter = $(this).val();
@@ -570,18 +570,13 @@
             });
             if (count === total){
                 $('#c_state').attr("disabled", true)
-                $('#c_state').append($('<option>', {
-                value: '',
-                text: '',
-                label: '',
-                selected: true,
-                selected: "true"
-                }));
+               
             } else {
                 $('#c_state .empty').attr("selected", true);
+                $('#c_state .empty').css("display", "");
+                $('#c_state .empty').prop("selected", true);
             }
         });
-
         
         $('#c_state').change(function() {
             var filter = $(this).val();
@@ -600,15 +595,11 @@
             });
             if (count === total){
                 $('#c_city').attr("disabled", true)
-                $('#c_city').append($('<option>', {
-                value: '',
-                text: '',
-                label: '',
-                selected: true,
-                selected: "true"
-                }));
+               
             } else {
                 $('#c_city .empty').attr("selected", true);
+                $('#c_city .empty').css("display", "");
+                $('#c_city .empty').prop("selected", true);
             }
         });
 
@@ -630,15 +621,11 @@
             });
             if (count === total){
                 $('#c_location').attr("disabled", true)
-                $('#c_location').append($('<option>', {
-                value: '',
-                text: '',
-                label: '',
-                selected: true,
-                selected: "true"
-                }));
+               
             } else {
                 $('#c_location .empty').attr("selected", true);
+                $('#c_location .empty').css("display", "");
+                $('#c_location .empty').prop("selected", true);
             }
         });
 
@@ -658,16 +645,12 @@
             $('#c_function').val(filter);
             });
             if (count === total){
-                $('#c_function').attr("disabled", true)
-                $('#c_function').append($('<option>', {
-                value: '',
-                text: '',
-                label: '',
-                selected: true,
-                selected: "true"
-                }));
+                $('#c_function').attr("disabled", true);
+               
             } else {
                 $('#c_function .empty').attr("selected", true);
+                $('#c_function .empty').css("display", "");
+                $('#c_function .empty').prop("selected", true);
             }
         });
         $('#c_function').change(function() {
@@ -688,15 +671,11 @@
             });
             if (count === total){
                 $('#c_team').attr("disabled", true)
-                $('#c_team').append($('<option>', {
-                value: '',
-                text: '',
-                label: '',
-                selected: true,
-                selected: "true"
-                }));
+               
             } else {
                 $('#c_team .empty').attr("selected", true);
+                $('#c_team .empty').css("display", "");
+                $('#c_team .empty').prop("selected", true);
             }
         });
 
@@ -717,15 +696,11 @@
             });
             if (count === total){
                 $('#c_subteam').attr("disabled", true)
-                $('#c_subteam').append($('<option>', {
-                value: '',
-                text: '',
-                label: '',
-                selected: true,
-                selected: "true"
-                }));
+                
             } else {
                 $('#c_subteam .empty').attr("selected", true);
+                $('#c_subteam .empty').css("display", "");
+                $('#c_subteam .empty').prop("selected", true);
             }
         });
 
@@ -746,17 +721,162 @@
             });
             if (count === total){
                 $('#c_desg').attr("disabled", true)
-                $('#c_desg').append($('<option>', {
-                value: '',
-                text: '',
-                label: '',
-                selected: true,
-                selected: "true"
-                }));
+               
             } else {
                 $('#c_desg .empty').attr("selected", true);
+                $('#c_desg .empty').css("display", "");
+                $('#c_desg .empty').prop("selected", true);
             }
         });
     })
+</script>
+<script>
+       document.addEventListener('DOMContentLoaded', function() {        
+        var input = document.getElementById('c_contact');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        var input = document.getElementById('c_emergency');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        var input = document.getElementById('spocemail');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32) {
+                e.preventDefault();
+                return false;
+            }     
+        });
+        
+        var input = document.getElementById('email');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_ta_spoc');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('reporting_manager');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('reporting_manager_email');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_firstname');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_middlename');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_lastname');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_fathername');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+       
+       
+    });
 </script>
   {% endblock %}

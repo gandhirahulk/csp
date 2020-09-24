@@ -310,12 +310,12 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="">Reporting Manager</label>
-                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="c_reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
                  </div>
                 <div class="margin-left">
                 <label for="" >Reporting Manager Email ID</label>
 
-                <input type="email" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="c_reporting_manager_email" required="true">
+                <input type="email" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
          
             </div>
         </div>
@@ -369,7 +369,9 @@
             <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
     </form>
     </div>
-  
+    <input type="hidden" id="name">
+    <input type="hidden" id="phone_no">
+    <input type="hidden" id="spocemail">
   </div>
   <script>
     $(document).ready(function(){
@@ -715,6 +717,63 @@
                 return false;
             }      
         });
+        var input = document.getElementById('c_firstname');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_middlename');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_lastname');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+        var input = document.getElementById('c_fathername');
+        input.addEventListener('keydown', function(e){      
+            var input = e.target;
+            var val = input.value;
+            var end = input.selectionEnd;
+            if(e.keyCode == 32 && (val[end - 1] == " " || val[end] == " ")) {
+                e.preventDefault();
+                return false;
+            }   
+            if(e.keyCode == 190) {
+                e.preventDefault();
+                return false;
+            }      
+        });
+       
        
     });
 </script>
