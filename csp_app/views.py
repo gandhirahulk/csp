@@ -18,6 +18,26 @@ from django.core.files.storage import FileSystemStorage
 from itertools import chain
 from django.utils import timezone
 
+from django.contrib.auth.tokens import default_token_generator
+
+a = default_token_generator
+print(a)
+print(type(a))
+
+
+# from django.contrib.auth.tokens import PasswordResetTokenGenerator
+# import six
+
+# class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
+#     def _make_hash_value(self, user, timestamp):
+#         return (
+#             six.text_type(user.pk) + six.text_type(timestamp) +
+#             six.text_type(user.profile.email_confirmed)
+#         )
+
+# account_activation_token = AccountActivationTokenGenerator()
+# print(account_activation_token)
+
 
 
 deactive_status = status.objects.get(pk=2)
@@ -75,7 +95,8 @@ def onboarding_pending_candidates(usrname):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Vendor').exists())
-def process_requests(request, cid):    
+def process_requests(request, cid):
+    count = 0    
     try:
         selected_candidate_data = master_candidate.objects.filter(pk= cid)
         # selected_candidate = ''
