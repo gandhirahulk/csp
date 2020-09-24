@@ -157,7 +157,7 @@ def process_requests(request, cid):
                 return redirect("csp_app:process_request", cid = cid)
             salarytype_fk = salary_type.objects.get(pk= salarytype)
             if entity == None or entity == '':
-                messages.warning(request, "Choose  Entity Type And Try Again")
+                messages.warning(request, "Choose  Entity  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             entity_fk = master_entity.objects.get(pk= entity)
             if vendor == None or vendor == '':
@@ -165,35 +165,35 @@ def process_requests(request, cid):
                 return redirect("csp_app:process_request", cid = cid)
             vendor_fk = master_vendor.objects.get(pk= vendor)
             if department == None or department == '':
-                messages.warning(request, "Choose  Department Type And Try Again")
+                messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             department_fk = master_department.objects.get(pk= department)
             if function == None or function == '':
-                messages.warning(request, "Choose  Function Type And Try Again")
+                messages.warning(request, "Choose  Function  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             function_fk = master_function.objects.get(pk= function)
             if team == None or team == '':
-                messages.warning(request, "Choose  Team Type And Try Again")
+                messages.warning(request, "Choose  Team  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             team_fk = master_team.objects.get(pk= team)
             if sub_team == None or sub_team == '':
-                messages.warning(request, "Choose  Sub Team Type And Try Again")
+                messages.warning(request, "Choose  Sub Team  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             sub_team_fk = master_sub_team.objects.get(pk= sub_team)
             if designation == None or designation == '':
-                messages.warning(request, "Choose  Designation Type And Try Again")
+                messages.warning(request, "Choose  Designation  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             designation_fk = master_designation.objects.get(pk= designation)
             if region == None or region == '':
-                messages.warning(request, "Choose  Region Type And Try Again")
+                messages.warning(request, "Choose  Region  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             region_fk = master_region.objects.get(pk= region)
             if state == None or state == '':
-                messages.warning(request, "Choose  State Type And Try Again")
+                messages.warning(request, "Choose  State  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             state_fk = master_state.objects.get(pk= state)
             if city == None or city == '':
-                messages.warning(request, "Choose  City Type And Try Again")
+                messages.warning(request, "Choose  City  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             city_fk = master_city.objects.get(pk= city)
             if location == None or location == '':
@@ -695,7 +695,7 @@ def edit_candidate(request):
                 return redirect("csp_app:candidate")
             hiring_fk = hiring_type.objects.get(pk= hiring)
             if sub_source == None or sub_source == '':
-                messages.warning(request, "Choose  Sub Source Type And Try Again")
+                messages.warning(request, "Choose  Sub Source  And Try Again")
                 return redirect("csp_app:candidate")
             subsource_fk = sub_source.objects.get(pk= subsource)
             if c_gender == None or c_gender == '':
@@ -711,47 +711,47 @@ def edit_candidate(request):
                 return redirect("csp_app:candidate")
             salarytype_fk = salary_type.objects.get(pk= salarytype)
             if entity == None or entity == '':
-                messages.warning(request, "Choose  Entity Type And Try Again")
+                messages.warning(request, "Choose  Entity  And Try Again")
                 return redirect("csp_app:candidate")
             entity_fk = master_entity.objects.get(pk= entity)
             if vendor == None or vendor == '':
-                messages.warning(request, "Choose  vendor Type And Try Again")
+                messages.warning(request, "Choose  vendor  And Try Again")
                 return redirect("csp_app:candidate")
             vendor_fk = master_vendor.objects.get(pk= vendor)
             if department == None or department == '':
-                messages.warning(request, "Choose  Department Type And Try Again")
+                messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:candidate")
             department_fk = master_department.objects.get(pk= department)
             if function == None or function == '':
-                messages.warning(request, "Choose  Function Type And Try Again")
+                messages.warning(request, "Choose  Function  And Try Again")
                 return redirect("csp_app:candidate")
             function_fk = master_function.objects.get(pk= function)
             if team == None or team == '':
-                messages.warning(request, "Choose  Team Type And Try Again")
+                messages.warning(request, "Choose  Team  And Try Again")
                 return redirect("csp_app:candidate")
             team_fk = master_team.objects.get(pk= team)
             if sub_team == None or sub_team == '':
-                messages.warning(request, "Choose  Sub Team Type And Try Again")
+                messages.warning(request, "Choose  Sub Team  And Try Again")
                 return redirect("csp_app:candidate")
             sub_team_fk = master_sub_team.objects.get(pk= sub_team)
             if designation == None or designation == '':
-                messages.warning(request, "Choose  Designation Type And Try Again")
+                messages.warning(request, "Choose  Designation  And Try Again")
                 return redirect("csp_app:candidate")
             designation_fk = master_designation.objects.get(pk= designation)
             if region == None or region == '':
-                messages.warning(request, "Choose  Region Type And Try Again")
+                messages.warning(request, "Choose  Region  And Try Again")
                 return redirect("csp_app:candidate")
             region_fk = master_region.objects.get(pk= region)
             if state == None or state == '':
-                messages.warning(request, "Choose  State Type And Try Again")
+                messages.warning(request, "Choose  State  And Try Again")
                 return redirect("csp_app:candidate")
             state_fk = master_state.objects.get(pk= state)
             if city == None or city == '':
-                messages.warning(request, "Choose  City Type And Try Again")
+                messages.warning(request, "Choose  City  And Try Again")
                 return redirect("csp_app:candidate")
             city_fk = master_city.objects.get(pk= city)
             if location == None or location == '':
-                messages.warning(request, "Choose  Location Type And Try Again")
+                messages.warning(request, "Choose  Location  And Try Again")
                 return redirect("csp_app:candidate")
             location_fk = master_location.objects.get(pk= location)
             # if email == None or email == '':
@@ -905,7 +905,7 @@ def create_candidate(request):
                 return redirect("csp_app:new_candidate")
             hiring_fk = hiring_type.objects.get(pk= hiring)
             if sub_source == None or sub_source == '':
-                messages.warning(request, "Choose  Sub Source Type And Try Again")
+                messages.warning(request, "Choose  Sub Source  And Try Again")
                 return redirect("csp_app:new_candidate")
             subsource_fk = sub_source.objects.get(pk= subsource)
             if c_gender == None or c_gender == '':
@@ -921,7 +921,7 @@ def create_candidate(request):
                 return redirect("csp_app:new_candidate")
             salarytype_fk = salary_type.objects.get(pk= salarytype)
             if entity == None or entity == '':
-                messages.warning(request, "Choose  Entity Type And Try Again")
+                messages.warning(request, "Choose  Entity  And Try Again")
                 return redirect("csp_app:new_candidate")
             entity_fk = master_entity.objects.get(pk= entity)
             if vendor == None or vendor == '':
@@ -929,39 +929,39 @@ def create_candidate(request):
                 return redirect("csp_app:new_candidate")
             vendor_fk = master_vendor.objects.get(pk= vendor)
             if department == None or department == '':
-                messages.warning(request, "Choose  Department Type And Try Again")
+                messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:new_candidate")
             department_fk = master_department.objects.get(pk= department)
             if function == None or function == '':
-                messages.warning(request, "Choose  Function Type And Try Again")
+                messages.warning(request, "Choose  Function  And Try Again")
                 return redirect("csp_app:new_candidate")
             function_fk = master_function.objects.get(pk= function)
             if team == None or team == '':
-                messages.warning(request, "Choose  Team Type And Try Again")
+                messages.warning(request, "Choose  Team  And Try Again")
                 return redirect("csp_app:new_candidate")
             team_fk = master_team.objects.get(pk= team)
             if sub_team == None or sub_team == '':
-                messages.warning(request, "Choose  Sub Team Type And Try Again")
+                messages.warning(request, "Choose  Sub Team  And Try Again")
                 return redirect("csp_app:new_candidate")
             sub_team_fk = master_sub_team.objects.get(pk= sub_team)
             if designation == None or designation == '':
-                messages.warning(request, "Choose  Designation Type And Try Again")
+                messages.warning(request, "Choose  Designation  And Try Again")
                 return redirect("csp_app:new_candidate")
             designation_fk = master_designation.objects.get(pk= designation)
             if region == None or region == '':
-                messages.warning(request, "Choose  Region Type And Try Again")
+                messages.warning(request, "Choose  Region  And Try Again")
                 return redirect("csp_app:new_candidate")
             region_fk = master_region.objects.get(pk= region)
             if state == None or state == '':
-                messages.warning(request, "Choose  State Type And Try Again")
+                messages.warning(request, "Choose  State  And Try Again")
                 return redirect("csp_app:new_candidate")
             state_fk = master_state.objects.get(pk= state)
             if city == None or city == '':
-                messages.warning(request, "Choose  City Type And Try Again")
+                messages.warning(request, "Choose  City  And Try Again")
                 return redirect("csp_app:new_candidate")
             city_fk = master_city.objects.get(pk= city)
             if location == None or location == '':
-                messages.warning(request, "Choose  Location Type And Try Again")
+                messages.warning(request, "Choose  Location  And Try Again")
                 return redirect("csp_app:new_candidate")
             location_fk = master_location.objects.get(pk= location)
             try:
@@ -2780,7 +2780,7 @@ def save_edit_location(request):
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = timezone.localtime()
                         selected.save()
-                        messages.success(request, "Sub city Updated Successfully")
+                        messages.success(request, "Location Updated Successfully")
                         return redirect('csp_app:location')
                 else:
                     messages.warning(request, "Sub state Name Cannot Be Blank")
