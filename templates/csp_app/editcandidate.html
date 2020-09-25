@@ -60,7 +60,7 @@
                 </div>
                 <div class="margin-left">
                     <label for="" >Candidate Date of Birth</label>
-                    <input type="date" value='{{ eachc.Date_Of_Birth|date:"Y-m-d" }}' placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
+                    <input type="date" value="{{ eachc.Date_Of_Birth|date:'Y-m-d' }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
                 </div>
             </div>
                <div class="candidate-forms-input-holder">
