@@ -149,8 +149,8 @@ def process_requests(request, cid):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             loc_code = 'GGG' #check
-            ta_spoc = request.POST.get("c_ta_spoc") #check
-            onboarding_spoc = request.POST.get("c_onboarding_spoc") #check
+            # ta_spoc = request.user.email #check
+            onboarding_spoc = "workmail052020@gmail.com" #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -325,28 +325,28 @@ def process_requests(request, cid):
                 selected_candidate.Reporting_Manager= reporting_manager
                 if selected_candidate.Reporting_Manager_E_Mail_ID != reporting_manager_email:
                     changes_list['Reporting Manager E Mail ID'] = [ selected_candidate.Reporting_Manager_E_Mail_ID, reporting_manager_email ]
-                    selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
+                selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
                 if selected_candidate.Gender != gender_fk:
                     changes_list['Gender'] = [ selected_candidate.Gender, gender_fk ]
-                    selected_candidate.Gender= gender_fk
+                selected_candidate.Gender= gender_fk
                 if selected_candidate.E_Mail_ID_Creation != email_creation:
                     changes_list['E Mail ID Creation'] = [ selected_candidate.E_Mail_ID_Creation, email_creation ]
-                    selected_candidate.E_Mail_ID_Creation= email_creation
-                if selected_candidate.TA_Spoc_Email_Id != ta_spoc:
-                    changes_list['TA Spoc Email Id'] = [ selected_candidate.TA_Spoc_Email_Id, ta_spoc ]
-                    selected_candidate.TA_Spoc_Email_Id= ta_spoc
+                selected_candidate.E_Mail_ID_Creation= email_creation
+                # if selected_candidate.TA_Spoc_Email_Id != ta_spoc:
+                #     changes_list['TA Spoc Email Id'] = [ selected_candidate.TA_Spoc_Email_Id, ta_spoc ]
+                #     selected_candidate.TA_Spoc_Email_Id= ta_spoc
                 if selected_candidate.Onboarding_Spoc_Email_Id != onboarding_spoc:
                     changes_list['Onboarding Spoc Email Id'] = [ selected_candidate.Onboarding_Spoc_Email_Id, onboarding_spoc ]
-                    selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
+                selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
                 if selected_candidate.Laptop_Allocation != la_fk:
                     changes_list['Laptop Allocation'] = [ selected_candidate.Laptop_Allocation, la_fk ]
-                    selected_candidate.Laptop_Allocation= la_fk
+                selected_candidate.Laptop_Allocation= la_fk
                 if selected_candidate.Salary_Type != salarytype_fk:
                     changes_list['Salary Type'] = [ selected_candidate.Salary_Type, salarytype ]
-                    selected_candidate.Salary_Type= salarytype_fk
+                selected_candidate.Salary_Type= salarytype_fk
                 if selected_candidate.Gross_Salary_Amount != gross_salary:
                     changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
-                    selected_candidate.Gross_Salary_Amount= gross_salary
+                selected_candidate.Gross_Salary_Amount= gross_salary
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time=timezone.localtime()
 
@@ -703,8 +703,8 @@ def edit_candidate(request):
             # loc_code = request.POST.get("c_location_code") #check
             loc_code = 'GGG' #check
 
-            ta_spoc = request.POST.get("c_ta_spoc") #check
-            onboarding_spoc = request.POST.get("c_onboarding_spoc") #check
+            # ta_spoc = request.POST.get("c_ta_spoc") #check
+            onboarding_spoc = 'workmail052020@gmail.com' #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -809,7 +809,7 @@ def edit_candidate(request):
             selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
             selected_candidate.Gender= gender_fk 
             selected_candidate.E_Mail_ID_Creation= email_creation
-            selected_candidate.TA_Spoc_Email_Id= ta_spoc
+            # selected_candidate.TA_Spoc_Email_Id= ta_spoc #confirm from sir whther taspoc can be edited or no
             selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
             selected_candidate.Laptop_Allocation= la_fk
             selected_candidate.Salary_Type= salarytype_fk
@@ -913,8 +913,8 @@ def create_candidate(request):
             # loc_code = request.POST.get("c_location_code") #check
             loc_code = 'GGG' #check
 
-            ta_spoc = request.POST.get("c_ta_spoc") #check
-            onboarding_spoc = request.POST.get("c_onboarding_spoc") #check
+            ta_spoc = request.user.email #check
+            onboarding_spoc = 'workmail052020@gmail.com' #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
