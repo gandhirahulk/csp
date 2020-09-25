@@ -245,7 +245,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="15" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{5}" maxlength="6" autocapitalize="on">
+                        <input type="text" tabindex="15" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
                     </div>
                 </div>
 
@@ -258,7 +258,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Referral }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{5}" maxlength="6" autocapitalize="on">
+                        <input type="text" value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
                     </div>
                 </div>
 
@@ -561,7 +561,7 @@
                         <input type="text" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" required="true" >           
                     </div>
                     <div>
-                        <input type="email" value="{{ eachcandidate.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" tabindex="29">
+                        <input type="email" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" tabindex="29">
                     </div>
                 </div>
 
@@ -573,7 +573,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" required="true" >           
                     </div>
                     <div>
-                        <input type="email" tabindex="30" value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
+                        <input type="email" disabled tabindex="60" value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
                     </div>
                 </div>
 

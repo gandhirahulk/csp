@@ -104,7 +104,7 @@
             <div class="candidate-forms-input-holder">
                 <div>               
                 <label for="">Type Of Hiring</label>
-                <select name="c_hiring_type" id="" tabindex="13" >
+                <select name="c_hiring_type" id="hiring" tabindex="13" >
                     <option value="" disabled selected>Type Of Hiring</option>
                     {% if hiring_type_list %}
                         {% for eachhiring_type in hiring_type_list %}
@@ -114,35 +114,38 @@
                 </select>
                  </div>
                 <div class="margin-left">
-                <label for="" >Date of Joining</label>
-                <input type="date" tabindex="14" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
-           
-            </div>
+                    <label for="">Replacement UID </label>
+                    <input type="text" disabled tabindex="15" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                </div>
+                
         </div>
 
         <div class="candidate-forms-input-holder">
-                <div>
-                <label for="">Replacement UID </label>
-                <input type="text" tabindex="15" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{5}" maxlength="6" autocapitalize="on">
-                 </div>
+             
+                 <div>
+                    <label for="">Sub Source</label>
+                    <select name="c_sub_source" id="referral" tabindex="17" >
+                        <option value="" disabled selected>Select Sub Source</option>
+                        {% if sub_source_list %}
+                            {% for eachsub_source in sub_source_list %}
+                                <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
+                            {% endfor %}                
+                        {% endif %}
+                    </select>
+                     </div>
                 <div class="margin-left">
                 <label for="" >Referal UID</label>
-                <input type="text" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{5}" maxlength="6" autocapitalize="on">
+                <input type="text" tabindex="16" disabled placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
           
             </div>
         </div>
         <div class="candidate-forms-input-holder">
-                <div>
-                <label for="">Sub Source</label>
-                <select name="c_sub_source" id="" tabindex="17" >
-                    <option value="" disabled selected>Select Sub Source</option>
-                    {% if sub_source_list %}
-                        {% for eachsub_source in sub_source_list %}
-                            <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-                 </div>
+                
+                 <div >
+                    <label for="" >Date of Joining</label>
+                    <input type="date" tabindex="14" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+               
+                </div>
                 <div class="margin-left">
                 <label for="" >Entity</label>
 
@@ -297,7 +300,7 @@
                 </select>
             </div>
         </div>
-        <div class="candidate-forms-input-holder">
+        <!-- <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >TA SPOC Email ID</label>
                 <input type="email" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" tabindex="29">
@@ -306,7 +309,7 @@
                 <label for="" >Onboarding SPOC Email ID</label>
                 <input type="email" tabindex="30" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
             </div>
-        </div>
+        </div> -->
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="">Reporting / Hiring Manager Name</label>
@@ -376,6 +379,24 @@
   <script>
     $(document).ready(function(){
         showMe('Candidate', 'can-expand');
+        $('#hiring').change(function() {
+            var selectedvalue = $(this).val();
+            if (selectedvalue == '1'){
+                $('#c_replacement').attr("disabled", false);
+            } else {
+                $('#c_replacement').prop("value", '');                
+                $('#c_replacement').attr("disabled", true);
+            }
+        });
+        $('#referral').change(function() {
+            var selectedvalue = $(this).val();
+            if (selectedvalue == '1'){
+                $('#c_referral').attr("disabled", false);
+            } else {
+                $('#c_referral').prop("value", '');
+                $('#c_referral').attr("disabled", true);
+            }
+        });
         $('#c_contact, #c_emergency').on('keyup', function () {
         if ($('#c_contact').val() == $('#c_emergency').val()) {
             $('#message').html('Contact No. and Emergency No. Cannot be same.').css('color', 'red');

@@ -41,6 +41,7 @@
                 <th>Team</th>
 
                 <th>Sub Team</th>
+                <th>Skill Type</th>
 
                 <th>Designation</th>
                 <th>Action</th>
@@ -60,6 +61,7 @@
                         <td>{{ eachdesignation.fk_sub_team_code.fk_team_code }}</td>
 
                         <td>{{ eachdesignation.fk_sub_team_code }}</td>
+                        <td>{{ eachdesignation.fk_skill_code }}</td>
 
                         <td>{{ eachdesignation.designation_name }}</td>
                         <td class="action-col">
@@ -109,6 +111,9 @@
                         </tr>
                         <tr>
                             <td><label for="">Sub Team : </label> {{ eachdesignation.fk_sub_team_code }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">Skill Type : </label> {{ eachdesignation.fk_skill_code }}</td>
                         </tr>
                         <tr>
                             <td><label for="">Designation Name : </label> {{ eachdesignation.designation_name }}</td>

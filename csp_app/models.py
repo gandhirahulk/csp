@@ -11,6 +11,13 @@ class status(models.Model):
     def __str__(self):
         return self.status_name
 
+class skill_type(models.Model):
+    pk_skill_code = models.AutoField(primary_key=True)
+    skill_name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.skill_name
+
 class master_entity(models.Model):
     pk_entity_code = models.AutoField(primary_key=True)
     entity_name = models.CharField(max_length=100)
@@ -97,6 +104,7 @@ class master_designation(models.Model):
     pk_designation_code = models.AutoField(primary_key=True)
     designation_name = models.CharField(max_length=100)
     fk_sub_team_code = models.ForeignKey(master_sub_team, on_delete=models.CASCADE)
+    fk_skill_code = models.ForeignKey(skill_type, on_delete= models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
     modified_by = models.CharField(max_length=100, null=True,blank=True)

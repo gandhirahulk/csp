@@ -10,7 +10,7 @@ from django.db.utils import IntegrityError
 from csp_app.models import status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
                             sub_source, salary_type, gender, laptop_allocation, candidate_status, onboarding_status, vendor_status, csp_candidate_code, \
-                            mandatory_documents, candidate_document
+                            mandatory_documents, candidate_document, skill_type
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
@@ -112,9 +112,9 @@ def process_requests(request, cid):
         state_list = master_state.objects.filter(status = active_status).order_by('state_name')
         city_list = master_city.objects.filter(status= active_status).order_by('city_name')
         location_list = master_location.objects.filter(status= active_status).order_by('location_name')
-        hiring_type_list = hiring_type.objects.filter(status= active_status)
-        sub_source_list = sub_source.objects.filter(status= active_status)
-        salary_type_list = salary_type.objects.filter(status= active_status)
+        hiring_type_list = hiring_type.objects.filter(status= active_status).order_by('hiring_type_name')
+        sub_source_list = sub_source.objects.filter(status= active_status).order_by('sub_source_name')
+        salary_type_list = salary_type.objects.filter(status= active_status).order_by('salary_type_name')
         gender_list = gender.objects.filter(status= active_status)
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
         c_status_list = candidate_status.objects.all()
@@ -149,8 +149,8 @@ def process_requests(request, cid):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             loc_code = 'GGG' #check
-            ta_spoc = request.POST.get("c_ta_spoc") #check
-            onboarding_spoc = request.POST.get("c_onboarding_spoc") #check
+            # ta_spoc = request.user.email #check
+            onboarding_spoc = "workmail052020@gmail.com" #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -325,28 +325,28 @@ def process_requests(request, cid):
                 selected_candidate.Reporting_Manager= reporting_manager
                 if selected_candidate.Reporting_Manager_E_Mail_ID != reporting_manager_email:
                     changes_list['Reporting Manager E Mail ID'] = [ selected_candidate.Reporting_Manager_E_Mail_ID, reporting_manager_email ]
-                    selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
+                selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
                 if selected_candidate.Gender != gender_fk:
                     changes_list['Gender'] = [ selected_candidate.Gender, gender_fk ]
-                    selected_candidate.Gender= gender_fk
+                selected_candidate.Gender= gender_fk
                 if selected_candidate.E_Mail_ID_Creation != email_creation:
                     changes_list['E Mail ID Creation'] = [ selected_candidate.E_Mail_ID_Creation, email_creation ]
-                    selected_candidate.E_Mail_ID_Creation= email_creation
-                if selected_candidate.TA_Spoc_Email_Id != ta_spoc:
-                    changes_list['TA Spoc Email Id'] = [ selected_candidate.TA_Spoc_Email_Id, ta_spoc ]
-                    selected_candidate.TA_Spoc_Email_Id= ta_spoc
+                selected_candidate.E_Mail_ID_Creation= email_creation
+                # if selected_candidate.TA_Spoc_Email_Id != ta_spoc:
+                #     changes_list['TA Spoc Email Id'] = [ selected_candidate.TA_Spoc_Email_Id, ta_spoc ]
+                #     selected_candidate.TA_Spoc_Email_Id= ta_spoc
                 if selected_candidate.Onboarding_Spoc_Email_Id != onboarding_spoc:
                     changes_list['Onboarding Spoc Email Id'] = [ selected_candidate.Onboarding_Spoc_Email_Id, onboarding_spoc ]
-                    selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
+                selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
                 if selected_candidate.Laptop_Allocation != la_fk:
                     changes_list['Laptop Allocation'] = [ selected_candidate.Laptop_Allocation, la_fk ]
-                    selected_candidate.Laptop_Allocation= la_fk
+                selected_candidate.Laptop_Allocation= la_fk
                 if selected_candidate.Salary_Type != salarytype_fk:
                     changes_list['Salary Type'] = [ selected_candidate.Salary_Type, salarytype ]
-                    selected_candidate.Salary_Type= salarytype_fk
+                selected_candidate.Salary_Type= salarytype_fk
                 if selected_candidate.Gross_Salary_Amount != gross_salary:
                     changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
-                    selected_candidate.Gross_Salary_Amount= gross_salary
+                selected_candidate.Gross_Salary_Amount= gross_salary
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time=timezone.localtime()
 
@@ -495,9 +495,9 @@ def pending_requests(request):
         state_list = master_state.objects.filter(status = active_status).order_by('state_name')
         city_list = master_city.objects.filter(status= active_status).order_by('city_name')
         location_list = master_location.objects.filter(status= active_status).order_by('location_name')
-        hiring_type_list = hiring_type.objects.filter(status= active_status)
-        sub_source_list = sub_source.objects.filter(status= active_status)
-        salary_type_list = salary_type.objects.filter(status= active_status)
+        hiring_type_list = hiring_type.objects.filter(status= active_status).order_by('hiring_type_name')
+        sub_source_list = sub_source.objects.filter(status= active_status).order_by('sub_source_name')
+        salary_type_list = salary_type.objects.filter(status= active_status).order_by('salary_type_name')
         gender_list = gender.objects.filter(status= active_status)
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
         # try:
@@ -550,9 +550,9 @@ def candidate(request):
     state_list = master_state.objects.filter(status = active_status).order_by('state_name')
     city_list = master_city.objects.filter(status= active_status).order_by('city_name')
     location_list = master_location.objects.filter(status= active_status).order_by('location_name')
-    hiring_type_list = hiring_type.objects.filter(status= active_status)
-    sub_source_list = sub_source.objects.filter(status= active_status)
-    salary_type_list = salary_type.objects.filter(status= active_status)
+    hiring_type_list = hiring_type.objects.filter(status= active_status).order_by('hiring_type_name')
+    sub_source_list = sub_source.objects.filter(status= active_status).order_by('sub_source_name')
+    salary_type_list = salary_type.objects.filter(status= active_status).order_by('salary_type_name')
     gender_list = gender.objects.filter(status= active_status)
     laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
     c_status_list = candidate_status.objects.all()
@@ -599,9 +599,9 @@ def new_candidate(request):
         state_list = master_state.objects.filter(status = active_status).order_by('state_name')
         city_list = master_city.objects.filter(status= active_status).order_by('city_name')
         location_list = master_location.objects.filter(status= active_status).order_by('location_name')
-        hiring_type_list = hiring_type.objects.filter(status= active_status)
-        sub_source_list = sub_source.objects.filter(status= active_status)
-        salary_type_list = salary_type.objects.filter(status= active_status)
+        hiring_type_list = hiring_type.objects.filter(status= active_status).order_by('hiring_type_name')
+        sub_source_list = sub_source.objects.filter(status= active_status).order_by('sub_source_name')
+        salary_type_list = salary_type.objects.filter(status= active_status).order_by('salary_type_name')
         gender_list = gender.objects.filter(status= active_status)
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
         candidate_list = master_candidate.objects.all()
@@ -630,9 +630,9 @@ def view_edit_candidate(request):
             state_list = master_state.objects.filter(status = active_status).order_by('state_name')
             city_list = master_city.objects.filter(status= active_status).order_by('city_name')
             location_list = master_location.objects.filter(status= active_status).order_by('location_name')
-            hiring_type_list = hiring_type.objects.filter(status= active_status)
-            sub_source_list = sub_source.objects.filter(status= active_status)
-            salary_type_list = salary_type.objects.filter(status= active_status)
+            hiring_type_list = hiring_type.objects.filter(status= active_status).order_by('hiring_type_name')
+            sub_source_list = sub_source.objects.filter(status= active_status).order_by('sub_source_name')
+            salary_type_list = salary_type.objects.filter(status= active_status).order_by('salary_type_name')
             gender_list = gender.objects.filter(status= active_status)
             laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
             candidate_list = master_candidate.objects.filter(pk=candidate_id)
@@ -663,9 +663,9 @@ def edit_candidate(request):
             state_list = master_state.objects.filter(status = active_status).order_by('state_name')
             city_list = master_city.objects.filter(status= active_status).order_by('city_name')
             location_list = master_location.objects.filter(status= active_status).order_by('location_name')
-            hiring_type_list = hiring_type.objects.filter(status= active_status)
-            sub_source_list = sub_source.objects.filter(status= active_status)
-            salary_type_list = salary_type.objects.filter(status= active_status)
+            hiring_type_list = hiring_type.objects.filter(status= active_status).order_by('hiring_type_name')
+            sub_source_list = sub_source.objects.filter(status= active_status).order_by('sub_source_name')
+            salary_type_list = salary_type.objects.filter(status= active_status).order_by('salary_type_name')
             gender_list = gender.objects.filter(status= active_status)
             laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
             candidate_list = master_candidate.objects.filter(pk=candidate_id)
@@ -673,7 +673,7 @@ def edit_candidate(request):
             cid = request.POST.get('c_id')
             firstname = request.POST.get("c_firstname")
             middlename = request.POST.get("c_middlename")
-            print(middlename)
+            # print(middlename)
             lastname = request.POST.get("c_lastname")
             dob = request.POST.get("c_dob")
             contact_no = request.POST.get("c_contact")
@@ -703,8 +703,8 @@ def edit_candidate(request):
             # loc_code = request.POST.get("c_location_code") #check
             loc_code = 'GGG' #check
 
-            ta_spoc = request.POST.get("c_ta_spoc") #check
-            onboarding_spoc = request.POST.get("c_onboarding_spoc") #check
+            # ta_spoc = request.POST.get("c_ta_spoc") #check
+            onboarding_spoc = 'workmail052020@gmail.com' #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -809,7 +809,7 @@ def edit_candidate(request):
             selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
             selected_candidate.Gender= gender_fk 
             selected_candidate.E_Mail_ID_Creation= email_creation
-            selected_candidate.TA_Spoc_Email_Id= ta_spoc
+            # selected_candidate.TA_Spoc_Email_Id= ta_spoc #confirm from sir whther taspoc can be edited or no
             selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
             selected_candidate.Laptop_Allocation= la_fk
             selected_candidate.Salary_Type= salarytype_fk
@@ -823,7 +823,7 @@ def edit_candidate(request):
                 'Candidate Account Updated.',
                 alltemplate,
                 settings.EMAIL_HOST_USER,
-                [ ta_spoc, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
+                [ selected_candidate.TA_Spoc_Email_Id, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
             ) 
             our_email.fail_silently = False
             our_email.send()
@@ -863,9 +863,9 @@ def edit_candidate(request):
 #         state_list = master_state.objects.filter(status = active_status).order_by('state_name')
 #         city_list = master_city.objects.filter(status= active_status).order_by('city_name')
 #         location_list = master_location.objects.filter(status= active_status).order_by('location_name')
-#         hiring_type_list = hiring_type.objects.filter(status= active_status)
-#         sub_source_list = sub_source.objects.filter(status= active_status)
-#         salary_type_list = salary_type.objects.filter(status= active_status)
+#         hiring_type_list = hiring_type.objects.filter(status= active_status).order_by('hiring_type_name')
+#         sub_source_list = sub_source.objects.filter(status= active_status).order_by('sub_source_name')
+#         salary_type_list = salary_type.objects.filter(status= active_status).order_by('salary_type_name')
 #         gender_list = gender.objects.filter(status= active_status)
 #         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
 #         view_candidate = master_candidate.objects.filter(pk=cid)
@@ -913,8 +913,8 @@ def create_candidate(request):
             # loc_code = request.POST.get("c_location_code") #check
             loc_code = 'GGG' #check
 
-            ta_spoc = request.POST.get("c_ta_spoc") #check
-            onboarding_spoc = request.POST.get("c_onboarding_spoc") #check
+            ta_spoc = request.user.email #check
+            onboarding_spoc = 'workmail052020@gmail.com' #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -2156,7 +2156,8 @@ def  designation(request):
     team_list = master_team.objects.filter(status = active_status).order_by('team_name')
     subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
     desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
-    return render(request, 'csp_app/designation.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
+    skill_list = skill_type.objects.all().order_by('skill_name')
+    return render(request, 'csp_app/designation.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list, 'skill_list': skill_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -2164,6 +2165,7 @@ def  create_designation(request):
     if request.method == 'POST':
         designation_name = request.POST.get("desg_name")
         subteam = request.POST.get("desg_subteam")
+        skill = request.POST.get("skill")
         if subteam == None or subteam == '':
             messages.warning(request, "Choose Sub Team And Try Again")
             return redirect('csp_app:designation')
@@ -2171,14 +2173,18 @@ def  create_designation(request):
             messages.warning(request, "Designation Cannot Be Blank")
             return redirect('csp_app:designation')
         subteam_fk = master_sub_team.objects.get(pk=subteam)
+        if skill_type == None or skill_type == '':
+            messages.warning(request, "Choose Skill Type And Try Again")
+            return redirect('csp_app:designation')
+        skill_fk = skill_type.objects.get(pk=skill)
         try:
-            dup_designation = master_designation.objects.get( designation_name= designation_name , fk_sub_team_code=subteam_fk, status = active_status)
+            dup_designation = master_designation.objects.get( designation_name= designation_name , fk_sub_team_code=subteam_fk, fk_skill_code= skill_fk, status = active_status)
            
             messages.error(request, "Designation Already Exist")
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
 
-            new_designation = master_designation( designation_name= designation_name , fk_sub_team_code=subteam_fk, created_by = str(request.user))
+            new_designation = master_designation( designation_name= designation_name , fk_sub_team_code=subteam_fk, fk_skill_code= skill_fk, created_by = str(request.user))
             new_designation.save()
             messages.success(request, "Designation Saved Successfully")
             return redirect('csp_app:designation')
@@ -2210,12 +2216,12 @@ def view_edit_designation(request):
     team_list = master_team.objects.filter(status=active_status)
     subteam_list = master_sub_team.objects.filter(status=active_status)
     designation_list = master_designation.objects.filter(status=active_status)
-
+    skill_list = skill_type.objects.all().order_by('skill_name')
     try:
         if request.method == 'POST':
             designation_id = request.POST.get("view_id")
             selected = master_designation.objects.filter(pk = designation_id)        
-        return render(request, 'csp_app/editdesignation.html', {'allcandidates': all_active_candidates,'view_designation_list': selected, 'designation_list':designation_list, 'subteam_list': subteam_list, 'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editdesignation.html', {'allcandidates': all_active_candidates,'view_designation_list': selected, 'designation_list':designation_list, 'subteam_list': subteam_list, 'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list,'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2228,6 +2234,7 @@ def save_edit_designation(request):
     team_list = master_team.objects.filter(status=active_status)
     subteam_list = master_sub_team.objects.filter(status=active_status)
     designation_list = master_designation.objects.filter(status=active_status)
+    skill_list = skill_type.objects.all().order_by('skill_name')
 
     try:
         if request.method == 'POST':
@@ -2236,20 +2243,26 @@ def save_edit_designation(request):
                 if request.POST.get("e_designation_name") != None:
                     name = request.POST.get("e_designation_name")
                     subteam = request.POST.get("e_designation_subteam")
+                    skill = request.POST.get("skill")
                     if subteam == None or subteam == '':
                         messages.warning(request, "Choose Sub Team and Try Again")
                         return redirect('csp_app:designation')
                     subteam_fk = master_sub_team.objects.get(pk = subteam)
+                    if skill_type == None or skill_type == '':
+                        messages.warning(request, "Choose Skill Type And Try Again")
+                        return redirect('csp_app:designation')
+                    skill_fk = skill_type.objects.get(pk=skill)
                     try:
-                        if selected.designation_name == name  and selected.fk_sub_team_code == subteam_fk:
+                        if selected.designation_name == name  and selected.fk_sub_team_code == subteam_fk and selected.fk_skill_code == skill_fk :
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:designation')
-                        a = master_designation.objects.get(designation_name= name , fk_sub_team_code= subteam_fk, status= active_status)
+                        a = master_designation.objects.get(designation_name= name , fk_sub_team_code= subteam_fk, fk_skill_code= skill_fk, status= active_status)
                         messages.error(request, "Designation Already Exist")
                         return redirect('csp_app:designation')
                     except ObjectDoesNotExist:
                         selected.designation_name = name 
                         selected.fk_sub_team_code = subteam_fk
+                        selected.fk_skill_code = skill_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = timezone.localtime()
                         selected.save()
@@ -2259,7 +2272,7 @@ def save_edit_designation(request):
                     messages.warning(request, "Sub Team Name Cannot Be Blank")
                     return redirect('csp_app:designation')         
            
-        return render(request, 'csp_app/editdesignation.html', {'allcandidates': all_active_candidates,'view_designation_list': selected,'subteam_list':subteam_list, 'team_list': team_list, 'function_list': function_list, 'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editdesignation.html', {'allcandidates': all_active_candidates,'view_designation_list': selected,'subteam_list':subteam_list, 'team_list': team_list, 'function_list': function_list, 'department_list': department_list, 'entity_list': entity_list, 'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
