@@ -30,8 +30,10 @@
     <table id="function-table" class="dataTable">
         <thead>
             <tr>
-                <th>Function Name</th>
+                
                 <th>Department</th>
+
+                <th>Function Name</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -40,8 +42,9 @@
                 {% for eachfunction in function_list %}
 
                     <tr>
-                        <td>{{ eachfunction.function_name }}</td>
                         <td>{{ eachfunction.fk_department_code }}</td>
+
+                        <td>{{ eachfunction.function_name }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachfunction.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_function' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_function' %}"> | <input readonly value="delete" onclick="showDelete('{{ eachfunction.pk }}', 'delete_function_form')"> </form>
                         </td>

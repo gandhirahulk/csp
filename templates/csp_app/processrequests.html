@@ -79,7 +79,7 @@
                 </div>
                 <div class="request-forms-input-holder">
                     <div>
-                        <label for="">Date Of Birth</label>    
+                        <label for="">Candidate Date Of Birth</label>    
                     </div>
                     <div>
                         <input type="text" disabled value="{{ eachcandidate.Date_of_Birth }}"  placeholder="Date Of Birth" required="true" >
@@ -448,7 +448,7 @@
                             {% if designation_list %}
                                 {% for eachdesignation in designation_list %}
                                     {% if eachdesignation.pk != eachcandidate.fk_designation_code_id %}
-                                    <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.fk_designation_code }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                                    <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
                             {% endif %}
@@ -579,7 +579,7 @@
 
                 <div class="request-forms-input-holder">
                     <div>
-                        <label for="">Reporting Manager</label>    
+                        <label for="">Reporting / Hiring Manager Name</label>    
                     </div>
                     <div>
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
@@ -591,7 +591,7 @@
 
                 <div class="request-forms-input-holder">
                     <div>
-                        <label for="">Reporting Manager Email ID</label>    
+                        <label for="">Reporting / Hiring Manager Email ID</label>    
                     </div>
                     <div>
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           

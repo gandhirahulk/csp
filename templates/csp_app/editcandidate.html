@@ -59,7 +59,7 @@
             
                 </div>
                 <div class="margin-left">
-                    <label for="" >Date of Birth</label>
+                    <label for="" >Candidate Date of Birth</label>
                     <input type="date" value='{{ eachc.Date_Of_Birth|date:"Y-m-d" }}' placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
                 </div>
             </div>
@@ -103,7 +103,7 @@
                 <input type="text" value="{{ eachc.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
                  </div>
                 <div class="margin-left">
-                <label for="" >Date of Birth</label>
+                <label for="" >Father Date of Birth</label>
                 <input type="date" value="{{ eachc.Father_Date_of_Birth }}" name="c_father_dob" id="c_father_dob" required="true" tabindex="4" >
        
             </div>
@@ -290,8 +290,8 @@
                         {% for eachdesignation in designation_list %}
                         {% if eachdesignation.pk != eachc.fk_designation_code_id %}
 
-                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.fk_designation_code }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
-                    {% endif %}
+                        <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                        {% endif %}
                         
                             {% endfor %}                
                     {% endif %}
@@ -390,11 +390,11 @@
         </div>
         <div class="candidate-forms-input-holder">
             <div>
-                <label for="">Reporting Manager</label>
+                <label for="">Reporting / Hiring Manager Name</label>
                 <input type="text" value="{{ eachc.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
                  </div>
                 <div class="margin-left">
-                <label for="" >Reporting Manager Email ID</label>
+                <label for="" >Reporting / Hiring Manager Email ID</label>
 
                 <input type="email" value="{{ eachc.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" id="reporting_manager_email" name="c_reporting_manager_email" required="true">
          

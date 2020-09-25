@@ -44,7 +44,7 @@
             
                 </div>
                 <div class="margin-left">
-                    <label for="" >Date of Birth</label>
+                    <label for="" >Candidate Date of Birth</label>
                     <input type="date" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="4" >
                 </div>
             </div>
@@ -235,7 +235,7 @@
 
                     {% if designation_list %}
                         {% for eachdesignation in designation_list %}
-                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.fk_designation_code }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -309,11 +309,11 @@
         </div>
         <div class="candidate-forms-input-holder">
             <div>
-                <label for="">Reporting Manager</label>
+                <label for="">Reporting / Hiring Manager Name</label>
                 <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
                  </div>
                 <div class="margin-left">
-                <label for="" >Reporting Manager Email ID</label>
+                <label for="" >Reporting / Hiring Manager Email ID</label>
 
                 <input type="email" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
          
