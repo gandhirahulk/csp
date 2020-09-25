@@ -30,6 +30,7 @@
     <table id="function-table" class="dataTable">
         <thead>
             <tr>
+                <th>Entity</th>
                 
                 <th>Department</th>
 
@@ -42,6 +43,8 @@
                 {% for eachfunction in function_list %}
 
                     <tr>
+                        <td>{{ eachfunction.fk_department_code.fk_entity_code }}</td>
+
                         <td>{{ eachfunction.fk_department_code }}</td>
 
                         <td>{{ eachfunction.function_name }}</td>

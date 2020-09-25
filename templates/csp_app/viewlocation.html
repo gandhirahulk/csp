@@ -30,9 +30,12 @@
     <table id="location-table" class="dataTable">
         <thead>
             <tr>
+                <th>Entity</th>
+                <th>Region</th>
+                <th>State</th>
+                <th>City</th>
                 <th>Location Name</th>
                 <th>Location Code</th>
-                <th>City</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -41,10 +44,12 @@
                 {% for eachlocation in location_list %}
 
                     <tr>
+                        <td>{{ eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code }}</td>
+                        <td>{{ eachlocation.fk_city_code.fk_state_code.fk_region_code }}</td>
+                        <td>{{ eachlocation.fk_city_code.fk_state_code }}</td>
+                        <td>{{ eachlocation.fk_city_code }}</td>
                         <td>{{ eachlocation.location_name }}</td>
                         <td>{{ eachlocation.location_code }}</td>
-
-                        <td>{{ eachlocation.fk_city_code }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
                         </td>
@@ -64,7 +69,7 @@
     </table>
   
 </div>
-<div  class="form_modal" style="padding-top: 10%;display: block;">
+<div  class="form_modal" style="display: block;">
 
     <div class="view_form_header">
         <div class="forms-heading">
@@ -79,14 +84,24 @@
                     <legend>Basic Details</legend>
                     <table>
                         <tr>
+                            <td><label for="">Entity : </label> {{ eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">Region : </label> {{ eachlocation.fk_city_code.fk_state_code.fk_region_code }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">State : </label> {{ eachlocation.fk_city_code.fk_state_code }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">City : </label> {{ eachlocation.fk_city_code }}</td>
+                        </tr>
+                        <tr>
                             <td><label for="">Location Name : </label> {{ eachlocation.location_name }}</td>
                         </tr>
                         <tr>    
                             <td><label for="">Location Code : </label> {{ eachlocation.location_code }}</td>
                         </tr>
-                        <tr>
-                            <td><label for="">City : </label> {{ eachlocation.fk_city_code }}</td>
-                        </tr>
+                     
                     </table>                    
                 </fieldset>
                 <fieldset class="fds">

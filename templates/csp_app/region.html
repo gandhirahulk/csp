@@ -30,8 +30,9 @@
     <table id="region-table" class="dataTable">
         <thead>
             <tr>
-                <th>Region Name</th>
                 <th>Entity</th>
+
+                <th>Region Name</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -40,8 +41,9 @@
                 {% for eachregion in region_list %}
 
                     <tr>
-                        <td>{{ eachregion.region_name }}</td>
                         <td>{{ eachregion.fk_entity_code }}</td>
+
+                        <td>{{ eachregion.region_name }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachregion.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_region' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_region' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachregion.pk }}', 'delete_region_form')"> </form>
                         </td>

@@ -29,8 +29,15 @@
     <table id="subteam-table" class="dataTable">
         <thead>
             <tr>
-                <th>Sub Team Name</th>
+                <th>Entity</th>
+
+                <th>Department</th>
+                
+                <th>Function</th>
+
                 <th>Team</th>
+
+                <th>Sub Team Name</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -39,8 +46,15 @@
                 {% for eachsubteam in subteam_list %}
 
                     <tr>
-                        <td>{{ eachsubteam.sub_team_name }}</td>
+                        <td>{{ eachsubteam.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}</td>
+
+                        <td>{{ eachsubteam.fk_team_code.fk_function_code.fk_department_code }}</td>
+
+                        <td>{{ eachsubteam.fk_team_code.fk_function_code }}</td>
+
                         <td>{{ eachsubteam.fk_team_code }}</td>
+
+                        <td>{{ eachsubteam.sub_team_name }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachsubteam.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_subteam' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_subteam' %}"> | <input value="delete" onclick="showDelete('{{ eachsubteam.pk }}', 'delete_subteam_form')"> </form>
                         </td>
@@ -62,7 +76,7 @@
   
 </div>
 
-<div id="view_entity_form" class="form_modal" style="display: block;">
+<div id="view_entity_form" class="form_modal" style="display: block;padding-top: 7%;">
 
     <div class="form_header">
         <div class="forms-heading">

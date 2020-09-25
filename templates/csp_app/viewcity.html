@@ -30,8 +30,13 @@
     <table id="city-table" class="dataTable">
         <thead>
             <tr>
-                <th>City Name</th>
+                <th>Entity</th>
+
+                <th>Region</th>
+
                 <th>State</th>
+
+                <th>City Name</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -40,8 +45,10 @@
                 {% for eachcity in city_list %}
 
                     <tr>
-                        <td>{{ eachcity.city_name }}</td>
+                        <td>{{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}</td>
+                        <td>{{ eachcity.fk_state_code.fk_region_code }}</td>
                         <td>{{ eachcity.fk_state_code }}</td>
+                        <td>{{ eachcity.city_name }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_city' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_city' %}"> | <input value="delete" onclick="showDelete('{{ eachcity.pk }}', 'delete_city_form')"> </form>
                         </td>
@@ -76,11 +83,18 @@
                     <legend>Basic Details</legend>
                     <table>
                         <tr>
-                            <td><label for="">City Name : </label> {{ eachcity.city_name }}</td>
+                            <td><label for="">Entity : </label> {{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}</td>
                         </tr>
                         <tr>
-                            <td><label for="">state : </label> {{ eachcity.fk_state_code }}</td>
+                            <td><label for="">Region : </label> {{ eachcity.fk_state_code.fk_region_code }}</td>
                         </tr>
+                        <tr>
+                            <td><label for="">State : </label> {{ eachcity.fk_state_code }}</td>
+                        </tr>
+                        <tr>
+                            <td><label for="">City Name : </label> {{ eachcity.city_name }}</td>
+                        </tr>
+                      
                     </table>                    
                 </fieldset>
                 <fieldset class="fds">

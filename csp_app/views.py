@@ -2781,22 +2781,27 @@ def save_edit_location(request):
                 selected = master_location.objects.get(pk = request.POST.get("e_id"))
                 if request.POST.get("e_location_name") != None:
                     name = request.POST.get("e_location_name")
+                    code = request.POST.get("e_location_code")
                     city = request.POST.get("e_location_city")
                     # entity = request.POST.get("e_state_entity")
                     # print(region)
+
                     if city == None or city == '':
                         messages.warning(request, "Choose city and Try Again")
                         return redirect('csp_app:location')
                     city_fk = master_city.objects.get(pk = city)
                     try:
+                        a = master_location.objects.get(location_name= name, location_code= code, fk_city_code= city_fk, status= active_status)
+                        messages.error(request, "Location Already Exist")
+                        return redirect('csp_app:location')
                         if selected.location_name == name  and selected.fk_city_code == city_fk:
                             messages.warning(request, "No Changes Detected")
-                            return redirect('csp_app:city')
-                        a = master_location.objects.get(location_name= name , fk_city_code= city_fk, status= active_status)
-                        messages.error(request, "city Already Exist")
-                        return redirect('csp_app:city')
+                            return redirect('csp_app:location')
+                        
                     except ObjectDoesNotExist:
                         selected.location_name = name 
+                        selected.location_code = code 
+
                         selected.fk_city_code = city_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = timezone.localtime()
@@ -2804,7 +2809,7 @@ def save_edit_location(request):
                         messages.success(request, "Location Updated Successfully")
                         return redirect('csp_app:location')
                 else:
-                    messages.warning(request, "Sub state Name Cannot Be Blank")
+                    messages.warning(request, "Location Name Cannot Be Blank")
                     return redirect('csp_app:location')         
            
         return render(request, 'csp_app/editlocation.html', {'allcandidates': all_active_candidates,'view_location_list': selected,'city_list': city_list, 'state_list': state_list, 'region_list': region_list, 'entity_list': entity_list})

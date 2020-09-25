@@ -30,8 +30,11 @@
     <table id="function-table" class="dataTable">
         <thead>
             <tr>
-                <th>Function Name</th>
+                <th>Entity</th>
+                
                 <th>Department</th>
+
+                <th>Function Name</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -40,8 +43,11 @@
                 {% for eachfunction in function_list %}
 
                     <tr>
-                        <td>{{ eachfunction.function_name }}</td>
+                        <td>{{ eachfunction.fk_department_code.fk_entity_code }}</td>
+
                         <td>{{ eachfunction.fk_department_code }}</td>
+
+                        <td>{{ eachfunction.function_name }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachfunction.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_function' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_function' %}"> | <input value="delete" onclick="showDelete('{{ eachfunction.pk }}', 'delete_function_form')"> </form>
                         </td>
@@ -78,11 +84,15 @@
                     <legend>Basic Details</legend>
                     <table>
                         <tr>
-                            <td><label for="">Function Name : </label> {{ eachfunction.function_name }}</td>
+                            <td><label for="">Entity : </label> {{ eachfunction.fk_department_code.fk_entity_code }}</td>
                         </tr>
                         <tr>
                             <td><label for="">Department : </label> {{ eachfunction.fk_department_code }}</td>
                         </tr>
+                        <tr>
+                            <td><label for="">Function Name : </label> {{ eachfunction.function_name }}</td>
+                        </tr>
+                       
                     </table>                    
                 </fieldset>
                 <fieldset class="fds">
