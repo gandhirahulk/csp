@@ -34,7 +34,7 @@
                 <div>
                 <label class="move-out" for="c_firstname">Candidate Code</label>
 
-                <input class="input-text" value="{{ eachc.pk }}" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" readonly  >
+                <input class="input-text" value="{{ eachc.pk }}" style="background: #f5f5fa;" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" readonly  >
                 </div>
                 <!-- <div class="margin-left">
                     <label for="">Middle Name</label>
@@ -381,11 +381,11 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >TA SPOC Email ID</label>
-                <input type="email" readonly value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
+                <input type="email" disabled value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
             </div>
             <div class="margin-left">
                 <label for="" >Onboarding SPOC Email ID</label>
-                <input type="email" readonly value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
+                <input type="email" disabled value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
             </div>
         </div>
         <div class="candidate-forms-input-holder">
