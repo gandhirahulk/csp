@@ -41,6 +41,7 @@
                 <th>Team</th>
 
                 <th>Sub Team</th>
+                <th>Skill Type</th>
 
                 <th>Designation</th>
                 <th>Action</th>
@@ -60,6 +61,7 @@
                         <td>{{ eachdesignation.fk_sub_team_code.fk_team_code }}</td>
 
                         <td>{{ eachdesignation.fk_sub_team_code }}</td>
+                        <td>{{ eachdesignation.fk_skill_code }}</td>
 
                         <td>{{ eachdesignation.designation_name }}</td>
                         <td class="action-col">
@@ -82,7 +84,7 @@
   
 </div>
 
-<div id="view_entity_form" class="form_modal" style="display: block;">
+<div id="view_entity_form" class="form_modal" style="display: block;padding-top: 2%;">
 
     <div class="form_header">
         <div class="forms-heading">
@@ -186,7 +188,22 @@
                             </select>
                         </div>
                         <div class="forms-input-holder">
-                        <label for="">Designation</label>
+                            <label for="">Skill Type</label>
+                
+                                <select name="skill" required="true">
+                                    <option value="{{ eachdesignation.fk_skill_code_id }}" selected  class="empty" label="{{ eachdesignation.fk_skill_code }}">{{ eachdesignation.fk_skill_code }}</option>
+                
+                                    {% if skill_list %}
+                                        {% for eachskill in skill_list %}
+                                            {%  if eachdesignation.fk_skill_code_id != eachskill.pk %}
+                                                <option value="{{ eachskill.pk }}" label="{{ eachskill.skill_name }}">{{ eachskill.skill_name }}</option>
+                                            {% endif %}                                            
+                                        {% endfor %}                
+                                    {% endif %}
+                                </select>
+                        </div>
+                        <div class="forms-input-holder">
+                            <label for="">Designation</label>
                             <input type="text" placeholder="Designation" name="e_designation_name" required="true" value="{{ eachdesignation.designation_name }}" id="name">
                         </div>       
                    

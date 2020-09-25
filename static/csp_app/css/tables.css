@@ -68,7 +68,7 @@ table.dataTable {
         background-color: #f5f5fa; }
     table.dataTable tbody th,
     table.dataTable tbody td {
-        padding: 5px 10px !important;
+        padding: 5px !important;
         border-bottom: 1px solid #ddd;
         border-right: 1px solid #ddd;}
     table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.dataTable.display tbody th, table.dataTable.display tbody td {

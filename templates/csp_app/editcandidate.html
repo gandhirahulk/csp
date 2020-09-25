@@ -123,7 +123,7 @@
                <div class="candidate-forms-input-holder">
                 <div>               
                 <label for="">Type Of Hiring</label>
-                <select name="c_hiring_type" id="" >
+                <select name="c_hiring_type" id="hiring" >
                     <option value="{{ eachc.Type_of_Hiring_id }}" selected label="{{ eachc.Type_of_Hiring }}">{{ eachc.Type_of_Hiring }}</option>
                     {% if hiring_type_list %}
                         {% for eachhiring_type in hiring_type_list %}
@@ -134,38 +134,40 @@
                     {% endif %}
                 </select>
                  </div>
-                <div class="margin-left">
-                <label for="" >Date of Joining</label>
-                <input type="date" value="{{ eachc.Date_of_Joining }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
-           
-            </div>
+                 <div class="margin-left">
+                    <label for="">Replacement UID </label>
+                    <input type="text" disabled value="{{ eachc.Replacement }}" placeholder="Replacement UID" name="c_replacement" id = "c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                     </div>
         </div>
 
                <div class="candidate-forms-input-holder">
                 <div>
-                <label for="">Replacement UID </label>
-                <input type="text" value="{{ eachc.Replacement }}" placeholder="Replacement UID" name="c_replacement" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
-                 </div>
+                    <label for="">Sub Source</label>
+                    <select name="c_sub_source" id="referral" >
+                        <option value="{{ eachc.Sub_Source_id }}" label="{{ eachc.Sub_Source }}" selected>{{ eachc.Sub_Source }}</option>
+                        {% if sub_source_list %}
+                            {% for eachsub_source in sub_source_list %}
+                                {% if eachsub_source.pk != eachc.Sub_Source_id %}
+                                <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
+                                {% endif %}                       
+                            {% endfor %}                
+                        {% endif %}
+                    </select>
+                     </div>
+               
                 <div class="margin-left">
                 <label for="" >Referal UID</label>
-                <input type="text" value="{{ eachc.Referral }}" placeholder="Referral" name="c_referral" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" disabled value="{{ eachc.Referral }}" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
           
             </div>
         </div>
                <div class="candidate-forms-input-holder">
-                <div>
-                <label for="">Sub Source</label>
-                <select name="c_sub_source" id="" >
-                    <option value="{{ eachc.Sub_Source_id }}" label="{{ eachc.Sub_Source }}" selected>{{ eachc.Sub_Source }}</option>
-                    {% if sub_source_list %}
-                        {% for eachsub_source in sub_source_list %}
-                            {% if eachsub_source.pk != eachc.Sub_Source_id %}
-                            <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
-                            {% endif %}                       
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-                 </div>
+               
+                 <div>
+                    <label for="" >Date of Joining</label>
+                    <input type="date" value="{{ eachc.Date_of_Joining }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+               
+                </div>
                 <div class="margin-left">
                 <label for="" >Entity</label>
 
@@ -478,6 +480,24 @@
 <script>
     $(document).ready(function(){
         showMe('Candidate', 'can-expand');
+        $('#hiring').change(function() {
+            var selectedvalue = $(this).val();
+            if (selectedvalue == '1'){
+                $('#c_replacement').attr("disabled", false);
+            } else {
+                $('#c_replacement').prop("value", '');                
+                $('#c_replacement').attr("disabled", true);
+            }
+        });
+        $('#referral').change(function() {
+            var selectedvalue = $(this).val();
+            if (selectedvalue == '1'){
+                $('#c_referral').attr("disabled", false);
+            } else {
+                $('#c_referral').prop("value", '');
+                $('#c_referral').attr("disabled", true);
+            }
+        });
         $('#c_contact, #c_emergency').on('keyup', function () {
         if ($('#c_contact').val() == $('#c_emergency').val()) {
             $('#message').html('Contact No. and Emergency No. Cannot be same.').css('color', 'red');

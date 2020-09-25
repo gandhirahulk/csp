@@ -41,7 +41,7 @@
                 <th>Team</th>
 
                 <th>Sub Team</th>
-
+                <th>Skill Type</th>
                 <th>Designation</th>
                 <th>Action</th>
             </tr>
@@ -60,6 +60,8 @@
                         <td>{{ eachdesignation.fk_sub_team_code.fk_team_code }}</td>
 
                         <td>{{ eachdesignation.fk_sub_team_code }}</td>
+                        <td>{{ eachdesignation.fk_skill_code }}</td>
+
 
                         <td>{{ eachdesignation.designation_name }}</td>
                         <td class="action-col">
@@ -158,6 +160,19 @@
                         {% endfor %}                
                     {% endif %}
                 </select>
+            </div>
+            <div class="forms-input-holder">
+                <label for="">Skill Type</label>
+    
+                    <select name="skill" required="true">
+                        <option value="" disabled selected  class="empty" label=" "></option>
+    
+                        {% if skill_list %}
+                            {% for eachskill in skill_list %}
+                                <option value="{{ eachskill.pk }}" label="{{ eachskill.skill_name }}">{{ eachskill.skill_name }}</option>
+                            {% endfor %}                
+                        {% endif %}
+                    </select>
             </div>
             <div class="forms-input-holder">
             <label for="">Designation</label>
