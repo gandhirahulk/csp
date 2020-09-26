@@ -1775,85 +1775,86 @@ def create_vendor(request):
         vendor_phone = request.POST.get("vendor_phone")
         vendor_email = request.POST.get("vendor_email")
         vendor_email_pwd = request.POST.get("vendor_email_pwd")
-        entity = request.POST.get("vendor_entity")
+        entity = request.POST.getlist("vendor_entity")
+        print(entity)
         if entity == None or entity == '':
             messages.warning(request, "Choose Entity And Try Again")
             return redirect('csp_app:vendor')
-        entity_fk = master_entity.objects.get(pk=entity)
+        for i in entity:
+            entity_fk = master_entity.objects.get(pk=i)
         
-        try:
-            print(1)
-            duplicate_vendor_entity_spoc = master_vendor.objects.filter(vendor_name=vendor_name , fk_entity_code= entity, spoc_email_id=vendor_spoc_email, status = active_status)
-            if duplicate_vendor_entity_spoc:
-                messages.error(request, "Vendor Already Exist")
-                return redirect('csp_app:vendor')
-           
-        except ObjectDoesNotExist:
-            print(2)
-        try:
-            duplicate_vendor_email = master_vendor.objects.filter( vendor_email_id= vendor_email, fk_entity_code= entity, status = active_status)
-            if duplicate_vendor_email:
-                messages.error(request, "Vendor Email ID Already Exist")
-                return redirect('csp_app:vendor')
-            print(3)
-        except ObjectDoesNotExist:
-            print(4)
-        try:
-            duplicate_vendor_entity = master_vendor.objects.filter( vendor_name=vendor_name , fk_entity_code= entity, status = active_status)
-            if duplicate_vendor_entity:                
-                messages.error(request, "Vendor Already Exist")
-                return redirect('csp_app:vendor')
-            print(5)
-        except ObjectDoesNotExist:   
-            print('here') 
-        try:      
+            try:
+                duplicate_vendor_entity_spoc = master_vendor.objects.filter(vendor_name=vendor_name , fk_entity_code= entity, spoc_email_id=vendor_spoc_email, status = active_status)
+                if duplicate_vendor_entity_spoc:
+                    messages.error(request, "Vendor Already Exist")
+                    return redirect('csp_app:vendor')
             
-            
-            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
-            new_vendor.save()
-            
-            newadmintemplate = render_to_string('csp_app/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
-            our_email = EmailMessage(
-                'CSP_APP: New vendor account created.',
-                newadmintemplate,
-                settings.EMAIL_HOST_USER,
-                [ request.user.email, 'sadaf.shaikh@udaan.com' ],
-            ) 
-            our_email.fail_silently = False
-            our_email.send() 
-            assign_group = Group.objects.get(name='Vendor')         
-            user = User.objects.create_user(vendor_email)
-            # password = User.objects.make_random_password()
-            user.password = vendor_email_pwd
-            user.set_password(user.password)
-            user.first_name = vendor_name 
-            user.email = vendor_email
-            assign_group.user_set.add(user)     
-            user.save()
-            newtemplate = render_to_string('csp_app/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': vendor_email_pwd})
-            our_email = EmailMessage(
-                'CSP_APP: New vendor account created.',
-                newtemplate,
-                settings.EMAIL_HOST_USER,
-                [ vendor_email],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()
-            messages.success(request, "Vendor Account Created. Check Mail For Credentials")            
-            return redirect('csp_app:vendor')
-        except IntegrityError:
-            template = render_to_string('csp_app/use_old_password_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk})
-            our_email = EmailMessage(
-                'CSP_APP',
-                template,
-                settings.EMAIL_HOST_USER,
-                [ vendor_email, 'sadaf.shaikh@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()      
-            messages.success(request, "Vendor Account Created. Check Mail For Credentials")            
-            return redirect('csp_app:vendor')
-       
+            except ObjectDoesNotExist:
+                print(2)
+            try:
+                duplicate_vendor_email = master_vendor.objects.filter( vendor_email_id= vendor_email, fk_entity_code= entity, status = active_status)
+                if duplicate_vendor_email:
+                    messages.error(request, "Vendor Email ID Already Exist")
+                    return redirect('csp_app:vendor')
+                print(3)
+            except ObjectDoesNotExist:
+                print(4)
+            try:
+                duplicate_vendor_entity = master_vendor.objects.filter( vendor_name=vendor_name , fk_entity_code= entity, status = active_status)
+                if duplicate_vendor_entity:                
+                    messages.error(request, "Vendor Already Exist")
+                    return redirect('csp_app:vendor')
+                print(5)
+            except ObjectDoesNotExist:   
+                print('here') 
+            try:      
+                
+                
+                new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
+                new_vendor.save()
+                
+                newadmintemplate = render_to_string('csp_app/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
+                our_email = EmailMessage(
+                    'CSP_APP: New vendor account created.',
+                    newadmintemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ request.user.email, 'sadaf.shaikh@udaan.com' ],
+                ) 
+                our_email.fail_silently = False
+                our_email.send() 
+                assign_group = Group.objects.get(name='Vendor')         
+                user = User.objects.create_user(vendor_email)
+                # password = User.objects.make_random_password()
+                user.password = vendor_email_pwd
+                user.set_password(user.password)
+                user.first_name = vendor_name 
+                user.email = vendor_email
+                assign_group.user_set.add(user)     
+                user.save()
+                newtemplate = render_to_string('csp_app/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': vendor_email_pwd})
+                our_email = EmailMessage(
+                    'CSP_APP: New vendor account created.',
+                    newtemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ vendor_email],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+                messages.success(request, "Vendor Account Created. Check Mail For Credentials")            
+                return redirect('csp_app:vendor')
+            except IntegrityError:
+                template = render_to_string('csp_app/use_old_password_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk})
+                our_email = EmailMessage(
+                    'CSP_APP',
+                    template,
+                    settings.EMAIL_HOST_USER,
+                    [ vendor_email, 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()      
+                messages.success(request, "Vendor Account Created. Check Mail For Credentials")            
+                return redirect('csp_app:vendor')
+        
     return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates})
 
 

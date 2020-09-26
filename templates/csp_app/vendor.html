@@ -152,7 +152,7 @@
 
         <div class="forms-input-holder">
             <label for="">Entity</label>
-            <input type="search" name="" id="search-entity" placeholder="Search Entity" onkeyup="filterEntity('search-entity','entity-ul')">
+            <input type="search" name="" id="search-entity" placeholder="Search By Entity Name" onkeyup="filterEntity('search-entity','entity-ul')">
             
             <!-- <select name="vendor_entity" required="true">
                 <option value="" disabled selected>Select Entity</option>
@@ -172,7 +172,7 @@
                         width: 33%;">    
                         <span>
 
-                            <input type="checkbox" name="" id=""> {{ eachentity.entity_name }}  
+                            <input type="checkbox" name="vendor_entity" value="{{ eachentity.pk }}" id=""> {{ eachentity.entity_name }}  
                         </span>
 
                         </div>  
