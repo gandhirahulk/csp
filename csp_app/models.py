@@ -349,7 +349,7 @@ class master_candidate(models.Model):
 
 class csp_candidate_code(models.Model):
     pk_count = models.AutoField(primary_key=True)
-    candidate_code = models.CharField(max_length=10, default='C000000004')
+    candidate_code = models.CharField(max_length=10)
 
     def __str__(self):
         return self.candidate_code
