@@ -1,0 +1,132 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Minimum Wages {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>   
+        <a href="{% url 'csp_app:minimumwages' %}" class="tab-btns active-tab">Minimum Wages</a>
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_wage" class="add-new-btn">New Minum Wages</button>
+
+</div>
+
+<div class="table-container">
+  
+    <table id="wages-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>State</th>
+                <th>Zone</th>
+                <th>Skill Type</th>
+                <th>Minimum Wage</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if wage_list %}
+                {% for eachwage in wage_list %}
+
+                    <tr>
+                        <td>{{ eachwage.fk_state_code }}</td>
+                        <td>{{ eachwage.fk_zone_code }}</td>
+                        <td>{{ eachwage.fk_skill_code }}</td>
+                        <td>{{ eachwage.wages }}</td>
+
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachwage.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_minimumwages' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_minimumwages' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachwage.pk }}', 'delete_wage_form')"> </form>
+                        </td>
+                    
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachwage in wage_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+<div id="view_entity_form" class="form_modal" style="padding-top: 7%;display: block;">
+
+    <div class="view_form_header">
+        <div class="forms-heading">
+            <h2>Minimum Wage Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_wage_list %}
+        {% for eachwage in view_wage_list %}
+        <div class="view_form_content">
+            <fieldset class="fds">
+                <legend>Basic Details</legend>
+                <table>
+                    <tr>
+                        <td><label for="">State : </label> {{ eachwage.fk_state_code}}</td>
+                    </tr>
+                    <tr>
+                        <td><label for="">Zone : </label> {{ eachwage.fk_zone_code}}</td>
+                    </tr>
+                    <tr>
+                        <td><label for="">Skill Type : </label> {{ eachwage.fk_skill_code}}</td>
+                    </tr>
+                    <tr>
+                        <td><label for="">Minimum Wage : </label> {{ eachwage.wages }}</td>
+                    </tr>
+                </table>                    
+            </fieldset>
+            <fieldset class="fds">
+                <legend>Other Details</legend>
+                <table>
+                    <tr>
+                        <td><label for="">Created By : </label> {{ eachwage.created_by }}</td>
+                    </tr>
+                    <tr>
+                        <td><label for="">Created Date Time : </label> {{ eachwage.created_date_time }}</td>
+
+                    </tr>
+                    <tr>
+                        <td><label for="">Modified By : </label> {{ eachwage.modified_by }}</td>
+                    </tr>
+                    <tr>
+                        <td><label for="">Modified Date Time : </label> {{ eachwage.modified_date_time }}</td>
+
+                    </tr>
+                   
+                </table>                    
+            </fieldset>
+                     
+        </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="view_form_footer">
+        <button onclick="location.href = '/csp_minimum_wages/'" class="forms-save-btn">Close</button>
+    </div>
+             
+  
+  </div>
+
+{% endblock %}

@@ -10,7 +10,7 @@ from django.db.utils import IntegrityError
 from csp_app.models import status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
                             sub_source, salary_type, gender, laptop_allocation, candidate_status, onboarding_status, vendor_status, csp_candidate_code, \
-                            mandatory_documents, candidate_document, skill_type
+                            mandatory_documents, candidate_document, skill_type, master_minimum_wages, states, zones
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
@@ -21,22 +21,7 @@ from django.utils import timezone
 from django.contrib.auth.tokens import default_token_generator
 
 a = default_token_generator
-print(a)
-print(type(a))
 
-
-# from django.contrib.auth.tokens import PasswordResetTokenGenerator
-# import six
-
-# class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
-#     def _make_hash_value(self, user, timestamp):
-#         return (
-#             six.text_type(user.pk) + six.text_type(timestamp) +
-#             six.text_type(user.profile.email_confirmed)
-#         )
-
-# account_activation_token = AccountActivationTokenGenerator()
-# print(account_activation_token)
 
 
 
@@ -52,6 +37,172 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def minimum_wages(request):
+    try:
+        wage_list = master_minimum_wages.objects.filter(status=active_status)
+        state_list = states.objects.all().order_by('state_name')
+        zone_list = zones.objects.all().order_by('zone_name')
+        skill_list = skill_type.objects.all().order_by('skill_name')
+        return render(request, 'csp_app/minimum_wages.html', {'all_active_candidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def create_wages(request):
+    try:
+        if request.method == 'POST':
+            state = request.POST.get('state')
+            zone = request.POST.get('zone')
+            skill = request.POST.get('skill')
+            wage = request.POST.get('wage')
+            if state == None or state == '':
+                messages.warning(request, "Choose  State And Try Again")
+                return redirect("csp_app:minimumwages")
+            state_fk = states.objects.get(pk= state)
+            if zone == None or zone == '':
+                messages.warning(request, "Choose  Zone And Try Again")
+                return redirect("csp_app:minimumwages")
+            zone_fk = zones.objects.get(pk= zone)
+            if skill == None or skill == '':
+                messages.warning(request, "Choose  Skill And Try Again")
+                return redirect("csp_app:minimumwages")
+            skill_fk = skill_type.objects.get(pk= skill)
+            if wage == None or wage == ' ':
+                messages.warning(request, "Choose  Wage And Try Again")
+                return redirect("csp_app:minimumwages")
+            try:
+                dup_wage = master_minimum_wages.objects.get(fk_state_code= state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, status= active_status)
+                messages.error(request, "Minimum wages Already Exist")
+                return redirect("csp_app:minimumwages")
+            except ObjectDoesNotExist:
+                new_wage = master_minimum_wages(fk_state_code= state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, created_by= request.user)
+                new_wage.save()
+                messages.success(request, "Minimum wages saved succesfully")
+                return redirect("csp_app:minimumwages")
+
+        return render(request, 'csp_app/minimum_wages.html', {'all_active_candidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def delete_wages(request):
+    try:
+        if request.method == 'POST':
+            wage_id = request.POST.get("delete_id")
+        
+            selected_wage = master_minimum_wages.objects.get(pk = wage_id)
+            selected_wage.modified_by = str(request.user)
+            selected_wage.modified_date_time = timezone.localtime()
+            selected_wage.status = deactive_status
+            selected_wage.save()
+            messages.success(request, "Minimum Wage Deleted Successfully")
+            return redirect('csp_app:minimumwages')
+        return render(request, 'csp_app/minimum_wages.html', {'all_active_candidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+        
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_wages(request):
+    wage_list = master_minimum_wages.objects.filter(status=active_status)
+    state_list = states.objects.all().order_by('state_name')
+    zone_list = zones.objects.all().order_by('zone_name')
+    skill_list = skill_type.objects.all().order_by('skill_name')
+    try:
+        if request.method == 'POST':
+            wage_id = request.POST.get("view_id")
+            view_wage_list = master_minimum_wages.objects.filter(pk = wage_id)
+        return render(request, 'csp_app/view_minimum_wages.html', {'all_active_candidates': all_active_candidates,'view_wage_list': view_wage_list, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+        
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def view_edit_wages(request):
+    wage_list = master_minimum_wages.objects.filter(status=active_status)
+    state_list = states.objects.all().order_by('state_name')
+    zone_list = zones.objects.all().order_by('zone_name')
+    skill_list = skill_type.objects.all().order_by('skill_name')
+    
+    try:
+        if request.method == 'POST':
+            wage_id = request.POST.get("view_id")
+            selected_wage = master_minimum_wages.objects.filter(pk = wage_id)         
+           
+        return render(request, 'csp_app/edit_minimum_wages.html', {'all_active_candidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def save_edit_wages(request):
+    wage_list = master_minimum_wages.objects.filter(status=active_status)
+    state_list = states.objects.all().order_by('state_name')
+    zone_list = zones.objects.all().order_by('zone_name')
+    skill_list = skill_type.objects.all().order_by('skill_name')
+    try:
+        if request.method == 'POST':
+           if request.POST.get("e_id") != '':
+                selected = master_minimum_wages.objects.get(pk = request.POST.get("e_id"))
+                selected_wage = master_minimum_wages.objects.filter(pk = request.POST.get("e_id"))
+                print("here")
+                if request.POST.get("wage") != None:
+                    state = request.POST.get('state')
+                    zone = request.POST.get('zone')
+                    skill = request.POST.get('skill')
+                    wage = request.POST.get('wage')
+                    print("no here")
+                    if state == None or state == '':
+                        messages.warning(request, "Choose  State And Try Again")
+                        return redirect("csp_app:minimumwages")
+                    state_fk = states.objects.get(pk= state)
+                    print(1)
+                    if zone == None or zone == '':
+                        messages.warning(request, "Choose  Zone And Try Again")
+                        return redirect("csp_app:minimumwages")
+                    zone_fk = zones.objects.get(pk= zone)
+                    print(2)
+                    if skill == None or skill == '':
+                        messages.warning(request, "Choose  Skill And Try Again")
+                        return redirect("csp_app:minimumwages")
+                    skill_fk = skill_type.objects.get(pk= skill)
+                    print(3)
+                    if wage == None or wage == ' ':
+                        messages.warning(request, "Choose  Wage And Try Again")
+                        return redirect("csp_app:minimumwages")
+                    print(4)
+                    try:
+                        d = master_minimum_wages.objects.get(fk_state_code=state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, status= active_status)
+                        messages.error(request, "Minimum Wages Already Exist")
+                        return redirect('csp_app:minimumwages')
+                        print(5)
+                        
+                    except ObjectDoesNotExist:
+                        print("herekkkk")
+                        selected.fk_state_code = state_fk
+                        selected.fk_zone_code = zone_fk
+                        selected.fk_skill_code = skill_fk
+                        selected.wages = wage
+                        selected.modified_by = str(request.user)
+                        selected.modified_date_time = timezone.localtime()
+                        selected.save()
+                        messages.success(request, "Minimum Wages Updated Successfully")
+                        return redirect('csp_app:minimumwages')
+                else:
+                    messages.warning(request, "Wages Cannot Be Blank")
+                    return redirect('csp_app:minimumwages')         
+           
+        return render(request, 'csp_app/edit_minimum_wages.html', {'all_active_candidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+    #  
 
 
 def vendor_candidates(usrname):

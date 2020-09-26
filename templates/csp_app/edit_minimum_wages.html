@@ -1,0 +1,173 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Minimum Wages {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
+        <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
+        <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
+        <a href="{% url 'csp_app:team' %}" class="tab-btns">Team</a>    
+        <a href="{% url 'csp_app:subteam' %}" class="tab-btns">Sub Team</a>    
+        <a href="{% url 'csp_app:designation' %}" class="tab-btns">Designation</a>    
+        <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
+        <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
+        <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>   
+        <a href="{% url 'csp_app:minimumwages' %}" class="tab-btns active-tab">Minimum Wages</a>
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="tab-container">
+    <button id="new_wage" class="add-new-btn">New Minum Wages</button>
+
+</div>
+
+<div class="table-container">
+  
+    <table id="wages-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>State</th>
+                <th>Zone</th>
+                <th>Skill Type</th>
+                <th>Minimum Wage</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if wage_list %}
+                {% for eachwage in wage_list %}
+
+                    <tr>
+                        <td>{{ eachwage.fk_state_code }}</td>
+                        <td>{{ eachwage.fk_zone_code }}</td>
+                        <td>{{ eachwage.fk_skill_code }}</td>
+                        <td>{{ eachwage.wages }}</td>
+
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachwage.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_minimumwages' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_minimumwages' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachwage.pk }}', 'delete_wage_form')"> </form>
+                        </td>
+                    
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachwage in wage_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>
+
+<div id="view_entity_form" class="form_modal" style="display: block;padding-top: 10%;">
+
+    <div class="form_header">
+        <div class="forms-heading">
+            <h2>Edit Minimum Wage Details</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>            
+    </div>
+    {% if view_wage_list %}
+        {% for eachwage in view_wage_list %}
+            <div class="form_content">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="e_id" value="{{ eachwage.pk}}">
+                    <div class="forms-input-holder">   
+                        <label for="state">State</label>
+                        <select name="state" id="">
+                            <option value="{{ eachwage.fk_state_code_id }}" label="{{ eachwage.fk_state_code }}" selected>{{ eachwage.fk_state_code }}</option>
+                            {% if state_list %}
+                                {% for eachstate in state_list %}
+                                    {% if eachstate.pk != eachwage.fk_state_code_id %}
+                                        <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.state_name }}</option>
+                                    {% endif %}                                    
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div> 
+                    <div class="forms-input-holder">   
+                        <label for="zone">Zone</label>
+                        <select name="zone" id="">
+                            <option value="{{ eachwage.fk_zone_code_id }}" label="{{ eachwage.fk_zone_code }}" selected>{{ eachwage.fk_zone_code }}</option>
+                            {% if zone_list %}
+                                {% for eachzone in zone_list %}
+                                    {% if eachzone.pk != eachwage.fk_zone_code_id %}
+                                        <option value="{{ eachzone.pk }}" label="{{ eachzone.zone_name }}">{{ eachzone.zone_name }}</option>
+                                    {% endif %}                                    
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div> 
+                    <div class="forms-input-holder">   
+                        <label for="skill">Skill Type</label>
+                        <select name="skill" id="">
+                            <option value="{{ eachwage.fk_skill_code_id }}" label="{{ eachwage.fk_skill_code }}" selected>{{ eachwage.fk_skill_code }}</option>
+                            {% if skill_list %}
+                                {% for eachskill in skill_list %}
+                                    {% if eachskill.pk != eachwage.fk_skill_code_id %}
+                                        <option value="{{ eachskill.pk }}" label="{{ eachskill.skill_name }}">{{ eachskill.skill_name }}</option>
+                                    {% endif %}                                    
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div> 
+                    <div class="forms-input-holder">   
+                        <label for="wage">Minimum Wage</label>
+                        <input type="text" value="{{ eachwage.wages }}" placeholder="Minimum Wage Value" name="wage" id="wage" title="Minimum Wage Value" required="true" maxlength="20">
+                    </div>              
+                   
+            </div>
+        {% endfor %}
+    {% endif %} 
+    <div class="form_footer">
+            <button type="submit" class="edit-forms-save-btn" formaction="{% url 'csp_app:save_edit_minimumwages' %}">Save Changes</button>
+        </form>
+        <button onclick="location.href = '/csp_minimum_wages/'" class="edit-forms-close-btn">Close</button>
+    </div>
+             
+  
+</div>
+
+<script>
+    $(document).ready(function(){
+        showMe('Organization', 'org-expand');
+             
+    })
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
+</script>
+<script type="text/javascript">
+      
+    document.addEventListener('DOMContentLoaded', function() { 
+     
+            var input = document.getElementById('wage');
+            input.addEventListener('keydown', function(e){      
+                var input = e.target;
+                var val = input.value;
+                var end = input.selectionEnd;
+                
+                if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+                    e.preventDefault();
+                    return false;
+                }      
+            });
+    });
+</script>
+
+{% endblock %}

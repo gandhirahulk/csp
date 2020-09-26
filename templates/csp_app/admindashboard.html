@@ -58,6 +58,8 @@
         $('#user-table').DataTable();
         $('#candidate-table').DataTable();
         $('#document-table').DataTable();
+        $('#wages-table').DataTable();
+
 
         $('#c_firstname').bind('keypress', onlyAlphabets);
         $('#c_middlename').bind('keypress', onlyAlphabets);
@@ -77,6 +79,8 @@
         $('#c_emergency').bind('keypress', onlyNumbers);
 
         $('#c_salary').bind('keypress', money);
+        $('#wage').bind('keypress', money);
+
 
         $('#c_pan').keyup(function() { 
           this.value = this.value.toLocaleUpperCase(); 

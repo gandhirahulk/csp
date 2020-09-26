@@ -23,6 +23,14 @@ urlpatterns = [
     path('csp_admin/csp_user/new_user/', views.create_user, name= 'create_user'),
     path('csp_admin/csp_disable_user/', views.disable_user, name= 'disable_user'),
     path('csp_admin/csp_enable_user/', views.enable_user, name= 'enable_user'),
+
+    path('csp_minimum_wages/', views.minimum_wages, name="minimumwages"),
+    path('csp_minimum_wages/new_minimum_wages/', views.create_wages, name= 'create_minimumwages'),
+    path('csp_minimum_wages/edit_minimum_wages/', views.view_edit_wages, name= 'edit_minimumwages'),
+    path('csp_minimum_wages/save_edit_minimum_wages/', views.save_edit_wages, name= 'save_edit_minimumwages'),
+    path('csp_minimum_wages/view_minimum_wages/', views.view_wages, name= 'view_minimumwages'),
+    path('csp_minimum_wages/delete_minimum_wages/', views.delete_wages, name= 'delete_minimumwages'),
+
     
     path('csp_candidates/', views.candidate, name= 'candidate'),
     path('csp_candidates/new_candidate/', views.new_candidate, name= 'new_candidate'),

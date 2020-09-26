@@ -18,6 +18,36 @@ class skill_type(models.Model):
     def __str__(self):
         return self.skill_name
 
+class states(models.Model):
+    pk_state_code = models.AutoField(primary_key=True)
+    state_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.state_name
+
+class zones(models.Model):
+    pk_zone_code = models.AutoField(primary_key=True)
+    zone_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.zone_name
+
+class master_minimum_wages(models.Model):
+    pk_minimum_wages_code = models.AutoField(primary_key=True)
+    fk_state_code = models.ForeignKey(states, on_delete=models.CASCADE)
+    fk_zone_code = models.ForeignKey(zones, on_delete=models.CASCADE)
+    fk_skill_code = models.ForeignKey(skill_type, on_delete=models.CASCADE)
+    wages = models.FloatField()
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+
+
+    
+
 class master_entity(models.Model):
     pk_entity_code = models.AutoField(primary_key=True)
     entity_name = models.CharField(max_length=100)
