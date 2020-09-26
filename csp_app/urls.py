@@ -63,6 +63,8 @@ urlpatterns = [
     path('csp_entity/delete_entity/', views.delete_entity, name= 'delete_entity'),
 
     path('csp_vendor/', views.vendor, name= 'vendor'),
+    path('csp_vendor/create_new/', views.new_vendor, name= 'new_vendor'),
+
     path('csp_vendor/new_vendor/', views.create_vendor, name= 'create_vendor'),
     path('csp_vendor/edit_vendor/', views.view_edit_vendor, name= 'edit_vendor'),
     path('csp_vendor/save_edit_vendor/', views.save_edit_vendor, name= 'save_edit_vendor'),

@@ -60,6 +60,14 @@ class master_entity(models.Model):
     def __str__(self):
         return self.entity_name
 
+
+
+class port_list(models.Model):
+    pk_port_code = models.AutoField(primary_key=True)
+    port = models.IntegerField()
+    ssl = models.BooleanField()
+    tls = models.BooleanField()
+
 class master_vendor(models.Model):
     pk_vendor_code = models.AutoField(primary_key=True)
     vendor_name = models.CharField(max_length=100)
@@ -69,6 +77,8 @@ class master_vendor(models.Model):
     vendor_phone_number = models.CharField(max_length=10)
     vendor_email_id = models.EmailField()
     vendor_email_id_password = models.CharField(max_length=100)
+    vendor_smtp = models.CharField(max_length=100)
+    vendor_email_port = models.ForeignKey(port_list, on_delete= models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
     modified_by = models.CharField(max_length=100, null=True,blank=True)

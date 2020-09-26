@@ -10,7 +10,7 @@ from django.db.utils import IntegrityError
 from csp_app.models import status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
                             sub_source, salary_type, gender, laptop_allocation, candidate_status, onboarding_status, vendor_status, csp_candidate_code, \
-                            mandatory_documents, candidate_document, skill_type, master_minimum_wages, states, zones
+                            mandatory_documents, candidate_document, skill_type, master_minimum_wages, states, zones, port_list
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
@@ -1638,8 +1638,18 @@ def create_entity(request):
 def vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name').order_by('entity_name')
     vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
+    ports = port_list.objects.all()
+    return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
 
-    return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list})
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def new_vendor(request):
+    entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name').order_by('entity_name')
+    vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
+    ports = port_list.objects.all()
+    return render(request, 'csp_app/new_vendor.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
+
+
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())

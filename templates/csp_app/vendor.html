@@ -79,7 +79,7 @@
 </div>
 
 
-<div id="vendor_form" class="form_modal" style="padding-top: 2%;">
+<div id="vendor_form" class="form_modal" style="padding-top: 2%;overflow: hidden;">
   <div class="form_header">
     <div class="forms-heading" style="text-align: center;">
         <h2>Create New Vendor</h2>
@@ -87,22 +87,11 @@
     <div class="hr_line">&nbsp;</div>
    
   </div>
-  <div class="form_content">
+  <div class="form_content" style="height: 70vh;">
     <form method="POST">
         {% csrf_token %}
 
-        <div class="forms-input-holder">
-        <label for="">Entity</label>
-
-            <select name="vendor_entity" required="true">
-                <option value="" disabled selected>Select Entity</option>
-                {% if entity_list %}
-                    {% for eachentity in entity_list %}
-                        <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
-                    {% endfor %}                
-                {% endif %}
-            </select>
-        </div>
+        
         <!-- <label for="vendor_name">Vendor</label> -->
         <div class="forms-input-holder">
             <label for="vendor_name">Vendor Name</label>
@@ -135,6 +124,22 @@
             <input type="password" placeholder="Email Password" name="vendor_email_pwd" required="true" maxlength="20" minlength="6">
         </div>
         <div class="forms-input-holder">
+            <label for="">SMTP Name</label>
+    
+            <input type="text" placeholder="SMTP Name" name="smtp_name" required="true" maxlength="40" minlength="10">
+        </div>
+        <div class="forms-input-holder">
+            <label for="">PORT</label>
+            <select name="mail_port" required="true">
+                <option value="" disabled selected></option>
+                {% if port_list %}
+                    {% for eachport in port_list %}
+                        <option value="{{ eachport.pk }}" label="{{ eachport.port }}">{{ eachport.port }}</option>
+                    {% endfor %}                
+                {% endif %}
+            </select>
+        </div>
+        <div class="forms-input-holder">
         <label for="">SPOC Name</label>
 
             <input type="text" placeholder="SPOC Name" id="spoc" name="vendor_spoc" pattern="[A-Za-z\s]{2,}" title="Numbers are not allowed" required="true">
@@ -143,6 +148,38 @@
         <label for="">SPOC Email ID</label>
 
             <input type="email" placeholder="SPOC Email ID" name="vendor_spoc_email" id="spocemail" required="true">
+        </div>
+
+        <div class="forms-input-holder">
+            <label for="">Entity</label>
+            <input type="search" name="" id="search-entity" placeholder="Search Entity" onkeyup="filterEntity('search-entity','entity-ul')">
+            
+            <!-- <select name="vendor_entity" required="true">
+                <option value="" disabled selected>Select Entity</option>
+                {% if entity_list %}
+                    {% for eachentity in entity_list %}
+                        <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                    {% endfor %}                
+                {% endif %}
+            </select> -->
+        </div>
+        <div class="entity-holder" id="entity-ul">
+            <!-- <ul > -->
+            {% if entity_list %}
+                {% for eachentity in entity_list %}
+                    <!-- <li>                 -->
+                        <div style="flex-grow: 1;
+                        width: 33%;">    
+                        <span>
+
+                            <input type="checkbox" name="" id=""> {{ eachentity.entity_name }}  
+                        </span>
+
+                        </div>  
+                    <!-- </li> -->
+                {% endfor %}                
+            {% endif %} 
+            <!-- </ul>          -->
         </div>
         
   </div>
@@ -198,6 +235,22 @@
     function showDelete(itemid, formid){
         document.getElementById(formid).style.display = "block";
         document.getElementById("delete_me").setAttribute("value", itemid);
+    }
+    function filterEntity(inputid, ulid) {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById(inputid);
+        filter = input.value.toUpperCase();
+        ul = document.getElementById(ulid);
+        li = ul.getElementsByTagName("div");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("span")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
     }
     document.addEventListener('DOMContentLoaded', function() {        
         var input = document.getElementById('email');

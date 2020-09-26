@@ -90,6 +90,20 @@ input:-webkit-autofill+label.move-out {
     font-size: 14px;
 }
 
+.form_content .entity-holder{
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 10px;
+}
+
+.entity-holder ul li div{
+  flex-grow: 1;
+  width: 33%;
+}
+
+.entity-holder input[type="checkbox"]{
+  display: inline;
+}
 
 
 .forms-input-holder > input{
