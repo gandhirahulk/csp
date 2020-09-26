@@ -299,19 +299,19 @@ class master_candidate(models.Model):
     First_Name = models.CharField(max_length=100)
     Middle_Name = models.CharField(max_length=100)
     Last_Name = models.CharField(max_length=100)
-    Date_of_Birth = models.DateField()
+    Date_of_Birth = models.CharField(max_length=20)
     Contact_Number = models.CharField(max_length=10)
     Emergency_Contact_Number = models.CharField(max_length=10)
     Personal_Email_Id = models.CharField( max_length=100)
     Gender = models.ForeignKey(gender, on_delete=models.CASCADE)
     Father_Name = models.CharField(max_length=100)
-    Father_Date_of_Birth = models.DateField()
+    Father_Date_of_Birth = models.CharField(max_length=20)
     Aadhaar_Number = models.CharField(max_length=12)
     PAN_Number = models.CharField(max_length=10)
     Type_of_Hiring = models.ForeignKey( hiring_type, on_delete=models.CASCADE)
-    Date_of_Joining = models.DateField()
-    Replacement = models.CharField(max_length=20) #should come from employees table ?
-    Referral = models.CharField(max_length=20) #should come from employees table ?
+    Date_of_Joining = models.CharField(max_length=20)
+    Replacement = models.CharField(max_length=20, null=True, blank=True) #should come from employees table ?
+    Referral = models.CharField(max_length=20, null=True, blank=True) #should come from employees table ?
     Sub_Source = models.ForeignKey(sub_source, on_delete=models.CASCADE)
     fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE)
     fk_vendor_code = models.ForeignKey(master_vendor, on_delete=models.CASCADE)

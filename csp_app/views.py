@@ -152,40 +152,33 @@ def save_edit_wages(request):
            if request.POST.get("e_id") != '':
                 selected = master_minimum_wages.objects.get(pk = request.POST.get("e_id"))
                 selected_wage = master_minimum_wages.objects.filter(pk = request.POST.get("e_id"))
-                print("here")
                 if request.POST.get("wage") != None:
                     state = request.POST.get('state')
                     zone = request.POST.get('zone')
                     skill = request.POST.get('skill')
                     wage = request.POST.get('wage')
-                    print("no here")
                     if state == None or state == '':
                         messages.warning(request, "Choose  State And Try Again")
                         return redirect("csp_app:minimumwages")
                     state_fk = states.objects.get(pk= state)
-                    print(1)
                     if zone == None or zone == '':
                         messages.warning(request, "Choose  Zone And Try Again")
                         return redirect("csp_app:minimumwages")
                     zone_fk = zones.objects.get(pk= zone)
-                    print(2)
                     if skill == None or skill == '':
                         messages.warning(request, "Choose  Skill And Try Again")
                         return redirect("csp_app:minimumwages")
                     skill_fk = skill_type.objects.get(pk= skill)
-                    print(3)
                     if wage == None or wage == ' ':
                         messages.warning(request, "Choose  Wage And Try Again")
                         return redirect("csp_app:minimumwages")
-                    print(4)
                     try:
                         d = master_minimum_wages.objects.get(fk_state_code=state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, status= active_status)
                         messages.error(request, "Minimum Wages Already Exist")
                         return redirect('csp_app:minimumwages')
-                        print(5)
+                        # print(5)
                         
                     except ObjectDoesNotExist:
-                        print("herekkkk")
                         selected.fk_state_code = state_fk
                         selected.fk_zone_code = zone_fk
                         selected.fk_skill_code = skill_fk
