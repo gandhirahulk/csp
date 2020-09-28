@@ -1,3 +1,9 @@
+.export-btn{
+  padding-right: 20px;
+  float: right;
+  color: #bf0711;
+}
+
 .action-col{
   text-align: center;
 }

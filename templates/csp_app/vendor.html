@@ -16,6 +16,8 @@
         <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
         <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
         <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+        <a href="{% url 'csp_app:minimumwages' %}" class="tab-btns">Minimum Wages</a>
+
     </div>
 
 {% endblock %}
@@ -27,9 +29,11 @@
 
 </div>
 
-
+<!-- <a href="{% url 'csp_app:export_city' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a> -->
+    
 <div class="table-container">
-  
+    <a href="{% url 'csp_app:export_vendor' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
+    
     <table id="vendor-table" class="dataTable">
         <thead>
             <tr>
@@ -55,7 +59,7 @@
                         <td>{{ eachvendor.spoc_email_id }}</td>
                         <td>{{ eachvendor.fk_entity_code }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> | <input value="delete" onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')"> </form>
                         </td>
                     </tr>
 

@@ -1,12 +1,31 @@
 from django.urls import path
 from csp_app import views
 from csp_app import execute
+from csp_app import exports
 from django.conf import settings
 from django.conf.urls.static import static
 
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+
+    path('export_entity/', exports.export_entity, name='export_entity'),
+    path('export_department/', exports.export_department, name='export_department'),
+    path('export_function/', exports.export_function, name='export_function'),
+    path('export_team/', exports.export_team, name='export_team'),
+    path('export_subteam/', exports.export_sub_team, name='export_subteam'),
+    path('export_designation/', exports.export_designation, name='export_designation'),
+    path('export_minimum_wages/', exports.export_minimum_wage, name='export_minimumwages'),
+    path('export_vendor/', exports.export_vendor, name='export_vendor'),
+
+
+    path('export_location/', exports.export_location, name='export_location'),
+    path('export_state/', exports.export_state, name='export_state'),
+    path('export_city/', exports.export_city, name='export_city'),
+    path('export_region/', exports.export_region, name='export_region'),
+    path('export_location/', exports.export_location, name='export_location'),
+
+
     path('candidates/', views.index, name='index'),
 
     path('', views.csp_login, name= 'login'),

@@ -17,8 +17,9 @@ from django.contrib.auth.decorators import login_required, permission_required, 
 from django.core.files.storage import FileSystemStorage
 from itertools import chain
 from django.utils import timezone
-
 from django.contrib.auth.tokens import default_token_generator
+import xlwt
+from csp_app import exports
 
 a = default_token_generator
 
@@ -37,6 +38,9 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
+
+
+
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -1784,7 +1788,7 @@ def create_vendor(request):
             entity_fk = master_entity.objects.get(pk=i)
         
             try:
-                duplicate_vendor_entity_spoc = master_vendor.objects.filter(vendor_name=vendor_name , fk_entity_code= entity, spoc_email_id=vendor_spoc_email, status = active_status)
+                duplicate_vendor_entity_spoc = master_vendor.objects.filter(vendor_name=vendor_name , fk_entity_code= entity_fk, spoc_email_id=vendor_spoc_email, status = active_status)
                 if duplicate_vendor_entity_spoc:
                     messages.error(request, "Vendor Already Exist")
                     return redirect('csp_app:vendor')
@@ -1792,7 +1796,7 @@ def create_vendor(request):
             except ObjectDoesNotExist:
                 print(2)
             try:
-                duplicate_vendor_email = master_vendor.objects.filter( vendor_email_id= vendor_email, fk_entity_code= entity, status = active_status)
+                duplicate_vendor_email = master_vendor.objects.filter( vendor_email_id= vendor_email, fk_entity_code= entity_fk, status = active_status)
                 if duplicate_vendor_email:
                     messages.error(request, "Vendor Email ID Already Exist")
                     return redirect('csp_app:vendor')
@@ -1800,7 +1804,7 @@ def create_vendor(request):
             except ObjectDoesNotExist:
                 print(4)
             try:
-                duplicate_vendor_entity = master_vendor.objects.filter( vendor_name=vendor_name , fk_entity_code= entity, status = active_status)
+                duplicate_vendor_entity = master_vendor.objects.filter( vendor_name=vendor_name , fk_entity_code= entity_fk, status = active_status)
                 if duplicate_vendor_entity:                
                     messages.error(request, "Vendor Already Exist")
                     return redirect('csp_app:vendor')

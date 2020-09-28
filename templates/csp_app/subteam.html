@@ -15,7 +15,9 @@
         <a href="{% url 'csp_app:region' %}" class="tab-btns">Region</a>    
         <a href="{% url 'csp_app:state' %}" class="tab-btns">State</a>    
         <a href="{% url 'csp_app:city' %}" class="tab-btns">City</a>    
-        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a>    
+        <a href="{% url 'csp_app:location' %}" class="tab-btns">Location</a> 
+        <a href="{% url 'csp_app:minimumwages' %}" class="tab-btns">Minimum Wages</a>
+
     </div>
 
 {% endblock %}
@@ -27,7 +29,7 @@
 
 </div>
 <div class="table-container">
-  
+    <a href="{% url 'csp_app:export_subteam' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
     <table id="subteam-table" class="dataTable">
         <thead>
             <tr>
