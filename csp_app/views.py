@@ -1951,6 +1951,8 @@ def view_department(request):
         if request.method == 'POST':
             department_id = request.POST.get("view_id")
             view_dept_list = master_department.objects.filter(pk = department_id)
+            d = master_department.objects.get(pk = department_id)
+            print(d.created_date_time)
         return render(request, 'csp_app/viewdepartment.html', {'allcandidates': all_active_candidates,'view_dept_list': view_dept_list,'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
