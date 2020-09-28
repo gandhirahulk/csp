@@ -93,7 +93,7 @@ class master_department(models.Model):
     department_name = models.CharField(max_length=100)
     fk_entity_code = models.ForeignKey( master_entity, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
-    created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
+    created_date_time = models.DateTimeField(blank=True)
     modified_by = models.CharField(max_length=100, null=True,blank=True)
     modified_date_time = models.DateTimeField(null=True,blank=True)
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
