@@ -3,10 +3,15 @@ from csp_app.models import *
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User, Group
-from django.utils import timezone
-now_aware = timezone.now()
+from pytz import timezone
+# from django.utils import timezone
+# now_aware = timezone.now()
+from datetime import datetime
 
 active_status = status.objects.get(pk=1)
+
+FORMAT = "%Y-%m-%d %H:%M"
+TZ = 'ASIA/KOLKATA'
 
 def export_entity(request):
     response = HttpResponse(content_type='application/ms-excel')
@@ -33,12 +38,7 @@ def export_entity(request):
         ws.write(row_num, 0, row.pk_entity_code, font_style)
         ws.write(row_num, 1, row.entity_name, font_style)
         ws.write(row_num, 2, row.created_by, font_style)
-        ws.write(row_num, 3, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 4, row.modified_by, font_style)
-        try:
-            ws.write(row_num, 5, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 5, 'None', font_style)
+        write_time_details(ws, 3, row_num, row, font_style) 
         ws.write(row_num, 6, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -77,16 +77,19 @@ def export_vendor(request):
         ws.write(row_num, 7, row.spoc_name, font_style)
         ws.write(row_num, 8, row.spoc_email_id, font_style)
         ws.write(row_num, 9, row.created_by, font_style)
-        ws.write(row_num, 10, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 11, row.modified_by, font_style)
-        try:
-            ws.write(row_num, 12, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 12, 'None', font_style)
-        ws.write(row_num, 13, row.status.status_name, font_style)     
- 
+        write_time_details(ws, 10, row_num, row, font_style)     
+        ws.write(row_num, 13, row.status.status_name, font_style)
     wb.save(response)
     return response
+
+def write_time_details(ws,index, row_num, row, font_style):
+    ws.write(row_num, index, row.created_date_time.astimezone(timezone(TZ)).strftime(FORMAT), font_style)
+    ws.write(row_num, index+1, row.modified_by, font_style)
+    try:
+        ws.write(row_num, index+2, row.modified_date_time.astimezone(timezone(TZ)).strftime(FORMAT), font_style)
+    except AttributeError:
+        ws.write(row_num, index+2, 'None', font_style)
+         
 
 
 def export_department(request):
@@ -114,14 +117,7 @@ def export_department(request):
         ws.write(row_num, 0, row.pk_department_code, font_style)
         ws.write(row_num, 1, row.fk_entity_code.entity_name, font_style)
         ws.write(row_num, 2, row.department_name, font_style)
-        ws.write(row_num, 3, row.created_by, font_style)
-        ws.write(row_num, 4, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 5, row.modified_by, font_style)
-        print(type(row.modified_date_time))
-        try:
-            ws.write(row_num, 6, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 6, 'None', font_style)
+        write_time_details(ws, 3, row_num, row, font_style) 
         ws.write(row_num, 7, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -155,13 +151,7 @@ def export_function(request):
         ws.write(row_num, 2, row.fk_department_code.department_name, font_style)
 
         ws.write(row_num, 3, row.function_name, font_style)
-        ws.write(row_num, 4, row.created_by, font_style)
-        ws.write(row_num, 5, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 6, row.modified_by, font_style)
-        try:
-            ws.write(row_num, 7, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 7, 'None', font_style)
+        write_time_details(ws, 4, row_num, row, font_style) 
         ws.write(row_num, 8, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -195,14 +185,7 @@ def export_team(request):
         ws.write(row_num, 3, row.fk_function_code.function_name, font_style)
 
         ws.write(row_num, 4, row.team_name, font_style)
-        ws.write(row_num, 5, row.created_by, font_style)
-        ws.write(row_num, 6, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 7, row.modified_by, font_style)
-        print(type(row.modified_date_time))
-        try:
-            ws.write(row_num, 8, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 8, 'None', font_style)
+        write_time_details(ws, 5, row_num, row, font_style) 
         ws.write(row_num, 9, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -237,14 +220,7 @@ def export_sub_team(request):
         ws.write(row_num, 4, row.fk_team_code.team_name , font_style)
 
         ws.write(row_num, 5, row.sub_team_name, font_style)
-        ws.write(row_num, 6, row.created_by, font_style)
-        ws.write(row_num, 7, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 8, row.modified_by, font_style)
-        print(type(row.modified_date_time))
-        try:
-            ws.write(row_num, 9, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 9, 'None', font_style)
+        write_time_details(ws, 6, row_num, row, font_style) 
         ws.write(row_num, 10, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -281,14 +257,7 @@ def export_designation(request):
         ws.write(row_num, 6, row.fk_skill_code.skill_name , font_style)
 
         ws.write(row_num, 7, row.designation_name, font_style)
-        ws.write(row_num, 8, row.created_by, font_style)
-        ws.write(row_num, 9, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 10, row.modified_by, font_style)
-        print(type(row.modified_date_time))
-        try:
-            ws.write(row_num, 11, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 11, 'None', font_style)
+        write_time_details(ws, 8, row_num, row, font_style) 
         ws.write(row_num, 12, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -319,14 +288,7 @@ def export_region(request):
         ws.write(row_num, 0, row.pk_region_code, font_style)
         ws.write(row_num, 1, row.fk_entity_code.entity_name, font_style)
         ws.write(row_num, 2, row.region_name, font_style)
-        ws.write(row_num, 3, row.created_by, font_style)
-        ws.write(row_num, 4, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 5, row.modified_by, font_style)
-        print(type(row.modified_date_time))
-        try:
-            ws.write(row_num, 6, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 6, 'None', font_style)
+        write_time_details(ws, 3, row_num, row, font_style) 
         ws.write(row_num, 7, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -359,13 +321,7 @@ def export_state(request):
         ws.write(row_num, 2, row.fk_region_code.region_name, font_style)
 
         ws.write(row_num, 3, row.state_name, font_style)
-        ws.write(row_num, 4, row.created_by, font_style)
-        ws.write(row_num, 5, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 6, row.modified_by, font_style)
-        try:
-            ws.write(row_num, 7, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 7, 'None', font_style)
+        write_time_details(ws, 3, row_num, row, font_style) 
         ws.write(row_num, 8, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -399,13 +355,7 @@ def export_city(request):
         ws.write(row_num, 3, row.fk_state_code.state_name, font_style)
 
         ws.write(row_num, 4, row.city_name, font_style)
-        ws.write(row_num, 5, row.created_by, font_style)
-        ws.write(row_num, 6, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 7, row.modified_by, font_style)
-        try:
-            ws.write(row_num, 8, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 8, 'None', font_style)
+        write_time_details(ws, 5, row_num, row, font_style) 
         ws.write(row_num, 9, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -442,14 +392,7 @@ def export_location(request):
         ws.write(row_num, 5, row.location_name, font_style)
         ws.write(row_num, 6, row.location_code, font_style)
 
-        ws.write(row_num, 7, row.created_by, font_style)
-        ws.write(row_num, 8, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 9, row.modified_by, font_style)
-        print(type(row.modified_date_time))
-        try:
-            ws.write(row_num, 10, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 10, 'None', font_style)
+        write_time_details(ws, 7, row_num, row, font_style) 
         ws.write(row_num, 11, row.status.status_name, font_style)     
  
     wb.save(response)
@@ -483,13 +426,7 @@ def export_minimum_wage(request):
         ws.write(row_num, 3, row.fk_skill_code.skill_name, font_style)
         ws.write(row_num, 4, row.wages, font_style)
 
-        ws.write(row_num, 5, row.created_by, font_style)
-        ws.write(row_num, 6, row.created_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        ws.write(row_num, 7, row.modified_by, font_style)
-        try:
-            ws.write(row_num, 8, row.modified_date_time.strftime("%Y-%m-%d %H:%M"), font_style)
-        except AttributeError:
-            ws.write(row_num, 8, 'None', font_style)
+        write_time_details(ws, 5, row_num, row, font_style) 
         ws.write(row_num, 9, row.status.status_name, font_style)     
  
     wb.save(response)
