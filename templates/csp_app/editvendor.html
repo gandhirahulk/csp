@@ -91,7 +91,7 @@
     </div>
     {% if view_vendor_list %}
         {% for eachvendor in view_vendor_list %}
-            <div class="form_content">
+            <div class="form_content" style="height: 72vh;">
                 <form method="POST" action="">
                     {% csrf_token %}
                     <input type="hidden" name="e_id" value="{{ eachvendor.pk}}">
