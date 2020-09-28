@@ -128,6 +128,24 @@
                         <input type="text" placeholder="Email Password" name="e_vendor_email_pwd" required="true" value="{{ eachvendor.vendor_email_id_password }}">
                     </div>
                     <div class="forms-input-holder">
+                        <label for="">SMTP Name</label>
+                
+                        <input type="text" value="{{ eachvendor.vendor_smtp }}" placeholder="SMTP Name" name="smtp_name" required="true" maxlength="40" minlength="10">
+                    </div>
+                    <div class="forms-input-holder">
+                        <label for="">PORT</label>
+                        <select name="mail_port" required="true">
+                            <option value="{{ eachvendor.vendor_email_port_id }}" label="{{ eachvendor.vendor_email_port.port }}"  selected>{{ eachvendor.vendor_email_port.port }}</option>
+                            {% if port_list %}
+                                {% for eachport in port_list %}
+                                    {% if eachport.pk != eachvendor.vendor_email_port_id %}
+                                    <option value="{{ eachport.pk }}" label="{{ eachport.port }}">{{ eachport.port }}</option>
+                                    {% endif %}
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="forms-input-holder">
                     <label for="">SPOC Name</label>
             
                         <input type="text" placeholder="SPOC Name" value="{{ eachvendor.spoc_name }} " name="e_vendor_spoc" pattern="[A-Za-z\s]{2,}" title="Numbers are not allowed" required="true">

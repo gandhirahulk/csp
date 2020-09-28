@@ -1730,32 +1730,42 @@ def save_edit_vendor(request):
                 vendor_spoc_email = request.POST.get("e_vendor_spoc_email")
                 vendor_phone = request.POST.get("e_vendor_phone")
                 vendor_email = request.POST.get("e_vendor_email")
+                vendor_smtp = request.POST.get("smtp_name")
+                port = request.POST.get("mail_port")
+
                 vendor_email_pwd = request.POST.get("e_vendor_email_pwd")
                 entity = request.POST.get("e_vendor_entity")
                 if entity == None or entity == '':
                     messages.warning(request, "Choose Entity and Try Again")
                     return redirect('csp_app:vendor')
                 entity_fk = master_entity.objects.get(pk = entity)
-                
+                if port == None or port == '':
+                    messages.warning(request, "Choose Port and Try Again")
+                    return redirect('csp_app:vendor')
+                port_fk = port_list.objects.get(pk = port)
                 try:
                     #same data code to add
-                    a = master_vendor.objects.get(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status)
+                    a = master_vendor.objects.get(spoc_email_id= vendor_spoc_email, vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status)
                     print(a)
                     messages.error(request, "Vendor Already Exist")
                     return redirect('csp_app:vendor')
                 except ObjectDoesNotExist:
                     selected_user = User.objects.get(email=vendor_email)
-                    selected_user.email = vendor_email
+                    selected_user.email = vendor_spoc_email
                     selected_user.first_name = vendor_name 
+                    
                     selected_user.save()
                     vendor.vendor_name = vendor_name 
                     vendor.spoc_name = vendor_spoc
                     vendor.fk_entity_code = entity_fk
                     vendor.spoc_email_id = vendor_spoc_email
                     vendor.vendor_email_id = vendor_email
+                    vendor.vendor_email_port = port_fk
+                    vendor.vendor_smtp = vendor_smtp
                     vendor.vendor_email_id_password = vendor_email_pwd
                     vendor.modified_by = str(request.user)
                     vendor.modified_date_time = timezone.localtime()
+                    
                     vendor.save()
                     msg = 'Vendor '+ str(vendor.vendor_name) +' with Username " ' + str(vendor.vendor_email_id) + ' Updated by ' + str(request.user) + ' .'
                     send_mail('Vendor Account Updated', msg,'workmail052020@gmail.com',[ vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
