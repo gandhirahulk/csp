@@ -1936,7 +1936,7 @@ def  create_department(request):
             messages.error(request, "Department Already Exist")
             return redirect('csp_app:department')
         except ObjectDoesNotExist:
-            new_department = master_department(department_name= dept_name , fk_entity_code= entity_fk, created_by = str(request.user))
+            new_department = master_department(department_name= dept_name , fk_entity_code= entity_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_department.save()
             return redirect('csp_app:department')
     return render(request, 'csp_app/department.html', {'allcandidates': all_active_candidates,})
