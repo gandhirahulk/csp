@@ -1780,10 +1780,15 @@ def create_vendor(request):
         vendor_email = request.POST.get("vendor_email")
         vendor_email_pwd = request.POST.get("vendor_email_pwd")
         entity = request.POST.getlist("vendor_entity")
-        print(entity)
+        smtp = request.POST.get("smtp_name")
+        port = request.POST.get("mail_port")
         if entity == None or entity == '':
             messages.warning(request, "Choose Entity And Try Again")
             return redirect('csp_app:vendor')
+        if port == None or port == '':
+            messages.warning(request, "Choose Port And Try Again")
+            return redirect('csp_app:vendor')
+        port_fk = port_list.objects.get(pk=port)
         for i in entity:
             entity_fk = master_entity.objects.get(pk=i)
         
@@ -1841,7 +1846,7 @@ def create_vendor(request):
                 ) 
                 our_email.fail_silently = False
                 our_email.send()  
-            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, created_by = str(request.user))
+            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user))
             new_vendor.save()
         
             newadmintemplate = render_to_string('csp_app/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'entity': entity_fk, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
