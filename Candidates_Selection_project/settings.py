@@ -83,8 +83,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cspdb',
         'USER': 'postgres',
-        'PASSWORD': 'associate',
-        'HOST': '35.187.234.28',
+        'PASSWORD': 'udaan2020',
+        'HOST': 'localhost',
         'PORT': 5432,
     }
 }
