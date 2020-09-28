@@ -1745,8 +1745,8 @@ def save_edit_vendor(request):
                 port_fk = port_list.objects.get(pk = port)
                 try:
                     #same data code to add
-                    a = master_vendor.objects.get(spoc_email_id= vendor_spoc_email, vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status)
-                    print(a)
+                    a = master_vendor.objects.get(vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status)
+                    
                     messages.error(request, "Vendor Already Exist")
                     return redirect('csp_app:vendor')
                 except ObjectDoesNotExist:
