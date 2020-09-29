@@ -360,6 +360,67 @@ class master_candidate(models.Model):
     def __str__(self):
         return self.pk_candidate_code
 
+
+class dummy_candidate(models.Model):
+    pk_candidate_code = models.CharField(primary_key=True, max_length=10)
+    First_Name = models.CharField(max_length=100)
+    Middle_Name = models.CharField(max_length=100)
+    Last_Name = models.CharField(max_length=100)
+    Date_of_Birth = models.CharField(max_length=20)
+    Contact_Number = models.CharField(max_length=10)
+    Emergency_Contact_Number = models.CharField(max_length=10)
+    Personal_Email_Id = models.CharField( max_length=100)
+    Gender = models.ForeignKey(gender, on_delete=models.CASCADE)
+    Father_Name = models.CharField(max_length=100)
+    Father_Date_of_Birth = models.CharField(max_length=20)
+    Aadhaar_Number = models.CharField(max_length=12)
+    PAN_Number = models.CharField(max_length=10)
+    Type_of_Hiring = models.ForeignKey( hiring_type, on_delete=models.CASCADE)
+    Date_of_Joining = models.CharField(max_length=20)
+    Replacement = models.CharField(max_length=20, null=True, blank=True) #should come from employees table ?
+    Referral = models.CharField(max_length=20, null=True, blank=True) #should come from employees table ?
+    Sub_Source = models.ForeignKey(sub_source, on_delete=models.CASCADE)
+    fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE)
+    fk_vendor_code = models.ForeignKey(master_vendor, on_delete=models.CASCADE)
+    fk_department_code = models.ForeignKey(master_department, on_delete=models.CASCADE)
+    fk_function_code = models.ForeignKey(master_function, on_delete=models.CASCADE)
+    fk_team_code = models.ForeignKey(master_team, on_delete=models.CASCADE)
+    fk_subteam_code = models.ForeignKey(master_sub_team, on_delete=models.CASCADE)
+    fk_designation_code = models.ForeignKey(master_designation, on_delete=models.CASCADE)
+    fk_region_code = models.ForeignKey(master_region, on_delete=models.CASCADE)
+    fk_state_code = models.ForeignKey(master_state, on_delete=models.CASCADE)
+    fk_city_code = models.ForeignKey(master_city, on_delete=models.CASCADE)
+    fk_location_code = models.ForeignKey(master_location, on_delete=models.CASCADE)
+    location_code = models.CharField(max_length=10)#not_sure
+    TA_Spoc_Email_Id = models.EmailField()
+    Onboarding_Spoc_Email_Id = models.EmailField()
+    Reporting_Manager = models.CharField(max_length=20) #should come from employees table ?
+    Reporting_Manager_E_Mail_ID = models.CharField(max_length=100) #should come from employees table ?
+    E_Mail_ID_Creation = models.CharField(max_length=10)
+    Laptop_Allocation = models.ForeignKey(laptop_allocation, on_delete=models.CASCADE)
+    Salary_Type = models.ForeignKey(salary_type, on_delete=models.CASCADE)
+    Gross_Salary_Amount = models.FloatField()
+    candidate_status = models.ForeignKey( candidate_status, on_delete=models.CASCADE, default=2)
+    onboarding_status = models.ForeignKey( onboarding_status, on_delete=models.CASCADE, default=2)
+    vendor_status = models.ForeignKey( vendor_status, on_delete=models.CASCADE, default=2)
+
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+
+    def __str__(self):
+        return self.pk_candidate_code
+
+class dummy_candidate_code(models.Model):
+    pk_count = models.AutoField(primary_key=True)
+    candidate_code = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.candidate_code
+
 class csp_candidate_code(models.Model):
     pk_count = models.AutoField(primary_key=True)
     candidate_code = models.CharField(max_length=10)
