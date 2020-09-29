@@ -68,10 +68,13 @@
                 <label for="" >Gender</label>
 
                 <select name="c_gender" id="c_gender" required="true" tabindex="8">
-                    <option value="" disabled selected>Select Gender</option>
+                    <option value="{{ dummy.Gender_id }}" label="{{ dummy.Gender }}" selected>{{ dummy.Gender }}</option>
+
                     {% if gender_list %}
-                        {% for eachgender in gender_list %}
-                            <option value="{{ eachgender.pk }}" label="{{ eachgender.gender_name }}">{{ eachgender.gender_name }}</option>
+                        {% for eachgender in gender_list %}                            
+                            {% if eachgender.pk != dummy.Gender_id %}
+                                <option value="{{ eachgender.pk }}" label="{{ eachgender.gender_name }}">{{ eachgender.gender_name }}</option>
+                            {% endif %}
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -105,10 +108,12 @@
                 <div>               
                 <label for="">Type Of Hiring</label>
                 <select name="c_hiring_type" id="hiring" tabindex="13" >
-                    <option value="" disabled selected>Type Of Hiring</option>
+                    <option value="{{ dummy.Type_of_Hiring_id }}" selected label="{{ dummy.Type_of_Hiring }}">{{ dummy.Type_of_Hiring }}</option>
                     {% if hiring_type_list %}
                         {% for eachhiring_type in hiring_type_list %}
-                            <option value="{{ eachhiring_type.pk }}" label="{{ eachhiring_type.hiring_type_name }}">{{ eachhiring_type.hiring_type_name }}</option>
+                            {% if eachhiring_type.pk !=  dummy.Type_of_Hiring_id %}
+                                <option value="{{ eachhiring_type.pk }}" label="{{ eachhiring_type.hiring_type_name }}">{{ eachhiring_type.hiring_type_name }}</option>
+                            {% endif %}
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -125,10 +130,12 @@
                  <div>
                     <label for="">Sub Source</label>
                     <select name="c_sub_source" id="referral" tabindex="17" >
-                        <option value="" disabled selected>Select Sub Source</option>
+                        <option value="{{ dummy.Sub_Source_id }}" label="{{ dummy.Sub_Source }}" selected>{{ dummy.Sub_Source }}</option>
                         {% if sub_source_list %}
                             {% for eachsub_source in sub_source_list %}
+                                {% if eachsub_source.pk != dummy.Sub_Source_id %}
                                 <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
+                                {% endif %}                       
                             {% endfor %}                
                         {% endif %}
                     </select>
@@ -150,10 +157,12 @@
                 <label for="" >Entity</label>
 
                 <select name="c_entity" id="c_entity" required="true" tabindex="18">
-                    <option value="" disabled selected>Select Entity</option>
+                    <option value="{{ dummy.fk_entity_code_id }}" label="{{ dummy.fk_entity_code }}" selected>{{dummy.fk_entity_code}}</option>
                     {% if entity_list %}
                         {% for eachentity in entity_list %}
-                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                            {% if eachentity.pk != dummy.fk_entity_code_id %}
+                                <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                            {% endif %}                        
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -164,26 +173,38 @@
                 <div>
                     <label for="">Vendor</label>
 
-                    <select name="c_vendor" id="c_vendor" required="true" disabled="true" tabindex="19">
-                        <option value="" disabled selected label=" " class="empty">Select vendor</option>
+                    <select name="c_vendor" id="c_vendor" required="true"   tabindex="19">
+                        <option value="{{ dummy.fk_vendor_code_id }}" label="{{ dummy.fk_vendor_code }}" selected>{{dummy.fk_vendor_code}}</option>
+
+                        <option value="" label="" class="empty">Select Vendor</option>
 
                         {% if vendor_list %}
                             {% for eachvendor in vendor_list %}
+                            {% if eachvendor.pk != dummy.fk_vendor_code_id %}
+
                                 <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
-                            {% endfor %}                
+                        {% endif %}
+                            
+                                {% endfor %}                
                         {% endif %}
                     </select>
                  </div>
                 <div class="margin-left">
                 <label for="" >Department</label>
 
-                <select name="c_dept" id="c_dept" required="true" disabled="true" tabindex="20">
-                    <option value="" disabled selected label=" " class="empty">Select Department</option>
+                <select name="c_dept" id="c_dept" required="true"   tabindex="20">
+                    <option value="{{ dummy.fk_department_code_id }}" label="{{ dummy.fk_department_code }}" selected>{{dummy.fk_department_code}}</option>
+
+                    <option value="" label="" class="empty">Select Department</option>
 
                     {% if department_list %}
                         {% for eachdepartment in department_list %}
+                        {% if eachdepartment.pk != dummy.fk_department_code_id %}
+
                             <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
-                        {% endfor %}                
+                            {% endif %}                
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
@@ -192,26 +213,36 @@
                 <div>
             <label for="">Function</label>
 
-                <select name="c_function" id="c_function" required="true" disabled="true" tabindex="21">
-                    <option value="" disabled selected label=" " class="empty">Select Function</option>
+                <select name="c_function" id="c_function" required="true"   tabindex="21">
+                    <option value="{{ dummy.fk_function_code_id }}" label="{{ dummy.fk_function_code }}" selected>{{ dummy.fk_function_code.fk_department_code_id }}</option>
+                    <option value="" label="" class="empty">Select Function</option>
 
                     {% if function_list %}
                         {% for eachfunction in function_list %}
+                        {% if eachfunction.pk != dummy.fk_function_code_id %}
+
                             <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
                  </div>
                 <div class="margin-left">
                 <label for="" >Team</label>
 
-                <select name="c_team" id="c_team" required="true"  disabled="true" tabindex="22">
-                    <option value="" disabled selected label=" " class="empty">Select Team</option>
+                <select name="c_team" id="c_team" required="true"    tabindex="22">
+                    <option value="{{ dummy.fk_team_code_id }}" label="{{ dummy.fk_team_code }}" selected>{{ dummy.fk_team_code.fk_function_code_id }}</option>
+                    <option value="" label="" class="empty">Select Team</option>
 
                     {% if team_list %}
                         {% for eachteam in team_list %}
+                        {% if eachteam.pk != dummy.fk_team_code_id %}
+
                             <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
@@ -220,27 +251,36 @@
                 <div>
             <label for="">Sub Team</label>
 
-                <select name="c_subteam" id="c_subteam" required="true" disabled="true" tabindex="23">
-                    <option value="" disabled selected label=" " class="empty">Select Sub Team</option>
+                <select name="c_subteam" id="c_subteam" required="true"   tabindex="23">
+                    <option value="{{ dummy.fk_subteam_code_id }}" label="{{ dummy.fk_subteam_code }}" selected>{{ dummy.fk_subteam_code.fk_team_code_id }}</option>
+                    <option value="" label="" class="empty">Select Sub Team</option>
 
                     {% if sub_team_list %}
                         {% for eachsubteam in sub_team_list %}
+                        {% if eachsubteam.pk != dummy.fk_subteam_code_id %}
+
                             <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
                  </div>
                 <div class="margin-left">
                 <label for="" >Designation</label>
 
-                <select name="c_desg" id="c_desg" required="true" disabled="true" tabindex="24">
-                    <option value="" disabled selected label=" " class="empty">Select Designation</option>
+                <select name="c_desg" id="c_desg" required="true"   tabindex="24">
+                    <option value="{{ dummy.fk_designation_code_id }}" label="{{ dummy.fk_designation_code }}" selected>{{ dummy.fk_designation_code.fk_sub_team_code_id }}</option>
+                    <option value="" label="" class="empty">Select Designation</option>
 
                     {% if designation_list %}
                         {% for eachdesignation in designation_list %}
-                            <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                        {% if eachdesignation.pk != dummy.fk_designation_code_id %}
+
+                        <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                        {% endif %}
                         
-                        {% endfor %}                
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
@@ -249,26 +289,38 @@
                 <div>
             <label for="">Region</label>
 
-                <select name="c_region" id="c_region" required="true" disabled="true" tabindex="25">
-                    <option value="" disabled selected label=" " class="empty" >Select Region</option>
+                <select name="c_region" id="c_region" required="true"   tabindex="25">
+                    <option value="{{ dummy.fk_region_code_id }}" label="{{ dummy.fk_region_code }}" selected>{{ dummy.fk_region_code.fk_entity_code_id }}</option>
+
+                    <option value="" label="" class="empty">Select Region</option>
 
                     {% if region_list %}
                         {% for eachregion in region_list %}
+                        {% if eachregion.pk != dummy.fk_region_code_id %}
+
                             <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                       
+                            {% endfor %}                
                     {% endif %}
                 </select>
                  </div>
                 <div class="margin-left">
                 <label for="" >State</label>
 
-                <select name="c_state" id="c_state" required="true" disabled="true" tabindex="26">
-                    <option value="" disabled selected label=" " class="empty">Select State</option>
+                <select name="c_state" id="c_state" required="true" tabindex="26">
+                    <option value="{{ dummy.fk_state_code_id }}" label="{{ dummy.fk_state_code }}" selected>{{ dummy.fk_state_code.fk_region_code_id }}</option>
+
+                    <option value="" label="" class="empty">Select State</option>
 
                     {% if state_list %}
                         {% for eachstate in state_list %}
+                        {% if eachstate.pk != dummy.fk_state_code_id %}
+
                             <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                       
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
@@ -277,26 +329,38 @@
                 <div>
             <label for="">City</label>
 
-                <select name="c_city" id="c_city" required="true" disabled="true" tabindex="27">
-                    <option value="" disabled selected label=" " class="empty">Select City</option>
+                <select name="c_city" id="c_city" required="true"   tabindex="27">
+                    <option value="{{ dummy.fk_city_code_id }}" label="{{ dummy.fk_city_code }}" selected>{{ dummy.fk_city_code.fk_state_code_id }}</option>
+
+                    <option value="" label="" class="empty">Select City</option>
 
                     {% if city_list %}
                         {% for eachcity in city_list %}
+                        {% if eachcity.pk != dummy.fk_city_code_id %}
+
                             <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
                  </div>
                 <div class="margin-left">
                 <label for="" >Location</label>
 
-                <select name="c_location" id="c_location" required="true" disabled="true" tabindex="28">
-                    <option value="" disabled selected label=" " class="empty">Select Location</option>
+                <select name="c_location" id="c_location" required="true"   tabindex="28">
+                    <option value="{{ dummy.fk_location_code_id }}" label="{{ dummy.fk_location_code }}" selected>{{ dummy.fk_location_code.fk_city_code_id }}</option>
+
+                    <option value="" label="" class="empty">Select Location</option>
 
                     {% if location_list %}
                         {% for eachlocation in location_list %}
+                        {% if eachlocation.pk != dummy.fk_location_code_id %}
+
                             <option value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
-                        {% endfor %}                
+                    {% endif %}
+                        
+                            {% endfor %}                
                     {% endif %}
                 </select>
             </div>
@@ -314,12 +378,12 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="">Reporting / Hiring Manager Name</label>
-                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                <input type="text" value="{{ dummy.Reporting_Manager }}" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
                  </div>
                 <div class="margin-left">
                 <label for="" >Reporting / Hiring Manager Email ID</label>
 
-                <input type="email" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                <input type="email" value="{{ dummy.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
          
             </div>
         </div>
@@ -329,7 +393,7 @@
             <label for="">Email ID Creation</label>
 
                 <select name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
-                    <option value="" disabled selected>Email ID Creation</option>
+                    <option value="{{ dummy.E_Mail_ID_Creation }}" label="{{ dummy.E_Mail_ID_Creation }}" selected>{{ dummy.E_Mail_ID_Creation }}</option>
                     <option value="Yes" >Yes</option>
                     <option value="No" >No</option>                    
                 </select>
@@ -338,12 +402,16 @@
                 <label for="" >Laptop Allocation</label>
 
                 <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
-                    <option value="" disabled selected>Laptop Allocation</option>
+                    <option value="{{ dummy.Laptop_Allocation_id }}" label="{{ dummy.Laptop_Allocation }}" selected>{{ dummy.Laptop_Allocation }}</option>
                     {% if laptop_allocation_list %}
                         {% for eachlaptop_allocation in laptop_allocation_list %}
+                        {% if eachlaptop_allocation.pk != dummy.Laptop_Allocation_id %}
+
                             <option value="{{ eachlaptop_allocation.pk }}" label="{{ eachlaptop_allocation.option_name }}">{{ eachlaptop_allocation.option_name }}</option>
-                        {% endfor %}                
                     {% endif %}                    
+                       
+                            {% endfor %}                
+                    {% endif %}                     
                 </select>
             </div>
         </div>
@@ -351,12 +419,17 @@
                 <div>
                     <label for="">Salary Type</label>
                     <select name="c_salary_type" id="c_salary_type" required="true" tabindex="35">
-                        <option value="" disabled selected>Select Salary Type</option>
+                        <option value="{{ dummy.Salary_Type_id }}" label="{{ dummy.Salary_Type }}" selected>{{ dummy.Salary_Type }}</option>
+
                         {% if salary_type_list %}
                             {% for eachsalary_type in salary_type_list %}
+                            {% if eachsalary_type.pk != dummy.Salary_Type_id %}
+    
                                 <option value="{{ eachsalary_type.pk }}" label="{{ eachsalary_type.salary_type_name }}">{{ eachsalary_type.salary_type_name }}</option>
-                            {% endfor %}                
                         {% endif %}                   
+                           
+                                {% endfor %}                
+                        {% endif %}                                   
                     </select>
                 </div>
                 <div class="margin-left">
