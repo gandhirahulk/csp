@@ -1124,7 +1124,6 @@ def edit_candidate(request):
 def create_candidate(request):
     try:
         if request.method == 'POST':
-
             firstname = request.POST.get("c_firstname")
             middlename = request.POST.get("c_middlename")
             lastname = request.POST.get("c_lastname")
@@ -1526,9 +1525,11 @@ def change_candidate_status_vendor(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def entity(request):
-    entity_list = master_entity.objects.filter(status = active_status).order_by('created_date_time')
-    
-    return render(request, 'csp_app/entity.html', {'allcandidates': all_active_candidates,'entity_list': entity_list})
+    entity_list = master_entity.objects.filter(status = active_status).order_by('modified_date_time')
+    a = master_entity.objects.filter(status = active_status).order_by('-created_date_time')
+    print(a)
+    e_list = a
+    return render(request, 'csp_app/entity.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'e_list': e_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -1636,7 +1637,7 @@ def create_entity(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name').order_by('entity_name')
-    vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
+    vendor_list = master_vendor.objects.filter(status = active_status).order_by('-created_date_time')
     ports = port_list.objects.all()
     return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
 
