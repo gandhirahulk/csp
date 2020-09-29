@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'cspdb',
         'USER': 'postgres',
         'PASSWORD': 'udaan2020',
-        'HOST': 'localhost',
+        'HOST': '34.126.117.215',
         'PORT': 5432,
     }
 }

@@ -1522,17 +1522,7 @@ def change_candidate_status_vendor(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def entity(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('created_date_time')
-    # view_entity_list = []
-    # if request.method == 'GET':
-    #     print("here")
-    #     print(request.GET.get("view_id"))
-    #     # print(request.DIALOG.get)
-    #     if request.GET.get("view_id") != '':
-            
-    #         entity_id = request.POST.get("view_id")
-    #         print(entity_id)
-    #         view_entity_list = master_entity.objects.get(pk = entity_id)
-
+    
     return render(request, 'csp_app/entity.html', {'allcandidates': all_active_candidates,'entity_list': entity_list})
 
 @login_required(login_url='/notlogin/')

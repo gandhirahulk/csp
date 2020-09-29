@@ -10,7 +10,8 @@ from datetime import datetime
 
 active_status = status.objects.get(pk=1)
 
-FORMAT = "%Y-%m-%d %H:%M"
+FORMAT = "%Y-%m-%d"
+TIME = "%H:%M"
 TZ = 'ASIA/KOLKATA'
 
 def export_entity(request):
@@ -23,8 +24,7 @@ def export_entity(request):
  
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
- 
-    columns = ['Entity Code', 'Entity Name', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['Entity Code', 'Entity Name', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -39,7 +39,7 @@ def export_entity(request):
         ws.write(row_num, 1, row.entity_name, font_style)
         ws.write(row_num, 2, row.created_by, font_style)
         write_time_details(ws, 3, row_num, row, font_style) 
-        ws.write(row_num, 6, row.status.status_name, font_style)     
+            
  
     wb.save(response)
     return response
@@ -56,7 +56,7 @@ def export_vendor(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['Vendor Code', 'Entity','Vendor Name','Phone Number', 'Email','SMTP', 'PORT', 'SPOC', 'SPOC Mail ID', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['Vendor Code', 'Entity','Vendor Name','Phone Number', 'Email','SMTP', 'PORT', 'SPOC', 'SPOC Mail ID', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -78,18 +78,22 @@ def export_vendor(request):
         ws.write(row_num, 8, row.spoc_email_id, font_style)
         ws.write(row_num, 9, row.created_by, font_style)
         write_time_details(ws, 10, row_num, row, font_style)     
-        ws.write(row_num, 13, row.status.status_name, font_style)
     wb.save(response)
     return response
 
 def write_time_details(ws,index, row_num, row, font_style):
     ws.write(row_num, index, row.created_date_time.astimezone(timezone(TZ)).strftime(FORMAT), font_style)
-    ws.write(row_num, index+1, row.modified_by, font_style)
+    ws.write(row_num, index+1, row.created_date_time.astimezone(timezone(TZ)).strftime(TIME), font_style)
+
+    ws.write(row_num, index+2, row.modified_by, font_style)
     try:
-        ws.write(row_num, index+2, row.modified_date_time.astimezone(timezone(TZ)).strftime(FORMAT), font_style)
+        ws.write(row_num, index+3, row.modified_date_time.astimezone(timezone(TZ)).strftime(FORMAT), font_style)
+        ws.write(row_num, index+4, row.modified_date_time.astimezone(timezone(TZ)).strftime(TIME), font_style)
+
     except AttributeError:
-        ws.write(row_num, index+2, 'None', font_style)
-         
+        ws.write(row_num, index+3, 'None', font_style)
+        ws.write(row_num, index+4, 'None', font_style)
+    ws.write(row_num, index+5, row.status.status_name, font_style)  
 
 
 def export_department(request):
@@ -103,7 +107,7 @@ def export_department(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['Department Code','Entity Name', 'Department Name', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['Department Code','Entity Name', 'Department Name', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -117,8 +121,7 @@ def export_department(request):
         ws.write(row_num, 0, row.pk_department_code, font_style)
         ws.write(row_num, 1, row.fk_entity_code.entity_name, font_style)
         ws.write(row_num, 2, row.department_name, font_style)
-        write_time_details(ws, 3, row_num, row, font_style) 
-        ws.write(row_num, 7, row.status.status_name, font_style)     
+        write_time_details(ws, 3, row_num, row, font_style)     
  
     wb.save(response)
     return response
@@ -135,7 +138,7 @@ def export_function(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['Function Code','Entity Name', 'Department Name', 'Function Name', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['Function Code','Entity Name', 'Department Name', 'Function Name', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -151,8 +154,7 @@ def export_function(request):
         ws.write(row_num, 2, row.fk_department_code.department_name, font_style)
 
         ws.write(row_num, 3, row.function_name, font_style)
-        write_time_details(ws, 4, row_num, row, font_style) 
-        ws.write(row_num, 8, row.status.status_name, font_style)     
+        write_time_details(ws, 4, row_num, row, font_style)    
  
     wb.save(response)
     return response
@@ -168,7 +170,7 @@ def export_team(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['Team Code','Entity', 'Department', 'Function', 'Team Name', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['Team Code','Entity', 'Department', 'Function', 'Team Name', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -185,8 +187,7 @@ def export_team(request):
         ws.write(row_num, 3, row.fk_function_code.function_name, font_style)
 
         ws.write(row_num, 4, row.team_name, font_style)
-        write_time_details(ws, 5, row_num, row, font_style) 
-        ws.write(row_num, 9, row.status.status_name, font_style)     
+        write_time_details(ws, 5, row_num, row, font_style)    
  
     wb.save(response)
     return response
@@ -202,7 +203,7 @@ def export_sub_team(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['Sub_Team Code','Entity', 'Department', 'Function', 'Team','Sub Team Name', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['Sub_Team Code','Entity', 'Department', 'Function', 'Team','Sub Team Name', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -220,8 +221,7 @@ def export_sub_team(request):
         ws.write(row_num, 4, row.fk_team_code.team_name , font_style)
 
         ws.write(row_num, 5, row.sub_team_name, font_style)
-        write_time_details(ws, 6, row_num, row, font_style) 
-        ws.write(row_num, 10, row.status.status_name, font_style)     
+        write_time_details(ws, 6, row_num, row, font_style)     
  
     wb.save(response)
     return response
@@ -237,7 +237,7 @@ def export_designation(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['Designation Code','Entity', 'Department', 'Function', 'Team','Sub Team','Skill Type', 'Designation' , 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['Designation Code','Entity', 'Department', 'Function', 'Team','Sub Team','Skill Type', 'Designation' , 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -257,8 +257,7 @@ def export_designation(request):
         ws.write(row_num, 6, row.fk_skill_code.skill_name , font_style)
 
         ws.write(row_num, 7, row.designation_name, font_style)
-        write_time_details(ws, 8, row_num, row, font_style) 
-        ws.write(row_num, 12, row.status.status_name, font_style)     
+        write_time_details(ws, 8, row_num, row, font_style)     
  
     wb.save(response)
     return response
@@ -274,7 +273,7 @@ def export_region(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['Region Code','Entity Name', 'Region Name', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['Region Code','Entity Name', 'Region Name', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -288,8 +287,7 @@ def export_region(request):
         ws.write(row_num, 0, row.pk_region_code, font_style)
         ws.write(row_num, 1, row.fk_entity_code.entity_name, font_style)
         ws.write(row_num, 2, row.region_name, font_style)
-        write_time_details(ws, 3, row_num, row, font_style) 
-        ws.write(row_num, 7, row.status.status_name, font_style)     
+        write_time_details(ws, 3, row_num, row, font_style)    
  
     wb.save(response)
     return response
@@ -305,7 +303,7 @@ def export_state(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['State Code','Entity Name', 'Region Name', 'State Name', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['State Code','Entity Name', 'Region Name', 'State Name', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -321,8 +319,7 @@ def export_state(request):
         ws.write(row_num, 2, row.fk_region_code.region_name, font_style)
 
         ws.write(row_num, 3, row.state_name, font_style)
-        write_time_details(ws, 3, row_num, row, font_style) 
-        ws.write(row_num, 8, row.status.status_name, font_style)     
+        write_time_details(ws, 3, row_num, row, font_style)     
  
     wb.save(response)
     return response
@@ -338,7 +335,7 @@ def export_city(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['City Code','Entity', 'Region', 'State', 'City Name', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['City Code','Entity', 'Region', 'State', 'City Name', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -355,8 +352,7 @@ def export_city(request):
         ws.write(row_num, 3, row.fk_state_code.state_name, font_style)
 
         ws.write(row_num, 4, row.city_name, font_style)
-        write_time_details(ws, 5, row_num, row, font_style) 
-        ws.write(row_num, 9, row.status.status_name, font_style)     
+        write_time_details(ws, 5, row_num, row, font_style)    
  
     wb.save(response)
     return response
@@ -372,7 +368,7 @@ def export_location(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['location Code','Entity', 'Region', 'Function', 'City','Location Name', 'Location Code', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['location Code','Entity', 'Region', 'Function', 'City','Location Name', 'Location Code', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -392,8 +388,7 @@ def export_location(request):
         ws.write(row_num, 5, row.location_name, font_style)
         ws.write(row_num, 6, row.location_code, font_style)
 
-        write_time_details(ws, 7, row_num, row, font_style) 
-        ws.write(row_num, 11, row.status.status_name, font_style)     
+        write_time_details(ws, 7, row_num, row, font_style)     
  
     wb.save(response)
     return response
@@ -409,7 +404,7 @@ def export_minimum_wage(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['Code','State', 'Zone','Skill', 'Wages', 'Created By', 'Created Date Time', 'Modified By', 'Modified Date Time', 'Status', ]
+    columns = ['Code','State', 'Zone','Skill', 'Wages', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -426,8 +421,7 @@ def export_minimum_wage(request):
         ws.write(row_num, 3, row.fk_skill_code.skill_name, font_style)
         ws.write(row_num, 4, row.wages, font_style)
 
-        write_time_details(ws, 5, row_num, row, font_style) 
-        ws.write(row_num, 9, row.status.status_name, font_style)     
+        write_time_details(ws, 5, row_num, row, font_style)     
  
     wb.save(response)
     return response
