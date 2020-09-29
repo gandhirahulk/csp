@@ -848,7 +848,8 @@ def new_candidate(request):
         gender_list = gender.objects.filter(status= active_status)
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
         candidate_list = master_candidate.objects.all()
-        return render(request, 'csp_app/newcandidate.html', {'s_particulars': s_particulars,'e_particulars': e_particulars,'er_particulars': er_particulars , 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        minimum_wage = master_minimum_wages.objects.filter(status=active_status)
+        return render(request, 'csp_app/newcandidate.html', {'wages': minimum_wage, 's_particulars': s_particulars,'e_particulars': e_particulars,'er_particulars': er_particulars , 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -1253,6 +1254,7 @@ def create_candidate(request):
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
                 Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=timezone.localtime())
                 new_candidate.save()
+                
                 save_new_code = csp_candidate_code(candidate_code= new_code)
                 save_new_code.save()
                 limtemplate = render_to_string('csp_app/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
