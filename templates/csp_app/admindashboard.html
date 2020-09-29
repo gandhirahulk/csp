@@ -44,6 +44,12 @@
     <!-- datatable end -->
     <script>
       $(document).ready(function(){
+        $(".sidebar").click(function () {
+            $(".wrapper").toggleClass("collapse");
+        });
+        // $(".sidebar").hover(function () {
+        //     $(".wrapper").toggleClass("collapse");
+        // });
         $('#entity-table').DataTable();
         $('#vendor-table').DataTable();
         $('#department-table').DataTable();
