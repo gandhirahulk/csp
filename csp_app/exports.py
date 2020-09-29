@@ -4,12 +4,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User, Group
 from pytz import timezone
-# from django.utils import timezone
-# now_aware = timezone.now()
 from datetime import datetime
 
 active_status = status.objects.get(pk=1)
-
 FORMAT = "%Y-%m-%d"
 TIME = "%H:%M"
 TZ = 'ASIA/KOLKATA'
@@ -43,7 +40,6 @@ def export_entity(request):
  
     wb.save(response)
     return response
-
 
 def export_vendor(request):
     response = HttpResponse(content_type='application/ms-excel')
@@ -95,7 +91,6 @@ def write_time_details(ws,index, row_num, row, font_style):
         ws.write(row_num, index+4, 'None', font_style)
     ws.write(row_num, index+5, row.status.status_name, font_style)  
 
-
 def export_department(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="CSP_Department.xls"'
@@ -125,7 +120,6 @@ def export_department(request):
  
     wb.save(response)
     return response
-
 
 def export_function(request):
     response = HttpResponse(content_type='application/ms-excel')
@@ -425,7 +419,6 @@ def export_minimum_wage(request):
  
     wb.save(response)
     return response
-
 
 def export_user_xls(request):
     response = HttpResponse(content_type='application/ms-excel')

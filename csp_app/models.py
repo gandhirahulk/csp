@@ -394,8 +394,40 @@ class candidate_salary(models.Model):
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
 
 
+class salary_structure_particulars(models.Model):
+    pk_ssp_code = models.AutoField(primary_key=True)
+    particulars = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.particulars
 
+class salary_structure_particulars(models.Model):
+    pk_ssp_code = models.AutoField(primary_key=True)
+    particulars = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.particulars
+
+class employee_contributions_particulars(models.Model):
+    pk_ecp_code = models.AutoField(primary_key=True)
+    particulars = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.particulars
+
+class employee_contributions_particulars(models.Model):
+    pk_ecp_code = models.AutoField(primary_key=True)
+    particulars = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.particulars
+
+class employer_contributions_particulars(models.Model):
+    pk_ercp_code = models.AutoField(primary_key=True)
+    particulars = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.particulars
     
 
     

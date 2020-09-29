@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block tabcontentblock %}
-<div class="crumbs"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
+<div class="crumbs" id="crumbs"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
     <span><i class="fas fa-chevron-right"></i></span>
     <span style="color: dimgray;">New Candidate</span>
 </div>
@@ -369,16 +369,110 @@
               
     </div>
     <div class="candidate_form_footer">
-            <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
-    </form>
+        <button class="forms-save-btn" style="width: auto;" onclick="showDelete('salary_structure')">Calculate Salary Structure</button>
+ 
+            <!-- <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
+    </form> -->
     </div>
     <input type="hidden" id="name">
     <input type="hidden" id="phone_no">
     <input type="hidden" id="spocemail">
   </div>
+
+    <div id="salary_structure" class="form_modal" style="padding-top: 2%;">
+        <div class="form_header">
+            <div class="forms-heading">
+                <h2>Salary Salary Structure</h2>
+            </div>
+        </div>
+        <div class="form_content" style="height: 72vh;">
+             
+            <table>
+                <thead>
+                    <tr>
+                        <th>Particulars</th>
+                        <th>Monthly</th>
+                        <th>Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if s_particulars %}
+                        {% for eachp in s_particulars %}
+                            <tr>
+                                <td>{{ eachp.particulars }}</td>
+                                <td>0.0</td>
+                                <td>0.0</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <div class="forms-heading">
+                <h2>Employee Contributions</h2>
+            </div> 
+            <table>
+                <thead>
+                    <tr>
+                        <th>Particulars</th>
+                        <th>Monthly</th>
+                        <th>Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if e_particulars %}
+                        {% for eachp in e_particulars %}
+                            <tr>
+                                <td>{{ eachp.particulars }}</td>
+                                <td>0.0</td>
+                                <td>0.0</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <div class="forms-heading">
+                <h2>Employer Contributions</h2>
+            </div> 
+            <table>
+                <thead>
+                    <tr>
+                        <th>Particulars</th>
+                        <th>Monthly</th>
+                        <th>Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if er_particulars %}
+                        {% for eachp in er_particulars %}
+                            <tr>
+                                <td>{{ eachp.particulars }}</td>
+                                <td>0.0</td>
+                                <td>0.0</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="form_footer">
+                <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+                <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
+            </form>
+        </div>
+    </div>
+
   <script>
     $(document).ready(function(){
+
         showMe('Candidate', 'can-expand');
+
+        $('#close_delete').click(function(){
+            $("#salary_structure").css("display", "none");
+            $("#crumbs").css("z-index", "100");
+        });  
+
         $('#hiring').change(function() {
             var selectedvalue = $(this).val();
             if (selectedvalue == '1'){
@@ -521,7 +615,6 @@
                 $('#c_city .empty').prop("selected", true);
             }
         });
-
         
         $('#c_city').change(function() {
             var filter = $(this).val();
@@ -797,5 +890,11 @@
        
        
     });
+</script>
+<script>
+    function showDelete(formid){
+        document.getElementById(formid).style.display = "block";
+        console.log(document.getElementById('crumbs').style.zIndex = 0);
+    }
 </script>
   {% endblock %}

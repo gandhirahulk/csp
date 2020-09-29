@@ -7,10 +7,11 @@ from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.db.utils import IntegrityError
-from csp_app.models import status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
-                            master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
-                            sub_source, salary_type, gender, laptop_allocation, candidate_status, onboarding_status, vendor_status, csp_candidate_code, \
-                            mandatory_documents, candidate_document, skill_type, master_minimum_wages, states, zones, port_list
+from csp_app.models import * 
+# status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
+#                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
+#                             sub_source, salary_type, gender, laptop_allocation, candidate_status, onboarding_status, vendor_status, csp_candidate_code, \
+#                             mandatory_documents, candidate_document, skill_type, master_minimum_wages, states, zones, port_list
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
@@ -769,6 +770,7 @@ def pending_requests(request):
 
 @login_required(login_url='/notlogin/')
 def candidate(request):
+    
     count = 0
     all_active_candidates = master_candidate.objects.filter(status=active_status)
     candidate_list = master_candidate.objects.filter(status=active_status)
@@ -826,6 +828,9 @@ def candidate(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists())
 def new_candidate(request):    
     try:
+        s_particulars = salary_structure_particulars.objects.all()
+        e_particulars = employee_contributions_particulars.objects.all()
+        er_particulars = employer_contributions_particulars.objects.all()
         entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
         vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
         dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
@@ -843,7 +848,7 @@ def new_candidate(request):
         gender_list = gender.objects.filter(status= active_status)
         laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
         candidate_list = master_candidate.objects.all()
-        return render(request, 'csp_app/newcandidate.html', {'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        return render(request, 'csp_app/newcandidate.html', {'s_particulars': s_particulars,'e_particulars': e_particulars,'er_particulars': er_particulars , 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
