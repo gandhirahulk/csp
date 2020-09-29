@@ -57,6 +57,8 @@ urlpatterns = [
 
     path('csp_candidates/edit_candidate/', views.edit_candidate, name= 'edit_candidate'),
     path('csp_candidates/create_new/', views.create_candidate, name= 'create_candidate'),
+    path('csp_candidates/save_new/', views.save_new_candidate, name= 'save_new_candidate'),
+
     path('csp_candidates/view_candidate/', views.view_candidate, name= 'view_candidate'),
     path('csp_candidates/change_status/', views.change_candidate_status, name= 'change_candidate_status'),
     path('csp_candidates/vendor_change_status/', views.change_candidate_status_vendor, name= 'change_candidate_status_vendor'),
