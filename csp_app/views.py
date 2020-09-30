@@ -8,10 +8,6 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.db.utils import IntegrityError
 from csp_app.models import * 
-# status, master_candidate, master_entity, master_designation, master_vendor, master_department, \
-#                             master_function, master_team, master_sub_team, master_region, master_state, master_city, master_location, hiring_type, \
-#                             sub_source, salary_type, gender, laptop_allocation, candidate_status, onboarding_status, vendor_status, csp_candidate_code, \
-#                             mandatory_documents, candidate_document, skill_type, master_minimum_wages, states, zones, port_list
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
@@ -49,8 +45,8 @@ def minimum_wages(request):
     try:
         wage_list = master_minimum_wages.objects.filter(status=active_status)
         state_list = states.objects.all().order_by('state_name')
-        zone_list = zones.objects.all().order_by('zone_name')
-        skill_list = skill_type.objects.all().order_by('skill_name')
+        zone_list = zones.objects.all()
+        skill_list = skill_type.objects.all().order_by('-skill_name')
         return render(request, 'csp_app/minimum_wages.html', {'all_active_candidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
@@ -117,8 +113,8 @@ def delete_wages(request):
 def view_wages(request):
     wage_list = master_minimum_wages.objects.filter(status=active_status)
     state_list = states.objects.all().order_by('state_name')
-    zone_list = zones.objects.all().order_by('zone_name')
-    skill_list = skill_type.objects.all().order_by('skill_name')
+    zone_list = zones.objects.all()
+    skill_list = skill_type.objects.all().order_by('-skill_name')
     try:
         if request.method == 'POST':
             wage_id = request.POST.get("view_id")
@@ -133,8 +129,8 @@ def view_wages(request):
 def view_edit_wages(request):
     wage_list = master_minimum_wages.objects.filter(status=active_status)
     state_list = states.objects.all().order_by('state_name')
-    zone_list = zones.objects.all().order_by('zone_name')
-    skill_list = skill_type.objects.all().order_by('skill_name')
+    zone_list = zones.objects.all()
+    skill_list = skill_type.objects.all().order_by('-skill_name')
     
     try:
         if request.method == 'POST':
@@ -150,8 +146,8 @@ def view_edit_wages(request):
 def save_edit_wages(request):
     wage_list = master_minimum_wages.objects.filter(status=active_status)
     state_list = states.objects.all().order_by('state_name')
-    zone_list = zones.objects.all().order_by('zone_name')
-    skill_list = skill_type.objects.all().order_by('skill_name')
+    zone_list = zones.objects.all()
+    skill_list = skill_type.objects.all().order_by('-skill_name')
     try:
         if request.method == 'POST':
            if request.POST.get("e_id") != '':
@@ -270,9 +266,9 @@ def process_requests(request, cid):
         c_status_list = candidate_status.objects.all()
         v_status_list = vendor_status.objects.all()
         if request.method == 'POST':
-            firstname = request.POST.get("c_firstname")
-            middlename = request.POST.get("c_middlename")
-            lastname = request.POST.get("c_lastname")
+            firstname = request.POST.get("c_firstname").capitalize()
+            middlename = request.POST.get("c_middlename").capitalize()
+            lastname = request.POST.get("c_lastname").capitalize()
             dob = request.POST.get("c_dob")
             contact_no = request.POST.get("c_contact")
             emergency_no = request.POST.get("c_emergency")
@@ -823,10 +819,10 @@ def edit_candidate(request):
             candidate_list = master_candidate.objects.filter(pk=candidate_id)
             # if request.POST.get('c_id') != '':
             cid = request.POST.get('c_id')
-            firstname = request.POST.get("c_firstname")
-            middlename = request.POST.get("c_middlename")
+            firstname = request.POST.get("c_firstname").capitalize()
+            middlename = request.POST.get("c_middlename").capitalize()
             # print(middlename)
-            lastname = request.POST.get("c_lastname")
+            lastname = request.POST.get("c_lastname").capitalize()
             dob = request.POST.get("c_dob")
             contact_no = request.POST.get("c_contact")
             emergency_no = request.POST.get("c_emergency")
@@ -1054,9 +1050,9 @@ def create_candidate(request):
        
     try:
         if request.method == 'POST':
-            firstname = request.POST.get("c_firstname")
-            middlename = request.POST.get("c_middlename")
-            lastname = request.POST.get("c_lastname")
+            firstname = request.POST.get("c_firstname").capitalize()
+            middlename = request.POST.get("c_middlename").capitalize()
+            lastname = request.POST.get("c_lastname").capitalize()
             dob = request.POST.get("c_dob")
             contact_no = request.POST.get("c_contact")
             emergency_no = request.POST.get("c_emergency")
@@ -1173,7 +1169,7 @@ def create_candidate(request):
                 last_code_str = last_code_query.candidate_code
                 next_code_int = int(last_code_str[1:]) + 1
                 new_code = 'D' + str(next_code_int).zfill(9) #pk_candidate_code
-                new_dummy_candidate = dummy_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
+                new_dummy_candidate = dummy_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= father_dob,
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
@@ -1188,11 +1184,12 @@ def create_candidate(request):
                 #monthly
                 try:
                     print(dummy.fk_designation_code.fk_skill_code)
-                    print(dummy.fk_state_code)
+                    print(dummy.fk_state_code.state_name_id)
                     print(dummy.fk_state_code_id)
+                    print(dummy.fk_designation_code.fk_skill_code.pk)
                     minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code.pk, fk_state_code= dummy.fk_state_code.pk, status=active_status)
                     print(master_minimum_wages.objects.get(fk_state_code=4).wages)
-                    print(dummy.fk_designation_code.fk_skill_code.pk)
+                    
                     
                     print(minimum_wage)
                     print(minimum_wage.wages)
@@ -1325,9 +1322,9 @@ def create_candidate(request):
 def save_new_candidate(request):
     try:
         if request.method == 'POST':
-            firstname = request.POST.get("c_firstname")
-            middlename = request.POST.get("c_middlename")
-            lastname = request.POST.get("c_lastname")
+            firstname = request.POST.get("c_firstname").capitalize()
+            middlename = request.POST.get("c_middlename").capitalize()
+            lastname = request.POST.get("c_lastname").capitalize()
             dob = request.POST.get("c_dob")
             contact_no = request.POST.get("c_contact")
             emergency_no = request.POST.get("c_emergency")
@@ -1535,7 +1532,7 @@ def save_new_candidate(request):
                 last_code_str = last_code_query.candidate_code
                 next_code_int = int(last_code_str[1:]) + 1
                 new_code = 'C' + str(next_code_int).zfill(9) #pk_candidate_code
-                new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
+                new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= father_dob,
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
@@ -1675,7 +1672,7 @@ def candidate_document_upload(request, candidate_id):
                 messages.error(request, "Duplicate File Name")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )
             except ObjectDoesNotExist:
-                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= request.user)
+                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= request.user, candidate_status=pending_status, created_date_time=timezone.localtime())
                 new_document.save()
                 messages.success(request, "Duplicate Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
@@ -1919,7 +1916,7 @@ def create_entity(request):
             messages.error(request, "Entity Already Exist")
             return redirect('csp_app:entity')
         except ObjectDoesNotExist:
-            new_entity = master_entity(entity_name= entity_name , created_by = str(request.user))
+            new_entity = master_entity(entity_name= entity_name , created_by = str(request.user),created_date_time=timezone.localtime() )
             new_entity.save()
             messages.success(request, "Entity Created Successfully")
             return redirect('csp_app:entity')
@@ -2145,7 +2142,7 @@ def create_vendor(request):
                 ) 
                 our_email.fail_silently = False
                 our_email.send()  
-            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user))
+            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user), created_date_time=timezone.localtime())
             new_vendor.save()
         
             newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'entity': entity_fk, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
@@ -2328,7 +2325,7 @@ def  create_function(request):
             messages.error(request, "Function Already Exist")
             return redirect('csp_app:function')
         except ObjectDoesNotExist:            
-            new_function = master_function( function_name= function_name , fk_department_code= department_fk, created_by = str(request.user))
+            new_function = master_function( function_name= function_name , fk_department_code= department_fk, created_by = str(request.user), created_date_time=timezone.localtime())
             new_function.save()
             messages.success(request, "Function Saved Successfully")
             return redirect('csp_app:function')
@@ -2460,7 +2457,7 @@ def  create_team(request):
             messages.error(request, "Team Already Exist")
             return redirect('csp_app:team')
         except ObjectDoesNotExist: 
-            new_team = master_team( team_name= team_name , fk_function_code=function_fk, created_by = str(request.user))
+            new_team = master_team( team_name= team_name , fk_function_code=function_fk, created_by = str(request.user), created_date_time=timezone.localtime())
             new_team.save()
             messages.success(request, "Team Saved Successfully")
             return redirect('csp_app:team')
@@ -2598,7 +2595,7 @@ def  create_subteam(request):
             messages.error(request, "Sub Team Already Exist")
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
-            new_subteam = master_sub_team( sub_team_name= subteam_name , fk_team_code=team_fk, created_by = str(request.user))
+            new_subteam = master_sub_team( sub_team_name= subteam_name , fk_team_code=team_fk, created_by = str(request.user), created_date_time=timezone.localtime())
             new_subteam.save()
             messages.success(request, "Sub Team Saved Successfully")
             return redirect('csp_app:subteam')
@@ -2721,7 +2718,7 @@ def  designation(request):
     team_list = master_team.objects.filter(status = active_status).order_by('team_name')
     subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
     desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
-    skill_list = skill_type.objects.all().order_by('skill_name')
+    skill_list = skill_type.objects.all().order_by('-skill_name')
     return render(request, 'csp_app/designation.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list, 'skill_list': skill_list})
 
 @login_required(login_url='/notlogin/')
@@ -2749,7 +2746,7 @@ def  create_designation(request):
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
 
-            new_designation = master_designation( designation_name= designation_name , fk_sub_team_code=subteam_fk, fk_skill_code= skill_fk, created_by = str(request.user))
+            new_designation = master_designation( designation_name= designation_name , fk_sub_team_code=subteam_fk, fk_skill_code= skill_fk, created_by = str(request.user), created_date_time=timezone.localtime())
             new_designation.save()
             messages.success(request, "Designation Saved Successfully")
             return redirect('csp_app:designation')
@@ -2781,7 +2778,7 @@ def view_edit_designation(request):
     team_list = master_team.objects.filter(status=active_status)
     subteam_list = master_sub_team.objects.filter(status=active_status)
     designation_list = master_designation.objects.filter(status=active_status)
-    skill_list = skill_type.objects.all().order_by('skill_name')
+    skill_list = skill_type.objects.all().order_by('-skill_name')
     try:
         if request.method == 'POST':
             designation_id = request.POST.get("view_id")
@@ -2799,7 +2796,7 @@ def save_edit_designation(request):
     team_list = master_team.objects.filter(status=active_status)
     subteam_list = master_sub_team.objects.filter(status=active_status)
     designation_list = master_designation.objects.filter(status=active_status)
-    skill_list = skill_type.objects.all().order_by('skill_name')
+    skill_list = skill_type.objects.all().order_by('-skill_name')
 
     try:
         if request.method == 'POST':
@@ -2896,7 +2893,7 @@ def create_region(request):
             messages.error(request, "Region Already Exist")
             return redirect('csp_app:region')
         except ObjectDoesNotExist: 
-            new_region = master_region( region_name= region_name , fk_entity_code =entity_fk, created_by = str(request.user))
+            new_region = master_region( region_name= region_name , fk_entity_code =entity_fk, created_by = str(request.user), created_date_time=timezone.localtime())
             new_region.save()
             
             messages.success(request, "Region Saved Succesfully")
@@ -3036,7 +3033,7 @@ def  create_state(request):
             messages.error(request, "State Already Exist")
             return redirect('csp_app:state')
         except ObjectDoesNotExist: 
-            new_state = master_state( state_name= state_name , fk_region_code =region_fk, created_by = str(request.user))
+            new_state = master_state( state_name= state_name , fk_region_code =region_fk, created_by = str(request.user), created_date_time=timezone.localtime())
             new_state.save()
             messages.success(request, "State Saved Successfully")
             return redirect('csp_app:state')
@@ -3276,7 +3273,7 @@ def  create_city(request):
             messages.error(request, "City Already Exist")
             return redirect('csp_app:city')
         except ObjectDoesNotExist: 
-            new_city = master_city( city_name= city_name , fk_state_code =state_fk, created_by = str(request.user))
+            new_city = master_city( city_name= city_name , fk_state_code =state_fk, created_by = str(request.user), created_date_time=timezone.localtime())
             new_city.save()
             messages.success(request, "City Saved Successfully")
             return redirect('csp_app:city')
@@ -3316,7 +3313,7 @@ def  create_location(request):
             messages.error(request, "Location Already Exist")
             return redirect('csp_app:location')
         except ObjectDoesNotExist: 
-            new_location = master_location( location_name= location_name ,location_code=code, fk_city_code =city_fk, created_by = str(request.user))
+            new_location = master_location( location_name= location_name ,location_code=code, fk_city_code =city_fk, created_by = str(request.user), created_date_time=timezone.localtime())
             new_location.save()
             messages.success(request, "Location Saved Successfully")
             return redirect('csp_app:location')
@@ -3450,8 +3447,8 @@ def  create_user_view(request):
 def  create_user(request):
     if request.method == 'POST':
         usrname = request.POST.get('email')
-        firstname = request.POST.get('firstname')
-        lastname = request.POST.get('lastname')
+        firstname = request.POST.get('firstname').capitalize()
+        lastname = request.POST.get('lastname').capitalize()
         email = request.POST.get('email')
         group = request.POST.get('usergroup')
         try:

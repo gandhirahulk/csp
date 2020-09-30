@@ -1,6 +1,6 @@
 function onlyAlphabets(event) {
     var value = String.fromCharCode(event.which);
-    var pattern = new RegExp(/[a-z ]/i);
+    var pattern = new RegExp(/[a-z. ]/i);
     // var pattern = new RegExp(/^[a-zA-Z ]{2,30}$/);
     return pattern.test(value);    
 }
