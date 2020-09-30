@@ -1,0 +1,41 @@
+.ss-table{
+    width: 100%;
+}
+
+.ss-table tr{
+    color: black;
+}
+
+
+
+
+
+.ss-table tr td{
+    color: black;
+    text-align: right;
+    
+}
+
+.ss-table tr td:first-child{
+    text-align: left;
+}
+
+.salary-heading-one,
+.salary-heading-two,
+.salary-heading-three{
+    padding: 10px;
+    text-align: center;
+}
+
+#s-wrapper{
+    display: flex;
+}
+
+.ss {
+    flex: 0 0 60%;
+    margin-right: 20px;
+  }
+  
+.ssc {
+    flex: 1;
+  }
