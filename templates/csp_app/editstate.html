@@ -121,7 +121,16 @@
                     </div>
                     <div class="forms-input-holder">
                         <label for="state_phone">state Name</label>
-                        <input type="text" value="{{ eachstate.state_name }}" placeholder="state Name" name="e_state_name" title="Enity Name" required="true" maxlength="50" id="name">
+                        <select name="e_state_name" required="true" id="">
+                            <option value="{{ eachstate.state_name_id }}" label="{{ eachstate.state_name }}" selected>{{ eachstate.state_name }}</option>
+                            {% if states %}
+                                {% for eachst in states %}
+                                    {% if eachst.pk != eachstate.state_name_id %}
+                                        <option value="{{ eachst.pk }}" label="{{ eachst.state_name }}">{{ eachst.state_name }}</option>
+                                    {% endif %}
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
                     </div>           
                    
             </div>

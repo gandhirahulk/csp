@@ -159,7 +159,7 @@ class master_designation(models.Model):
 
 class master_region(models.Model):
     pk_region_code = models.AutoField(primary_key=True)
-    region_name = models.CharField(max_length=100)
+    region_name = models.ForeignKey(zones, on_delete=models.CASCADE, default=1)
     fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE, default=1)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
@@ -168,11 +168,11 @@ class master_region(models.Model):
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
 
     def __str__(self):
-        return self.region_name
+        return self.region_name.zone_name
 
 class master_state(models.Model):
     pk_state_code = models.AutoField(primary_key=True)
-    state_name = models.CharField(max_length=100)
+    state_name = models.ForeignKey(states, models.CASCADE, default=1)
     fk_region_code = models.ForeignKey(master_region, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(auto_now_add=True, blank=True)
@@ -181,7 +181,7 @@ class master_state(models.Model):
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
 
     def __str__(self):
-        return self.state_name
+        return self.state_name.state_name
 
 class master_city(models.Model):
     pk_city_code = models.AutoField(primary_key=True)

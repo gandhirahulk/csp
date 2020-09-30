@@ -92,8 +92,14 @@
             
             <div class="forms-input-holder">
             <label for="">Region</label>
-
-                <input type="text" placeholder="Region" name="region_name" required="true" id="name">
+                <select name="region_name" id="">
+                    <option value="" selected disabled></option>
+                    {% if zone_list %}
+                        {% for eachzone in zone_list %}
+                            <option value="{{ eachzone.pk }}" label="{{ eachzone.zone_name }}">{{ eachzone.zone_name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
             </div>
                
     </div>
@@ -103,7 +109,7 @@
     </div>
   
   </div>
-
+<input type="hidden" id="name">
   <div id="delete_region_form" class="form_modal" style="padding-top: 15%;">
     <div class="delete_form_header">
         <div class="forms-heading">

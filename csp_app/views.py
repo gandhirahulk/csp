@@ -507,7 +507,7 @@ def process_requests(request, cid):
                         selected_candidate.onboarding_status = approve_onboarding
                         selected_candidate.save()
                         
-                        limtemplate = render_to_string('csp_app/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
+                        limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
                         our_email = EmailMessage(
                             'Candidate Edited By Admin.',
                             limtemplate,
@@ -517,7 +517,7 @@ def process_requests(request, cid):
                         our_email.fail_silently = False
                         our_email.send()
                         
-                        alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
+                        alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                         our_email = EmailMessage(
                             'Candidate account edited by admin.',
                             alltemplate,
@@ -538,7 +538,7 @@ def process_requests(request, cid):
                     selected_candidate.onboarding_status = approve_onboarding
                     selected_candidate.save()
                     
-                    limtemplate = render_to_string('csp_app/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
+                    limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
                     our_email = EmailMessage(
                         'Candidate Edited .',
                         limtemplate,
@@ -548,7 +548,7 @@ def process_requests(request, cid):
                     our_email.fail_silently = False
                     our_email.send()
                     
-                    alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
+                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                     our_email = EmailMessage(
                         'Candidate account edited.',
                         alltemplate,
@@ -568,7 +568,7 @@ def process_requests(request, cid):
                     selected_candidate.vendor_status = approve_vendor
                     selected_candidate.save()
                     
-                    limtemplate = render_to_string('csp_app/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
+                    limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
                     our_email = EmailMessage(
                         'Candidate Edited By Vendor.',
                         limtemplate,
@@ -578,7 +578,7 @@ def process_requests(request, cid):
                     our_email.fail_silently = False
                     our_email.send()
                     
-                    alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
+                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                     our_email = EmailMessage(
                         'Candidate account edited by vendor.',
                         alltemplate,
@@ -587,7 +587,7 @@ def process_requests(request, cid):
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
-                    template = render_to_string('csp_app/loi.html', {'candidate_name': selected_candidate.First_Name, 'candidate_code':selected_candidate.pk ,'status': 'Approved' })
+                    template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'candidate_code':selected_candidate.pk ,'status': 'Approved' })
                     our_email = EmailMessage(
                         'LOI',
                         template,
@@ -600,7 +600,7 @@ def process_requests(request, cid):
                     return redirect("csp_app:pending_request")
 
 
-        return render(request, 'csp_app/processrequests.html', {'selected_candidate': selected_candidate_data, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        return render(request, 'candidate/processrequests.html', {'selected_candidate': selected_candidate_data, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -617,7 +617,7 @@ def reject_candidate_onboarding(request, cid):
         selected_candidate = master_candidate.objects.get(pk = cid)
         selected_candidate.onboarding_status = reject_onboarding
         selected_candidate.save()
-        alltemplate = render_to_string('csp_app/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
+        alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
         our_email = EmailMessage(
             'Candidate Rejected.',
             alltemplate,
@@ -643,7 +643,7 @@ def reject_candidate_vendor(request, cid):
                 selected_candidate = master_candidate.objects.get(pk = cid)
                 selected_candidate.vendor_status = reject_vendor
                 selected_candidate.save()
-                alltemplate = render_to_string('csp_app/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
+                alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
                 our_email = EmailMessage(
                     'Candidate Rejected By Admin.',
                     alltemplate,
@@ -652,7 +652,7 @@ def reject_candidate_vendor(request, cid):
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
-                template = render_to_string('csp_app/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
+                template = render_to_string('emailtemplates/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
                 our_email = EmailMessage(
                     'Candidate Rejected By Admin.',
                     template,
@@ -668,7 +668,7 @@ def reject_candidate_vendor(request, cid):
         selected_candidate = master_candidate.objects.get(pk = cid)
         selected_candidate.vendor_status = reject_vendor
         selected_candidate.save()
-        alltemplate = render_to_string('csp_app/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
+        alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
         our_email = EmailMessage(
             'Candidate Rejected.',
             alltemplate,
@@ -677,7 +677,7 @@ def reject_candidate_vendor(request, cid):
         ) 
         our_email.fail_silently = False
         our_email.send()
-        template = render_to_string('csp_app/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
+        template = render_to_string('emailtemplates/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
         our_email = EmailMessage(
             'Candidate Rejected.',
             template,
@@ -726,7 +726,7 @@ def pending_requests(request):
                 pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding, vendor_status= pending_vendor, status=active_status )
                 count = len(pending_candidate_list)
             
-        return render(request, 'csp_app/pendingrequests.html', {'count':count,'pending_candidate_list': pending_candidate_list, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        return render(request, 'candidate/pendingrequests.html', {'count':count,'pending_candidate_list': pending_candidate_list, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -771,7 +771,7 @@ def candidate(request):
             pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding, vendor_status= pending_vendor, status=active_status )
             count = len(pending_candidate_list)
 
-    return render(request, 'csp_app/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+    return render(request, 'candidate/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 'c_status_list': c_status_list,
@@ -787,7 +787,7 @@ def new_candidate(request):
         entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
         candidate_list = master_candidate.objects.all()
         minimum_wage = master_minimum_wages.objects.filter(status=active_status)
-        return render(request, 'csp_app/newcandidate.html', {'wages': minimum_wage, 's_particulars': s_particulars,'e_particulars': e_particulars,'er_particulars': er_particulars , 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        return render(request, 'candidate/newcandidate.html', {'wages': minimum_wage, 's_particulars': s_particulars,'e_particulars': e_particulars,'er_particulars': er_particulars , 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -804,7 +804,7 @@ def view_edit_candidate(request):
             entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
             candidate_list = master_candidate.objects.filter(pk=candidate_id)
             
-        return render(request, 'csp_app/editcandidate.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'location_list': location_list, 
+        return render(request, 'candidate/editcandidate.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -970,7 +970,7 @@ def edit_candidate(request):
             selected_candidate.modified_by = str(request.user)
             selected_candidate.modified_date_time=timezone.localtime()
             selected_candidate.save()
-            alltemplate = render_to_string('csp_app/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
+            alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
             our_email = EmailMessage(
                 'Candidate Account Updated.',
                 alltemplate,
@@ -979,7 +979,7 @@ def edit_candidate(request):
             ) 
             our_email.fail_silently = False
             our_email.send()
-            limtemplate = render_to_string('csp_app/candidate_edited_et_limited.html', {'candidate_code':cid ,'user': request.user})
+            limtemplate = render_to_string('emailtemplates/candidate_edited_et_limited.html', {'candidate_code':cid ,'user': request.user})
             our_email = EmailMessage(
                 'Candidate Account Updated.',
                 limtemplate,
@@ -992,7 +992,7 @@ def edit_candidate(request):
             messages.success(request, "Candidate Updated Successfully")
             return redirect("csp_app:candidate")
 
-        return render(request, 'csp_app/editcandidate.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'location_list': location_list, 
+        return render(request, 'candidate/editcandidate.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -1186,7 +1186,16 @@ def create_candidate(request):
                 dummy = dummy_candidate.objects.get(pk=new_code)
 
                 #monthly
-                minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code, fk_state_code= dummy.fk_state_code_id)
+                print(dummy.fk_designation_code.fk_skill_code)
+                print(dummy.fk_state_code)
+                print(dummy.fk_state_code_id)
+                minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code.pk, fk_state_code= dummy.fk_state_code.pk, status=active_status)
+                print(master_minimum_wages.objects.get(fk_state_code=4).wages)
+                print(dummy.fk_designation_code.fk_skill_code.pk)
+                
+                print(minimum_wage)
+                print(minimum_wage.wages)
+                print(minimum_wage.fk_state_code.state_name)
                 g_salary = dummy.Gross_Salary_Amount * 0.50
                 basic = g_salary if minimum_wage.wages < g_salary else minimum_wage.wages
                     
@@ -1279,7 +1288,7 @@ def create_candidate(request):
 
                 # save_new_code = csp_candidate_code(candidate_code= new_code)
                 # save_new_code.save()
-                # limtemplate = render_to_string('csp_app/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
+                # limtemplate = render_to_string('emailtemplates/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
                 # our_email = EmailMessage(
                 #     'Candidate account created action required.',
                 #     limtemplate,
@@ -1288,7 +1297,7 @@ def create_candidate(request):
                 # ) 
                 # our_email.fail_silently = False
                 # our_email.send()
-                # alltemplate = render_to_string('csp_app/candidate_saved_et_all.html', {'candidate_code':new_code ,'user': request.user})
+                # alltemplate = render_to_string('emailtemplates/candidate_saved_et_all.html', {'candidate_code':new_code ,'user': request.user})
                 # our_email = EmailMessage(
                 #     'Candidate account created action required.',
                 #     alltemplate,
@@ -1301,7 +1310,7 @@ def create_candidate(request):
                 # messages.success(request, "Candidate Saved Successfully")
                 # return redirect("csp_app:candidate")
 
-            return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,})
+            return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,})
 
     except IndexError:
         return HttpResponse("No Data To Display.")
@@ -1532,7 +1541,7 @@ def save_new_candidate(request):
 
                 save_new_code = csp_candidate_code(candidate_code= new_code)
                 save_new_code.save()
-                limtemplate = render_to_string('csp_app/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
+                limtemplate = render_to_string('emailtemplates/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
                 our_email = EmailMessage(
                     'Candidate account created action required.',
                     limtemplate,
@@ -1541,7 +1550,7 @@ def save_new_candidate(request):
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
-                alltemplate = render_to_string('csp_app/candidate_saved_et_all.html', {'candidate_code':new_code ,'user': request.user})
+                alltemplate = render_to_string('emailtemplates/candidate_saved_et_all.html', {'candidate_code':new_code ,'user': request.user})
                 our_email = EmailMessage(
                     'Candidate account created action required.',
                     alltemplate,
@@ -1554,7 +1563,7 @@ def save_new_candidate(request):
                 messages.success(request, "Candidate Saved Successfully")
                 return redirect("csp_app:candidate")
 
-            return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,})
+            return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,})
 
     except IndexError:
         return HttpResponse("No Data To Display.")
@@ -1570,7 +1579,7 @@ def view_candidate(request):
         if request.method == 'POST':
             candidate_id = request.POST.get("view_id")
             view_candidate_list = master_candidate.objects.filter(pk = candidate_id)
-        return render(request, 'csp_app/viewcandidate.html', {'allcandidates': all_active_candidates,'view_candidate_list': view_candidate_list, 'candidate_list': candidate_list})
+        return render(request, 'candidate/viewcandidate.html', {'allcandidates': all_active_candidates,'view_candidate_list': view_candidate_list, 'candidate_list': candidate_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -1599,7 +1608,7 @@ def change_candidate_status(request):
                 candidate.status = deactive_status
                 candidate.candidate_status = status
                 candidate.save()
-                template = render_to_string('csp_app/hold_status_change_et.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name , 'user': request.user})
+                template = render_to_string('emailtemplates/hold_status_change_et.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name , 'user': request.user})
                 our_email = EmailMessage(
                     'Candidate Status Updated',
                     template,
@@ -1612,7 +1621,7 @@ def change_candidate_status(request):
                 return redirect('csp_app:candidate')
             candidate.candidate_status = status
             candidate.save()
-            template = render_to_string('csp_app/status_change_email_temlate.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name , 'user': request.user})
+            template = render_to_string('emailtemplates/status_change_email_temlate.html', {'allcandidates': all_active_candidates, 'candidatecode':candidate.pk ,'prev_status':prev_status, 'newstatus':status.status_name , 'user': request.user})
             our_email = EmailMessage(
                 'Candidate Status Updated',
                 template,
@@ -1623,7 +1632,7 @@ def change_candidate_status(request):
             our_email.send()            
             messages.success(request, "Candidate Status Updated")
             return redirect('csp_app:candidate')
-        return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
+        return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -1667,7 +1676,7 @@ def candidate_document_upload(request, candidate_id):
                 messages.success(request, "Duplicate Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
         all_active_candidates = vendor_candidates(request.user)
-        return render(request, 'csp_app/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
+        return render(request, 'candidate/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
 
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
@@ -1714,7 +1723,7 @@ def change_candidate_status_vendor(request):
       
             candidate.vendor_status = status
             candidate.save()
-            template = render_to_string('csp_app/vendor_status_change_et.html', {'candidate_code':candidate.pk ,'prev':prev_status, 'current':status.status_name , 'user': request.user})
+            template = render_to_string('emailtemplates/vendor_status_change_et.html', {'candidate_code':candidate.pk ,'prev':prev_status, 'current':status.status_name , 'user': request.user})
             our_email = EmailMessage(
                 'Candidate Status Updated By Vendor',
                 template,
@@ -1724,7 +1733,7 @@ def change_candidate_status_vendor(request):
             our_email.fail_silently = False
             our_email.send()
             if str(status_id) == '0':
-                template = render_to_string('csp_app/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name })
+                template = render_to_string('emailtemplates/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name })
                 our_email = EmailMessage(
                     'LOI',
                     template,
@@ -1744,7 +1753,7 @@ def change_candidate_status_vendor(request):
             messages.success(request, "Candidate Status Updated")
             return redirect('csp_app:candidate')
         all_active_candidates = vendor_candidates(request.user)
-        return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
+        return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
   
@@ -1770,7 +1779,7 @@ def change_candidate_status_vendor(request):
       
             candidate.vendor_status = status
             candidate.save()
-            template = render_to_string('csp_app/vendor_status_change_et.html', {'candidate_code':candidate.pk ,'prev':prev_status, 'current':status.status_name , 'user': request.user})
+            template = render_to_string('emailtemplates/vendor_status_change_et.html', {'candidate_code':candidate.pk ,'prev':prev_status, 'current':status.status_name , 'user': request.user})
             our_email = EmailMessage(
                 'Candidate Status Updated By Vendor',
                 template,
@@ -1782,7 +1791,7 @@ def change_candidate_status_vendor(request):
             print(status_id)
             if str(status_id) == '0':
                 print("here")
-                template = render_to_string('csp_app/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name })
+                template = render_to_string('emailtemplates/loi.html', {'candidate_name': candidate.First_Name, 'candidate_code':candidate.pk ,'status':status.status_name })
                 our_email = EmailMessage(
                     'LOI',
                     template,
@@ -1796,7 +1805,7 @@ def change_candidate_status_vendor(request):
       
             messages.success(request, "Candidate Status Updated")
             return redirect('csp_app:candidate')
-        return render(request, 'csp_app/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
+        return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2113,7 +2122,7 @@ def create_vendor(request):
                 user.email = vendor_email
                 assign_group.user_set.add(user)     
                 user.save()
-                newtemplate = render_to_string('csp_app/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': password})
+                newtemplate = render_to_string('emailtemplates/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': password})
                 our_email = EmailMessage(
                     'CSP_APP: New vendor account created.',
                     newtemplate,
@@ -2123,7 +2132,7 @@ def create_vendor(request):
                 our_email.fail_silently = False
                 our_email.send()
             except IntegrityError:
-                template = render_to_string('csp_app/use_old_password_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk, 'mail': vendor_spoc_email})
+                template = render_to_string('emailtemplates/use_old_password_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk, 'mail': vendor_spoc_email})
                 our_email = EmailMessage(
                     'CSP_APP',
                     template,
@@ -2135,7 +2144,7 @@ def create_vendor(request):
             new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user))
             new_vendor.save()
         
-            newadmintemplate = render_to_string('csp_app/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'entity': entity_fk, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
+            newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'entity': entity_fk, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
             our_email = EmailMessage(
                 'CSP_APP: New vendor account created.',
                 newadmintemplate,
@@ -2144,7 +2153,7 @@ def create_vendor(request):
             ) 
             our_email.fail_silently = False
             our_email.send() 
-            newadmintemplate = render_to_string('csp_app/new_vendor_account_success_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk.entity_name , 'user': str(request.user)})
+            newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk.entity_name , 'user': str(request.user)})
             our_email = EmailMessage(
                 'CSP_APP: New vendor account created.',
                 newadmintemplate,
@@ -2860,21 +2869,23 @@ def delete_designation(request):
 def region(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status = active_status).order_by('region_name')
-    return render(request, 'csp_app/region.html', {'allcandidates': all_active_candidates,'entity_list': entity_list,'region_list': region_list})
+    zone_list = zones.objects.all()
+    return render(request, 'csp_app/region.html', {'zone_list':zone_list, 'allcandidates': all_active_candidates,'entity_list': entity_list,'region_list': region_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
-def  create_region(request):
+def create_region(request):
     if request.method == 'POST':
-        region_name = request.POST.get("region_name")
+        region_pk = request.POST.get("region_name")
         entity = request.POST.get("region_entity")
         if entity == None or entity == '':
             messages.warning(request, "Choose Entity And Try Again")
             return redirect('csp_app:region')
-        if region_name == None or region_name== '':
+        if region_pk == None or region_pk== '':
             messages.warning(request, "Region Cannot Be Blank")
             return redirect('csp_app:region')
         entity_fk = master_entity.objects.get(pk=entity)
+        region_name = zones.objects.get(pk= region_pk)
         try:
             dup_region = master_region.objects.get( region_name= region_name , fk_entity_code =entity_fk, status = active_status)
 
@@ -2931,12 +2942,12 @@ def view_region(request):
 def view_edit_region(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
-
+    zone_list = zones.objects.all()
     try:
         if request.method == 'POST':
             region_id = request.POST.get("view_id")
             selected = master_region.objects.filter(pk = region_id)        
-        return render(request, 'csp_app/editregion.html', {'allcandidates': all_active_candidates,'view_region_list': selected,'region_list': region_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editregion.html', {'zone_list': zone_list, 'allcandidates': all_active_candidates,'view_region_list': selected,'region_list': region_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2945,17 +2956,21 @@ def view_edit_region(request):
 def save_edit_region(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
+    zone_list = zones.objects.all()
+
     try:
         if request.method == 'POST':
            if request.POST.get("e_id") != '':
                 selected = master_region.objects.get(pk = request.POST.get("e_id"))
                 if request.POST.get("e_region_name") != None:
-                    name = request.POST.get("e_region_name")
+                    name_pk = request.POST.get("e_region_name")
                     entity = request.POST.get("e_region_entity")
                     if entity == None or entity == '':
                         messages.warning(request, "Choose Entity and Try Again")
                         return redirect('csp_app:region')
                     entity_fk = master_entity.objects.get(pk = entity)
+                    name = zones.objects.get(pk = name_pk)
+
                     try:
                         if selected.region_name == name  and selected.fk_entity_code == entity_fk:
                             messages.warning(request, "No Changes Detected")
@@ -2975,7 +2990,7 @@ def save_edit_region(request):
                     messages.warning(request, "Region Name Cannot Be Blank")
                     return redirect('csp_app:region')         
            
-        return render(request, 'csp_app/editregion.html', {'allcandidates': all_active_candidates,'view_region_list': region, 'region_list': region_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editregion.html', {'zone_list': zone_list, 'allcandidates': all_active_candidates,'view_region_list': region, 'region_list': region_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
@@ -2985,7 +3000,7 @@ def save_edit_region(request):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
-def  state(request):
+def state(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
     function_list = master_function.objects.filter(status = active_status).order_by('function_name')
@@ -2994,21 +3009,23 @@ def  state(request):
     desg_list = master_designation.objects.filter(status = active_status).order_by('designation_name')
     region_list = master_region.objects.filter(status = active_status).order_by('region_name')
     state_list = master_state.objects.filter(status = active_status).order_by('state_name')
-    return render(request, 'csp_app/state.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
+    dbstates = states.objects.all()
+    return render(request, 'csp_app/state.html', { 'states': dbstates, 'allcandidates': all_active_candidates,'entity_list': entity_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_state(request):
     if request.method == 'POST':
-        state_name = request.POST.get("state_name")
+        state_pk = request.POST.get("state_name")
         region = request.POST.get("state_region")
         if region == None or region == '':
             messages.warning(request, "Choose Region And Try Again")
             return redirect('csp_app:state')
-        if state_name == None or state_name == '':
+        if state_pk == None or state_pk == '':
             messages.warning(request, "State Cannot Be Blank")
             return redirect('csp_app:state')
         region_fk = master_region.objects.get(pk=region)
+        state_name = states.objects.get(pk = state_pk)
         try:
             dup_region = master_state.objects.get( state_name= state_name , fk_region_code =region_fk,status = active_status)
 
@@ -3027,11 +3044,12 @@ def view_state(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
+    dbstates = states.objects.all()
     try:
         if request.method == 'POST':
             state_id = request.POST.get("view_id")
             view_state_list = master_state.objects.filter(pk = state_id)
-        return render(request, 'csp_app/viewstate.html', {'allcandidates': all_active_candidates,'view_state_list': view_state_list,'state_list': state_list, 'region_list': region_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/viewstate.html', { 'states':dbstates, 'allcandidates': all_active_candidates,'view_state_list': view_state_list,'state_list': state_list, 'region_list': region_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -3041,11 +3059,13 @@ def view_edit_state(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
+    dbstates = states.objects.all()
+    
     try:
         if request.method == 'POST':
             state_id = request.POST.get("view_id")
             selected = master_state.objects.filter(pk = state_id)        
-        return render(request, 'csp_app/editstate.html', {'allcandidates': all_active_candidates,'view_state_list': selected, 'state_list': state_list,'region_list': region_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editstate.html', { 'states':dbstates, 'allcandidates': all_active_candidates,'view_state_list': selected, 'state_list': state_list,'region_list': region_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -3055,19 +3075,21 @@ def save_edit_state(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     region_list = master_region.objects.filter(status= active_status)
     state_list = master_state.objects.filter(status=active_status)
+    dbstates = states.objects.all()
     try:
         if request.method == 'POST':
            if request.POST.get("e_id") != '':
                 selected = master_state.objects.get(pk = request.POST.get("e_id"))
                 if request.POST.get("e_state_name") != None:
-                    name = request.POST.get("e_state_name")
+                    name_pk = request.POST.get("e_state_name")
                     region = request.POST.get("e_state_dept")
                     # entity = request.POST.get("e_state_entity")
-                    print(region)
                     if region == None or region == '':
                         messages.warning(request, "Choose region and Try Again")
                         return redirect('csp_app:state')
                     region_fk = master_region.objects.get(pk = region)
+                    name = states.objects.get(pk = name_pk)
+
                     try:
                         if selected.state_name == name  and selected.fk_region_code == region_fk:
                             messages.warning(request, "No Changes Detected")
@@ -3087,7 +3109,7 @@ def save_edit_state(request):
                     messages.warning(request, "region Name Cannot Be Blank")
                     return redirect('csp_app:region')         
            
-        return render(request, 'csp_app/editstate.html', {'allcandidates': all_active_candidates,'view_region_list': region, 'region_list': region_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editstate.html', {'states':dbstates, 'allcandidates': all_active_candidates,'view_region_list': region, 'region_list': region_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
@@ -3446,7 +3468,7 @@ def  create_user(request):
             # user.groups = group
             assign_group.user_set.add(user)
             user.save()
-            template = render_to_string('csp_app/new_user_et.html', {'user': firstname ,'username': email, 'password': password})
+            template = render_to_string('emailtemplates/new_user_et.html', {'user': firstname ,'username': email, 'password': password})
             our_email = EmailMessage(
                 'Account Created with UDAAN CSP_APP.',
                 template,
@@ -3455,7 +3477,7 @@ def  create_user(request):
             ) 
             our_email.fail_silently = False
             our_email.send()
-            admintemplate = render_to_string('csp_app/new_user_admin_et.html', {'user': firstname ,'username': email, 'password': password})
+            admintemplate = render_to_string('emailtemplates/new_user_admin_et.html', {'user': firstname ,'username': email, 'password': password})
             our_email = EmailMessage(
                 'Account Created with UDAAN CSP_APP.',
                 admintemplate,

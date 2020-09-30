@@ -106,8 +106,15 @@
             </div>
             <div class="forms-input-holder">
             <label for="">State</label>
+                <select name="state_name" required="true">
+                    <option value="" disabled label=" " selected></option>
 
-                <input type="text" placeholder="State" name="state_name" required="true" id="name">
+                    {% if states %}
+                        {% for eachstate in states %}
+                            <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.state_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
             </div>
                
     </div>
@@ -117,6 +124,7 @@
     </div>
   
   </div>
+  <input type="hidden" name="" id="name">
   <div id="delete_state_form" class="form_modal" style="padding-top: 15%;">
     <div class="delete_form_header">
         <div class="forms-heading">

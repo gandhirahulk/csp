@@ -96,7 +96,17 @@
                         </div>
                     <div class="forms-input-holder">
                         <label for="region_phone">Region Name</label>
-                        <input type="text" value="{{ eachregion.region_name }}" placeholder="Region Name" name="e_region_name" title="Enity Name" required="true" id="name" maxlength="50">
+                        <select name="e_region_name" id="" required="true">
+                            <option value="{{ eachregion.region_name_id }}" label="{{ eachregion.region_name }}" selected>{{ eachregion.region_name }}</option>
+                            {% if zone_list %}
+                                {% for eachzone in zone_list %}
+                                    {% if eachzone.pk != eachregion.region_name_id %}  
+                                        
+                                    <option value="{{ eachzone.pk }}" label="{{ eachzone.zone_name }}">{{ eachzone.zone_name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </select>
                     </div>           
                    
             </div>
