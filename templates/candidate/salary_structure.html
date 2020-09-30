@@ -600,7 +600,11 @@
 
 
         showMe('Candidate', 'can-expand');
-
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#salary_structure").css("display", "none");
+            }
+        });
         $('#close_delete').click(function(){
             $("#salary_structure").css("display", "none");
             $("#crumbs").css("z-index", "100");

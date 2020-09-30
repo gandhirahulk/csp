@@ -80,7 +80,7 @@ def create_wages(request):
                 messages.error(request, "Minimum wages Already Exist")
                 return redirect("csp_app:minimumwages")
             except ObjectDoesNotExist:
-                new_wage = master_minimum_wages(fk_state_code= state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, created_by= request.user)
+                new_wage = master_minimum_wages(fk_state_code= state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, created_by= request.user, created_date_time= timezone.localtime())
                 new_wage.save()
                 messages.success(request, "Minimum wages saved succesfully")
                 return redirect("csp_app:minimumwages")
@@ -1183,17 +1183,9 @@ def create_candidate(request):
 
                 #monthly
                 try:
-                    print(dummy.fk_designation_code.fk_skill_code)
-                    print(dummy.fk_state_code.state_name_id)
-                    print(dummy.fk_state_code_id)
-                    print(dummy.fk_designation_code.fk_skill_code.pk)
-                    minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code.pk, fk_state_code= dummy.fk_state_code.pk, status=active_status)
-                    print(master_minimum_wages.objects.get(fk_state_code=4).wages)
                     
+                    minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code.pk, fk_state_code= dummy.fk_state_code.state_name_id, status=active_status)
                     
-                    print(minimum_wage)
-                    print(minimum_wage.wages)
-                    print(minimum_wage.fk_state_code.state_name)
                     wage = minimum_wage.wages
                 except ObjectDoesNotExist:
                     wage = 0
@@ -1672,7 +1664,7 @@ def candidate_document_upload(request, candidate_id):
                 messages.error(request, "Duplicate File Name")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )
             except ObjectDoesNotExist:
-                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= request.user, candidate_status=pending_status, created_date_time=timezone.localtime())
+                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= request.user, created_date_time=timezone.localtime())
                 new_document.save()
                 messages.success(request, "Duplicate Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
