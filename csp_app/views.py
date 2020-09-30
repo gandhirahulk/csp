@@ -1186,18 +1186,22 @@ def create_candidate(request):
                 dummy = dummy_candidate.objects.get(pk=new_code)
 
                 #monthly
-                print(dummy.fk_designation_code.fk_skill_code)
-                print(dummy.fk_state_code)
-                print(dummy.fk_state_code_id)
-                minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code.pk, fk_state_code= dummy.fk_state_code.pk, status=active_status)
-                print(master_minimum_wages.objects.get(fk_state_code=4).wages)
-                print(dummy.fk_designation_code.fk_skill_code.pk)
-                
-                print(minimum_wage)
-                print(minimum_wage.wages)
-                print(minimum_wage.fk_state_code.state_name)
+                try:
+                    print(dummy.fk_designation_code.fk_skill_code)
+                    print(dummy.fk_state_code)
+                    print(dummy.fk_state_code_id)
+                    minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code.pk, fk_state_code= dummy.fk_state_code.pk, status=active_status)
+                    print(master_minimum_wages.objects.get(fk_state_code=4).wages)
+                    print(dummy.fk_designation_code.fk_skill_code.pk)
+                    
+                    print(minimum_wage)
+                    print(minimum_wage.wages)
+                    print(minimum_wage.fk_state_code.state_name)
+                    wage = minimum_wage.wages
+                except ObjectDoesNotExist:
+                    wage = 0
                 g_salary = dummy.Gross_Salary_Amount * 0.50
-                basic = g_salary if minimum_wage.wages < g_salary else minimum_wage.wages
+                basic = g_salary if wage < g_salary else wage
                     
                 if dummy.fk_state_code.state_name == 'Kerala':
                     hra = 200
@@ -1205,7 +1209,7 @@ def create_candidate(request):
                     hra = basic * 0.05
                 else:
                     hra = 0
-                sb_1 = minimum_wage.wages // 12
+                sb_1 = wage // 12
                 sb_2 = 7000 // 12
                 sb = sb_2 if sb_1 < sb_2 else sb_1
                 
