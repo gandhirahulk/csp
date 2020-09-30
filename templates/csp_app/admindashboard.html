@@ -73,8 +73,7 @@
         $('#c_fathername').bind('keypress', onlyAlphabets);
         $('#spoc').bind('keypress', onlyAlphabets);
         $('#loc_name').bind('keypress', alphaNumeric);
-        $('#firstname').bind('keypress', onlyAlphabets);
-        $('#lastname').bind('keypress', onlyAlphabets);
+        
 
         $('#name').bind('keypress', alphaNumeric);
         $('#search-bar').bind('keypress', noSpecial);
@@ -87,9 +86,10 @@
         $('#c_salary').bind('keypress', money);
         $('#wage').bind('keypress', money);
 
-
+        $('#reporting_manager').bind('keypress', onlyAlphabets);
         $('#c_pan').keyup(function() { 
           this.value = this.value.toLocaleUpperCase(); 
+          
         });
         // days
         $(function(){
@@ -156,6 +156,10 @@
           var minAge= minYear + '-' + month + '-' + day;
           $('#c_father_dob').attr('min', maxAge);
           $('#c_father_dob').attr('max', minAge);
+
+
+          $('#firstname').bind('keypress', onlyAlphabets);
+          $('#lastname').bind('keypress', onlyAlphabets); 
         });
       });
     </script>
@@ -255,50 +259,6 @@
 
         
 
-        <!-- <div id="search-emp-panel" class="search-emp-panel_modal">
-          <div class="search-emp-panel_modal_header">
-              <span class="search-emp-panel-close" id="close-search-panel-span">&times;</span>
-              Employee Details
-          </div>
-          <div class="search-emp-panel_modal-content">
-              <div class="search_section">                  
-                  {% if employees %}          
-                      {% for eachemp in employees %} 
-                          <div id="{{ eachemp.emp_code }}" style="display: none;" class="search-emp-contents">
-                              <div>
-                                  <table style="width: 100%;">
-                                      <tr>
-                                          <td rowspan="3" style="border-bottom: none;">
-                                          <div>
-                                              <img src="{% static 'Associate_app/images/dummy.png' %}" alt="Employee Photo" title="{{ eachemp.first_name }} {{ eachemp.middle_name }} {{ eachemp.last_name }} Photo" style="width: 200px; border-radius: 50%;">
-                                          </div>
-                                          </td>
-                                          <td style="border-bottom: none;" ><i class="fas fa-address-card" title="UID"></i> {{ eachemp.emp_code }}</td>
-                                          <td style="border-bottom: none;"><i class="fas fa-user" title="Employee Name"></i> {{ eachemp.first_name }} {{ eachemp.middle_name }} {{ eachemp.last_name }}</td>
-                                          <td style="border-bottom: none;"><i class="fas fa-mobile-alt" title="Mobile Number"></i> {{ eachemp.mobile_number }}</td>
-                                      </tr>
-                                     <tr>                                           
-                                         <td style="border-bottom: none;"><i class="fas fa-envelope" title="Official E-mail ID"></i> {{ eachemp.official_email }}</td>
-                                         <td style="border-bottom: none;"><i class="fas fa-city" title="Company Name"></i> {{ eachemp.fk_company_code }}</td>
-                                         <td style="border-bottom: none;"><i class="fas fa-briefcase" title="Function"></i> {{ eachemp.fk_function_code }}</td>
-                                     </tr>
-                                     <tr>
-                                         <td style="border-bottom: none;"><i class="fas fa-user-tag" title="Role"></i> {{ eachemp.fk_role_code }}</td>
-                                         <td style="border-bottom: none;"><i class="fas fa-portrait" title="Designation"></i> {{ eachemp.fk_designation_code }}</td>
-                                         <td style="border-bottom: none;"></td>
-                                     </tr>
-                                 </table>
-
-                              </div>
-                          </div>
-                      {% endfor %}
-                  {% endif %}
-              </div>
-          </div>
-          <div class="search-emp-panel_modal_footer">
-              <button class="basic-save-btn" id="close-search-emp-panel" style="float: none;">Close</button>
-          </div>
-        </div> -->
         {% if request.user.is_staff %}
         <div class="sidebar">
             <ul>

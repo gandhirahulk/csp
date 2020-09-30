@@ -78,18 +78,20 @@ def export_vendor(request):
     return response
 
 def write_time_details(ws,index, row_num, row, font_style):
-    ws.write(row_num, index, row.created_date_time.astimezone(timezone(TZ)).strftime(FORMAT), font_style)
-    ws.write(row_num, index+1, row.created_date_time.astimezone(timezone(TZ)).strftime(TIME), font_style)
+    ws.write(row_num, index, row.status.created_by, font_style)  
 
-    ws.write(row_num, index+2, row.modified_by, font_style)
+    ws.write(row_num, index+1, row.created_date_time.astimezone(timezone(TZ)).strftime(FORMAT), font_style)
+    ws.write(row_num, index+2, row.created_date_time.astimezone(timezone(TZ)).strftime(TIME), font_style)
+
+    ws.write(row_num, index+3, row.modified_by, font_style)
     try:
-        ws.write(row_num, index+3, row.modified_date_time.astimezone(timezone(TZ)).strftime(FORMAT), font_style)
-        ws.write(row_num, index+4, row.modified_date_time.astimezone(timezone(TZ)).strftime(TIME), font_style)
+        ws.write(row_num, index+4, row.modified_date_time.astimezone(timezone(TZ)).strftime(FORMAT), font_style)
+        ws.write(row_num, index+5, row.modified_date_time.astimezone(timezone(TZ)).strftime(TIME), font_style)
 
     except AttributeError:
-        ws.write(row_num, index+3, 'None', font_style)
         ws.write(row_num, index+4, 'None', font_style)
-    ws.write(row_num, index+5, row.status.status_name, font_style)  
+        ws.write(row_num, index+5, 'None', font_style)
+    ws.write(row_num, index+6, row.status.status_name, font_style)  
 
 def export_department(request):
     response = HttpResponse(content_type='application/ms-excel')
