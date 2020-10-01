@@ -723,13 +723,20 @@
         showMe('Candidate', 'can-expand');
         $(document).keyup(function(){
             if (event.keyCode === 27){
-            $("#salary_structure").css("display", "none");
+                $("#salary_structure").css("display", "none");
+                $("#crumbs").css("z-index", "100");
             }
         });
-        $('#close_delete').click(function(){
+        $(window).click(function(e) {
+        if (e.target.id === 'salary_structure') {
             $("#salary_structure").css("display", "none");
             $("#crumbs").css("z-index", "100");
-        });  
+        }   
+        }); 
+        // $('#close_delete').click(function(){
+        //     $("#salary_structure").css("display", "none");
+        //     $("#crumbs").css("z-index", "100");
+        // });  
 
         $('#hiring').change(function() {
             var selectedvalue = $(this).val();
