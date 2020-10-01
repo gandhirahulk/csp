@@ -1185,6 +1185,7 @@ def create_candidate(request):
                 try:
                     
                     minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code.pk, fk_state_code= dummy.fk_state_code.state_name_id, status=active_status)
+                    minimum_wage_list = master_minimum_wages.objects.filter(fk_state_code= dummy.fk_state_code.state_name_id, status=active_status)
                     
                     wage = minimum_wage.wages
                 except ObjectDoesNotExist:
@@ -1275,7 +1276,7 @@ def create_candidate(request):
                 annual_tec = tec * 12
                 annual_ctc = round(ctc * 12 , 2)
                 diff = dummy.Gross_Salary_Amount - grossalary
-                print(diff)
+                # print(diff)
                 return render(request, 'candidate/salary_structure.html', {'dummy': dummy, 'basic': basic, 'hra': hra, 'sb': sb, 'sa': sa, 'gross_salary': grossalary, 'annualbasic': annual_basic, 'annualhra': annual_hra, 
                 'annualsb': annual_sb, 'annualsa': annual_sa, 'annualgs': annual_gs, 'annualepf': annual_epf, 'annualesic': annual_esic, 'annualtd': annual_td,
                 'annualths': annual_ths, 'epf': epf, 'esic': esic, 'td': td, 'ths': ths, 'erpf': erpf, 'erpf_admin': erpf_admin, 'ersic': ersic, 'gpa': gpa, 'gmi': gmi,
@@ -1284,7 +1285,7 @@ def create_candidate(request):
                 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
                 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
                 'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': annual_var, 'minimum_wage': minimum_wage, 'difference': diff})
+                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': annual_var, 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': diff})
                 # last_code_query = csp_candidate_code.objects.latest('candidate_code')                
                 # last_code_str = last_code_query.candidate_code
                 # next_code_int = int(last_code_str[1:]) + 1

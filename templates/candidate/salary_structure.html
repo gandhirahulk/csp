@@ -626,11 +626,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
-                            <tr>
-                                <td>{{ minimum_wage.fk_skill_code }}</td>
-                                <td>{{ minimum_wage.wages }}</td>
-                            </tr>
+                            {% if minimum_wage_list %}
+                                {% for eachwage in minimum_wage_list %}
+                                <tr>
+                                    <td>{{ eachwage.fk_skill_code }}</td>
+                                    <td>{{ eachwage.wages }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
 
                             <tr>
                                 <td colspan="2"></td>
