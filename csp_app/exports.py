@@ -34,8 +34,7 @@ def export_entity(request):
         row_num += 1
         ws.write(row_num, 0, row.pk_entity_code, font_style)
         ws.write(row_num, 1, row.entity_name, font_style)
-        ws.write(row_num, 2, row.created_by, font_style)
-        write_time_details(ws, 3, row_num, row, font_style) 
+        write_time_details(ws, 2, row_num, row, font_style) 
             
  
     wb.save(response)
