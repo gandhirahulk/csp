@@ -1168,8 +1168,8 @@ def create_candidate(request):
                 save_new_code = dummy_candidate_code(candidate_code= new_code)
                 save_new_code.save()
                 dummy = dummy_candidate.objects.get(pk=new_code)
-
-                #monthly
+                minimum_wage = ''
+                                #monthly
                 try:
                     
                     minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code.pk, fk_state_code= dummy.fk_state_code.state_name_id, status=active_status)
