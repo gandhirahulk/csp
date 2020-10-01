@@ -3575,6 +3575,7 @@ def csp_login(request):
             user = authenticate(request, username=usrname, password=pwd)
             if user is not None and user.is_active:
                 login(request, user)
+                User.objects.filter(pk=request.user.pk).update(last_login=timezone.localtime())
                 group = request.user.groups.all()
                 for groupname in group:
                     group_name = groupname
