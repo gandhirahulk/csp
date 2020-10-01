@@ -223,19 +223,7 @@
                     </div>
                 </div>
 
-                <div class="request-forms-input-holder">
-                    <div>
-                        <label for="">Date Of Joining</label>    
-                    </div>
-                    <div>
-                        <input type="text" disabled value="{{ eachcandidate.Date_of_Joining }}" required="true" >
-                          
-                    </div>
-                    <div>
-                        <input type="date" tabindex="14" value="{{ eachcandidate.Date_of_Joining }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
-
-                    </div>
-                </div>
+               
 
                 <div class="request-forms-input-holder">
                     <div>
@@ -245,23 +233,9 @@
                         <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="15" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                        <input type="text" tabindex="14" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
                     </div>
                 </div>
-
-                <div class="request-forms-input-holder">
-                    <div>
-                        <label for="">Referral UID</label>    
-                    </div>
-                    <div>
-
-                        <input type="text" disabled value="{{ eachcandidate.Referral }}" required="true" >           
-                    </div>
-                    <div>
-                        <input type="text" value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
-                    </div>
-                </div>
-
                 <div class="request-forms-input-holder">
                     <div>
                         <label for="">Sub Source</label>    
@@ -271,7 +245,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_sub_source" id="" tabindex="17" >
+                        <select name="c_sub_source" id="" tabindex="15" >
                             <option value="{{ eachcandidate.Sub_Source_id }}" selected>{{ eachcandidate.Sub_Source }}</option>
                             {% if sub_source_list %}
                                 {% for eachsub_source in sub_source_list %}
@@ -283,6 +257,35 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Referral UID</label>    
+                    </div>
+                    <div>
+
+                        <input type="text" disabled value="{{ eachcandidate.Referral }}">           
+                    </div>
+                    <div>
+                        <input type="text" value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                    </div>
+                </div>
+
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Date Of Joining</label>    
+                    </div>
+                    <div>
+                        <input type="text" disabled value="{{ eachcandidate.Date_of_Joining }}" required="true" >
+                          
+                    </div>
+                    <div>
+                        <input type="date" tabindex="17" value="{{ eachcandidate.Date_of_Joining }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+
+                    </div>
+                </div>
+
+                
 
                 <div class="request-forms-input-holder">
                     <div>
@@ -685,11 +688,11 @@
                     {% if eachgroup.name == 'Vendor' or eachgroup.name == 'Admin' %}
                         <input type="hidden" value="vendor" name="ve_status">
                         <button class="delete-forms-close-btn" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button>                 
-                        <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve And Send LOI To Candidate</button> 
+                        <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve to Send the Details to Vendor For LOI</button> 
                     {% else %}
                         <input type="hidden" value="onboarding" name="o_status">
                         <button class="delete-forms-close-btn" formaction="{% url 'csp_app:reject_candidate_onboarding' eachcandidate.pk %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button> 
-                        <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve And Submit Candidate To Vendor</button> 
+                        <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve to Send the Details to Vendor For LOI</button> 
                     {% endif %}
                 {% endfor %}
             {% endif %}

@@ -57,17 +57,13 @@ def create_wages(request):
     try:
         if request.method == 'POST':
             state = request.POST.get('state')
-            zone = request.POST.get('zone')
             skill = request.POST.get('skill')
             wage = request.POST.get('wage')
             if state == None or state == '':
                 messages.warning(request, "Choose  State And Try Again")
                 return redirect("csp_app:minimumwages")
             state_fk = states.objects.get(pk= state)
-            if zone == None or zone == '':
-                messages.warning(request, "Choose  Zone And Try Again")
-                return redirect("csp_app:minimumwages")
-            zone_fk = zones.objects.get(pk= zone)
+       
             if skill == None or skill == '':
                 messages.warning(request, "Choose  Skill And Try Again")
                 return redirect("csp_app:minimumwages")
@@ -76,11 +72,11 @@ def create_wages(request):
                 messages.warning(request, "Choose  Wage And Try Again")
                 return redirect("csp_app:minimumwages")
             try:
-                dup_wage = master_minimum_wages.objects.get(fk_state_code= state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, status= active_status)
+                dup_wage = master_minimum_wages.objects.get(fk_state_code= state_fk, fk_skill_code= skill_fk, wages= wage, status= active_status)
                 messages.error(request, "Minimum wages Already Exist")
                 return redirect("csp_app:minimumwages")
             except ObjectDoesNotExist:
-                new_wage = master_minimum_wages(fk_state_code= state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, created_by= request.user, created_date_time=  datetime.now())
+                new_wage = master_minimum_wages(fk_state_code= state_fk,fk_skill_code= skill_fk, wages= wage, created_by= str(request.user), created_date_time=  datetime.now())
                 new_wage.save()
                 messages.success(request, "Minimum wages saved succesfully")
                 return redirect("csp_app:minimumwages")
@@ -113,13 +109,12 @@ def delete_wages(request):
 def view_wages(request):
     wage_list = master_minimum_wages.objects.filter(status=active_status)
     state_list = states.objects.all().order_by('state_name')
-    zone_list = zones.objects.all()
     skill_list = skill_type.objects.all().order_by('-skill_name')
     try:
         if request.method == 'POST':
             wage_id = request.POST.get("view_id")
             view_wage_list = master_minimum_wages.objects.filter(pk = wage_id)
-        return render(request, 'csp_app/view_minimum_wages.html', {'all_active_candidates': all_active_candidates,'view_wage_list': view_wage_list, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+        return render(request, 'csp_app/view_minimum_wages.html', {'all_active_candidates': all_active_candidates,'view_wage_list': view_wage_list, 'wage_list': wage_list, 'state_list': state_list, 'skill_list': skill_list})
         
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
@@ -129,7 +124,6 @@ def view_wages(request):
 def view_edit_wages(request):
     wage_list = master_minimum_wages.objects.filter(status=active_status)
     state_list = states.objects.all().order_by('state_name')
-    zone_list = zones.objects.all()
     skill_list = skill_type.objects.all().order_by('-skill_name')
     
     try:
@@ -137,7 +131,7 @@ def view_edit_wages(request):
             wage_id = request.POST.get("view_id")
             selected_wage = master_minimum_wages.objects.filter(pk = wage_id)         
            
-        return render(request, 'csp_app/edit_minimum_wages.html', {'all_active_candidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+        return render(request, 'csp_app/edit_minimum_wages.html', {'all_active_candidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list, 'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -146,7 +140,6 @@ def view_edit_wages(request):
 def save_edit_wages(request):
     wage_list = master_minimum_wages.objects.filter(status=active_status)
     state_list = states.objects.all().order_by('state_name')
-    zone_list = zones.objects.all()
     skill_list = skill_type.objects.all().order_by('-skill_name')
     try:
         if request.method == 'POST':
@@ -155,17 +148,13 @@ def save_edit_wages(request):
                 selected_wage = master_minimum_wages.objects.filter(pk = request.POST.get("e_id"))
                 if request.POST.get("wage") != None:
                     state = request.POST.get('state')
-                    zone = request.POST.get('zone')
                     skill = request.POST.get('skill')
                     wage = request.POST.get('wage')
                     if state == None or state == '':
                         messages.warning(request, "Choose  State And Try Again")
                         return redirect("csp_app:minimumwages")
                     state_fk = states.objects.get(pk= state)
-                    if zone == None or zone == '':
-                        messages.warning(request, "Choose  Zone And Try Again")
-                        return redirect("csp_app:minimumwages")
-                    zone_fk = zones.objects.get(pk= zone)
+                   
                     if skill == None or skill == '':
                         messages.warning(request, "Choose  Skill And Try Again")
                         return redirect("csp_app:minimumwages")
@@ -174,14 +163,13 @@ def save_edit_wages(request):
                         messages.warning(request, "Choose  Wage And Try Again")
                         return redirect("csp_app:minimumwages")
                     try:
-                        d = master_minimum_wages.objects.get(fk_state_code=state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, status= active_status)
+                        d = master_minimum_wages.objects.get(fk_state_code=state_fk, fk_skill_code= skill_fk, wages= wage, status= active_status)
                         messages.error(request, "Minimum Wages Already Exist")
                         return redirect('csp_app:minimumwages')
                         # print(5)
                         
                     except ObjectDoesNotExist:
                         selected.fk_state_code = state_fk
-                        selected.fk_zone_code = zone_fk
                         selected.fk_skill_code = skill_fk
                         selected.wages = wage
                         selected.modified_by = str(request.user)
@@ -193,7 +181,7 @@ def save_edit_wages(request):
                     messages.warning(request, "Wages Cannot Be Blank")
                     return redirect('csp_app:minimumwages')         
            
-        return render(request, 'csp_app/edit_minimum_wages.html', {'all_active_candidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+        return render(request, 'csp_app/edit_minimum_wages.html', {'all_active_candidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list,  'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
@@ -1193,9 +1181,7 @@ def create_candidate(request):
                 g_salary = dummy.Gross_Salary_Amount * 0.50
                 basic = g_salary if wage < g_salary else wage
                     
-                if dummy.fk_state_code.state_name == 'Kerala':
-                    hra = 200
-                elif dummy.fk_state_code.state_name == 'Maharashtra' or dummy.fk_state_code.state_name == 'West Bengal':
+                if dummy.fk_state_code.state_name == 'Maharashtra' or dummy.fk_state_code.state_name == 'West Bengal':
                     hra = basic * 0.05
                 else:
                     hra = 0
@@ -1203,7 +1189,12 @@ def create_candidate(request):
                 sb_2 = 7000 // 12
                 sb = sb_2 if sb_1 < sb_2 else sb_1
                 
-                sa_1 = 0
+                
+                if dummy.fk_state_code.state_name == 'Keral':
+                    sa_1 = 200
+                else:
+                    sa_1 = 0
+
                 sa_2 = g_salary - (basic + hra + sb)
                 sa = sa_1 if sa_1 > sa_2 else sa_2
                 gross = basic + hra + sb + sa
@@ -1448,97 +1439,7 @@ def save_new_candidate(request):
                 messages.error( request, "Candidate Contact Number Already Exist")
                 return redirect("csp_app:new_candidate")
             except ObjectDoesNotExist:
-                # last_code_query = dummy_candidate_code.objects.latest('candidate_code')                
-                # last_code_str = last_code_query.candidate_code
-                # next_code_int = int(last_code_str[1:]) + 1
-                # new_code = 'D' + str(next_code_int).zfill(9) #pk_candidate_code
-                # new_dummy_candidate = dummy_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
-                # Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
-                # Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
-                # fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
-                # Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                # Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
-                # new_dummy_candidate.save()
-
-                # save_new_code = dummy_candidate_code(candidate_code= new_code)
-                # save_new_code.save()
-                # dummy = dummy_candidate.objects.get(pk=new_code)
-
-                # #monthly
-                # minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code, fk_state_code= dummy.fk_state_code_id)
-                # g_salary = dummy.Gross_Salary_Amount * 0.50
-                # basic = g_salary if minimum_wage.wages < g_salary else minimum_wage.wages
-                    
-                # if dummy.fk_state_code.state_name == 'Kerala':
-                #     hra = 200
-                # elif dummy.fk_state_code.state_name == 'Maharashtra' or dummy.fk_state_code.state_name == 'West Bengal':
-                #     hra = basic * 0.05
-                # else:
-                #     hra = 0
-                # sb_1 = minimum_wage.wages // 12
-                # sb_2 = 7000 // 12
-                # sb = sb_2 if sb_1 < sb_2 else sb_1
                 
-                # sa_1 = 0
-                # sa_2 = g_salary - (basic + hra + sb)
-                # sa = sa_1 if sa_1 > sa_2 else sa_2
-                # gross = basic + hra + sb + sa
-                # grossalary = gross if gross > g_salary else g_salary
-
-                # #ee
-                # bsa = basic + sa
-                # pf_gross = bsa if bsa < 15000 else 15000 
-                # epf_1 = pf_gross * 0.12
-                # epf_2 = 15000 * 0.12
-                # epf = epf_1 if epf_1 < epf_2 else epf_2
-
-                # if grossalary <= 21000:
-                #     esic_1 = grossalary*0.075
-                # else:
-                #     esic_1 = 0
-                # esic_2 = 0
-                # esic = esic_1 if esic_1 > esic_2 else esic_2
-
-                # td = epf + esic
-                # ths = grossalary - td
-                # #er
-                # erpf_1 = pf_gross * 0.12
-                # erpf_2 = 15000 * 0.12
-                # erpf = erpf_1 if erpf_1 < erpf_2 else erpf_2
-                # erpf_admin = erpf / 12
-                # if grossalary <= 21000:
-                #     ersic_1 = grossalary*0.0325
-                # else:
-                #     ersic_1 = 0
-                # ersic_2 = 0
-                # ersic = ersic_1 if ersic_1 > ersic_2 else ersic_2
-                # gpac = 500000
-                # gpi_1 = 24 * grossalary
-                # gpa = gpi_1 if gpi_1 > gpac else gpac
-                # gmi = 91.66 if grossalary > 21000 else 0
-                # tec = erpf + erpf_admin + ersic + gpa + gmi
-                # ctc = grossalary + tec
-                # #annual
-                # annual_basic = basic * 12
-                # annual_hra = hra * 12
-                # annual_sb = sb * 12
-                # annual_sa = sa * 12
-                # annual_gs = grossalary * 12
-                # annual_epf = epf * 12
-                # annual_esic = esic * 12
-                # annual_td = td * 12
-                # annual_ths = ths * 12
-                # annual_eprf = erpf * 12
-                # annual_ersic = ersic * 12
-                # annual_pfadmin = erpf_admin * 12
-                # annual_gpa = gpa * 12
-                # annual_gmi = gmi * 12
-                # annual_tec = tec * 12
-                # annual_ctc = ctc * 12
-                # return render(request, 'candidate/salary_structure.html', {'dummy': dummy, 'basic': basic, 'hra': hra, 'sb': sb, 'sa': sa, 'gross_salary': grossalary, 'annualbasic': annual_basic, 'annualhra': annual_hra, 
-                # 'annualsb': annual_sb, 'annualsa': annual_sa, 'annualgs': annual_gs, 'annualepf': annual_epf, 'annualesic': annual_esic, 'annualtd': annual_td,
-                # 'annualths': annual_ths, 'epf': epf, 'esic': esic, 'td': td, 'ths': ths, 'erpf': erpf, 'erpf_admin': erpf_admin, 'ersic': ersic, 'gpa': gpa, 'gmi': gmi,
-                # 'annualerpf': annual_eprf, 'annualerpf_admin': annual_pfadmin, 'annualersic': annual_ersic, 'annualgpa': annual_gpa, 'annualgmi': annual_gmi, 'tec': tec, 'annual_tec': annual_tec, 'ctc': ctc, 'annual_ctc': annual_ctc})
                 last_code_query = csp_candidate_code.objects.latest('candidate_code')                
                 last_code_str = last_code_query.candidate_code
                 next_code_int = int(last_code_str[1:]) + 1
@@ -1683,7 +1584,7 @@ def candidate_document_upload(request, candidate_id):
                 messages.error(request, "Duplicate File Name")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )
             except ObjectDoesNotExist:
-                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= request.user, created_date_time= datetime.now())
+                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= str(request.user), created_date_time= datetime.now())
                 new_document.save()
                 messages.success(request, "Duplicate Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)

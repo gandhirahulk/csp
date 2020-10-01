@@ -35,7 +35,6 @@ class zones(models.Model):
 class master_minimum_wages(models.Model):
     pk_minimum_wages_code = models.AutoField(primary_key=True)
     fk_state_code = models.ForeignKey(states, on_delete=models.CASCADE)
-    fk_zone_code = models.ForeignKey(zones, on_delete=models.CASCADE)
     fk_skill_code = models.ForeignKey(skill_type, on_delete=models.CASCADE)
     wages = models.FloatField()
     created_by = models.CharField(max_length=100)

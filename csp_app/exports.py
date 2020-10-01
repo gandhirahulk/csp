@@ -282,7 +282,7 @@ def export_region(request):
         row_num += 1
         ws.write(row_num, 0, row.pk_region_code, font_style)
         ws.write(row_num, 1, row.fk_entity_code.entity_name, font_style)
-        ws.write(row_num, 2, row.region_name, font_style)
+        ws.write(row_num, 2, row.region_name.zone_name, font_style)
         write_time_details(ws, 3, row_num, row, font_style)    
  
     wb.save(response)
@@ -312,9 +312,9 @@ def export_state(request):
         row_num += 1
         ws.write(row_num, 0, row.pk_state_code, font_style)
         ws.write(row_num, 1, row.fk_region_code.fk_entity_code.entity_name, font_style)
-        ws.write(row_num, 2, row.fk_region_code.region_name, font_style)
+        ws.write(row_num, 2, row.fk_region_code.region_name.zone_name, font_style)
 
-        ws.write(row_num, 3, row.state_name, font_style)
+        ws.write(row_num, 3, row.state_name.state_name, font_style)
         write_time_details(ws, 3, row_num, row, font_style)     
  
     wb.save(response)
@@ -344,8 +344,8 @@ def export_city(request):
         row_num += 1
         ws.write(row_num, 0, row.pk_city_code, font_style)
         ws.write(row_num, 1, row.fk_state_code.fk_region_code.fk_entity_code.entity_name, font_style)
-        ws.write(row_num, 2, row.fk_state_code.fk_region_code.region_name, font_style)
-        ws.write(row_num, 3, row.fk_state_code.state_name, font_style)
+        ws.write(row_num, 2, row.fk_state_code.fk_region_code.region_name.zone_name, font_style)
+        ws.write(row_num, 3, row.fk_state_code.state_name.state_name, font_style)
 
         ws.write(row_num, 4, row.city_name, font_style)
         write_time_details(ws, 5, row_num, row, font_style)    
@@ -377,8 +377,8 @@ def export_location(request):
         row_num += 1
         ws.write(row_num, 0, row.pk_location_code, font_style)
         ws.write(row_num, 1, row.fk_city_code.fk_state_code.fk_region_code.fk_entity_code.entity_name, font_style)
-        ws.write(row_num, 2, row.fk_city_code.fk_state_code.fk_region_code.region_name, font_style)
-        ws.write(row_num, 3, row.fk_city_code.fk_state_code.state_name, font_style)
+        ws.write(row_num, 2, row.fk_city_code.fk_state_code.fk_region_code.region_name.zone_name, font_style)
+        ws.write(row_num, 3, row.fk_city_code.fk_state_code.state_name.state_name, font_style)
         ws.write(row_num, 4, row.fk_city_code.city_name , font_style)
 
         ws.write(row_num, 5, row.location_name, font_style)
@@ -400,7 +400,7 @@ def export_minimum_wage(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
  
-    columns = ['Code','State', 'Zone','Skill', 'Wages', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
+    columns = ['Code','State', 'Skill', 'Wages', 'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
  
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -413,11 +413,10 @@ def export_minimum_wage(request):
         row_num += 1
         ws.write(row_num, 0, row.pk_minimum_wages_code, font_style)
         ws.write(row_num, 1, row.fk_state_code.state_name, font_style)
-        ws.write(row_num, 2, row.fk_zone_code.zone_name, font_style)
-        ws.write(row_num, 3, row.fk_skill_code.skill_name, font_style)
-        ws.write(row_num, 4, row.wages, font_style)
+        ws.write(row_num, 2, row.fk_skill_code.skill_name, font_style)
+        ws.write(row_num, 3, row.wages, font_style)
 
-        write_time_details(ws, 5, row_num, row, font_style)     
+        write_time_details(ws, 4, row_num, row, font_style)     
  
     wb.save(response)
     return response

@@ -33,7 +33,6 @@
         <thead>
             <tr>
                 <th>State</th>
-                <th>Zone</th>
                 <th>Skill Type</th>
                 <th>Minimum Wage</th>
                 <th>Action</th>
@@ -45,7 +44,6 @@
 
                     <tr>
                         <td>{{ eachwage.fk_state_code }}</td>
-                        <td>{{ eachwage.fk_zone_code }}</td>
                         <td>{{ eachwage.fk_skill_code }}</td>
                         <td>{{ eachwage.wages }}</td>
 
@@ -87,9 +85,7 @@
                     <tr>
                         <td><label for="">State : </label> {{ eachwage.fk_state_code}}</td>
                     </tr>
-                    <tr>
-                        <td><label for="">Zone : </label> {{ eachwage.fk_zone_code}}</td>
-                    </tr>
+                 
                     <tr>
                         <td><label for="">Skill Type : </label> {{ eachwage.fk_skill_code}}</td>
                     </tr>

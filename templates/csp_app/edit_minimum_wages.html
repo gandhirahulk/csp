@@ -32,7 +32,6 @@
         <thead>
             <tr>
                 <th>State</th>
-                <th>Zone</th>
                 <th>Skill Type</th>
                 <th>Minimum Wage</th>
                 <th>Action</th>
@@ -44,7 +43,6 @@
 
                     <tr>
                         <td>{{ eachwage.fk_state_code }}</td>
-                        <td>{{ eachwage.fk_zone_code }}</td>
                         <td>{{ eachwage.fk_skill_code }}</td>
                         <td>{{ eachwage.wages }}</td>
 
@@ -96,19 +94,7 @@
                             {% endif %}
                         </select>
                     </div> 
-                    <div class="forms-input-holder">   
-                        <label for="zone">Zone</label>
-                        <select name="zone" id="">
-                            <option value="{{ eachwage.fk_zone_code_id }}" label="{{ eachwage.fk_zone_code }}" selected>{{ eachwage.fk_zone_code }}</option>
-                            {% if zone_list %}
-                                {% for eachzone in zone_list %}
-                                    {% if eachzone.pk != eachwage.fk_zone_code_id %}
-                                        <option value="{{ eachzone.pk }}" label="{{ eachzone.zone_name }}">{{ eachzone.zone_name }}</option>
-                                    {% endif %}                                    
-                                {% endfor %}
-                            {% endif %}
-                        </select>
-                    </div> 
+                  
                     <div class="forms-input-holder">   
                         <label for="skill">Skill Type</label>
                         <select name="skill" id="">
