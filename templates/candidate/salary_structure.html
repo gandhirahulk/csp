@@ -18,7 +18,7 @@
 <div class="candidate_form">
     <div class="candidate_form_header">
         <div class="forms-heading">
-            <h3>Create New Candidate</h3>
+            <h2>Create New Candidate</h2>
         </div>
         <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
      
@@ -462,7 +462,7 @@
                 </div>
                 <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
             </div>
-            <div class="form_content" id="s-wrapper" style="height: 72vh;width: 80vw;">
+            <div class="form_content canvas_div_pdf" id="s-wrapper" style="width: 80vw;">
                 <div class="ss"> 
                     <div class="salary-heading-one">
                         <h3>Salary Structure</h3>
@@ -513,9 +513,9 @@
                            
                         </tbody>
                     </table>
-<div>
-    &nbsp;
-</div>
+                    <div>
+                        &nbsp;
+                    </div>
                     <div class="salary-heading-two">
                         <h2>Employee Contributions</h2>
                     </div> 
@@ -556,7 +556,7 @@
                             </tr> 
                         </tbody>
                     </table>
-<div>&nbsp;</div>
+                    <div>&nbsp;</div>
                     <div class="salary-heading-three">
                         <h3>Employer Contributions</h3>
                     </div> 
@@ -705,7 +705,7 @@
         
         
         <div class="form_footer" style="width: 80vw;background: #fff;">
-                <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+                <button onclick="getPDF()" class="delete-forms-close-btn" style="width: auto;">Save as PDF</button>        
                 <button class="forms-save-btn" formaction="{% url 'csp_app:save_new_candidate' %}" type="submit">Save Candidate</button>
             </form>
         </div>
@@ -1155,6 +1155,38 @@
         document.getElementById(formid).style.display = "block";
         console.log(document.getElementById('crumbs').style.zIndex = 0);
     }
+    function getPDF(){
+
+        var HTML_Width = $(".canvas_div_pdf").width();
+        var HTML_Height = $(".canvas_div_pdf").height();
+        var top_left_margin = 15;
+        var PDF_Width = HTML_Width+(top_left_margin*2);
+        var PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
+        var canvas_image_width = HTML_Width;
+        var canvas_image_height = HTML_Height;
+
+        var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+
+
+        html2canvas($(".canvas_div_pdf")[0],{allowTaint:true}).then(function(canvas) {
+            canvas.getContext('2d');
+            
+            console.log(canvas.height+"  "+canvas.width);
+            
+            
+            var imgData = canvas.toDataURL("image/jpeg", 1.0);
+            var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+            
+            
+            for (var i = 1; i <= totalPDFPages; i++) { 
+                pdf.addPage(PDF_Width, PDF_Height);
+                pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+            }
+            
+            pdf.save("salarystructure.pdf");
+        });
+    };
 </script>
 
     
