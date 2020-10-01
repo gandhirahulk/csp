@@ -1237,18 +1237,26 @@ def create_candidate(request):
                 ersic = ersic_1 if ersic_1 > ersic_2 else ersic_2
                 gpac = 500000
                 gpi_1 = 24 * grossalary
-                gpi_2 = (gpac * 0.2 / 1000) / 12
-                gpa = gpi_1 if gpi_1 > gpi_2 else gpi_2
+                gpi_2 = gpi_1 if gpi_1 > gpac else gpac
+                gpa = (gpi_2 * 0.20)/1000 / 12
+                gpa = round(gpa,2)
                 gmi = 91.66 if grossalary > 21000 else 0
                 tec = erpf + erpf_admin + ersic + gpa + gmi
-                ctc = grossalary + tec
-
+                ctc = round(grossalary + tec, 2)
+                
                 if dummy.Salary_Type.pk == 2:
                     var_1 = grossalary / 80
                     var_2 = dummy.Gross_Salary_Amount * 0.20
                     var = var_1 if var_1 > var_2 else var_2
+                    annual_var = var * 12
+                elif dummy.Salary_Type.pk == 3:
+                    var_1 = grossalary / 75
+                    var_2 = dummy.Gross_Salary_Amount * 0.25
+                    var = var_1 if var_1 > var_2 else var_2
+                    annual_var = var * 12
                 else:
-                    var = ''
+                    var = 'infinity'
+                    annual_var = 0
                 #annual
                 annual_basic = basic * 12
                 annual_hra = hra * 12
@@ -1262,10 +1270,10 @@ def create_candidate(request):
                 annual_eprf = erpf * 12
                 annual_ersic = ersic * 12
                 annual_pfadmin = erpf_admin * 12
-                annual_gpa = gpa * 12
+                annual_gpa = round(gpa * 12, 2)
                 annual_gmi = gmi * 12
                 annual_tec = tec * 12
-                annual_ctc = ctc * 12
+                annual_ctc = round(ctc * 12 , 2)
                 diff = dummy.Gross_Salary_Amount - grossalary
                 print(diff)
                 return render(request, 'candidate/salary_structure.html', {'dummy': dummy, 'basic': basic, 'hra': hra, 'sb': sb, 'sa': sa, 'gross_salary': grossalary, 'annualbasic': annual_basic, 'annualhra': annual_hra, 
@@ -1276,7 +1284,7 @@ def create_candidate(request):
                 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
                 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
                 'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'minimum_wage': minimum_wage, 'difference': diff})
+                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': annual_var, 'minimum_wage': minimum_wage, 'difference': diff})
                 # last_code_query = csp_candidate_code.objects.latest('candidate_code')                
                 # last_code_str = last_code_query.candidate_code
                 # next_code_int = int(last_code_str[1:]) + 1

@@ -500,6 +500,13 @@
                                 <td >{{ gross_salary }}</td>
                                 <td>{{ annualgs }}</td>
                             </tr>
+                            {% if variable != 'infinity' %}
+                                <tr>
+                                    <td>Variable </td>
+                                    <td >{{ variable }}</td>
+                                    <td>{{ annual_var }}</td>
+                                </tr>
+                            {% endif %}
                         </tbody>
                     </table>
 
