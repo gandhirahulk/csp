@@ -210,7 +210,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
                     </div>
                     <div>
-                        <select name="c_hiring_type" id="" tabindex="13" >
+                        <select name="c_hiring_type" id="hiring" tabindex="13" >
                             <option value="{{ eachcandidate.Type_of_Hiring_id }}" selected>{{ eachcandidate.Type_of_Hiring }}</option>
                             {% if hiring_type_list %}
                                 {% for eachhiring_type in hiring_type_list %}
@@ -245,7 +245,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_sub_source" id="" tabindex="15" >
+                        <select name="c_sub_source" id="referral" tabindex="15" >
                             <option value="{{ eachcandidate.Sub_Source_id }}" selected>{{ eachcandidate.Sub_Source }}</option>
                             {% if sub_source_list %}
                                 {% for eachsub_source in sub_source_list %}
