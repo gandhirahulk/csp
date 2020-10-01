@@ -80,7 +80,7 @@ def create_wages(request):
                 messages.error(request, "Minimum wages Already Exist")
                 return redirect("csp_app:minimumwages")
             except ObjectDoesNotExist:
-                new_wage = master_minimum_wages(fk_state_code= state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, created_by= request.user, created_date_time= timezone.localtime())
+                new_wage = master_minimum_wages(fk_state_code= state_fk, fk_zone_code= zone_fk, fk_skill_code= skill_fk, wages= wage, created_by= request.user, created_date_time=  datetime.now())
                 new_wage.save()
                 messages.success(request, "Minimum wages saved succesfully")
                 return redirect("csp_app:minimumwages")
@@ -494,7 +494,7 @@ def process_requests(request, cid):
                     changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
                 selected_candidate.Gross_Salary_Amount= gross_salary
                 selected_candidate.modified_by = str(request.user)
-                selected_candidate.modified_date_time=timezone.localtime()
+                selected_candidate.modified_date_time= datetime.now()
 
                 for eachgroup in request.user.groups.all():
                     if str(eachgroup) == 'Admin':
@@ -964,7 +964,7 @@ def edit_candidate(request):
             selected_candidate.Gross_Salary_Amount= gross_salary
             selected_candidate.Personal_Email_Id = email
             selected_candidate.modified_by = str(request.user)
-            selected_candidate.modified_date_time=timezone.localtime()
+            selected_candidate.modified_date_time= datetime.now()
             selected_candidate.save()
             alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
             our_email = EmailMessage(
@@ -1174,7 +1174,7 @@ def create_candidate(request):
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=timezone.localtime())
+                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
                 new_dummy_candidate.save()
 
                 save_new_code = dummy_candidate_code(candidate_code= new_code)
@@ -1295,7 +1295,7 @@ def create_candidate(request):
                 # Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 # fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
                 # Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                # Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=timezone.localtime())
+                # Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
                 # new_candidate.save()
 
                 # save_new_code = csp_candidate_code(candidate_code= new_code)
@@ -1457,7 +1457,7 @@ def save_new_candidate(request):
                 # Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 # fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
                 # Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                # Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=timezone.localtime())
+                # Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
                 # new_dummy_candidate.save()
 
                 # save_new_code = dummy_candidate_code(candidate_code= new_code)
@@ -1548,7 +1548,7 @@ def save_new_candidate(request):
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time=timezone.localtime())
+                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
                 new_candidate.save()
 
                 save_new_code = csp_candidate_code(candidate_code= new_code)
@@ -1683,7 +1683,7 @@ def candidate_document_upload(request, candidate_id):
                 messages.error(request, "Duplicate File Name")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )
             except ObjectDoesNotExist:
-                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= request.user, created_date_time=timezone.localtime())
+                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= request.user, created_date_time= datetime.now())
                 new_document.save()
                 messages.success(request, "Duplicate Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
@@ -1927,7 +1927,7 @@ def create_entity(request):
             messages.error(request, "Entity Already Exist")
             return redirect('csp_app:entity')
         except ObjectDoesNotExist:
-            new_entity = master_entity(entity_name= entity_name , created_by = str(request.user),created_date_time=timezone.localtime() )
+            new_entity = master_entity(entity_name= entity_name , created_by = str(request.user),created_date_time= datetime.now() )
             new_entity.save()
             messages.success(request, "Entity Created Successfully")
             return redirect('csp_app:entity')
@@ -2153,7 +2153,7 @@ def create_vendor(request):
                 ) 
                 our_email.fail_silently = False
                 our_email.send()  
-            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user), created_date_time=timezone.localtime())
+            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_vendor.save()
         
             newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'entity': entity_fk, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
@@ -2336,7 +2336,7 @@ def  create_function(request):
             messages.error(request, "Function Already Exist")
             return redirect('csp_app:function')
         except ObjectDoesNotExist:            
-            new_function = master_function( function_name= function_name , fk_department_code= department_fk, created_by = str(request.user), created_date_time=timezone.localtime())
+            new_function = master_function( function_name= function_name , fk_department_code= department_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_function.save()
             messages.success(request, "Function Saved Successfully")
             return redirect('csp_app:function')
@@ -2468,7 +2468,7 @@ def  create_team(request):
             messages.error(request, "Team Already Exist")
             return redirect('csp_app:team')
         except ObjectDoesNotExist: 
-            new_team = master_team( team_name= team_name , fk_function_code=function_fk, created_by = str(request.user), created_date_time=timezone.localtime())
+            new_team = master_team( team_name= team_name , fk_function_code=function_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_team.save()
             messages.success(request, "Team Saved Successfully")
             return redirect('csp_app:team')
@@ -2606,7 +2606,7 @@ def  create_subteam(request):
             messages.error(request, "Sub Team Already Exist")
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
-            new_subteam = master_sub_team( sub_team_name= subteam_name , fk_team_code=team_fk, created_by = str(request.user), created_date_time=timezone.localtime())
+            new_subteam = master_sub_team( sub_team_name= subteam_name , fk_team_code=team_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_subteam.save()
             messages.success(request, "Sub Team Saved Successfully")
             return redirect('csp_app:subteam')
@@ -2757,7 +2757,7 @@ def  create_designation(request):
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
 
-            new_designation = master_designation( designation_name= designation_name , fk_sub_team_code=subteam_fk, fk_skill_code= skill_fk, created_by = str(request.user), created_date_time=timezone.localtime())
+            new_designation = master_designation( designation_name= designation_name , fk_sub_team_code=subteam_fk, fk_skill_code= skill_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_designation.save()
             messages.success(request, "Designation Saved Successfully")
             return redirect('csp_app:designation')
@@ -2904,7 +2904,7 @@ def create_region(request):
             messages.error(request, "Region Already Exist")
             return redirect('csp_app:region')
         except ObjectDoesNotExist: 
-            new_region = master_region( region_name= region_name , fk_entity_code =entity_fk, created_by = str(request.user), created_date_time=timezone.localtime())
+            new_region = master_region( region_name= region_name , fk_entity_code =entity_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_region.save()
             
             messages.success(request, "Region Saved Succesfully")
@@ -3044,7 +3044,7 @@ def  create_state(request):
             messages.error(request, "State Already Exist")
             return redirect('csp_app:state')
         except ObjectDoesNotExist: 
-            new_state = master_state( state_name= state_name , fk_region_code =region_fk, created_by = str(request.user), created_date_time=timezone.localtime())
+            new_state = master_state( state_name= state_name , fk_region_code =region_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_state.save()
             messages.success(request, "State Saved Successfully")
             return redirect('csp_app:state')
@@ -3284,7 +3284,7 @@ def  create_city(request):
             messages.error(request, "City Already Exist")
             return redirect('csp_app:city')
         except ObjectDoesNotExist: 
-            new_city = master_city( city_name= city_name , fk_state_code =state_fk, created_by = str(request.user), created_date_time=timezone.localtime())
+            new_city = master_city( city_name= city_name , fk_state_code =state_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_city.save()
             messages.success(request, "City Saved Successfully")
             return redirect('csp_app:city')
@@ -3324,7 +3324,7 @@ def  create_location(request):
             messages.error(request, "Location Already Exist")
             return redirect('csp_app:location')
         except ObjectDoesNotExist: 
-            new_location = master_location( location_name= location_name ,location_code=code, fk_city_code =city_fk, created_by = str(request.user), created_date_time=timezone.localtime())
+            new_location = master_location( location_name= location_name ,location_code=code, fk_city_code =city_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_location.save()
             messages.success(request, "Location Saved Successfully")
             return redirect('csp_app:location')
@@ -3575,7 +3575,7 @@ def csp_login(request):
             user = authenticate(request, username=usrname, password=pwd)
             if user is not None and user.is_active:
                 login(request, user)
-                User.objects.filter(pk=request.user.pk).update(last_login=timezone.localtime())
+                User.objects.filter(pk=request.user.pk).update(last_login= datetime.now())
                 group = request.user.groups.all()
                 for groupname in group:
                     group_name = groupname
