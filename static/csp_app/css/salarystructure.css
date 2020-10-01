@@ -7,6 +7,13 @@
     color: black;
 }
 
+.ss-table tbody tr td input{
+    border: none;
+    outline: none;
+    text-align: right;
+    background: none;
+}
+
 
 
 
@@ -54,6 +61,7 @@
 
 .ss-table-total-one{
     background: #D3E4E1;
+    font-weight: bold;
 }
 
 
@@ -67,6 +75,7 @@
 
 .ss-table-total-two{
     background: #F0E9D3;
+    font-weight: bold;
 }
 
 
@@ -80,10 +89,12 @@
 
 .ss-table-total-three{
     background: #D3E4E1;
+    font-weight: bold;
 }
 
 .ctc-row{
     background: #CAD5DB;
+    font-weight: bold;
 }
 
 .ssc-heading-one{

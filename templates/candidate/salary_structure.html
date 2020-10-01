@@ -463,7 +463,9 @@
                 <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
             </div>
             <div class="form_content canvas_div_pdf" id="s-wrapper" style="width: 80vw;">
+                
                 <div class="ss"> 
+                    Tentative Candidate ID : C{{ dummy.pk|slice:"1:" }} | Name : {{ dummy.First_Name }} {{ dummy.Middle_Name }} {{ dummy.Last_Name }} 
                     <div class="salary-heading-one">
                         <h3>Salary Structure</h3>
                     </div>
@@ -479,36 +481,37 @@
                         <tbody>
                             <tr>
                                 <td>Basic</td>
-                                <td>{{ basic }}</td>
-                                <td>{{ annualbasic }}</td>
+                                <td><input type="text" name="basic"  readonly value="{{ basic }}"></td>
+                                <td><input type="text" name="annualbasic" value=" {{ annualbasic }}" readonly></td>
                             </tr>
                             <tr>
                                 <td>House Rent Allowance</td>
-                                <td>{{ hra }}</td>
-                                <td>{{ annualhra }}</td>
+                                <td><input type="text" name="hra"  readonly value="{{ hra }}"></td>
+                                <td><input type="text" name="annualhra"  readonly value="{{ annualhra }}"></td>
                             </tr>
                             <tr>
                                 <td>Statutory Bonus</td>
-                                <td >{{ sb }}</td>
-                                <td>{{ annualsb }}</td>
+                                <td ><input type="text" name="sb"  readonly value="{{ sb }}"></td>
+                                <td><input type="text" name="annualsb"  readonly value="{{ annualsb }}"></td>
                             </tr>
                             <tr>
                                 <td>Special Allowance</td>
-                                <td >{{ sa }}</td>
-                                <td>{{ annualsa }}</td>
+                                <td ><input type="text" name="sa"  readonly value="{{ sa }}"></td>
+                                <td><input type="text" name="annualsa"  readonly value="{{ annualsa }}"></td>
+                            </tr>
+                          
+                            <tr class="ss-table-total-one">
+                                <td>Gross Salary (A)</td>
+                                <td ><input type="text" name="gs"  readonly value="{{ gross_salary }}"></td>
+                                <td><input type="text" name="annualgs"  readonly value="{{ annualgs }}"></td>
                             </tr>
                             {% if variable != 'infinity' %}
                             <tr>
                                 <td>Variable </td>
-                                <td >{{ variable }}</td>
-                                <td>{{ annual_var }}</td>
+                                <td ><input type="text" name="var"  readonly value="{{ variable }}"></td>
+                                <td><input type="text" name="annualvar"  readonly value="{{ annual_var }}"></td>
                             </tr>
                             {% endif %}
-                            <tr class="ss-table-total-one">
-                                <td>Gross Salary (A)</td>
-                                <td >{{ gross_salary }}</td>
-                                <td>{{ annualgs }}</td>
-                            </tr>
                           
                            
                         </tbody>
@@ -530,26 +533,26 @@
                         <tbody>
                             <tr>
                                 <td>Employee PF</td>
-                                <td>{{ epf }}</td>
-                                <td>{{ annualepf }}</td>
+                                <td><input type="text" name="epf"  readonly value="{{ epf }}"></td>
+                                <td><input type="text" name="annualepf"  readonly value="{{ annualepf }}"></td>
                             </tr>
                             <tr>
                                 <td>Employer ESIC</td>
-                                <td>{{ esic }}</td>
-                                <td>{{ annualesic }}</td>
+                                <td><input type="text" name="esic"  readonly value="{{ esic }}"></td>
+                                <td><input type="text" name="annualesic"  readonly value="{{ annualesic }}"></td>
                             </tr>
                             <tr>
                                 <td>Total Contribution (B) </td>
-                                <td >{{ td }}</td>
-                                <td>{{ annualtd }}</td>
+                                <td ><input type="text" name="tc"  readonly value="{{ td }}"></td>
+                                <td><input type="text" name="annualtc"  readonly value="{{ annualtd }}"></td>
                             </tr>
                             <tr>
                                 <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
                             </tr> 
                             <tr class="ss-table-total-two">
                                 <td>Take Home Salary (C) = (A - B) </td>
-                                <td >{{ ths }}</td>
-                                <td>{{ annualths }}</td>
+                                <td ><input type="text" name="ths"  readonly value="{{ ths }}"></td>
+                                <td><input type="text" name="annualths"  readonly value="{{ annualths }}"></td>
                             </tr>
                             <tr>
                                 <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
@@ -570,38 +573,38 @@
                         <tbody>
                             <tr>
                                 <td>Employer PF</td>
-                                <td>{{ erpf }}</td>
-                                <td>{{ annualerpf }}</td>
+                                <td><input type="text" name="erpf"  readonly value="{{ erpf }}"></td>
+                                <td><input type="text" name="annalerpf"  readonly value="{{ annualerpf }}"></td>
                             </tr>
                             <tr>
                                 <td>Employer PF Admin</td>
-                                <td>{{ erpf_admin }}</td>
-                                <td>{{ annualerpf_admin }}</td>
+                                <td><input type="text" name="erpfadmin"  readonly value="{{ erpf_admin }}"></td>
+                                <td><input type="text" name="annualerpfadmin"  readonly value="{{ annualerpf_admin }}"></td>
                             </tr>
                             <tr>
                                 <td>Employer ESIC</td>
-                                <td>{{ ersic }}</td>
-                                <td>{{ annualersic }}</td>
+                                <td><input type="text" name="ersic"  readonly value="{{ ersic }}"></td>
+                                <td><input type="text" name="annualersic"  readonly value="{{ annualersic }}"></td>
                             </tr>
                             <tr>
                                 <td>Group Personal Accident</td>
-                                <td >{{ gpa }}</td>
-                                <td>{{ annualgpa }}</td>
+                                <td ><input type="text" name="gpa"  readonly value="{{ gpa }}"></td>
+                                <td><input type="text" name="annualgpa"  readonly value="{{ annualgpa }}"></td>
                             </tr>
                             <tr>
                                 <td>Group Mediclaim Insurance</td>
-                                <td >{{ gmi }}</td>
-                                <td>{{ annualgmi }}</td>
+                                <td ><input type="text" name="gmi"  readonly value="{{ gmi }}"></td>
+                                <td><input type="text" name="annualgmi"  readonly value="{{ annualgmi }}"></td>
                             </tr>
                             <tr class="ss-table-total-three">
                                 <td>Total Employer Contribution (D) </td>
-                                <td >{{ tec }}</td>
-                                <td>{{ annual_tec }}</td>
+                                <td ><input type="text" name="tec"  readonly value="{{ tec }}"></td>
+                                <td><input type="text" name="annualtec"  readonly value="{{ annual_tec }}"></td>
                             </tr>
                             <tr class="ctc-row">
                                 <td>Cost To Company (CTC) (E) = (A + D)  </td>
-                                <td >{{ ctc }}</td>
-                                <td>{{ annual_ctc }}</td>                            
+                                <td ><input type="text" name="ctc"  readonly value="{{ ctc }}"></td>
+                                <td><input type="text" name="annualctc"  readonly value="{{ annual_ctc }}"></td>                            
                             </tr>
                             <tr>
                                 <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
@@ -614,6 +617,7 @@
 
 
                 <div class="ssc">
+                    <p>&nbsp;</p>
                     <div class="ssc-heading-one">
                         <h3>Salary Structure Calculation : Consideration</h3>
                     </div>

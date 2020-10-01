@@ -1243,7 +1243,7 @@ def create_candidate(request):
                 gpa = round(gpa,2)
                 gmi = 91.66 if grossalary > 21000 else 0
                 tec = erpf + erpf_admin + ersic + gpa + gmi
-                ctc = round(grossalary + tec, 2)
+                ctc = grossalary + tec
                 
                 if dummy.Salary_Type.pk == 2:
                     var_1 = grossalary / 80
@@ -1649,7 +1649,7 @@ def change_candidate_status(request):
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists())
 def candidate_document_upload(request, candidate_id):
     try:
         # candidate_id = 'C000000006'
@@ -1695,18 +1695,21 @@ def candidate_document_upload(request, candidate_id):
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists())
-def delete_document(request):
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists())
+def candidate_delete_document(request):
     try:
         if request.method == 'POST':
+            print("post-----------------")
             document_id = request.POST.get("delete_id")          
             selected_document = candidate_document.objects.get(pk = document_id, status= active_status)
+            print('sdf')
+            print(selected_document.fk_candidate_code_id)
             selected_document.modified_by = str(request.user)
             selected_document.modified_date_time = datetime.now()
             selected_document.status = deactive_status
             selected_document.save()
             messages.success(request, "Document Deleted Successfully")
-            return redirect('csp_app:document_upload', selected_document.fk_candidate_code)
+            return redirect('csp_app:document_upload', selected_document.fk_candidate_code_id)
         all_active_candidates = vendor_candidates(request.user)
         return render(request, 'csp_app/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
     except UnboundLocalError:

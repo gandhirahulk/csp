@@ -45,7 +45,7 @@
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}
                                 <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
-                                <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"><input value="Remove" onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
+                                <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"><input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
                             </form>
                         </td>
                     
@@ -115,7 +115,7 @@
     <div class="delete_form_footer">
         <form action="" method="post">
             {% csrf_token %}
-            <button type="submit" formaction="{% url 'csp_app:delete_document' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button type="submit" formaction="{% url 'csp_app:delete_document_candidate' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
             <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
         </form>
     </div>
