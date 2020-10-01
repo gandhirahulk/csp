@@ -41,7 +41,7 @@ function money(event) {
 
 function pan(event) {
     var value = String.fromCharCode(event.which);
-    var pattern = new RegExp(/[a-z0-9]/i);
+    var pattern = new RegExp(/[A-Z0-9]/i);
     return pattern.test(value);   
     
 }
