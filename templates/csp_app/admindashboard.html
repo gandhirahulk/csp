@@ -212,7 +212,7 @@
                     <!-- <li><a href="#">Requests</a></li>
                     <li><a href="#">|</a></li> -->
                 {% else %}
-                    <li><a href="{% url 'csp_app:candidate' %}" title="Change Password for {{ request.user }}"><i class="fas fa-user-lock"></i></a></li>
+                    <li><a href="{% url 'csp_app:password_change' %}" title="Change Password for {{ request.user }}"><i class="fas fa-user-lock"></i></a></li>
                 {% endif %}
                     <li title="Logout"><a href="{% url 'csp_app:csp_logout' %}"><i class="fas fa-sign-out-alt"></i></a></li>
                 </ul>
