@@ -37,6 +37,8 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     path('reset/done/',auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
     path('change_password/',views.change_password,name='password_change'),
+    path('view_salary_structure/<str:cid>/',views.view_ss,name='view_ss'),
+
 
 
     path('csp_admin/', views.admin, name= 'admin'),

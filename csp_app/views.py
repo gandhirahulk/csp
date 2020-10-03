@@ -38,6 +38,17 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists())
+def view_ss(request,cid):    
+    try:
+        salaryst = salary_structure.objects.filter(candidate_code=cid)
+        candidate = master_candidate.objects.get(pk=cid)
+        return render(request, 'candidate/viewsalarystructure.html', {'salaryst':salaryst, 'candidate':candidate})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
 @login_required(login_url='/notlogin/')
 def change_password(request):
     selected_user = User.objects.get(email=request.user.email)
@@ -1258,6 +1269,13 @@ def edit_candidate(request):
             selected_candidate.modified_by = str(request.user)
             selected_candidate.modified_date_time= datetime.now()
             selected_candidate.save()
+            new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= float(basic.replace(',','')), annual_basic= float(annualbasic.replace(',','')), house_rent_allowance= float(house_rent_allowance.replace(',','')), annual_house_rent_allowance= float(annualhouse_rent_allowance.replace(',','')), statutory_bonus=float(statutory_bonus.replace(',','')), annual_statutory_bonus= float(annualstatutory_bonus.replace(',','')),
+                special_allowance=float(special_allowance.replace(',','')), annual_special_allowance=float(annualspecial_allowance.replace(',','')),gross_salary=float(ss_gross_salary.replace(',','')), annual_gross_salary=float(annualgross_salary.replace(',','')), employee_pf= float(employee_pf.replace(',','')), annual_employee_pf= float(annualemployee_pf.replace(',','')),
+                employee_esic= float(employee_esic.replace(',','')), annual_employee_esic= float(annualemployer_esic.replace(',','')), employee_total_contribution= float(employee_total_contribution.replace(',','')), annual_employee_total_contribution= float(annualemployee_total_contribution.replace(',','')), employer_pf= float(employer_pf.replace(',','')), annual_employer_pf= float(annualemployer_pf.replace(',','')),
+                employer_pf_admin=float(employer_pf_admin.replace(',','')), annual_employer_pf_admin= float(annualemployer_pf_admin.replace(',','')), employer_esic= float(employer_esic.replace(',','')), annual_employer_esic= float(annualemployer_esic.replace(',','')), group_personal_accident= float(group_personal_accident.replace(',','')), annual_group_personal_accident= float(annualgroup_personal_accident.replace(',','')),
+                group_mediclaim_insurance= float(group_mediclaim_insurance.replace(',','')), annual_group_mediclaim_insurance = float(annualgroup_mediclaim_insurance.replace(',','')), employer_total_contribution= float(employer_total_contribution.replace(',','')), annual_employer_total_contribution= float(annualemployer_total_contribution.replace(',','')), cost_to_company=float(cost_to_company.replace(',','')),
+                annual_cost_to_company= float(annualcost_to_company.replace(',','')))
+            new_salary_structure.save()
             alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
             our_email = EmailMessage(
                 'Candidate Account Updated.',
@@ -1575,7 +1593,7 @@ def create_candidate(request):
                 return render(request, 'candidate/salary_structure.html', {'dummy': dummy, 'basic': basic, 'hra': hra, 'sb': sb, 'sa': sa, 'gross_salary': grossalary, 'annualbasic': annual_basic, 'annualhra': annual_hra, 
                 'annualsb': annual_sb, 'annualsa': annual_sa, 'annualgs': annual_gs, 'annualepf': annual_epf, 'annualesic': annual_esic, 'annualtd': annual_td,
                 'annualths': annual_ths, 'epf': epf, 'esic': esic, 'td': td, 'ths': ths, 'erpf': erpf, 'erpf_admin': erpf_admin, 'ersic': ersic, 'gpa': gpa, 'gmi': gmi,
-                'annualerpf': annual_eprf, 'annualerpf_admin': annual_pfadmin, 'annualersic': annual_ersic, 'annualgpa': annual_gpa, 'annualgmi': annual_gmi, 'tec': tec, 'annual_tec': annual_tec, 'ctc': ctc, 'annual_ctc': annual_ctc,
+                'annualerpf': annualemployer_pf, 'annualerpf_admin': annual_pfadmin, 'annualersic': annual_ersic, 'annualgpa': annual_gpa, 'annualgmi': annual_gmi, 'tec': tec, 'annual_tec': annual_tec, 'ctc': ctc, 'annual_ctc': annual_ctc,
                 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
                 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
                 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
@@ -1779,7 +1797,7 @@ def save_new_candidate(request):
                 last_code_query = csp_candidate_code.objects.latest('candidate_code')                
                 last_code_str = last_code_query.candidate_code
                 next_code_int = int(last_code_str[1:]) + 1
-                new_code = 'C' + str(next_code_int).zfill(9) #pk_candidate_code
+                new_code = 'C' + str(next_code_int).zfill(9) 
                 new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= father_dob,
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
@@ -1787,15 +1805,16 @@ def save_new_candidate(request):
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
                 Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= float(ss_gross_salary.replace(',', '')), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
                 new_candidate.save()
-                new_salary_structure = salary_structure(candidate_code= new_code, basic= basic, annual_basic= annualbasic, house_rent_allowance= house_rent_allowance, annual_house_rent_allowance= annualhouse_rent_allowance, statutory_bonus=statutory_bonus, annual_statutory_bonus= annualstatutory_bonus,
-                special_allowance=special_allowance, annual_special_allowance=annualspecial_allowance,gross_salary=ss_gross_salary, annual_gross_salary=annualgross_salary, employee_pf= employee_pf, annual_employee_pf= annualemployee_pf,
-                employee_esic= employee_esic, annual_employee_esic= annualemployer_esic, employee_total_contribution= employee_total_contribution, annual_employee_total_contribution= annualemployee_total_contribution, employer_pf= employer_pf, annual_employer_pf= annualemployer_pf,
-                employer_pf_admin=employer_pf_admin, annual_employer_pf_admin= annualemployer_pf_admin, employer_esic= employer_esic, annual_employer_esic= annualemployer_esic, group_personal_accident= group_personal_accident, annual_group_personal_accident= annualgroup_personal_accident,
-                group_mediclaim_insurance= group_mediclaim_insurance, annual_group_mediclaim_insurance = annualgroup_mediclaim_insurance, employer_total_contribution= employer_total_contribution, annual_employer_total_contribution= annualemployer_total_contribution, cost_to_company=cost_to_company,
-                annual_cost_to_company= annualcost_to_company)
-                new_salary_structure.save()
+                
                 save_new_code = csp_candidate_code(candidate_code= new_code)
                 save_new_code.save()
+                new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= float(basic.replace(',','')), annual_basic= float(annualbasic.replace(',','')), house_rent_allowance= float(house_rent_allowance.replace(',','')), annual_house_rent_allowance= float(annualhouse_rent_allowance.replace(',','')), statutory_bonus=float(statutory_bonus.replace(',','')), annual_statutory_bonus= float(annualstatutory_bonus.replace(',','')),
+                special_allowance=float(special_allowance.replace(',','')), annual_special_allowance=float(annualspecial_allowance.replace(',','')),gross_salary=float(ss_gross_salary.replace(',','')), annual_gross_salary=float(annualgross_salary.replace(',','')), employee_pf= float(employee_pf.replace(',','')), annual_employee_pf= float(annualemployee_pf.replace(',','')),
+                employee_esic= float(employee_esic.replace(',','')), annual_employee_esic= float(annualemployer_esic.replace(',','')), employee_total_contribution= float(employee_total_contribution.replace(',','')), annual_employee_total_contribution= float(annualemployee_total_contribution.replace(',','')), employer_pf= float(employer_pf.replace(',','')), annual_employer_pf= float(annualemployer_pf.replace(',','')),
+                employer_pf_admin=float(employer_pf_admin.replace(',','')), annual_employer_pf_admin= float(annualemployer_pf_admin.replace(',','')), employer_esic= float(employer_esic.replace(',','')), annual_employer_esic= float(annualemployer_esic.replace(',','')), group_personal_accident= float(group_personal_accident.replace(',','')), annual_group_personal_accident= float(annualgroup_personal_accident.replace(',','')),
+                group_mediclaim_insurance= float(group_mediclaim_insurance.replace(',','')), annual_group_mediclaim_insurance = float(annualgroup_mediclaim_insurance.replace(',','')), employer_total_contribution= float(employer_total_contribution.replace(',','')), annual_employer_total_contribution= float(annualemployer_total_contribution.replace(',','')), cost_to_company=float(cost_to_company.replace(',','')),
+                annual_cost_to_company= float(annualcost_to_company.replace(',','')))
+                new_salary_structure.save()
                 limtemplate = render_to_string('emailtemplates/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
                 our_email = EmailMessage(
                     'Candidate account created action required.',

@@ -674,14 +674,15 @@
                         <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="36" value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
+                        <input type="text" tabindex="36" readonly value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
                     </div>
                 </div>
-
+                <a href="/view_salary_structure/eachcandidate.pk/" target="_blank">view salary structure</a>
                 
 
 
         </div>
+
         <div class="candidate_form_footer">
             {% if request.user.groups.all %}
                 {% for eachgroup in request.user.groups.all %}
