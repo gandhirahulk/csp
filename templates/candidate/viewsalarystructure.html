@@ -276,11 +276,10 @@
 
         <div class="form_footer" style="width: 80vw;background: #fff;">
                 <button onclick="getPDF()" class="delete-forms-close-btn" style="width: auto;">Save as PDF</button>        
-                <button class="forms-save-btn" formaction="{% url 'csp_app:edit_candidate' %}" type="submit">Save Changes</button>
-            </form>
+               
         </div>
         </div>
     {% endfor %}
 {% endif %}
-
+<script src="{% static 'csp_app/js/salarypdf.js' %}"></script>
 {% endblock %}
