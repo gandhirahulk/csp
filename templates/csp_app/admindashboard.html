@@ -160,24 +160,26 @@
           $('#c_dob').attr('min', maxAge);
           $('#c_dob').attr('max', minAge);
 
-          var fToday = new Date(); 
-          var month = fToday.getMonth() + 1;
-          var day = fToday.getDate();
-          var maxYear = fToday.getFullYear() - 100;
-          var minYear = fToday.getFullYear() - 45;
-          if(month < 10)
-              month = '0' + month.toString();
-          if(day < 10)
-              day = '0' + day.toString();          
-          var maxAge= maxYear + '-' + month + '-' + day;     
-          var minAge= minYear + '-' + month + '-' + day;
-          $('#c_father_dob').attr('min', maxAge);
-          $('#c_father_dob').attr('max', minAge);
-
-
           $('#firstname').bind('keypress', onlyAlphabets);
           $('#lastname').bind('keypress', onlyAlphabets); 
         });
+
+        $('#c_dob').change(function(){
+            var fToday = new Date($('#c_dob').val()); 
+            console.log(fToday);
+            var month = fToday.getMonth() + 1;
+            var day = fToday.getDate();
+            var maxYear = fToday.getFullYear() - 85;
+            var minYear = fToday.getFullYear() - 16;
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();          
+            var maxAge= maxYear + '-' + month + '-' + day;     
+            var minAge= minYear + '-' + month + '-' + day;
+            $('#c_father_dob').attr('min', maxAge);
+            $('#c_father_dob').attr('max', minAge);
+        })
       });
     </script>
 </head>
@@ -205,12 +207,12 @@
             <div class="user-div">
                 <ul>
                 {% if request.user.is_staff %}
-                    <li><a href="{% url 'csp_app:entity' %}" title="{{ request.user }}"><i class="fas fa-user-shield"></i></a></li>
+                    <li><a href="{% url 'csp_app:password_change' %}" title="Change Password for {{ request.user }}"><i class="fas fa-user-lock"></i></a></li>
                     <!-- <li><a href="#">|</a></li> -->
                     <!-- <li><a href="#">Requests</a></li>
                     <li><a href="#">|</a></li> -->
                 {% else %}
-                    <li><a href="{% url 'csp_app:candidate' %}" title="{{ request.user }}"><i class="fas fa-user"></i></a></li>
+                    <li><a href="{% url 'csp_app:candidate' %}" title="Change Password for {{ request.user }}"><i class="fas fa-user-lock"></i></a></li>
                 {% endif %}
                     <li title="Logout"><a href="{% url 'csp_app:csp_logout' %}"><i class="fas fa-sign-out-alt"></i></a></li>
                 </ul>
@@ -222,24 +224,61 @@
             {% for eachcandidate in allcandidates %} 
             <div  class="form_modal" id="{{ eachcandidate.pk }}">
 
-                <div class="view_form_header">
+                <div class="search_view_form_header">
                     <div class="forms-heading">
                         <h2>Candidate Details</h2>
                     </div>
                     <div class="hr_line">&nbsp;</div>            
                 </div>
-                <div class="view_form_content">
+                <div class="search_view_form_content">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ eachcandidate.pk }}" name="view_id">
+                        <input type="submit" value="View Profile" id="view" style="border: none; outline: none; color: blue;background: none;cursor: pointer;" formaction="{% url 'csp_app:view_edit_candidate' %}">
+                   
+                    </form>
                     <fieldset class="fds">
                         <legend>Basic Details</legend>
                         <table>
                             <tr>
                                 <td><label for="">Full Name : </label> {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</td>
+                                <td><label for="">Contact Number : </label> {{ eachcandidate.Contact_Number }} </td>
+                            
                             </tr>
                             <tr>
-                                <td><label for="">Contact : </label> {{ eachcandidate.Contact_Number }} / {{ eachcandidate.Personal_Email_Id }}</td>
-                            </tr>                        
+                                <td><label for="">Email : </label>  {{ eachcandidate.Personal_Email_Id }}</td>
+                            
+                                <td><label for="">Expected Date of joining : </label> {{ eachcandidate.Date_of_Birth }}</td>
+                                
+                            </tr>
+                            <tr>
+                                <td><label for="">Entity : </label> {{ eachcandidate.fk_entity_code }}</td>
+                                <td><label for="">Department : </label> {{ eachcandidate.fk_department_code }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="">Function : </label> {{ eachcandidate.fk_function_code }}</td>
+                                <td><label for="">Team : </label> {{ eachcandidate.fk_team_code }}</td>
+                            </tr>               
+                            <tr>
+                                <td><label for="">Sub Team : </label> {{ eachcandidate.fk_sub_team_code }}</td>
+                                <td><label for="">Designation : </label> {{ eachcandidate.fk_designation_code }}</td>
+                            </tr>         
+                            <tr>
+                                <td><label for="">Region : </label> {{ eachcandidate.fk_region_code }}</td>
+                                <td><label for="">State : </label> {{ eachcandidate.fk_state_code }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="">City : </label> {{ eachcandidate.fk_city_code }}</td>
+                                <td><label for="">Location : </label> {{ eachcandidate.fk_location_code }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="">Location Code : </label> {{ eachcandidate.fk_location_code.location_code }}</td>
+                                <td><label for="">Vendor : </label> {{ eachcandidate.fk_vendor_code }}</td>
+                            </tr>
                             <tr>
                                 <td><label for="">Onboarding Status : </label> {{ eachcandidate.onboarding_status }}</td>
+                            
+                                <td><label for="">Vendor Status : </label> {{ eachcandidate.vendor_status }}</td>
                             </tr>
                             
                         </table>                    
@@ -249,23 +288,23 @@
                         <table>
                             <tr>
                                 <td><label for="">Created By : </label> {{ eachcandidate.created_by }}</td>
-                            </tr>
-                            <tr>
                                 <td><label for="">Created Date Time : </label> {{ eachcandidate.created_date_time }}</td>
+                           
                             </tr>
+                          
                             <tr>
                                 <td><label for="">Modified By : </label> {{ eachcandidate.modified_by }}</td>
-                            </tr>
-                            <tr>
                                 <td><label for="">Modified Date Time : </label> {{ eachcandidate.modified_date_time }}</td>
+                           
                             </tr>
+                           
                             
                         </table>                    
                     </fieldset>
                                 
                 </div>
                     
-                <div class="view_form_footer">
+                <div class="search_view_form_footer">
                     <button onclick="window.location.reload();" class="forms-save-btn">Close</button>
                 </div>
                         

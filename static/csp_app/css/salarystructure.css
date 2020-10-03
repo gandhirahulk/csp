@@ -82,6 +82,11 @@
     background: #DCF2E7;
 }
 
+.ss-table-total-three1{
+    background: #F0F2D8;
+    font-weight: bold;
+}
+
 .ss-table-total-three{
     background: #D3E4E1;
     font-weight: bold;
@@ -93,19 +98,27 @@
 }
 
 .ssc-heading-one{
-    background: #C4C4BF;
+    /* background: #C4C4BF; */
+    background:#CAD5DB ;
     text-align: center;
     padding: 5px;
+    font-weight: bold;
 }
 
 .ssc-heading-two{
-    background: #CECECA;
+    /* background: #CECECA; */
+    background: #D3E4E1 ;
+    font-weight: bold;
 }
 
 .ssc-heading-three{
-    background: #DADAD7;
+    /* background: #DADAD7; */
+    background: #DCF2E7;
+    font-weight: bold;
 }
 
 .ssc-heading-four{
-    background: #E2E2DF;
+    /* background: #E2E2DF; */
+    background: #E6F2E0;
+    font-weight: bold;
 }

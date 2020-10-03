@@ -27,6 +27,14 @@ $(document).ready(function(){
             $('#c_referral').attr("disabled", true);
         }
     });
+    $('#c_salary').keyup(function(){
+        var amt = $(this).val();
+        var min = $('#name').val();
+        if (amt > min){
+            $('#wage_result').text('');
+
+        }
+    });
     $('#c_contact, #c_emergency').on('keyup', function () {
     if ($('#c_contact').val() == $('#c_emergency').val()) {
         $('#message').html('Contact No. and Emergency No. Cannot be same.').css('color', 'red');

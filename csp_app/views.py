@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
@@ -17,8 +17,10 @@ from django.utils import timezone
 from django.contrib.auth.tokens import default_token_generator
 import xlwt
 from csp_app import exports
+from django.contrib.auth.hashers import make_password
 
 a = default_token_generator
+
 
 
 
@@ -36,6 +38,33 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
+@login_required(login_url='/notlogin/')
+def change_password(request):
+    selected_user = User.objects.get(email=request.user.email)
+    if request.method == 'POST':
+        
+        pwd = request.POST.get('new_password2')
+        selected_user.password = pwd
+        selected_user.set_password(selected_user.password)
+        selected_user.save()
+        return render(request, 'registration/password_reset_complete.html')
+    return render(request, 'registration/password_change.html')
+
+def minimum_wage_list(request):
+    state_id = request.GET.get('search_state')
+    desg_id = request.GET.get('search_type')
+
+    state = master_state.objects.get(pk=state_id)
+    desg = master_designation.objects.get(pk=desg_id)
+
+    output = {}
+    wage_list = master_minimum_wages.objects.get(fk_state_code=state.state_name_id, fk_skill_code= desg.fk_skill_code_id)
+    # output['wage_list'] = list(wage_list.values())
+    output['desg_type'] = wage_list.fk_skill_code.skill_name
+    output['state_name'] = wage_list.fk_state_code.state_name
+    output['amount'] = wage_list.wages
+    print(output)
+    return JsonResponse(output)
 
 
 
@@ -47,6 +76,7 @@ def minimum_wages(request):
         state_list = states.objects.all().order_by('state_name')
         zone_list = zones.objects.all()
         skill_list = skill_type.objects.all().order_by('-skill_name')
+        all_active_candidates = master_candidate.objects.filter(status=active_status)
         return render(request, 'csp_app/minimum_wages.html', {'all_active_candidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
@@ -762,7 +792,7 @@ def candidate(request):
     'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list, 'v_status_list': v_status_list})
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists())
 def new_candidate(request):    
     try:
         s_particulars = salary_structure_particulars.objects.all()
@@ -780,7 +810,7 @@ def new_candidate(request):
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists() )
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() )
 def view_edit_candidate(request): 
     try:
         if request.method == 'POST':
@@ -793,6 +823,250 @@ def view_edit_candidate(request):
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
         'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'selected_candidate': candidate_list })
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+def edit_salary_structure(request): 
+    try:
+        if request.method == 'POST':
+            candidate_id = request.POST.get("c_id")   
+            selected_candidate = master_candidate.objects.filter(pk=candidate_id)
+            entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
+            candidate_list = master_candidate.objects.filter(pk=candidate_id)
+            # if request.POST.get('c_id') != '':
+            cid = request.POST.get('c_id')
+            firstname = request.POST.get("c_firstname").capitalize()
+            middlename = request.POST.get("c_middlename").capitalize()
+            # print(middlename)
+            lastname = request.POST.get("c_lastname").capitalize()
+            dob = request.POST.get("c_dob")
+            contact_no = request.POST.get("c_contact")
+            emergency_no = request.POST.get("c_emergency")
+            email = request.POST.get("c_email")
+            c_gender = request.POST.get("c_gender")
+            fathername = request.POST.get("c_fathername")
+            father_dob = request.POST.get("c_father_dob")
+            aadhaar = request.POST.get("c_aadhaar")
+            Pan = request.POST.get("c_pan")
+            hiring = request.POST.get("c_hiring_type")
+            doj = request.POST.get("c_doj")        
+            replacement = request.POST.get("c_replacement")
+            referral = request.POST.get("c_referral")
+            subsource = request.POST.get("c_sub_source")
+            entity = request.POST.get("c_entity")
+            vendor = request.POST.get("c_vendor")
+            department = request.POST.get("c_dept")
+            function = request.POST.get("c_function")
+            team = request.POST.get("c_team")
+            sub_team = request.POST.get("c_subteam")
+            designation = request.POST.get("c_desg")
+            region = request.POST.get("c_region")
+            state = request.POST.get("c_state")
+            city = request.POST.get("c_city")
+            location = request.POST.get("c_location")
+            # loc_code = request.POST.get("c_location_code") #check
+            loc_code = 'GGG' #check
+
+            ta_spoc = request.POST.get("c_ta_spoc") #check
+            onboarding_spoc = 'workmail052020@gmail.com' #check
+            reporting_manager = request.POST.get("c_reporting_manager")
+            reporting_manager_email = request.POST.get("c_reporting_manager_email")
+            email_creation = request.POST.get("c_email_creation")
+            laptopallocation = request.POST.get("c_laptop_allocation")
+            salarytype = request.POST.get("c_salary_type")
+            gross_salary = request.POST.get("c_gross_salary")
+            if hiring == None or hiring == '':
+                messages.warning(request, "Choose Hiring Type And Try Again")
+                return redirect("csp_app:candidate")
+            hiring_fk = hiring_type.objects.get(pk= hiring)
+            if sub_source == None or sub_source == '':
+                messages.warning(request, "Choose  Sub Source  And Try Again")
+                return redirect("csp_app:candidate")
+            subsource_fk = sub_source.objects.get(pk= subsource)
+            if c_gender == None or c_gender == '':
+                messages.warning(request, "Choose  Gender And Try Again")
+                return redirect("csp_app:candidate")
+            gender_fk = gender.objects.get(pk= c_gender)
+            if laptopallocation == None or laptopallocation == '':
+                messages.warning(request, "Choose  Laptop Allocation And Try Again")
+                return redirect("csp_app:candidate")
+            la_fk = laptop_allocation.objects.get(pk= laptopallocation)
+            if salarytype == None or salarytype == '':
+                messages.warning(request, "Choose  Salary Type And Try Again")
+                return redirect("csp_app:candidate")
+            salarytype_fk = salary_type.objects.get(pk= salarytype)
+            if entity == None or entity == '':
+                messages.warning(request, "Choose  Entity  And Try Again")
+                return redirect("csp_app:candidate")
+            entity_fk = master_entity.objects.get(pk= entity)
+            if vendor == None or vendor == '':
+                messages.warning(request, "Choose  vendor  And Try Again")
+                return redirect("csp_app:candidate")
+            vendor_fk = master_vendor.objects.get(pk= vendor)
+            if department == None or department == '':
+                messages.warning(request, "Choose  Department  And Try Again")
+                return redirect("csp_app:candidate")
+            department_fk = master_department.objects.get(pk= department)
+            if function == None or function == '':
+                messages.warning(request, "Choose  Function  And Try Again")
+                return redirect("csp_app:candidate")
+            function_fk = master_function.objects.get(pk= function)
+            if team == None or team == '':
+                messages.warning(request, "Choose  Team  And Try Again")
+                return redirect("csp_app:candidate")
+            team_fk = master_team.objects.get(pk= team)
+            if sub_team == None or sub_team == '':
+                messages.warning(request, "Choose  Sub Team  And Try Again")
+                return redirect("csp_app:candidate")
+            sub_team_fk = master_sub_team.objects.get(pk= sub_team)
+            if designation == None or designation == '':
+                messages.warning(request, "Choose  Designation  And Try Again")
+                return redirect("csp_app:candidate")
+            designation_fk = master_designation.objects.get(pk= designation)
+            if region == None or region == '':
+                messages.warning(request, "Choose  Region  And Try Again")
+                return redirect("csp_app:candidate")
+            region_fk = master_region.objects.get(pk= region)
+            if state == None or state == '':
+                messages.warning(request, "Choose  State  And Try Again")
+                return redirect("csp_app:candidate")
+            state_fk = master_state.objects.get(pk= state)
+            if city == None or city == '':
+                messages.warning(request, "Choose  City  And Try Again")
+                return redirect("csp_app:candidate")
+            city_fk = master_city.objects.get(pk= city)
+            if location == None or location == '':
+                messages.warning(request, "Choose  Location  And Try Again")
+                return redirect("csp_app:candidate")
+            location_fk = master_location.objects.get(pk= location)
+            # if email == None or email == '':
+
+            
+            last_code_query = dummy_candidate_code.objects.latest('candidate_code')                
+            last_code_str = last_code_query.candidate_code
+            next_code_int = int(last_code_str[1:]) + 1
+            new_code = 'D' + str(next_code_int).zfill(9) #pk_candidate_code
+            new_dummy_candidate = dummy_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= father_dob,
+            Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
+            Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
+            fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
+            Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
+            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
+            new_dummy_candidate.save()
+
+            save_new_code = dummy_candidate_code(candidate_code= new_code)
+            save_new_code.save()
+            dummy = dummy_candidate.objects.get(pk=new_code)
+            minimum_wage = ''
+                            #monthly
+            try:
+                
+                minimum_wage = master_minimum_wages.objects.get(fk_skill_code = dummy.fk_designation_code.fk_skill_code.pk, fk_state_code= dummy.fk_state_code.state_name_id, status=active_status)
+                minimum_wage_list = master_minimum_wages.objects.filter(fk_state_code= dummy.fk_state_code.state_name_id, status=active_status)
+                
+                wage = minimum_wage.wages
+            except ObjectDoesNotExist:
+                wage = 0
+            g_salary = dummy.Gross_Salary_Amount * 0.50
+            basic = g_salary if wage < g_salary else wage
+                
+            if dummy.fk_state_code.state_name == 'Maharashtra' or dummy.fk_state_code.state_name == 'West Bengal':
+                hra = basic * 0.05
+            else:
+                hra = 0
+            sb_1 = wage // 12
+            sb_2 = 7000 // 12
+            sb = sb_2 if sb_1 < sb_2 else sb_1
+            
+            
+            if dummy.fk_state_code.state_name == 'Keral':
+                sa_1 = 200
+            else:
+                sa_1 = 0
+
+            sa_2 = g_salary - (basic + hra + sb)
+            sa = sa_1 if sa_1 > sa_2 else sa_2
+            gross = basic + hra + sb + sa
+            grossalary = gross if gross > g_salary else g_salary
+
+            #ee
+            bsa = basic + sa
+            pf_gross = bsa if bsa < 15000 else 15000 
+            epf_1 = pf_gross * 0.12
+            epf_2 = 15000 * 0.12
+            epf = epf_1 if epf_1 < epf_2 else epf_2
+
+            if grossalary <= 21000:
+                esic_1 = grossalary*0.075
+            else:
+                esic_1 = 0
+            esic_2 = 0
+            esic = esic_1 if esic_1 > esic_2 else esic_2
+
+            td = epf + esic
+            ths = grossalary - td
+            #er
+            erpf_1 = pf_gross * 0.12
+            erpf_2 = 15000 * 0.12
+            erpf = erpf_1 if erpf_1 < erpf_2 else erpf_2
+            erpf_admin = erpf / 12
+            if grossalary <= 21000:
+                ersic_1 = grossalary*0.0325
+            else:
+                ersic_1 = 0
+            ersic_2 = 0
+            ersic = ersic_1 if ersic_1 > ersic_2 else ersic_2
+            gpac = 500000
+            gpi_1 = 24 * grossalary
+            gpi_2 = gpi_1 if gpi_1 > gpac else gpac
+            gpa = (gpi_2 * 0.20)/1000 / 12
+            gpa = round(gpa,2)
+            gmi = 91.66 if grossalary > 21000 else 0
+            tec = erpf + erpf_admin + ersic + gpa + gmi
+            ctc = grossalary + tec
+            
+            if dummy.Salary_Type.pk == 2:
+                var_1 = grossalary / 80
+                var_2 = dummy.Gross_Salary_Amount * 0.20
+                var = var_1 if var_1 > var_2 else var_2
+                annual_var = var * 12
+            elif dummy.Salary_Type.pk == 3:
+                var_1 = grossalary / 75
+                var_2 = dummy.Gross_Salary_Amount * 0.25
+                var = var_1 if var_1 > var_2 else var_2
+                annual_var = var * 12
+            else:
+                var = 'infinity'
+                annual_var = 0
+            #annual
+            annual_basic = basic * 12
+            annual_hra = hra * 12
+            annual_sb = sb * 12
+            annual_sa = sa * 12
+            annual_gs = grossalary * 12
+            annual_epf = epf * 12
+            annual_esic = esic * 12
+            annual_td = td * 12
+            annual_ths = ths * 12
+            annual_eprf = erpf * 12
+            annual_ersic = ersic * 12
+            annual_pfadmin = erpf_admin * 12
+            annual_gpa = round(gpa * 12, 2)
+            annual_gmi = gmi * 12
+            annual_tec = tec * 12
+            annual_ctc = round(ctc * 12 , 2)
+            diff = dummy.Gross_Salary_Amount - grossalary
+            return render(request, 'candidate/editsalarystructure.html', {'selected_candidate': selected_candidate, 'dummy': dummy, 'basic': basic, 'hra': hra, 'sb': sb, 'sa': sa, 'gross_salary': grossalary, 'annualbasic': annual_basic, 'annualhra': annual_hra, 
+            'annualsb': annual_sb, 'annualsa': annual_sa, 'annualgs': annual_gs, 'annualepf': annual_epf, 'annualesic': annual_esic, 'annualtd': annual_td,
+            'annualths': annual_ths, 'epf': epf, 'esic': esic, 'td': td, 'ths': ths, 'erpf': erpf, 'erpf_admin': erpf_admin, 'ersic': ersic, 'gpa': gpa, 'gmi': gmi,
+            'annualerpf': annual_eprf, 'annualerpf_admin': annual_pfadmin, 'annualersic': annual_ersic, 'annualgpa': annual_gpa, 'annualgmi': annual_gmi, 'tec': tec, 'annual_tec': annual_tec, 'ctc': ctc, 'annual_ctc': annual_ctc,
+            'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+            'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+            'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+            'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+            'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': annual_var, 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': diff})  
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -1032,7 +1306,7 @@ def candidate_form_lists():
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists())
 def create_candidate(request):
     entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
        
@@ -1320,7 +1594,7 @@ def create_candidate(request):
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='User').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists())
 def save_new_candidate(request):
     try:
         if request.method == 'POST':
@@ -1363,6 +1637,38 @@ def save_new_candidate(request):
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
             gross_salary = request.POST.get("c_gross_salary")
+
+            basic = request.POST.get("basic")
+            annualbasic = request.POST.get("annualbasic")
+            house_rent_allowance = request.POST.get("hra")
+            annualhouse_rent_allowance = request.POST.get("annualhra")
+            statutory_bonus = request.POST.get("sb")
+            annualstatutory_bonus = request.POST.get("annualsb")
+            special_allowance = request.POST.get("sa")
+            annualspecial_allowance = request.POST.get("annualsa")
+            ss_gross_salary = request.POST.get("gs")
+            annualgross_salary = request.POST.get("annualgs")
+            employee_pf = request.POST.get("epf")
+            annualemployee_pf = request.POST.get("annualepf")
+            employee_esic = request.POST.get("esic")
+            annualemployee_esic = request.POST.get("annualesic")
+            employee_total_contribution = request.POST.get("tc")
+            annualemployee_total_contribution = request.POST.get("annualtc")
+            employer_pf = request.POST.get("erpf")
+            annualemployer_pf = request.POST.get("annualerpf")
+            employer_pf_admin = request.POST.get("erpfadmin")
+            annualemployer_pf_admin = request.POST.get("annualerpfadmin")
+            employer_esic = request.POST.get("ersic")
+            annualemployer_esic = request.POST.get("annualersic")
+            group_personal_accident = request.POST.get("gpa")
+            annualgroup_personal_accident = request.POST.get("annualgpa")
+            group_mediclaim_insurance = request.POST.get("gmi")
+            annualgroup_mediclaim_insurance = request.POST.get("annualgmi")
+            employer_total_contribution = request.POST.get("tec")
+            annualemployer_total_contribution = request.POST.get("annualtec")
+            cost_to_company = request.POST.get("ctc")
+            annualcost_to_company = request.POST.get("annualctc")
+
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
                 return redirect("csp_app:new_candidate")
@@ -1449,9 +1755,15 @@ def save_new_candidate(request):
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
+                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= ss_gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
                 new_candidate.save()
-
+                new_salary_structure = salary_structure(candidate_code= new_code, basic= basic, annual_basic= annual_basic, house_rent_allowance= house_rent_allowance, annual_house_rent_allowance= annualhouse_rent_allowance, statutory_bonus=statutory_bonus, annual_statutory_bonus= annualstatutory_bonus,
+                special_allowance=special_allowance, annual_special_allowance=annualspecial_allowance,gross_salary=ss_gross_salary, annual_gross_salary=annualgross_salary, employee_pf= employee_pf, annual_employee_pf= annualemployee_pf,
+                employee_esic= employee_esic, annual_employee_esic= annualemployer_esic, employee_total_contribution= employee_total_contribution, annual_employee_total_contribution= annualemployee_total_contribution, employer_pf= employer_pf, annual_employer_pf= annualemployer_pf,
+                employer_pf_admin=employer_pf_admin, annual_employer_pf_admin= annualemployer_pf_admin, employer_esic= employer_esic, annual_employer_esic= annualemployer_esic, group_personal_accident= group_personal_accident, annual_group_personal_accident= annualgroup_personal_accident,
+                group_mediclaim_insurance= group_mediclaim_insurance, annual_group_mediclaim_insurance = annualgroup_mediclaim_insurance, employer_total_contribution= employer_total_contribution, annual_employer_total_contribution= annualemployer_total_contribution, cost_to_company=cost_to_company,
+                annual_cost_to_company= annualcost_to_company)
+                new_salary_structure.save()
                 save_new_code = csp_candidate_code(candidate_code= new_code)
                 save_new_code.save()
                 limtemplate = render_to_string('emailtemplates/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})

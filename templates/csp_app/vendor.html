@@ -156,17 +156,14 @@
 
         <div class="forms-input-holder">
             <label for="">Entity</label>
-            <input type="search" name="" id="search-entity" placeholder="Search By Entity Name" onkeyup="filterEntity('search-entity','entity-ul')">
-            
-            <!-- <select name="vendor_entity" required="true">
-                <option value="" disabled selected>Select Entity</option>
-                {% if entity_list %}
-                    {% for eachentity in entity_list %}
-                        <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
-                    {% endfor %}                
-                {% endif %}
-            </select> -->
+            <input type="search" style="width: 60%;" class="search-entity" name="" id="search-entity" placeholder="Search By Entity Name" onkeyup="filterEntity('search-entity','entity-ul')">
+            <div class="select-all">
+                <input type="checkbox" name="" id="selectall"> Select All
+        
+                </div>
+        
         </div>
+      
         <div class="entity-holder" id="entity-ul">
             {% if entity_list %}
                 {% for eachentity in entity_list %}
@@ -174,7 +171,7 @@
                         width: 33%;">    
                         <span>
 
-                            <input type="checkbox" name="vendor_entity" value="{{ eachentity.pk }}" id=""> {{ eachentity.entity_name }}  
+                            <input type="checkbox" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
                         </span>
 
                         </div>  
@@ -284,6 +281,41 @@
             }     
         });
        
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#selectall").on("click", function () {
+        if (this.checked) {
+            empcheckboxes = document.getElementsByName('vendor_entity');
+            for (var i = 0, n = empcheckboxes.length; i < n; i++) {
+                empcheckboxes[i].checked = true;
+            }
+        } else {
+            empcheckboxes = document.getElementsByName('vendor_entity');
+            for (var i = 0, n = empcheckboxes.length; i < n; i++) {
+                empcheckboxes[i].checked = false;
+            }
+        }
+    });
+    $(".entities").on("click", function () {
+        allcheckboxes = document.getElementsByName('vendor_entity');
+        if (this.checked) {
+            var checked = 0;
+            for (var i = 0, n = allcheckboxes.length; i < n; i++) {
+                if (allcheckboxes[i].checked == true) {
+                    checked += 1;
+                }
+            }
+            if (checked === n) {
+                selectallcheckbox = document.getElementById('selectall');
+                selectallcheckbox.checked = true;
+            }
+        } else {
+            selectallcheckbox = document.getElementById('selectall');
+            selectallcheckbox.checked = false;
+        }
+    });
     });
 </script>
 {% endblock %}

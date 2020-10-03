@@ -36,6 +36,8 @@ urlpatterns = [
     path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     path('reset/done/',auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
+    path('change_password/',views.change_password,name='password_change'),
+
 
     path('csp_admin/', views.admin, name= 'admin'),
     path('csp_admin/csp_user/', views.create_user_view, name= 'user'),
@@ -54,6 +56,7 @@ urlpatterns = [
     path('csp_candidates/', views.candidate, name= 'candidate'),
     path('csp_candidates/new_candidate/', views.new_candidate, name= 'new_candidate'),
     path('csp_candidates/view_edit_candidate/', views.view_edit_candidate, name= 'view_edit_candidate'),
+    path('csp_candidates/edit_candidate_salary/', views.edit_salary_structure, name= 'edit_salary_structure'),
 
     path('csp_candidates/edit_candidate/', views.edit_candidate, name= 'edit_candidate'),
     path('csp_candidates/create_new/', views.create_candidate, name= 'create_candidate'),
@@ -71,7 +74,8 @@ urlpatterns = [
     path('csp_candidates/process_requests/reject_request/<str:cid>/', views.reject_candidate_vendor, name= 'reject_candidate_vendor'),
 
     path('csp_candidates/process_requests/reject_request/<str:cid>/', views.reject_candidate_onboarding, name= 'reject_request'),
-
+    #ajax
+    path('csp_minimum_wage_list/', views.minimum_wage_list, name="csp_minimum_wage_list"),
 
 
 

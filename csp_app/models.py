@@ -479,4 +479,39 @@ class employer_contributions_particulars(models.Model):
         return self.particulars
     
 
+class salary_structure(models.Model):
+    pk_salary_structure_code = models.AutoField(primary_key=True) 
+    candidate_code = models.CharField(max_length=10)
+    basic = models.FloatField()
+    annual_basic = models.FloatField()
+    house_rent_allowance = models.FloatField()
+    annual_house_rent_allowance = models.FloatField()
+    statutory_bonus = models.FloatField()
+    annual_statutory_bonus = models.FloatField()
+    special_allowance = models.FloatField()
+    annual_special_allowance = models.FloatField()
+    gross_salary = models.FloatField()
+    annual_gross_salary = models.FloatField()
+    employee_pf = models.FloatField()
+    annual_employee_pf = models.FloatField()
+    employee_esic = models.FloatField()
+    annual_employee_esic = models.FloatField()
+    employee_total_contribution = models.FloatField()
+    annual_employee_total_contribution = models.FloatField()
+    employer_pf = models.FloatField()
+    annual_employer_pf = models.FloatField()
+    employer_pf_admin = models.FloatField()
+    annual_employer_pf_admin = models.FloatField()
+    employer_esic = models.FloatField()
+    annual_employer_esic = models.FloatField()
+    group_personal_accident = models.FloatField()
+    annual_group_personal_accident = models.FloatField()
+    group_mediclaim_insurance = models.FloatField()
+    annual_group_mediclaim_insurance = models.FloatField()
+    employer_total_contribution = models.FloatField()
+    annual_employer_total_contribution = models.FloatField()
+    cost_to_company = models.FloatField()
+    annual_cost_to_company = models.FloatField()
+
+
     

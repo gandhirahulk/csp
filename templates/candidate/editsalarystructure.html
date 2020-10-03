@@ -1,5 +1,6 @@
 {% extends 'csp_app/admindashboard.html' %}
 {% load static %}
+{% load humanize %} 
 {% block titleblock %} New Candidate {% endblock %}
 
 {% block bodyblock %} 
@@ -383,11 +384,11 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >TA SPOC Email ID</label>
-                <input tabindex="29" type="email" readonly value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
+                <input tabindex="29" type="email" disabled value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
             </div>
             <div class="margin-left">
                 <label for="" >Onboarding SPOC Email ID</label>
-                <input tabindex="30" type="email" readonly value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
+                <input tabindex="30" type="email" disabled value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
             </div>
         </div>
         <div class="candidate-forms-input-holder">
@@ -470,19 +471,290 @@
     <div class="candidate_form_footer">
         <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="delete-forms-close-btn">Add Documents</a>
         
-        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Save Candidate</button>
+        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
  </form>
     </div>
     <input type="hidden" id="name">
     <input type="hidden" id="phone_no">
     <input type="hidden" id="spocemail">
   </div>
+
+  <div id="salary_structure" class="form_modal" style="padding-top: 2%;display: block;">
+        
+               
+    <div class="form_header" style="width: 80vw;background: #fff;">
+        <div class="forms-heading" style="background: #fff;">
+            <h2>Candidate Salary Structure</h2>
+            
+        </div>
+        <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
+    </div>
+    <div class="form_content" id="s-wrapper" style="width: 80vw;">
+        
+        <div class="ss canvas_div_pdf"> 
+            Name : {{ dummy.First_Name }} {{ dummy.Middle_Name }} {{ dummy.Last_Name }} 
+            Email : {{ dummy.Personal_Email_Id}} 
+            Phone Number : {{ dummy.Contact_Number }}
+            <div class="salary-heading-one">
+                <h3>Salary Structure</h3>
+            </div>
+
+            <table class="ss-table">
+                <thead>
+                    <tr class="ss-table-heading-one">
+                        <th>Particulars</th>
+                        <th>Monthly</th>
+                        <th>Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Basic</td>
+                        <td><input type="text" name="basic"  readonly value="{{ basic|intcomma }}"></td>
+                        <td><input type="text" name="annualbasic" value=" {{ annualbasic|floatformat:2|intcomma }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>House Rent Allowance</td>
+                        <td><input type="text" name="hra"  readonly value="{{ hra|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualhra"  readonly value="{{ annualhra|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr>
+                        <td>Statutory Bonus</td>
+                        <td ><input type="text" name="sb"  readonly value="{{ sb|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualsb"  readonly value="{{ annualsb|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr>
+                        <td>Special Allowance</td>
+                        <td ><input type="text" name="sa"  readonly value="{{ sa|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualsa"  readonly value="{{ annualsa|floatformat:2|intcomma }}"></td>
+                    </tr>
+                  
+                    <tr class="ss-table-total-one">
+                        <td>Gross Salary (A)</td>
+                        <td ><input type="text" name="gs"  readonly value="{{ gross_salary|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualgs"  readonly value="{{ annualgs|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    {% if variable != 'infinity' %}
+                    <tr>
+                        <td>Variable </td>
+                        <td ><input type="text" name="var"  readonly value="{{ variable|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualvar"  readonly value="{{ annual_var|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    {% endif %}
+                  
+                   
+                </tbody>
+            </table>
+            <div>
+                &nbsp;
+            </div>
+            <div class="salary-heading-two">
+                <h3>Employee Contributions</h3>
+            </div> 
+            <table class="ss-table">
+                <thead>
+                    <tr class="ss-table-heading-two">
+                        <th>Particulars</th>
+                        <th>Monthly</th>
+                        <th>Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Employee PF</td>
+                        <td><input type="text" name="epf"  readonly value="{{ epf|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualepf"  readonly value="{{ annualepf|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr>
+                        <td>Employee ESIC</td>
+                        <td><input type="text" name="esic"  readonly value="{{ esic|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualesic"  readonly value="{{ annualesic|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr class="ss-table-total-three1">
+                        <td>Total Contribution (B) <div><small>*Excl Professional Tax Contribution</small></div> </td>
+                        <td ><input type="text" name="tc"  readonly value="{{ td|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualtc"  readonly value="{{ annualtd|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <!-- <tr>
+                        <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
+                    </tr>  -->
+                
+                    <tr class="ss-table-total-two">
+                        <td>Take Home Salary (C) = (A - B) <div><small>*Excl Professional Tax Contribution</small></div> </td>
+                        <td ><input type="text" name="ths"  readonly value="{{ ths|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualths"  readonly value="{{ annualths|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <!-- <tr>
+                        <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
+                    </tr>  -->
+                </tbody>
+            </table>
+            <div>
+                &nbsp;
+            </div>
+            <div class="salary-heading-three">
+                <h3>Employer Contributions</h3>
+            </div> 
+            <table class="ss-table">
+                <thead>
+                    <tr class="ss-table-heading-three">
+                        <th>Particulars</th>
+                        <th>Monthly</th>
+                        <th>Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Employer PF</td>
+                        <td><input type="text" name="erpf"  readonly value="{{ erpf|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annalerpf"  readonly value="{{ annualerpf|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr>
+                        <td>Employer PF Admin</td>
+                        <td><input type="text" name="erpfadmin"  readonly value="{{ erpf_admin|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualerpfadmin"  readonly value="{{ annualerpf_admin|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr>
+                        <td>Employer ESIC</td>
+                        <td><input type="text" name="ersic"  readonly value="{{ ersic|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualersic"  readonly value="{{ annualersic|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr>
+                        <td>Group Personal Accident</td>
+                        <td ><input type="text" name="gpa"  readonly value="{{ gpa|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualgpa"  readonly value="{{ annualgpa|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr>
+                        <td>Group Mediclaim Insurance</td>
+                        <td ><input type="text" name="gmi"  readonly value="{{ gmi|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualgmi"  readonly value="{{ annualgmi|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr class="ss-table-total-three">
+                        <td>Total Employer Contribution (D) </td>
+                        <td ><input type="text" name="tec"  readonly value="{{ tec|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualtec"  readonly value="{{ annual_tec|floatformat:2|intcomma }}"></td>
+                    </tr>
+                    <tr class="ctc-row">
+                        <td>Cost To Company (CTC) (E) = (A + D) <div><small>*Excl Professional Tax Contribution</small></div>  </td>
+                        <td ><input type="text" name="ctc"  readonly value="{{ ctc|floatformat:2|intcomma }}"></td>
+                        <td><input type="text" name="annualctc"  readonly value="{{ annual_ctc|floatformat:2|intcomma }}"></td>                            
+                    </tr>
+                    <!-- <tr>
+                        <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
+                    </tr>  -->
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+        <div class="ssc">
+            <p>&nbsp;</p>
+            <div class="ssc-heading-one">
+                <h3>Salary Structure Calculation : Consideration</h3>
+            </div>
+
+            <table class="ss-table">
+                <thead>
+                    <tr class="ssc-heading-four">
+                        <th style="text-align: left;">State</th>
+                        <th style="text-align: right;">{{ dummy.fk_state_code }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if minimum_wage_list %}
+                        {% for eachwage in minimum_wage_list %}
+                        <tr>
+                            <td>{{ eachwage.fk_skill_code }}</td>
+                            <td>{{ eachwage.wages }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+
+                    <tr>
+                        <td colspan="2"></td>
+                    </tr>
+                
+                    <tr>
+                        <td>Designation</td>
+                        <td>{{ dummy.fk_designation_code }}</td>
+                    </tr>
+                    <tr>
+                        <td>Skill Type</td>
+                        <td>{{ dummy.fk_designation_code.fk_skill_code }}</td>
+                    </tr>
+                    <tr>
+                        <td>Minimum Wage Considered</td>
+                        <td>{{ minimum_wage.wages }}</td>
+                    </tr>
+                    <tr>
+                        <td>Gross Salary Entered</td>
+                        <td>{{ dummy.Gross_Salary_Amount }}</td>
+                    </tr>
+                    <tr>
+                        <td>Gross Salary Calculated</td>
+                        <td>{{ gross_salary }}</td>
+                    </tr>
+                    <tr>
+                        <td>Difference</td>
+                        <td>{{ difference }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Salary Type Selected</td>
+                        <td>{{ dummy.Salary_Type }}</td>
+                    </tr>
+
+                    <tr class="ssc-heading-four">
+                        <td>Final Gross Salary Considered</td>
+                        <td>{{ gross_salary}}</td>
+                    </tr>
+
+                    <tr class="ssc-heading-three">
+                        <td>Final Net Salary</td>
+                        <td>{{ ths }}</td>
+                    </tr>
+
+                    <tr class="ssc-heading-two">
+                        <td>Final Employer Contribution</td>
+                        <td>{{ erpf }}</td>
+                    </tr>
+                    
+                    <tr class="ssc-heading-one">
+                        <td>Final CTC</td>
+                        <td>{{ ctc }}</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>Group Personal Accident Coverage</td>
+                        <td>{{ gpa }}</td>
+                    </tr>
+                    
+                    
+                    
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+<div class="form_footer" style="width: 80vw;background: #fff;">
+        <button onclick="getPDF()" class="delete-forms-close-btn" style="width: auto;">Save as PDF</button>        
+        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_candidate' %}" type="submit">Save Candidate</button>
+    </form>
+</div>
+</div>
   {% endfor %}
 {% endif %}
 <script src="{% static 'csp_app/js/candidatedropdowns.js' %}"></script>
 
 <script src="{% static 'csp_app/js/candidatedom.js' %}"></script>
-
+<script src="{% static 'csp_app/js/salarypdf.js' %}"></script>
 <script>
     function showDelete(formid){
         document.getElementById(formid).style.display = "block";

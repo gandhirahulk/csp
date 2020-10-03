@@ -361,8 +361,8 @@
                 </div>
                 <div class="margin-left">
                 <label for="" >Gross Monthly Salary</label>
-                <input type="text" tabindex="36" placeholder="Gross Monthly Salary" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
-       
+                <input type="text" title="" tabindex="36" placeholder="Gross Monthly Salary" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
+                <span id="wage_result" style="color: #bf0711;"></span>
             </div>
         </div>
 
@@ -506,6 +506,35 @@
         console.log(document.getElementById('crumbs').style.zIndex = 0);
     }
 </script>
+<script>
+    $('#c_salary').keyup(function(){
+        var state = $('#c_state').val();
+        var type = $('#c_desg').val();
+        var amt = $(this).val();
+        var min = $('#name').val();
+        if (amt > min){
+            $('#wage_result').text('');
+        }
+        $.ajax({
+            url: '/csp_minimum_wage_list/',
+            data: {
+                'search_state': state,
+                'search_type': type,                
+            },
+            dataType: 'Json',
+            success: function(data){
+                var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
+                var salary = $('#c_salary').val();
+                $('#c_salary').attr("min", data['amount']);
+                $('#name').attr('val',data['amount'] )
+                $('#c_salary').attr("title", wages);
+                $('#wage_result').text(wages);
+                 
+                
 
+            }
+        })
+    })
+</script>
     
   {% endblock %}
