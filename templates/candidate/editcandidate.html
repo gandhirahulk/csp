@@ -470,7 +470,7 @@
     <div class="candidate_form_footer">
         <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="delete-forms-close-btn">Add Documents</a>
         
-        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Save Candidate</button>
+        <button class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
  </form>
     </div>
     <input type="hidden" id="name">
@@ -486,7 +486,7 @@
 <script>
     function showDelete(formid){
         document.getElementById(formid).style.display = "block";
-        console.log(document.getElementById('crumbs').style.zIndex = 0);
+        document.getElementById('crumbs').style.zIndex = 0;
     }
 </script>
 
