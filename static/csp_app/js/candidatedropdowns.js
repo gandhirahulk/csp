@@ -27,20 +27,44 @@ $(document).ready(function(){
             $('#c_referral').attr("disabled", true);
         }
     });
-    $('#c_salary').keyup(function(){
-        var amt = $(this).val();
-        var min = $('#name').val();
-        if (amt > min){
-            $('#wage_result').text('');
-
-        }
-    });
-    $('#c_contact, #c_emergency').on('keyup', function () {
+  
+    $('#c_contact, #c_emergency').on('change', function () {
     if ($('#c_contact').val() == $('#c_emergency').val()) {
         $('#message').html('Contact No. and Emergency No. Cannot be same.').css('color', 'red');
     } else 
         $('#message').html('').css('color', 'green');
     });
+    $('#c_salary').keyup(function(){
+        var state = $('#c_state').val();
+        var type = $('#c_desg').val();
+        var amt = $(this).val();
+        var min = $('#name').val();
+        if (amt > min){
+            $('#wage_result').text('');
+        }
+        $.ajax({
+            url: '/csp_minimum_wage_list/',
+            data: {
+                'search_state': state,
+                'search_type': type,                
+            },
+            dataType: 'Json',
+            success: function(data){
+                var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
+                var salary = $('#c_salary').val();
+                $('#c_salary').attr("min", data['amount']);
+                $('#name').attr('val',data['amount'] )
+                $('#c_salary').attr("title", wages);
+                $('#wage_result').text(wages);
+                if (amt > data['amount']){
+                    $('#calculate').attr("disabled", false);
+                }
+                
+
+            }
+        });
+    });
+
 
     $('#c_entity').change(function() {
         var filter = $(this).val();
@@ -83,13 +107,7 @@ $(document).ready(function(){
         });
         if (vcount === vtotal){
             $('#c_vendor').attr("disabled", true);
-            $('#c_vendor').append($('<option>', {
-            value: '',
-            text: '',
-            label: '',
-            selected: true,
-            selected: "true"
-            }));
+            
         } else {
             $('#c_vendor .empty').css("display", "");
             $('#c_vendor .empty').prop("selected", true);
@@ -132,6 +150,8 @@ $(document).ready(function(){
             $('#c_state .empty').attr("selected", true);
             $('#c_state .empty').css("display", "");
             $('#c_state .empty').prop("selected", true);
+            $('#c_state .empty').prop("disabled", true);
+
         }
     });
     

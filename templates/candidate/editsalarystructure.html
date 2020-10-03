@@ -14,7 +14,7 @@
 {% block tabcontentblock %}
 {% if selected_candidate %}
 {% for eachc in selected_candidate %}
-<div class="crumbs"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
+<div class="crumbs" style="z-index: unset;"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
     <span><i class="fas fa-chevron-right"></i></span>
     <span >Edit Candidate</span>
     <span><i class="fas fa-chevron-right"></i></span>
@@ -471,9 +471,8 @@
     <div class="candidate_form_footer">
         <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="delete-forms-close-btn">Add Documents</a>
         
-        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
- </form>
-    </div>
+        <button class="forms-save-btn" id="calculate" disabled="true" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
+     </div>
     <input type="hidden" id="name">
     <input type="hidden" id="phone_no">
     <input type="hidden" id="spocemail">
@@ -745,7 +744,7 @@
 
 <div class="form_footer" style="width: 80vw;background: #fff;">
         <button onclick="getPDF()" class="delete-forms-close-btn" style="width: auto;">Save as PDF</button>        
-        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_candidate' %}" type="submit">Save Candidate</button>
+        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_candidate' %}" type="submit">Save Changes</button>
     </form>
 </div>
 </div>

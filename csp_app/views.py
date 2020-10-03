@@ -1186,6 +1186,36 @@ def edit_candidate(request):
                 return redirect("csp_app:candidate")
             location_fk = master_location.objects.get(pk= location)
             # if email == None or email == '':
+            basic = request.POST.get("basic")
+            annualbasic = request.POST.get("annualbasic")
+            house_rent_allowance = request.POST.get("hra")
+            annualhouse_rent_allowance = request.POST.get("annualhra")
+            statutory_bonus = request.POST.get("sb")
+            annualstatutory_bonus = request.POST.get("annualsb")
+            special_allowance = request.POST.get("sa")
+            annualspecial_allowance = request.POST.get("annualsa")
+            ss_gross_salary = request.POST.get("gs")
+            annualgross_salary = request.POST.get("annualgs")
+            employee_pf = request.POST.get("epf")
+            annualemployee_pf = request.POST.get("annualepf")
+            employee_esic = request.POST.get("esic")
+            annualemployee_esic = request.POST.get("annualesic")
+            employee_total_contribution = request.POST.get("tc")
+            annualemployee_total_contribution = request.POST.get("annualtc")
+            employer_pf = request.POST.get("erpf")
+            annualemployer_pf = request.POST.get("annualerpf")
+            employer_pf_admin = request.POST.get("erpfadmin")
+            annualemployer_pf_admin = request.POST.get("annualerpfadmin")
+            employer_esic = request.POST.get("ersic")
+            annualemployer_esic = request.POST.get("annualersic")
+            group_personal_accident = request.POST.get("gpa")
+            annualgroup_personal_accident = request.POST.get("annualgpa")
+            group_mediclaim_insurance = request.POST.get("gmi")
+            annualgroup_mediclaim_insurance = request.POST.get("annualgmi")
+            employer_total_contribution = request.POST.get("tec")
+            annualemployer_total_contribution = request.POST.get("annualtec")
+            cost_to_company = request.POST.get("ctc")
+            annualcost_to_company = request.POST.get("annualctc")
 
             selected_candidate = master_candidate.objects.get(pk = cid)
             selected_candidate.First_Name=firstname
@@ -1223,7 +1253,7 @@ def edit_candidate(request):
             selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
             selected_candidate.Laptop_Allocation= la_fk
             selected_candidate.Salary_Type= salarytype_fk
-            selected_candidate.Gross_Salary_Amount= gross_salary
+            selected_candidate.Gross_Salary_Amount= float(ss_gross_salary.replace(',',''))
             selected_candidate.Personal_Email_Id = email
             selected_candidate.modified_by = str(request.user)
             selected_candidate.modified_date_time= datetime.now()

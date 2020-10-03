@@ -451,7 +451,7 @@
                 <div class="margin-left">
                 <label for="" >Gross Salary</label>
                 <input tabindex="36" type="text" value="{{ eachc.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
-       
+                <span id="wage_result" style="color: #bf0711;"></span>
             </div>
 
         </div>
@@ -470,7 +470,7 @@
     <div class="candidate_form_footer">
         <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="delete-forms-close-btn">Add Documents</a>
         
-        <button class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
+        <button id="calculate" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
  </form>
     </div>
     <input type="hidden" id="name">
