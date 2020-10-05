@@ -40,7 +40,7 @@ candidate_list = master_candidate.objects.filter(status=active_status)
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Recruiter').exists())
 def view_ss(request,cid):    
     try:
         salaryst = salary_structure.objects.filter(candidate_code=cid)
