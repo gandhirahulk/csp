@@ -631,8 +631,8 @@ def process_requests(request, cid):
                     user.first_name = selected_candidate.First_Name
                     user.last_name = selected_candidate.Last_Name
                     user.email = selected_candidate.Personal_Email_Id
-                    if group == 'Candidate':
-                        user.is_staff = False
+                    # if group == 'Candidate':
+                    #     user.is_staff = False
                     assign_group.user_set.add(user)
                     user.save()
                     template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
