@@ -2092,10 +2092,9 @@ def change_candidate_status_vendor(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def entity(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('modified_date_time')
-    a = master_entity.objects.filter(status = active_status).order_by('-created_date_time')
-    print(a)
-    e_list = a
-    return render(request, 'csp_app/entity.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'e_list': e_list})
+    
+    
+    return render(request, 'csp_app/entity.html', {'e_list': created_by_entities(),'allcandidates': all_active_candidates,'entity_list': entity_list, 'e_list': e_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -2125,11 +2124,12 @@ def delete_entity(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_entity(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    
     try:
         if request.method == 'POST':
             entity_id = request.POST.get("view_id")
             view_entity_list = master_entity.objects.filter(pk = entity_id)
-        return render(request, 'csp_app/viewentity.html', {'allcandidates': all_active_candidates,'view_entity_list': view_entity_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/viewentity.html', {'e_list': created_by_entities(),'allcandidates': all_active_candidates,'view_entity_list': view_entity_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2137,19 +2137,49 @@ def view_entity(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_entity(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    
     try:
         if request.method == 'POST':
             entity_id = request.POST.get("view_id")
             selected_entity = master_entity.objects.filter(pk = entity_id)         
            
-        return render(request, 'csp_app/editentity.html', {'allcandidates': all_active_candidates,'view_entity_list': selected_entity, 'entity_list': entity_list})
+        return render(request, 'csp_app/editentity.html', {'e_list': created_by_entities(),'allcandidates': all_active_candidates,'view_entity_list': selected_entity, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
+
+def created_by_entities():
+    e_list = master_entity.objects.filter(status = active_status).order_by('-created_date_time')
+    return e_list
+
+def created_by_vendors():
+    v_list = master_vendor.objects.filter(status = active_status).order_by('-created_date_time')
+    return v_list
+
+def created_by_departments():
+    d_list = master_department.objects.filter(status = active_status).order_by('-created_date_time')
+    return d_list
+
+def created_by_functions():
+    f_list = master_function.objects.filter(status = active_status).order_by('-created_date_time')
+    return e_list
+
+def created_by_teams():
+    t_list = master_team.objects.filter(status = active_status).order_by('-created_date_time')
+    return t_list
+
+def created_by_subteams():
+    st_list = master_sub_team.objects.filter(status = active_status).order_by('-created_date_time')
+    return st_list
+
+def created_by_designations():
+    desg_list = master_designation.objects.filter(status = active_status).order_by('-created_date_time')
+    return desg_list
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_entity(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    
     try:
         if request.method == 'POST':
            if request.POST.get("e_id") != '':
@@ -2174,7 +2204,7 @@ def save_edit_entity(request):
                     messages.warning(request, "Entity Name Cannot Be Blank")
                     return redirect('csp_app:entity')         
            
-        return render(request, 'csp_app/editentity.html', {'allcandidates': all_active_candidates,'view_entity_list': entity, 'entity_list': entity_list})
+        return render(request, 'csp_app/editentity.html', {'e_list': created_by_entities(), 'allcandidates': all_active_candidates,'view_entity_list': entity, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
@@ -2205,14 +2235,14 @@ def vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name').order_by('entity_name')
     vendor_list = master_vendor.objects.filter(status = active_status).order_by('-created_date_time')
     ports = port_list.objects.all()
-    return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
+    return render(request, 'csp_app/vendor.html', {'v_list': created_by_vendors(), 'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
 
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def new_vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name').order_by('entity_name')
     vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
     ports = port_list.objects.all()
-    return render(request, 'csp_app/new_vendor.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
+    return render(request, 'csp_app/new_vendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
 
 
 
@@ -2225,7 +2255,7 @@ def view_vendor(request):
         if request.method == 'POST':
             vendor_id = request.POST.get("view_id")
             view_vendor_list = master_vendor.objects.filter(pk = vendor_id)
-        return render(request, 'csp_app/viewvendor.html', {'allcandidates': all_active_candidates,'view_vendor_list': view_vendor_list, 'vendor_list': vendor_list})
+        return render(request, 'csp_app/viewvendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,'view_vendor_list': view_vendor_list, 'vendor_list': vendor_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2259,7 +2289,7 @@ def delete_vendor(request):
       
                 messages.success(request, "Vendor Deleted Successfully")
                 return redirect('csp_app:vendor')
-        return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates,})
+        return render(request, 'csp_app/vendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2274,7 +2304,7 @@ def view_edit_vendor(request):
             vendor_id = request.POST.get("view_id")
             selected_vendor = master_vendor.objects.filter(pk = vendor_id)         
            
-        return render(request, 'csp_app/editvendor.html', {'allcandidates': all_active_candidates,'view_vendor_list': selected_vendor,'entity_list':entity_list, 'vendor_list': vendor_list})
+        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,'view_vendor_list': selected_vendor,'entity_list':entity_list, 'vendor_list': vendor_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2336,7 +2366,7 @@ def save_edit_vendor(request):
                     return redirect('csp_app:vendor')
                
            
-        return render(request, 'csp_app/editvendor.html', {'allcandidates': all_active_candidates,'view_vendor_list': vendor, 'entity_list': entity_list})
+        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,'view_vendor_list': vendor, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2446,7 +2476,7 @@ def create_vendor(request):
                 
                 
         
-    return render(request, 'csp_app/vendor.html', {'allcandidates': all_active_candidates})
+    return render(request, 'csp_app/vendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates})
 
 
 @login_required(login_url='/notlogin/')
@@ -2454,7 +2484,7 @@ def create_vendor(request):
 def  department(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
-    return render(request, 'csp_app/department.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list})
+    return render(request, 'csp_app/department.html', {'d_list': created_by_departments(),'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -2515,7 +2545,7 @@ def view_department(request):
             view_dept_list = master_department.objects.filter(pk = department_id)
             d = master_department.objects.get(pk = department_id)
             print(d.created_date_time)
-        return render(request, 'csp_app/viewdepartment.html', {'allcandidates': all_active_candidates,'view_dept_list': view_dept_list,'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/viewdepartment.html', {'d_list': created_by_departments(),'allcandidates': all_active_candidates,'view_dept_list': view_dept_list,'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2529,7 +2559,7 @@ def view_edit_department(request):
         if request.method == 'POST':
             department_id = request.POST.get("view_id")
             selected = master_department.objects.filter(pk = department_id)        
-        return render(request, 'csp_app/editdepartment.html', {'allcandidates': all_active_candidates,'view_dept_list': selected,'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editdepartment.html', {'d_list': created_by_departments(),'allcandidates': all_active_candidates,'view_dept_list': selected,'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2568,7 +2598,7 @@ def save_edit_department(request):
                     messages.warning(request, "Department Name Cannot Be Blank")
                     return redirect('csp_app:department')         
            
-        return render(request, 'csp_app/editdepartment.html', {'allcandidates': all_active_candidates,'view_department_list': department, 'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editdepartment.html', {'d_list': created_by_departments(),'allcandidates': all_active_candidates,'view_department_list': department, 'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
@@ -2581,7 +2611,7 @@ def  function(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
     dept_list = master_department.objects.filter(status = active_status).order_by('department_name')
     function_list = master_function.objects.filter(status = active_status).order_by('function_name')
-    return render(request, 'csp_app/function.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list})
+    return render(request, 'csp_app/function.html', {'f_list': created_by_functions(),'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -2605,7 +2635,7 @@ def  create_function(request):
             new_function.save()
             messages.success(request, "Function Saved Successfully")
             return redirect('csp_app:function')
-    return render(request, 'csp_app/function.html', {'allcandidates': all_active_candidates,})
+    return render(request, 'csp_app/function.html', {'f_list': created_by_functions(),'allcandidates': all_active_candidates,})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -2617,7 +2647,7 @@ def view_function(request):
         if request.method == 'POST':
             function_id = request.POST.get("view_id")
             view_function_list = master_function.objects.filter(pk = function_id)
-        return render(request, 'csp_app/viewfunction.html', {'allcandidates': all_active_candidates,'view_function_list': view_function_list,'function_list': function_list, 'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/viewfunction.html', {'f_list': created_by_functions(),'allcandidates': all_active_candidates,'view_function_list': view_function_list,'function_list': function_list, 'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2631,7 +2661,7 @@ def view_edit_function(request):
         if request.method == 'POST':
             function_id = request.POST.get("view_id")
             selected = master_function.objects.filter(pk = function_id)        
-        return render(request, 'csp_app/editfunction.html', {'allcandidates': all_active_candidates,'view_function_list': selected, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editfunction.html', {'f_list': created_by_functions(),'allcandidates': all_active_candidates,'view_function_list': selected, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2673,7 +2703,7 @@ def save_edit_function(request):
                     messages.warning(request, "Department Name Cannot Be Blank")
                     return redirect('csp_app:department')         
            
-        return render(request, 'csp_app/editfunction.html', {'allcandidates': all_active_candidates,'view_department_list': department, 'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editfunction.html', {'f_list': created_by_functions(),'allcandidates': all_active_candidates,'view_department_list': department, 'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
@@ -2712,7 +2742,7 @@ def  team(request):
     function_list = master_function.objects.filter(status = active_status).order_by('function_name')
     team_list = master_team.objects.filter(status = active_status).order_by('team_name').order_by('created_date_time')
 
-    return render(request, 'csp_app/team.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list})
+    return render(request, 'csp_app/team.html', {'t_list': created_by_teams(),'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -2737,7 +2767,7 @@ def  create_team(request):
             new_team.save()
             messages.success(request, "Team Saved Successfully")
             return redirect('csp_app:team')
-    return render(request, 'csp_app/team.html', {'allcandidates': all_active_candidates,})
+    return render(request, 'csp_app/team.html', {'t_list': created_by_teams(),'allcandidates': all_active_candidates,})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
@@ -2751,7 +2781,7 @@ def view_team(request):
         if request.method == 'POST':
             team_id = request.POST.get("view_id")
             view_team_list = master_team.objects.filter(pk = team_id)
-        return render(request, 'csp_app/viewteam.html', {'allcandidates': all_active_candidates,'view_team_list': view_team_list,'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/viewteam.html', {'t_list': created_by_teams(),'allcandidates': all_active_candidates,'view_team_list': view_team_list,'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2767,7 +2797,7 @@ def view_edit_team(request):
         if request.method == 'POST':
             team_id = request.POST.get("view_id")
             selected = master_team.objects.filter(pk = team_id)        
-        return render(request, 'csp_app/editteam.html', {'allcandidates': all_active_candidates,'view_team_list': selected,'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editteam.html', {'t_list': created_by_teams(),'allcandidates': all_active_candidates,'view_team_list': selected,'team_list': team_list, 'function_list': function_list,'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -2810,7 +2840,7 @@ def save_edit_team(request):
                     messages.warning(request, "Function Name Cannot Be Blank")
                     return redirect('csp_app:team')         
            
-        return render(request, 'csp_app/editteam.html', {'allcandidates': all_active_candidates,'view_team_list': selected,'function_list': function_list, 'department_list': department_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editteam.html', {'t_list': created_by_teams(),'allcandidates': all_active_candidates,'view_team_list': selected,'function_list': function_list, 'department_list': department_list, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
@@ -2850,7 +2880,7 @@ def  subteam(request):
     function_list = master_function.objects.filter(status = active_status).order_by('function_name')
     team_list = master_team.objects.filter(status = active_status).order_by('team_name')
     subteam_list = master_sub_team.objects.filter(status = active_status).order_by('sub_team_name')
-    return render(request, 'csp_app/subteam.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'subteam_list': subteam_list})
+    return render(request, 'csp_app/subteam.html', {'t_list': created_by_subteams(),'allcandidates': all_active_candidates,'entity_list': entity_list, 'department_list': dept_list, 'function_list': function_list, 'team_list': team_list, 'subteam_list': subteam_list})
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())

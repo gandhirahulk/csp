@@ -31,41 +31,41 @@
 </div>
 
 <div class="table-container">
-  
-    <table id="entity-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Entity Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if entity_list %}
-                {% for eachentity in entity_list %}
-
-                    <tr>
-                        <td>{{ eachentity.entity_name }}</td>
-                        <!-- <td style="text-align: center;"><form action="" method="GET">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:entity' %}"></form> | <a href="http://">edit</a> | <a href="http://">delete</a></td> -->
-                        <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_entity' %}"></form>
-                        </td>
-                    
-                    </tr>
-
-                {% endfor %}                
-
-            {% else %}
-                {% for eachentity in entity_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
+    <a href="{% url 'csp_app:export_entity' %}" class="export-btn">Export <i class="fas fa-file-export"></i></a>
+     <table id="entity-table" class="dataTable">
+         <thead>
+             <tr>
+                 <th>Entity Name</th>
+                 <th class="sort-latest" >time</th>
+                 <th>Action</th>
+             </tr>
+         </thead>
+         <tbody>
+             {% if e_list %}
+                 {% for eachentity in e_list %}                    
+                     <tr>
+                         <td>{{ eachentity.entity_name }}</td>
+                         <td class="sort-latest" >{{ eachentity.created_date_time }}</td>
+                         <td class="action-col">
+                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_entity' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachentity.pk }}', 'delete_entity_form')"> </form>
+                         </td>
+                     
+                     </tr>
+ 
+                 {% endfor %}                
+ 
+             {% else %}
+                 {% for eachentity in e_list %}
+                 <tr>
+                     <td></td>
+                     <td></td>
+                 </tr>
+                 {% endfor %}
+             {% endif %}
+         </tbody>   
+     </table>
+   
+ </div>
 
 <div id="view_entity_form" class="form_modal" style="padding-top: 10%;display: block;">
 
