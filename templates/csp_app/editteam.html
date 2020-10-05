@@ -26,25 +26,29 @@
 <div class="tab-container">
     <button id="new_team" class="add-new-btn">New Team</button> 
 </div>
-<div class="table-container">  
+<div class="table-container">
+    <a href="{% url 'csp_app:export_team' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
     <table id="team-table" class="dataTable">
         <thead>
             <tr>
                 <th>Entity</th>
+                <th class="sort-latest" >time</th>
 
                 <th>Department</th>
 
                 <th>Function</th>
+
                 <th>Team</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% if team_list %}
-                {% for eachteam in team_list %}
+            {% if t_list %}
+                {% for eachteam in t_list %}
 
                     <tr>
                         <td>{{ eachteam.fk_function_code.fk_department_code.fk_entity_code }}</td>
+                        <td class="sort-latest" >{{ eachfunction.created_date_time }}</td>
 
                         <td>{{ eachteam.fk_function_code.fk_department_code }}</td>
 
@@ -52,14 +56,14 @@
 
                         <td>{{ eachteam.team_name }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachteam.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_team' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_team' %}"> | <input value="delete" onclick="showDelete('{{ eachteam.pk }}', 'delete_team_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachteam.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_team' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_team' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachteam.pk }}', 'delete_team_form')"> </form>
                         </td>
                     </tr>
 
                 {% endfor %}                
 
             {% else %}
-                {% for eachteam in team_list %}
+                {% for eachteam in t_list %}
                 <tr>
                     <td></td>
                     <td></td>

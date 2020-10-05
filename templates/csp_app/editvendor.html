@@ -31,24 +31,29 @@
 
 
 <div class="table-container">
-  
+    <a href="{% url 'csp_app:export_vendor' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
+    
     <table id="vendor-table" class="dataTable">
         <thead>
             <tr>
                 <th>Vendor Name</th>
+                <th class="sort-latest" >time</th>
                 <th>Contact Details</th>
                 <th>SPOC</th>
                 <th>SPOC Email</th>
                 <th>Entity</th>
+                
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% if vendor_list %}
-                {% for eachvendor in vendor_list %}
+            {% if v_list %}
+                {% for eachvendor in v_list %}
 
                     <tr>
                         <td>{{ eachvendor.vendor_name }}</td>
+                        <td class="sort-latest" >{{ eachvendor.created_date_time }}</td>
+
                         <td>
                             <div>{{ eachvendor.vendor_email_id }}</div>
                             <div>{{ eachvendor.vendor_phone_number }}</div>
@@ -57,14 +62,14 @@
                         <td>{{ eachvendor.spoc_email_id }}</td>
                         <td>{{ eachvendor.fk_entity_code }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> | <input value="delete" onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')"> </form>
                         </td>
                     </tr>
 
                 {% endfor %}                
 
             {% else %}
-                {% for eachvendor in vendor_list %}
+                {% for eachvendor in v_list %}
                 <tr>
                     <td></td>
                     <td></td>

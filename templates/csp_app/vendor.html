@@ -38,19 +38,23 @@
         <thead>
             <tr>
                 <th>Vendor Name</th>
+                <th class="sort-latest" >time</th>
                 <th>Contact Details</th>
                 <th>SPOC</th>
                 <th>SPOC Email</th>
                 <th>Entity</th>
+                
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% if vendor_list %}
-                {% for eachvendor in vendor_list %}
+            {% if v_list %}
+                {% for eachvendor in v_list %}
 
                     <tr>
                         <td>{{ eachvendor.vendor_name }}</td>
+                        <td class="sort-latest" >{{ eachvendor.created_date_time }}</td>
+
                         <td>
                             <div>{{ eachvendor.vendor_email_id }}</div>
                             <div>{{ eachvendor.vendor_phone_number }}</div>
@@ -66,7 +70,7 @@
                 {% endfor %}                
 
             {% else %}
-                {% for eachvendor in vendor_list %}
+                {% for eachvendor in v_list %}
                 <tr>
                     <td></td>
                     <td></td>

@@ -32,18 +32,18 @@
         <thead>
             <tr>
                 <th>Entity</th>
-
+                <th class="sort-latest" >time</th>
                 <th>Department Name</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% if department_list %}
-                {% for eachdepartment in department_list %}
+            {% if d_list %}
+                {% for eachdepartment in d_list %}
 
                     <tr>
                         <td>{{ eachdepartment.fk_entity_code }}</td>
-
+                        <td class="sort-latest" >{{ eachdepartment.created_date_time }}</td>
                         <td>{{ eachdepartment.department_name }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachdepartment.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_department' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_department' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachdepartment.pk }}', 'delete_department_form')"> </form>
@@ -53,7 +53,7 @@
                 {% endfor %}                
 
             {% else %}
-                {% for eachdepartment in department_list %}
+                {% for eachdepartment in d_list %}
                 <tr>
                     <td></td>
                     <td></td>

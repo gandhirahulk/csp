@@ -35,7 +35,7 @@
         <thead>
             <tr>
                 <th>Entity</th>
-
+                <th class="sort-latest" >time</th>
                 <th>Department</th>
 
                 <th>Function</th>
@@ -49,12 +49,12 @@
             </tr>
         </thead>
         <tbody>
-            {% if designation_list %}
-                {% for eachdesignation in designation_list %}
+            {% if d_list %}
+                {% for eachdesignation in d_list %}
 
                     <tr>
                         <td>{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}</td>
-
+                        <td class="sort-latest" >{{ eachdesignation.created_date_time }}</td>
                         <td>{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code }}</td>
 
                         <td>{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code }}</td>
@@ -74,7 +74,7 @@
                 {% endfor %}                
 
             {% else %}
-                {% for eachdesignation in designation_list %}
+                {% for eachdesignation in d_list %}
                 <tr>
                     <td></td>
                     <td></td>

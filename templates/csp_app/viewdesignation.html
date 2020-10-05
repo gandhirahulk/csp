@@ -30,12 +30,12 @@
 </div>
 
 <div class="table-container">
-  
+    <a href="{% url 'csp_app:export_designation' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
     <table id="designation-table" class="dataTable">
         <thead>
             <tr>
                 <th>Entity</th>
-
+                <th class="sort-latest" >time</th>
                 <th>Department</th>
 
                 <th>Function</th>
@@ -44,18 +44,17 @@
 
                 <th>Sub Team</th>
                 <th>Skill Type</th>
-
                 <th>Designation</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% if designation_list %}
-                {% for eachdesignation in designation_list %}
+            {% if d_list %}
+                {% for eachdesignation in d_list %}
 
                     <tr>
                         <td>{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}</td>
-
+                        <td class="sort-latest" >{{ eachdesignation.created_date_time }}</td>
                         <td>{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code.fk_department_code }}</td>
 
                         <td>{{ eachdesignation.fk_sub_team_code.fk_team_code.fk_function_code }}</td>
@@ -65,16 +64,17 @@
                         <td>{{ eachdesignation.fk_sub_team_code }}</td>
                         <td>{{ eachdesignation.fk_skill_code }}</td>
 
+
                         <td>{{ eachdesignation.designation_name }}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachdesignation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_designation' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_designation' %}"> | <input value="delete" onclick="showDelete('{{ eachdesignation.pk }}', 'delete_designation_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachdesignation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_designation' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_designation' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachdesignation.pk }}', 'delete_designation_form')"> </form>
                         </td>
                     </tr>
 
                 {% endfor %}                
 
             {% else %}
-                {% for eachdesignation in designation_list %}
+                {% for eachdesignation in d_list %}
                 <tr>
                     <td></td>
                     <td></td>

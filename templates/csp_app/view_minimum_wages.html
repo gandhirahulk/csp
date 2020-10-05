@@ -28,22 +28,27 @@
 </div>
 
 <div class="table-container">
+    <a href="{% url 'csp_app:export_minimumwages' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
   
     <table id="wages-table" class="dataTable">
         <thead>
             <tr>
                 <th>State</th>
+                <th class="sort-latest" >time</th>
+
                 <th>Skill Type</th>
                 <th>Minimum Wage</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% if wage_list %}
-                {% for eachwage in wage_list %}
+            {% if w_list %}
+                {% for eachwage in w_list %}
 
                     <tr>
                         <td>{{ eachwage.fk_state_code }}</td>
+                        <td class="sort-latest" >{{ eachwage.created_date_time }}</td>
+
                         <td>{{ eachwage.fk_skill_code }}</td>
                         <td>{{ eachwage.wages }}</td>
 
@@ -56,7 +61,7 @@
                 {% endfor %}                
 
             {% else %}
-                {% for eachwage in wage_list %}
+                {% for eachwage in w_list %}
                 <tr>
                     <td></td>
                     <td></td>

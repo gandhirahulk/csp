@@ -34,6 +34,7 @@
         <thead>
             <tr>
                 <th>Entity</th>
+                <th class="sort-latest" >time</th>
 
                 <th>Department</th>
 
@@ -44,11 +45,12 @@
             </tr>
         </thead>
         <tbody>
-            {% if team_list %}
-                {% for eachteam in team_list %}
+            {% if t_list %}
+                {% for eachteam in t_list %}
 
                     <tr>
                         <td>{{ eachteam.fk_function_code.fk_department_code.fk_entity_code }}</td>
+                        <td class="sort-latest" >{{ eachfunction.created_date_time }}</td>
 
                         <td>{{ eachteam.fk_function_code.fk_department_code }}</td>
 
@@ -63,7 +65,7 @@
                 {% endfor %}                
 
             {% else %}
-                {% for eachteam in team_list %}
+                {% for eachteam in t_list %}
                 <tr>
                     <td></td>
                     <td></td>

@@ -35,7 +35,7 @@
                 <th>Entity</th>
 
                 <th>Region</th>
-
+                <th class="sort-latest" >time</th>
                 <th>State</th>
 
                 <th>City Name</th>
@@ -43,11 +43,12 @@
             </tr>
         </thead>
         <tbody>
-            {% if city_list %}
-                {% for eachcity in city_list %}
+            {% if c_list %}
+                {% for eachcity in c_list %}
 
                     <tr>
                         <td>{{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}</td>
+                        <td class="sort-latest" >{{ eachcity.created_date_time }}</td>
                         <td>{{ eachcity.fk_state_code.fk_region_code }}</td>
                         <td>{{ eachcity.fk_state_code }}</td>
                         <td>{{ eachcity.city_name }}</td>
@@ -59,7 +60,7 @@
                 {% endfor %}                
 
             {% else %}
-                {% for eachcity in city_list %}
+                {% for eachcity in c_list %}
                 <tr>
                     <td></td>
                     <td></td>
