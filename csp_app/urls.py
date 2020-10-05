@@ -72,7 +72,7 @@ urlpatterns = [
     path('csp_candidates/vendor_change_status/', views.change_candidate_status_vendor, name= 'change_candidate_status_vendor'),
 
     path('csp_candidates/document_upload/<str:candidate_id>/', views.candidate_document_upload, name= 'document_upload'),
-    path('csp_candidates/document_upload/delete/', views.candidate_delete_document, name= 'delete_document_candidate'),
+    path('csp_candidates/document_upload/delete/', views.candidate_delete_document, name= 'candidate_delete_document'),
 
     path('csp_candidates/pending_requests/', views.pending_requests, name= 'pending_request'),
     path('csp_candidates/process_requests/<str:cid>/', views.process_requests, name= 'process_request'),

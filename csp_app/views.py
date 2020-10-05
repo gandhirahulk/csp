@@ -845,7 +845,7 @@ def new_candidate(request):
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() )
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() )
 def view_edit_candidate(request): 
     try:
         if request.method == 'POST':
@@ -1107,7 +1107,7 @@ def edit_salary_structure(request):
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists())
 def edit_candidate(request): 
     try:
         if request.method == 'POST':

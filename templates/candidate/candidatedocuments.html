@@ -137,7 +137,7 @@
     <div class="delete_form_footer">
         <form action="" method="post">
             {% csrf_token %}
-            <button type="submit" formaction="{% url 'csp_app:delete_document_candidate' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button type="submit" formaction="{% url 'csp_app:candidate_delete_document' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
             <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
         </form>
     </div>
