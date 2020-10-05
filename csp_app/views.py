@@ -623,7 +623,7 @@ def process_requests(request, cid):
                     our_email.send()
                     
 
-                    assign_group = Group.objects.get(name=group)                     
+                    assign_group = Group.objects.get(name='Candidate')                     
                     user = User.objects.create_user(selected_candidate.pk)
                     password = User.objects.make_random_password()
                     user.password = password
