@@ -28,6 +28,9 @@ urlpatterns = [
 
     path('candidates/', views.index, name='index'),
 
+    path('candidate/', views.candidate_profile, name='candidate_profile'),
+
+
     path('', views.csp_login, name= 'login'),
     path('logout/', views.csp_logout, name= 'csp_logout'),
     path('notlogin/', views.notlogin, name='notlogin'),

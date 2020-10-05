@@ -40,6 +40,15 @@ candidate_list = master_candidate.objects.filter(status=active_status)
 
 
 @login_required(login_url='/notlogin/')
+# @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
+def candidate_profile(request):
+    try:
+        me = master_candidate.objects.get(pk=request.user)
+        return render(request, 'csp_app/candidatesdashboard.html', {'me':me})
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.")
+
+@login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Recruiter').exists())
 def view_ss(request,cid):    
     try:
@@ -612,7 +621,21 @@ def process_requests(request, cid):
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
-                    template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'candidate_code':selected_candidate.pk ,'status': 'Approved' })
+                    
+
+                    assign_group = Group.objects.get(name=group)                     
+                    user = User.objects.create_user(selected_candidate.pk)
+                    password = User.objects.make_random_password()
+                    user.password = password
+                    user.set_password(user.password)
+                    user.first_name = selected_candidate.First_Name
+                    user.last_name = selected_candidate.Last_Name
+                    user.email = selected_candidate.Personal_Email_Id
+                    if group == 'Candidate':
+                        user.is_staff = False
+                    assign_group.user_set.add(user)
+                    user.save()
+                    template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
                     our_email = EmailMessage(
                         'LOI',
                         template,
@@ -3783,7 +3806,6 @@ def  create_user(request):
             
             user = User.objects.create_user(usrname)
             password = User.objects.make_random_password()
-            print(password)
             user.password = password
             user.set_password(user.password)
             user.first_name = firstname
