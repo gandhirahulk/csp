@@ -3762,7 +3762,7 @@ def delete_location(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_user_view(request):
     user_list = User.objects.all().exclude(is_superuser=True)
-    group_list = Group.objects.all()    
+    group_list = Group.objects.all().exclude(name='Candidate')    
     return render(request, 'csp_app/create_user.html', {'allcandidates': all_active_candidates,'user_list': user_list, 'group_list': group_list})
 
 

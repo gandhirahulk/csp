@@ -1,47 +1,18 @@
-{% if request.user.groups.all %}
-{% for eachgroup in request.user.groups.all %}
-{% if eachgroup.name == 'Admin' %}
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Candidates {% endblock %}
 
-  {{ eachgroup.name }}
-{% endif %}
+{% block bodyblock %} 
 
-{% endfor %}
+    <div class="tabs">
+        <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab">Profile</a>   
+        <a href="{% url 'csp_app:pending_request' %}" class="tab-btns">Documents</a>   
+         
 
-{% endif %}
+    </div>
 
-<div class="view-basic-details">
-  <div>
-      <label for="">Vendor Name : </label> {{ eachvendor.vendor_name }}
-  </div>
-  <div>
-      <label for="">Vendor Phone No. : </label> {{ eachvendor.vendor_phone_number }}
-  </div>
-  <div>
-      <label for="">Vendor Email ID : </label> {{ eachvendor.vendor_email_id }}
-  </div>
-  <div>
-      <label for="">SPOC Name : </label> {{ eachvendor.spoc_name }}
-  </div>
-  <div>
-      <label for="">SPOC Email ID : </label> {{ eachvendor.spoc_email_id }}
-  </div>
-  <div>
-      <label for="">Entity : </label> {{ eachvendor.fk_entity_code }}
-  </div>
-</div>
-<div class="view-other-details">
+{% endblock %}
 
-  <div>
-      <label for="">Created By : </label> {{ eachvendor.created_by }}
-  </div>
-  <div>
-      <label for="">Created Date Time : </label> {{ eachvendor.created_date_time }}
-  </div>
-  <div>    
-      <label for="">Modified By : </label> {{ eachvendor.modified_by }}
-  </div>
-  <div>
-      <label for="">Modified Date Time : </label> {{ eachvendor.modified_date_time }}
-  </div> 
-  
-</div>
+{% block tabcontentblock %}
+
+{% endblock %}
