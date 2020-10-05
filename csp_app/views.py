@@ -233,7 +233,7 @@ def vendor_candidates(usrname):
         a = []
         s_vendor = master_vendor.objects.filter(vendor_email_id= usrname, status=active_status)
         for e in s_vendor:
-            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk, status= active_status))
+            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= approve_onboarding, status= active_status))
         
         vs_candidates = list(a)
         return vs_candidates
