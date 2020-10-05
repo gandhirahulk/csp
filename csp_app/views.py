@@ -69,7 +69,7 @@ def minimum_wage_list(request):
     desg = master_designation.objects.get(pk=desg_id)
 
     output = {}
-    wage_list = master_minimum_wages.objects.get(fk_state_code=state.state_name_id, fk_skill_code= desg.fk_skill_code_id)
+    wage_list = master_minimum_wages.objects.get(fk_state_code=state.state_name_id, fk_skill_code= desg.fk_skill_code_id, status=active_status)
     # output['wage_list'] = list(wage_list.values())
     output['desg_type'] = wage_list.fk_skill_code.skill_name
     output['state_name'] = wage_list.fk_state_code.state_name
@@ -719,7 +719,7 @@ def reject_candidate_vendor(request, cid):
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def pending_requests(request):   
     # count = 0 
     try:
@@ -1107,7 +1107,8 @@ def edit_candidate(request):
             Pan = request.POST.get("c_pan")
             hiring = request.POST.get("c_hiring_type")
             doj = request.POST.get("c_doj")        
-            replacement = request.POST.get("c_replacement")
+            replacement = request.POST.get("c_replace")
+            print(replacement)
             referral = request.POST.get("c_referral")
             subsource = request.POST.get("c_sub_source")
             entity = request.POST.get("c_entity")

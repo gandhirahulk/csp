@@ -492,6 +492,8 @@ class salary_structure(models.Model):
     annual_special_allowance = models.FloatField()
     gross_salary = models.FloatField()
     annual_gross_salary = models.FloatField()
+    variable = models.FloatField()
+    annual_var = models.FloatField()
     employee_pf = models.FloatField()
     annual_employee_pf = models.FloatField()
     employee_esic = models.FloatField()
@@ -510,6 +512,8 @@ class salary_structure(models.Model):
     annual_group_mediclaim_insurance = models.FloatField()
     employer_total_contribution = models.FloatField()
     annual_employer_total_contribution = models.FloatField()
+    take_home_salary = models.FloatField()
+    annual_take_home_salary = models.FloatField()
     cost_to_company = models.FloatField()
     annual_cost_to_company = models.FloatField()
 

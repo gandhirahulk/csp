@@ -267,7 +267,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Referral }}">           
                     </div>
                     <div>
-                        <input type="text" value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                        <input type="text" value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
                     </div>
                 </div>
 
@@ -677,7 +677,7 @@
                         <input type="text" tabindex="36" readonly value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
                     </div>
                 </div>
-                <a href="/view_salary_structure/eachcandidate.pk/" target="_blank">view salary structure</a>
+                <a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">view salary structure</a>
                 
 
 
