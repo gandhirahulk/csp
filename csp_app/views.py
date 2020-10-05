@@ -997,7 +997,7 @@ def edit_salary_structure(request):
             else:
                 sa_1 = 0
 
-            sa_2 = g_salary - (basic + hra + sb)
+            sa_2 = dummy.Gross_Salary_Amount - (basic + hra + sb)
             sa = sa_1 if sa_1 > sa_2 else sa_2
             gross = basic + hra + sb + sa
             grossalary = gross if gross > g_salary else g_salary
@@ -1517,7 +1517,7 @@ def create_candidate(request):
                 else:
                     sa_1 = 0
 
-                sa_2 = g_salary - (basic + hra + sb)
+                sa_2 = dummy.Gross_Salary_Amount - (basic + hra + sb)
                 sa = sa_1 if sa_1 > sa_2 else sa_2
                 gross = basic + hra + sb + sa
                 grossalary = gross if gross > g_salary else g_salary

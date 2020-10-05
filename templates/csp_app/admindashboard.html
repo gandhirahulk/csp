@@ -51,70 +51,13 @@
 		<script type="text/javascript" src="https://cdn.datatables.net/r/zf-5.5.2/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script> -->
 
     <!-- datatable end -->
-
+    <script src="{% static 'csp_app/js/tables.js' %}"></script>
     <script>
       $(document).ready(function(){
         $(".sidebar").click(function () {
             $(".wrapper").toggleClass("collapse");
         });
-        // $(".sidebar").hover(function () {
-        //     $(".wrapper").toggleClass("collapse");
-        // });
-        $('#entity-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#vendor-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#department-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#function-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#team-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#subteam-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#designation-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#region-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#state-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#city-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#location-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#user-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-        $('#candidate-table').DataTable();
-        $('#document-table').DataTable();
-        $('#wages-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
-        });
-
+        
 
         $('#c_firstname').bind('keypress', onlyAlphabets);
         $('#c_middlename').bind('keypress', onlyAlphabets);
