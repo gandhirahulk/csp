@@ -20,6 +20,7 @@ class skill_type(models.Model):
 
 class states(models.Model):
     pk_state_code = models.AutoField(primary_key=True)
+    zone = models.CharField(max_length=20)
     state_name = models.CharField(max_length=50)
 
     def __str__(self):

@@ -1594,7 +1594,7 @@ def create_candidate(request):
                 return render(request, 'candidate/salary_structure.html', {'dummy': dummy, 'basic': basic, 'hra': hra, 'sb': sb, 'sa': sa, 'gross_salary': grossalary, 'annualbasic': annual_basic, 'annualhra': annual_hra, 
                 'annualsb': annual_sb, 'annualsa': annual_sa, 'annualgs': annual_gs, 'annualepf': annual_epf, 'annualesic': annual_esic, 'annualtd': annual_td,
                 'annualths': annual_ths, 'epf': epf, 'esic': esic, 'td': td, 'ths': ths, 'erpf': erpf, 'erpf_admin': erpf_admin, 'ersic': ersic, 'gpa': gpa, 'gmi': gmi,
-                'annualerpf': annualemployer_pf, 'annualerpf_admin': annual_pfadmin, 'annualersic': annual_ersic, 'annualgpa': annual_gpa, 'annualgmi': annual_gmi, 'tec': tec, 'annual_tec': annual_tec, 'ctc': ctc, 'annual_ctc': annual_ctc,
+                'annualerpf': annual_eprf, 'annualerpf_admin': annual_pfadmin, 'annualersic': annual_ersic, 'annualgpa': annual_gpa, 'annualgmi': annual_gmi, 'tec': tec, 'annual_tec': annual_tec, 'ctc': ctc, 'annual_ctc': annual_ctc,
                 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
                 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
                 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
@@ -2357,13 +2357,12 @@ def save_edit_vendor(request):
                     return redirect('csp_app:vendor')
                 port_fk = port_list.objects.get(pk = port)
                 try:
-                    #same data code to add
-                    a = master_vendor.objects.get(vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status)
-                    
+                    a = master_vendor.objects.get(vendor_name= vendor_name, vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status,
+                    vendor_email_port=port_fk, spoc_name=spoc_name, spoc_email_id=spoc_email_id)                    
                     messages.error(request, "Vendor Already Exist")
                     return redirect('csp_app:vendor')
                 except ObjectDoesNotExist:
-                    selected_user = User.objects.get(email=vendor_email)
+                    selected_user = User.objects.get(email=vendor_spoc_email)
                     selected_user.email = vendor_spoc_email
                     selected_user.first_name = vendor_name 
                     

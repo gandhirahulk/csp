@@ -104,14 +104,15 @@
                     {% endif %}
                 </select>
             </div>
+            <input type="hidden" name="" id="rname">
             <div class="forms-input-holder">
             <label for="">State</label>
-                <select name="state_name" required="true">
-                    <option value="" disabled label=" " selected></option>
+                <select name="state_name" required="true" id="state_state">
+                    <option value="" disabled label=" " selected class="empty"></option>
 
                     {% if states %}
                         {% for eachstate in states %}
-                            <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.state_name }}</option>
+                            <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.zone }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -180,6 +181,33 @@
                 $('#state_region .empty').prop("selected", true);
             }
         });
+        // $('#state_region').change(function() {
+        //     alert(1);
+        //     // var filter = $(this).label();
+        //     // alert(filter);
+        //     var filterr = $(this).;
+        //     alert(filterr);
+        //     $('#rname').attr("val", filter);
+        //     var total = $('#state_state option').length;
+        //     var count = 0;
+        //     $('#state_state option').each(function() {
+        //     if ($(this).text() == filter) {
+        //     $('#state_state').attr("disabled", false);
+        //         $(this).show();
+              
+        //     } else {
+        //         $(this).hide();
+        //         count += 1;
+        //     }
+        //     $('#state_state').val(filter);
+        //     });
+        //     if (count === total){
+        //         $('#state_state').attr("disabled", true)
+        //     }else {
+        //         $('#state_state .empty').css("display", "");
+        //         $('#state_state .empty').prop("selected", true);
+        //     }
+        // });
 
 
     })
