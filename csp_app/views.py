@@ -2447,7 +2447,7 @@ def create_vendor(request):
                 user.password = password
                 user.set_password(user.password)
                 user.first_name = vendor_name 
-                user.email = vendor_email
+                user.email = vendor_spoc_email
                 assign_group.user_set.add(user)     
                 user.save()
                 newtemplate = render_to_string('emailtemplates/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': password})
