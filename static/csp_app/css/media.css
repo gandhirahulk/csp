@@ -39,7 +39,21 @@
     }
 
     .candidate-forms-input-holder div{
+        margin-left: 0px;
         width: 100%;
+    }
+
+    .view-candidate-forms-input-holder{
+        flex-direction: column;
+    }
+
+    .view-candidate-forms-input-holder div{
+        margin-left: 0px;
+        width: 100%;
+    }
+
+    .no-right{
+        margin-right: 0px !important;
     }
 
     .view_form_header,

@@ -23,15 +23,15 @@
      
     </div>
     <div class="candidate_form_content">
-            <div class="candidate-forms-input-holder">
+            <div class="view-candidate-forms-input-holder">
                 <div>
                 <label class="move-out" for="c_firstname">Candidate Code</label>
 
-                <input readonly readonly class="input-text" value="{{ me.pk }}" style="background: #f5f5fa;" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" readonly  >
+                <input readonly value="{{ me.pk }}" class="no-right" style="background: #f5f5fa;    margin-right: 80px;" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" >
                 </div>
                
             </div>
-            <div class="candidate-forms-input-holder">
+            <div class="view-candidate-forms-input-holder">
                 <div>
                 <label class="move-out" for="c_firstname">First Name</label>
 
@@ -42,7 +42,7 @@
                     <input readonly tabindex="2" type="text" value="{{ me.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename" autocapitalize="on" tabindex="2">
                 </div>
             </div>
-            <div class="candidate-forms-input-holder">
+            <div class="view-candidate-forms-input-holder">
                 <div>
                 <label for="">Last Name</label>
                 <input readonly tabindex="3" type="text" value="{{ me.Last_Name }}" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname" required="true" autocapitalize="on" tabindex="3">
@@ -53,7 +53,7 @@
                     <input readonly tabindex="4" type="date" value="{{ me.Date_of_Birth }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
                 </div>
             </div>
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
                 <label for="">Contact Number</label>
                 <input readonly tabindex="5" type="text" value="{{ me.Contact_Number }}" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
@@ -64,7 +64,7 @@
                 <span id='message'></span>    
             </div>
             </div>
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
                 <label for="">Email ID</label>
                 <input readonly tabindex="7" type="email" value="{{ me.Personal_Email_Id }}" maxlength="50" name="c_email" tabindex="7" id="email" placeholder="Email Id">
@@ -87,7 +87,7 @@
             </div>
         </div>
            
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
                 <label for="">Father Name</label>
                 <input readonly tabindex="9" type="text" value="{{ me.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
@@ -99,7 +99,7 @@
             </div>
         </div>
             
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
                 <label for="">Aadhaar Number</label>
                 <input readonly tabindex="11" type="text" value="{{ me.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
@@ -110,7 +110,7 @@
       
             </div>
         </div>
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>               
                 <label for="">Type Of Hiring</label>
                 <select tabindex="13" name="c_hiring_type" id="hiring" >
@@ -130,7 +130,7 @@
                 </div>
         </div>
 
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
                     <label for="">Sub Source</label>
                     <select tabindex="15" name="c_sub_source" id="referral" >
@@ -151,7 +151,7 @@
           
             </div>
         </div>
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                
                  <div>
                     <label for="" >Date of Joining</label>
@@ -174,7 +174,7 @@
             </div>
         </div>
 
-            <div class="candidate-forms-input-holder">
+            <div class="view-candidate-forms-input-holder">
                 <div>
                     <label for="">Vendor</label>
 
@@ -214,7 +214,7 @@
                 </select>
             </div>
         </div>
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Function</label>
 
@@ -252,7 +252,7 @@
                 </select>
             </div>
         </div>
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Sub Team</label>
 
@@ -290,7 +290,7 @@
                 </select>
             </div>
         </div>
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Region</label>
 
@@ -330,7 +330,7 @@
                 </select>
             </div>
         </div>
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">City</label>
 
@@ -370,7 +370,7 @@
                 </select>
             </div>
         </div>
-        <div class="candidate-forms-input-holder">
+        <div class="view-candidate-forms-input-holder">
             <div>
                 <label for="" >TA SPOC Email ID</label>
                 <input readonly tabindex="29" type="email" readonly value="{{ me.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
@@ -380,7 +380,7 @@
                 <input readonly tabindex="30" type="email" readonly value="{{ me.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
             </div>
         </div>
-        <div class="candidate-forms-input-holder">
+        <div class="view-candidate-forms-input-holder">
             <div>
                 <label for="">Reporting / Hiring Manager Name</label>
                 <input readonly type="text" tabindex="31" value="{{ me.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50" autocapitalize="on">
@@ -393,7 +393,7 @@
             </div>
         </div>
             
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Email ID Creation</label>
 
@@ -420,7 +420,7 @@
                 </select>
             </div>
         </div>
-               <div class="candidate-forms-input-holder">
+               <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Salary Type</label>
 
@@ -445,7 +445,7 @@
             </div>
 
         </div>
-        <div class="candidate-forms-input-holder">
+        <div class="view-candidate-forms-input-holder">
             <div>
                 <label for="" >Onboarding Status</label>
                 <input readonly tabindex="37" type="text" value="{{ me.onboarding_status }}" placeholder="Onboarding Status" disabled="true">

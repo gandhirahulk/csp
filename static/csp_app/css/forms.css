@@ -54,6 +54,7 @@ input:-webkit-autofill+label.move-out {
 
 .forms-input-holder,
 .candidate-forms-input-holder,
+.view-candidate-forms-input-holder,
 .request-forms-input-holder{
     margin-bottom: 20px;
     display: flex;
@@ -72,6 +73,8 @@ input:-webkit-autofill+label.move-out {
 .forms-input-holder > label,
 .candidate-forms-input-holder select,
 .candidate-forms-input-holder input,
+.view-candidate-forms-input-holder select,
+.view-candidate-forms-input-holder input,
 .request-forms-input-holder select,
 .request-forms-input-holder input{
     /* padding: 10px;
@@ -88,6 +91,12 @@ input:-webkit-autofill+label.move-out {
     /* width: 90%; */
     transition: .4s ease;
     font-size: 14px;
+}
+
+.view-candidate-forms-input-holder select,
+.view-candidate-forms-input-holder input
+{
+  background: beige;
 }
 
 .form_content .entity-holder{
@@ -136,6 +145,7 @@ input:-webkit-autofill+label.move-out {
 }
 
 .candidate-forms-input-holder div,
+.view-candidate-forms-input-holder div,
 .request-forms-input-holder div{
   display: flex;
   flex-direction: column;
@@ -161,6 +171,7 @@ input:-webkit-autofill+label.move-out {
 }
 
 .candidate-forms-input-holder label,
+.view-candidate-forms-input-holder label,
 .request-forms-input-holder label{
   border: none;
   text-align: left;
