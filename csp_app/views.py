@@ -42,9 +42,10 @@ candidate_list = master_candidate.objects.filter(status=active_status)
 @login_required(login_url='/notlogin/')
 # @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
 def candidate_profile(request):
+    print(request.user)
     try:
-        me = master_candidate.objects.get(pk=request.user)
-        return render(request, 'csp_app/candidatesdashboard.html', {'me':me})
+        me = master_candidate.objects.get(pk=request.user.username)
+        return render(request, 'candidate/candidatesdashboard.html', {'me':me})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -1935,7 +1936,7 @@ def change_candidate_status(request):
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Candidate').exists())
 def candidate_document_upload(request, candidate_id):
     try:
         # candidate_id = 'C000000006'
@@ -1981,7 +1982,7 @@ def candidate_document_upload(request, candidate_id):
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Candidate').exists())
 def candidate_delete_document(request):
     try:
         if request.method == 'POST':
@@ -3928,6 +3929,9 @@ def csp_login(request):
                 elif str(group_name) == 'Vendor':
                     messages.success(request, "Login Successfull")
                     return redirect('csp_app:candidate')
+                elif str(group_name) == 'Candidate':
+                    messages.success(request, "Login Successfull")
+                    return redirect('csp_app:candidate_profile')   
                 else:
                     messages.success(request, "Login Successfull")
                     return redirect('csp_app:candidate')

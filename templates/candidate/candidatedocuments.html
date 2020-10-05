@@ -3,10 +3,25 @@
 {% block titleblock %} New Candidate {% endblock %}
 
 {% block bodyblock %} 
+{% if request.user.groups.all %}
+          {% for eachgroup in request.user.groups.all %}
+            {% if eachgroup.name == 'Candidate' %}
+            <div class="tabs">
+                <a href="{% url 'csp_app:candidate_profile' %}" class="tab-btns">Profile</a>   
+                <a href="" class="tab-btns active-tab">Documents</a>  
+        
+            </div>
+   
+
+    {% else %}
 
     <div class="tabs">
         <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>   
     </div>
+    {% endif %}
+    {% endfor %}       
+          {% endif %}
+
 
 {% endblock %}
 
@@ -45,7 +60,14 @@
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}
                                 <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
-                                <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"><input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
+                                <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id">
+                                {% if request.user.groups.all %}
+                                {% for eachgroup in request.user.groups.all %}
+                                    {% if eachgroup.name != 'Candidate' %}
+                                <input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
+                                {% endif %}
+                                {% endfor %}       
+                                      {% endif %}
                             </form>
                         </td>
                     
