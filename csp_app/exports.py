@@ -71,8 +71,7 @@ def export_vendor(request):
         ws.write(row_num, 6, row.vendor_email_port.port, font_style)
         ws.write(row_num, 7, row.spoc_name, font_style)
         ws.write(row_num, 8, row.spoc_email_id, font_style)
-        ws.write(row_num, 9, row.created_by, font_style)
-        write_time_details(ws, 10, row_num, row, font_style)     
+        write_time_details(ws, 9, row_num, row, font_style)     
     wb.save(response)
     return response
 
