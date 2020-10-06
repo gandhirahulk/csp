@@ -57,6 +57,7 @@
                 <tr>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
                 {% endfor %}
             {% endif %}
@@ -98,7 +99,7 @@
     </form>
     </div>
   
-  </div>
+</div>
 
   <div id="delete_department_form" class="form_modal" style="padding-top: 15%;">
     <div class="delete_form_header">
@@ -119,6 +120,7 @@
 <script>
     $(document).ready(function(){
         showMe('Organization', 'org-expand');
+        
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#department_form").css("display", "none");

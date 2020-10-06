@@ -4,6 +4,10 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail, EmailMessage
+###
+from django.core.mail import get_connection, send_mail
+from django.core.mail.message import EmailMessage
+###
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.db.utils import IntegrityError
@@ -38,6 +42,34 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
+def custom_send_email(request):
+    
+    # EMAIL_USE_SSL = False
+    try:
+        my_host = 'send.one.com'
+        my_port = 587
+        my_username = 'sadaf.asgarali@aspire-nxt.com'
+        my_password = 'sadaf@1234'
+        my_use_tls = True
+        subject1 = 'LOI'
+        body1 = 'LOI'
+        from1 = my_username
+        with get_connection(
+        host=my_host, 
+        port=my_port, 
+        username=my_username, 
+        password=my_password, 
+        use_tls=my_use_tls,
+        use_ssl= False
+        ) as connection:
+            EmailMessage(subject1, body1, from1, ['sdfworkk@gmail.com'],
+                        connection=connection).send()
+    except TimeoutError:
+        return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
+                    
+    
+    
+    return HttpResponse("Mail Sent")
 
 @login_required(login_url='/notlogin/')
 # @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
@@ -98,7 +130,7 @@ def minimum_wages(request):
         zone_list = zones.objects.all()
         skill_list = skill_type.objects.all().order_by('-skill_name')
         all_active_candidates = master_candidate.objects.filter(status=active_status)
-        return render(request, 'csp_app/minimum_wages.html', {'w_list': created_by_wages(),'all_active_candidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+        return render(request, 'csp_app/minimum_wages.html', {'w_list': created_by_wages(),'allcandidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -132,7 +164,7 @@ def create_wages(request):
                 messages.success(request, "Minimum wages saved succesfully")
                 return redirect("csp_app:minimumwages")
 
-        return render(request, 'csp_app/minimum_wages.html', {'w_list': created_by_wages(),'all_active_candidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+        return render(request, 'csp_app/minimum_wages.html', {'w_list': created_by_wages(),'allcandidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -150,7 +182,7 @@ def delete_wages(request):
             selected_wage.save()
             messages.success(request, "Minimum Wage Deleted Successfully")
             return redirect('csp_app:minimumwages')
-        return render(request, 'csp_app/minimum_wages.html', {'all_active_candidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
+        return render(request, 'csp_app/minimum_wages.html', {'allcandidates': all_active_candidates, 'wage_list': wage_list, 'state_list': state_list, 'zone_list': zone_list, 'skill_list': skill_list})
         
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
@@ -165,7 +197,7 @@ def view_wages(request):
         if request.method == 'POST':
             wage_id = request.POST.get("view_id")
             view_wage_list = master_minimum_wages.objects.filter(pk = wage_id)
-        return render(request, 'csp_app/view_minimum_wages.html', {'w_list': created_by_wages(),'all_active_candidates': all_active_candidates,'view_wage_list': view_wage_list, 'wage_list': wage_list, 'state_list': state_list, 'skill_list': skill_list})
+        return render(request, 'csp_app/view_minimum_wages.html', {'w_list': created_by_wages(),'allcandidates': all_active_candidates,'view_wage_list': view_wage_list, 'wage_list': wage_list, 'state_list': state_list, 'skill_list': skill_list})
         
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
@@ -182,7 +214,7 @@ def view_edit_wages(request):
             wage_id = request.POST.get("view_id")
             selected_wage = master_minimum_wages.objects.filter(pk = wage_id)         
            
-        return render(request, 'csp_app/edit_minimum_wages.html', {'w_list': created_by_wages(),'all_active_candidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list, 'skill_list': skill_list})
+        return render(request, 'csp_app/edit_minimum_wages.html', {'w_list': created_by_wages(),'allcandidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list, 'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -232,7 +264,7 @@ def save_edit_wages(request):
                     messages.warning(request, "Wages Cannot Be Blank")
                     return redirect('csp_app:minimumwages')         
            
-        return render(request, 'csp_app/edit_minimum_wages.html', {'w_list': created_by_wages(),'all_active_candidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list,  'skill_list': skill_list})
+        return render(request, 'csp_app/edit_minimum_wages.html', {'w_list': created_by_wages(),'allcandidates': all_active_candidates,'view_wage_list': selected_wage, 'wage_list': wage_list, 'state_list': state_list,  'skill_list': skill_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
     #  
@@ -645,6 +677,31 @@ def process_requests(request, cid):
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
+                    
+                    try:
+                        my_host = selected_candidate.fk_vendor_code.vendor_smtp
+                        my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+                        my_username = selected_candidate.fk_vendor_code.vendor_email_id
+                        my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+                        my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+                        my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+                        subject1 = 'LOI'
+                        body1 = 'LOI'
+                        from1 = my_username
+                        with get_connection(
+                        host=my_host, 
+                        port=my_port, 
+                        username=my_username, 
+                        password=my_password, 
+                        use_tls=my_use_tls,
+                        use_ssl= my_use_ssl
+                        ) as connection:
+                            EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id],
+                                        connection=connection).send()
+                    except TimeoutError:
+                        return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
+                    # send_mail(subject, message, from_email= vendoremail, [selected_candidate.Personal_Email_Id], fail_silently=False, auth_user=vendoremail, auth_password=password)
+   
                     messages.success(request, "Candidate approved LOI sent to candidate.")
                     return redirect("csp_app:pending_request")
 
