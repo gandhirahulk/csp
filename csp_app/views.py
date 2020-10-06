@@ -365,7 +365,7 @@ def process_requests(request, cid):
             state = request.POST.get("c_state")
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
-            loc_code = 'GGG' #check
+            loc_code = request.POST.get("c_gross_salary") #check
             # ta_spoc = request.user.email #check
             onboarding_spoc = "workmail052020@gmail.com" #check
             reporting_manager = request.POST.get("c_reporting_manager")
@@ -959,7 +959,7 @@ def edit_salary_structure(request):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             # loc_code = request.POST.get("c_location_code") #check
-            loc_code = 'GGG' #check
+            loc_code = request.POST.get("c_gross_salary") #check
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
             onboarding_spoc = 'workmail052020@gmail.com' #check
@@ -1204,7 +1204,7 @@ def edit_candidate(request):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             # loc_code = request.POST.get("c_location_code") #check
-            loc_code = 'GGG' #check
+            loc_code = request.POST.get("c_gross_salary") #check
 
             # ta_spoc = request.POST.get("c_ta_spoc") #check
             onboarding_spoc = 'workmail052020@gmail.com' #check
@@ -1471,7 +1471,7 @@ def create_candidate(request):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             # loc_code = request.POST.get("c_location_code") #check
-            loc_code = 'GGG' #check
+            loc_code = request.POST.get("c_gross_salary")#check
 
             ta_spoc = request.user.email #check
             onboarding_spoc = 'workmail052020@gmail.com' #check
@@ -1757,7 +1757,7 @@ def save_new_candidate(request):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             # loc_code = request.POST.get("c_location_code") #check
-            loc_code = 'GGG' #check
+            loc_code = request.POST.get("c_gross_salary") #check
 
             ta_spoc = request.user.email #check
             onboarding_spoc = 'workmail052020@gmail.com' #check

@@ -668,7 +668,19 @@
 
                 <div class="request-forms-input-holder">
                     <div>
-                        <label for="">Gross Salary</label>    
+                        <label for="">Gross Salary Entered</label>    
+                    </div>
+                    <div>
+                        <input type="text" disabled value="{{ eachcandidate.Location_Code }}" >           
+                    </div>
+                    <div>
+                        <input type="text" tabindex="36" readonly value="{{ eachcandidate.Location_Code }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
+                    </div>
+                </div>
+
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Gross Salary Calculated</label>    
                     </div>
                     <div>
                         <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >           
