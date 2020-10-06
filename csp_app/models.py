@@ -159,8 +159,8 @@ class master_designation(models.Model):
 
 class master_region(models.Model):
     pk_region_code = models.AutoField(primary_key=True)
-    region_name = models.ForeignKey(zones, on_delete=models.CASCADE, default=1)
-    fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE, default=1)
+    region_name = models.ForeignKey(zones, on_delete=models.CASCADE)
+    fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
     modified_by = models.CharField(max_length=100, null=True,blank=True)

@@ -24,6 +24,7 @@
         <thead>
             <tr>
                 <th>Username</th>
+                <th>User Type</th>
                 <th>Last Login</th>
                 <th>Status</th>
                 <!-- <th>Action</th> -->
@@ -33,8 +34,18 @@
             {% if user_list %}
                 {% for eachuser in user_list %}
                     {% if eachuser.username != request.user %}
+                    {% for x in eachuser.groups.all %}
+                        {% if x.name != "Candidate" %}
                         <tr>
-                            <td>{{ eachuser.username }}</td>
+                            <td>{{ eachuser.username }}
+                                
+                            </td>
+                            <td>
+                                {% for e in eachuser.groups.all %}
+                                    
+                                        {{ e.name }} 
+                                {% endfor %}
+                            </td>
                             <td>{{ eachuser.last_login }}</td>
                             <td class="action-col" >
                                 <!-- <form action="" method="POST"> -->
@@ -49,6 +60,9 @@
                             </td>                        
                                 
                         </tr>
+                        {% endif %}
+                        {% endfor %}
+
                     {% endif %}
 
                 {% endfor %}                

@@ -3424,6 +3424,7 @@ def state(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_state(request):
     if request.method == 'POST':
+        
         state_pk = request.POST.get("state_name")
         region = request.POST.get("state_region")
         if region == None or region == '':
@@ -3432,7 +3433,13 @@ def  create_state(request):
         if state_pk == None or state_pk == '':
             messages.warning(request, "State Cannot Be Blank")
             return redirect('csp_app:state')
-        region_fk = master_region.objects.get(pk=region)
+        entity = request.POST.get("state_entity")
+        if entity == None or entity == '':
+            messages.warning(request, "Entity Cannot Be Blank")
+            return redirect('csp_app:state')
+        entity_fk = master_entity.objects.get(pk=entity)
+        zone_fk = zones.objects.get(zone_name= region)
+        region_fk = master_region.objects.get(region_name = zone_fk.pk, fk_entity_code= entity_fk, status=active_status)
         state_name = states.objects.get(pk = state_pk)
         try:
             dup_region = master_state.objects.get( state_name= state_name , fk_region_code =region_fk,status = active_status)
@@ -3495,7 +3502,14 @@ def save_edit_state(request):
                     if region == None or region == '':
                         messages.warning(request, "Choose region and Try Again")
                         return redirect('csp_app:state')
-                    region_fk = master_region.objects.get(pk = region)
+                    entity = request.POST.get("e_state_entity")
+                    if entity == None or entity == '':
+                        messages.warning(request, "Entity Cannot Be Blank")
+                        return redirect('csp_app:state')
+                    entity_fk = master_entity.objects.get(pk=entity)
+                    zone_fk = zones.objects.get(zone_name= region)
+                    region_fk = master_region.objects.get(region_name = zone_fk.pk, fk_entity_code= entity_fk, status=active_status)
+      
                     name = states.objects.get(pk = name_pk)
 
                     try:
@@ -3843,6 +3857,7 @@ def delete_location(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_user_view(request):
     user_list = User.objects.all().exclude(is_superuser=True)
+    
     group_list = Group.objects.all().exclude(name='Candidate')    
     return render(request, 'csp_app/create_user.html', {'allcandidates': all_active_candidates,'user_list': user_list, 'group_list': group_list})
 

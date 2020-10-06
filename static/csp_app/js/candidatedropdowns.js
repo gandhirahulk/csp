@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 
 
-    showMe('Candidate', 'can-expand');
+    
 
     $('#close_delete').click(function(){
         $("#salary_structure").css("display", "none");
@@ -29,7 +29,9 @@ $(document).ready(function(){
     });
   
     $('#c_contact, #c_emergency').on('change', function () {
+        // console.log('changed');
     if ($('#c_contact').val() == $('#c_emergency').val()) {
+
         $('#message').html('Contact No. and Emergency No. Cannot be same.').css('color', 'red');
     } else 
         $('#message').html('').css('color', 'green');
@@ -305,5 +307,5 @@ $(document).ready(function(){
         }
     });
 
-
-})
+    showMe('Candidate', 'can-expand');
+});

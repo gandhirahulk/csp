@@ -104,30 +104,26 @@
                         <label for="">Region</label>
                 
                         <select name="e_state_dept" id="state_region" required="true">
-                            <option value="{{ eachstate.fk_region_code_id }}" label="{{ eachstate.fk_region_code }}">{{ eachstate.fk_region_code.fk_entity_code_id }}</option>
+                            <option value="{{ eachstate.fk_region_code }}" label="{{ eachstate.fk_region_code }}" selected>{{ eachstate.fk_region_code.fk_entity_code_id }}</option>
                             <option value="" disabled class="empty" label=" ">Select Region</option>
 
-
                             {% if region_list %}
-                                {% for eachreg in region_list %}
-                                    {% if eachreg.pk != eachstate.fk_region_code_id %}
-
-                                        <option value="{{ eachreg.pk }}" label="{{ eachreg.region_name }}" style="display: none;">{{ eachreg.fk_entity_code_id }}</option>
+                                {% for eachregion in region_list %}
+                                    {% if eachstate.fk_region_code != eachregion.region_name %}
+                                    <option value="{{ eachregion.region_name }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
                                     {% endif %}
-                                
                                 {% endfor %}                
                             {% endif %}
                         </select>
                     </div>
                     <div class="forms-input-holder">
                         <label for="state_phone">state Name</label>
-                        <select name="e_state_name" required="true" id="">
-                            <option value="{{ eachstate.state_name_id }}" label="{{ eachstate.state_name }}" selected>{{ eachstate.state_name }}</option>
+                        <select name="e_state_name" required="true" id="state_state">
+                            <option value="" disabled label=" "class="empty"></option>
+                            <option value="{{ eachstate.state_name_id }}" label="{{ eachstate.state_name }}" selected>{{ eachstate.state_name.zone_name }}</option>
                             {% if states %}
-                                {% for eachst in states %}
-                                    {% if eachst.pk != eachstate.state_name_id %}
-                                        <option value="{{ eachst.pk }}" label="{{ eachst.state_name }}">{{ eachst.state_name }}</option>
-                                    {% endif %}
+                                {% for eachstate in states %}
+                                    <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.zone }}</option>
                                 {% endfor %}                
                             {% endif %}
                         </select>
@@ -171,6 +167,34 @@
                 $('#state_region .empty').prop("selected", true);
             }
         });
+        $('#state_region').change(function() {
+            // alert(1);
+            var filter = $(this).val();
+            // alert(filter);
+            
+            
+            var total = $('#state_state option').length;
+            var count = 0;
+            $('#state_state option').each(function() {
+            if ($(this).text() == filter) {
+            $('#state_state').attr("disabled", false);
+                $(this).show();
+              
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#state_state').val(filter);
+            });
+            if (count === total){
+                $('#state_state').attr("disabled", true)
+            }else {
+                $('#state_state .empty').css("display", "");
+                $('#state_state .empty').prop("selected", true);
+            }
+        });
+
+
 
 
     })

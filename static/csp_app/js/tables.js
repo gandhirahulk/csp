@@ -89,8 +89,8 @@
             "lengthMenu": [10, 25, 50, 75, 100],
         });
         $('#user-table').DataTable({
-            "order": [[ 1, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":1, "type":"date-eu"}],
+            "order": [[ 3, "desc" ]], //or asc 
+            "columnDefs" : [{"targets":3, "type":"date-eu"}],
             "pagingType": "full_numbers",
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],

@@ -99,7 +99,7 @@
 
                     {% if region_list %}
                         {% for eachregion in region_list %}
-                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
+                            <option value="{{ eachregion.region_name }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
                         {% endfor %}                
                     {% endif %}
                 </select>
@@ -107,7 +107,7 @@
             <input type="hidden" name="" id="rname">
             <div class="forms-input-holder">
             <label for="">State</label>
-                <select name="state_name" required="true" id="state_state">
+                <select name="state_name" required="true" id="state_state" disabled="true">
                     <option value="" disabled label=" " selected class="empty"></option>
 
                     {% if states %}
@@ -181,33 +181,32 @@
                 $('#state_region .empty').prop("selected", true);
             }
         });
-        // $('#state_region').change(function() {
-        //     alert(1);
-        //     // var filter = $(this).label();
-        //     // alert(filter);
-        //     var filterr = $(this).;
-        //     alert(filterr);
-        //     $('#rname').attr("val", filter);
-        //     var total = $('#state_state option').length;
-        //     var count = 0;
-        //     $('#state_state option').each(function() {
-        //     if ($(this).text() == filter) {
-        //     $('#state_state').attr("disabled", false);
-        //         $(this).show();
+        $('#state_region').change(function() {
+            // alert(1);
+            var filter = $(this).val();
+            // alert(filter);
+            
+            $('#rname').attr("val", filter);
+            var total = $('#state_state option').length;
+            var count = 0;
+            $('#state_state option').each(function() {
+            if ($(this).text() == filter) {
+            $('#state_state').attr("disabled", false);
+                $(this).show();
               
-        //     } else {
-        //         $(this).hide();
-        //         count += 1;
-        //     }
-        //     $('#state_state').val(filter);
-        //     });
-        //     if (count === total){
-        //         $('#state_state').attr("disabled", true)
-        //     }else {
-        //         $('#state_state .empty').css("display", "");
-        //         $('#state_state .empty').prop("selected", true);
-        //     }
-        // });
+            } else {
+                $(this).hide();
+                count += 1;
+            }
+            $('#state_state').val(filter);
+            });
+            if (count === total){
+                $('#state_state').attr("disabled", true)
+            }else {
+                $('#state_state .empty').css("display", "");
+                $('#state_state .empty').prop("selected", true);
+            }
+        });
 
 
     })
