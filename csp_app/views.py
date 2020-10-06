@@ -1307,6 +1307,8 @@ def edit_candidate(request):
             annualgroup_mediclaim_insurance = request.POST.get("annualgmi")
             employer_total_contribution = request.POST.get("tec")
             annualemployer_total_contribution = request.POST.get("annualtec")
+            take_home_salary = request.POST.get("ths")
+            annualtake_home_salary = request.POST.get("annualths")
             cost_to_company = request.POST.get("ctc")
             annualcost_to_company = request.POST.get("annualctc")
 
@@ -1356,8 +1358,10 @@ def edit_candidate(request):
                 employee_esic= float(employee_esic.replace(',','')), annual_employee_esic= float(annualemployer_esic.replace(',','')), employee_total_contribution= float(employee_total_contribution.replace(',','')), annual_employee_total_contribution= float(annualemployee_total_contribution.replace(',','')), employer_pf= float(employer_pf.replace(',','')), annual_employer_pf= float(annualemployer_pf.replace(',','')),
                 employer_pf_admin=float(employer_pf_admin.replace(',','')), annual_employer_pf_admin= float(annualemployer_pf_admin.replace(',','')), employer_esic= float(employer_esic.replace(',','')), annual_employer_esic= float(annualemployer_esic.replace(',','')), group_personal_accident= float(group_personal_accident.replace(',','')), annual_group_personal_accident= float(annualgroup_personal_accident.replace(',','')),
                 group_mediclaim_insurance= float(group_mediclaim_insurance.replace(',','')), annual_group_mediclaim_insurance = float(annualgroup_mediclaim_insurance.replace(',','')), employer_total_contribution= float(employer_total_contribution.replace(',','')), annual_employer_total_contribution= float(annualemployer_total_contribution.replace(',','')), cost_to_company=float(cost_to_company.replace(',','')),
-                annual_cost_to_company= float(annualcost_to_company.replace(',','')))
+                annual_cost_to_company= float(annualcost_to_company.replace(',','')), take_home_salary= float(take_home_salary.replace(',','')), annual_take_home_salary= float(annualtake_home_salary.replace(',','')))
+            print("before")
             new_salary_structure.save()
+            print("after")
             alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
             our_email = EmailMessage(
                 'Candidate Account Updated.',
