@@ -4,9 +4,12 @@ $(document).ready(function(){
 
     
 
-    $('#close_delete').click(function(){
+    $(document).keyup(function(){
+        var event = Event;
+            if (event.keyCode === 27){
         $("#salary_structure").css("display", "none");
         $("#crumbs").css("z-index", "100");
+            }
     });  
 
     $('#hiring').change(function() {

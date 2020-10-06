@@ -1681,41 +1681,7 @@ def create_candidate(request):
                 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
                 'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
                 'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': annual_var, 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': diff})
-                # last_code_query = csp_candidate_code.objects.latest('candidate_code')                
-                # last_code_str = last_code_query.candidate_code
-                # next_code_int = int(last_code_str[1:]) + 1
-                # new_code = 'C' + str(next_code_int).zfill(9) #pk_candidate_code
-                # new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= dob,
-                # Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
-                # Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
-                # fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
-                # Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                # Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
-                # new_candidate.save()
-
-                # save_new_code = csp_candidate_code(candidate_code= new_code)
-                # save_new_code.save()
-                # limtemplate = render_to_string('emailtemplates/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
-                # our_email = EmailMessage(
-                #     'Candidate account created action required.',
-                #     limtemplate,
-                #     settings.EMAIL_HOST_USER,
-                #     [ reporting_manager_email, 'sadaf.shaikh@udaan.com'],
-                # ) 
-                # our_email.fail_silently = False
-                # our_email.send()
-                # alltemplate = render_to_string('emailtemplates/candidate_saved_et_all.html', {'candidate_code':new_code ,'user': request.user})
-                # our_email = EmailMessage(
-                #     'Candidate account created action required.',
-                #     alltemplate,
-                #     settings.EMAIL_HOST_USER,
-                #     [ ta_spoc, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
-                # ) 
-                # our_email.fail_silently = False
-                # our_email.send()
                 
-                # messages.success(request, "Candidate Saved Successfully")
-                # return redirect("csp_app:candidate")
 
             return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,})
 

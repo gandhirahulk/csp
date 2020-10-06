@@ -735,6 +735,22 @@
             console.log(document.getElementById('crumbs').style.zIndex = 0);
         }
      </script>
+     <script>
+        $(document).ready(function(){
+            
+            $(document).keyup(function(){
+                if (event.keyCode === 27){
+                $("#salary_structure").css("display", "none");
+                }
+            });
+            $(window).click(function(e) {
+            if (e.target.id === 'salary_structure') {
+                $("#salary_structure").css("display", "none");
+            }   
+            });  
+                 
+        });
+    </script>
     
     
 {% endblock %}
