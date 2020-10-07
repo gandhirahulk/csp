@@ -5,7 +5,7 @@
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -31,7 +31,7 @@
     <table id="team-table" class="dataTable">
         <thead>
             <tr>
-                <th>Entity</th>
+                <th>Company</th>
                 <th class="sort-latest" >time</th>
 
                 <th>Department</th>
@@ -90,7 +90,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="e_id" value="{{ eachteam.pk}}">
                     <div class="forms-input-holder">
-                        <label for="">Entity</label>
+                        <label for="">Company</label>
                 
                         <select name="e_team_entity" required="true" id="team_entity">
                             <option value="{{eachteam.fk_function_code.fk_department_code.fk_entity_code_id }}" label="{{ eachteam.fk_function_code.fk_department_code.fk_entity_code }}" selected>{{ eachteam.fk_function_code.fk_department_code.fk_entity_code }}</option>

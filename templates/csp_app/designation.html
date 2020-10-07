@@ -5,7 +5,7 @@
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -34,7 +34,7 @@
     <table id="designation-table" class="dataTable">
         <thead>
             <tr>
-                <th>Entity</th>
+                <th>Company</th>
                 <th class="sort-latest" >time</th>
                 <th>Department</th>
 
@@ -98,10 +98,10 @@
         <form method="POST">
             {% csrf_token %}
             <div class="forms-input-holder">
-            <label for="">Entity</label>
+            <label for="">Company</label>
 
                 <select name="desg_entity" id="desg_entity" required="true">
-                    <option value="" disabled selected>Select Entity</option>
+                    <option value="" disabled selected>Select Company</option>
                     {% if entity_list %}
                         {% for eachentity in entity_list %}
                             <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>

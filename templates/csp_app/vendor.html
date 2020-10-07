@@ -5,7 +5,7 @@
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns active-tab">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -42,7 +42,7 @@
                 <th>Contact Details</th>
                 <th>SPOC</th>
                 <th>SPOC Email</th>
-                <th>Entity</th>
+                <th>Company</th>
                 
                 <th>Action</th>
             </tr>
@@ -159,8 +159,8 @@
         </div>
 
         <div class="forms-input-holder">
-            <label for="">Entity</label>
-            <input type="search" style="width: 60%;" class="search-entity" name="" id="search-entity" placeholder="Search By Entity Name" onkeyup="filterEntity('search-entity','entity-ul')">
+            <label for="">Company</label>
+            <input type="search" style="width: 60%;" class="search-entity" name="" id="search-entity" placeholder="Search By Company Name" onkeyup="filterCompany('search-entity','entity-ul')">
             <div class="select-all">
                 <input type="checkbox" name="" id="selectall"> Select All
         
@@ -237,7 +237,7 @@
         document.getElementById(formid).style.display = "block";
         document.getElementById("delete_me").setAttribute("value", itemid);
     }
-    function filterEntity(inputid, ulid) {
+    function filterCompany(inputid, ulid) {
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById(inputid);
         filter = input.value.toUpperCase();

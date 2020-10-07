@@ -1,11 +1,11 @@
 {% extends 'csp_app/admindashboard.html' %}
 {% load static %}
-{% block titleblock %} Entity {% endblock %}
+{% block titleblock %} Company {% endblock %}
 
 {% block bodyblock %} 
 
 <div class="tabs">
-    <a href="{% url 'csp_app:entity' %}" class="tab-btns active-tab"> Entity</a>
+    <a href="{% url 'csp_app:entity' %}" class="tab-btns active-tab"> Company</a>
     <a href="{% url 'csp_app:vendor' %}" class="tab-btns">vendor</a>    
     <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
     <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -26,7 +26,7 @@
 {% block tabcontentblock %}
 
 <div class="tab-container">
-    <button id="new_entity" class="add-new-btn">New Entity</button>
+    <button id="new_entity" class="add-new-btn">New Company</button>
 
 </div>
 
@@ -35,7 +35,7 @@
      <table id="entity-table" class="dataTable">
          <thead>
              <tr>
-                 <th>Entity Name</th>
+                 <th>Company Name</th>
                  <th class="sort-latest" >time</th>
                  <th>Action</th>
              </tr>
@@ -71,7 +71,7 @@
 
     <div class="view_form_header">
         <div class="forms-heading">
-            <h2>Entity Details</h2>
+            <h2>Company Details</h2>
         </div>
         <div class="hr_line">&nbsp;</div>            
     </div>
@@ -82,7 +82,7 @@
                 <legend>Basic Details</legend>
                 <table>
                     <tr>
-                        <td><label for="">Entity Name : </label> {{ eachentity.entity_name }}</td>
+                        <td><label for="">Company Name : </label> {{ eachentity.entity_name }}</td>
                     </tr>
                 </table>                    
             </fieldset>

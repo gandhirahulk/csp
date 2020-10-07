@@ -5,7 +5,7 @@
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns active-tab">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -41,7 +41,7 @@
                 <th>Contact Details</th>
                 <th>SPOC</th>
                 <th>SPOC Email</th>
-                <th>Entity</th>
+                <th>Company</th>
                 
                 <th>Action</th>
             </tr>
@@ -101,7 +101,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="e_id" value="{{ eachvendor.pk}}">
                     <div class="forms-input-holder">
-                        <label for="">Entity</label>
+                        <label for="">Company</label>
                 
                             <select name="e_vendor_entity" required="true">
                                 <option value="{{ eachvendor.fk_entity_code_id }}" selected>{{ eachvendor.fk_entity_code }}</option>

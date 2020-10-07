@@ -5,7 +5,7 @@
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -33,7 +33,7 @@
     <table id="team-table" class="dataTable">
         <thead>
             <tr>
-                <th>Entity</th>
+                <th>Company</th>
                 <th class="sort-latest" >time</th>
 
                 <th>Department</th>
@@ -91,7 +91,7 @@
                     <legend>Basic Details</legend>
                     <table>
                         <tr>
-                            <td><label for="">Entity : </label> {{ eachteam.fk_function_code.fk_department_code.fk_entity_code }}</td>
+                            <td><label for="">Company : </label> {{ eachteam.fk_function_code.fk_department_code.fk_entity_code }}</td>
                         </tr>
                         <tr>
                             <td><label for="">Department : </label> {{ eachteam.fk_function_code.fk_department_code }}</td>

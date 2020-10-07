@@ -1,11 +1,11 @@
 {% extends 'csp_app/admindashboard.html' %}
 {% load static %}
-{% block titleblock %} Entity {% endblock %}
+{% block titleblock %} Company {% endblock %}
 
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -33,7 +33,7 @@
     <table id="city-table" class="dataTable">
         <thead>
             <tr>
-                <th>Entity</th>
+                <th>Company</th>
 
                 <th>Region</th>
                 <th class="sort-latest" >time</th>
@@ -87,7 +87,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="e_id" value="{{ eachcity.pk}}">
                     <div class="forms-input-holder">
-                        <label for="">Entity</label>
+                        <label for="">Company</label>
                 
                         <select name="e_city_entity" required="true" id="city_entity">
                             <option value="{{eachcity.fk_state_code.fk_region_code.fk_entity_code_id }}" label="{{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}" selected>{{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}</option>

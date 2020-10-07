@@ -1,11 +1,11 @@
 {% extends 'csp_app/admindashboard.html' %}
 {% load static %}
-{% block titleblock %} Entity {% endblock %}
+{% block titleblock %} Company {% endblock %}
 
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns active-tab"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns active-tab"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -24,7 +24,7 @@
 
 {% block tabcontentblock %}
 <div class="tab-container">
-    <button id="new_entity" class="add-new-btn">New Entity</button>
+    <button id="new_entity" class="add-new-btn">New Company</button>
 
 </div>
 
@@ -33,7 +33,7 @@
      <table id="entity-table" class="dataTable">
          <thead>
              <tr>
-                 <th>Entity Name</th>
+                 <th>Company Name</th>
                  <th class="sort-latest" >time</th>
                  <th>Action</th>
              </tr>
@@ -69,7 +69,7 @@
 
     <div class="form_header">
         <div class="forms-heading">
-            <h2>Edit Entity Details</h2>
+            <h2>Edit Company Details</h2>
         </div>
         <div class="hr_line">&nbsp;</div>            
     </div>
@@ -80,8 +80,8 @@
                     {% csrf_token %}
                     <input type="hidden" name="e_id" value="{{ eachentity.pk }}">
                     <div class="forms-input-holder">
-                        <label for="">Entity</label>
-                        <input type="text" value="{{ eachentity.entity_name }}" placeholder="Entity Name" name="e_entity_name" title="Enity Name" id="name" required="true" maxlength="50">
+                        <label for="">Company</label>
+                        <input type="text" value="{{ eachentity.entity_name }}" placeholder="Company Name" name="e_entity_name" title="Enity Name" id="name" required="true" maxlength="50">
                     </div>           
                     
             </div>

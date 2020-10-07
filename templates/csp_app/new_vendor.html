@@ -5,7 +5,7 @@
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns active-tab">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -34,10 +34,10 @@
         {% csrf_token %}
 
         <div class="forms-input-holder">
-        <label for="">Entity</label>
+        <label for="">Company</label>
 
             <select name="vendor_entity" required="true">
-                <option value="" disabled selected>Select Entity</option>
+                <option value="" disabled selected>Select Company</option>
                 {% if entity_list %}
                     {% for eachentity in entity_list %}
                         <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>

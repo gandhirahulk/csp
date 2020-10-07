@@ -397,7 +397,7 @@ def process_requests(request, cid):
                 return redirect("csp_app:process_request", cid = cid)
             salarytype_fk = salary_type.objects.get(pk= salarytype)
             if entity == None or entity == '':
-                messages.warning(request, "Choose  Entity  And Try Again")
+                messages.warning(request, "Choose  Company  And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
             entity_fk = master_entity.objects.get(pk= entity)
             if vendor == None or vendor == '':
@@ -993,7 +993,7 @@ def edit_salary_structure(request):
                 return redirect("csp_app:candidate")
             salarytype_fk = salary_type.objects.get(pk= salarytype)
             if entity == None or entity == '':
-                messages.warning(request, "Choose  Entity  And Try Again")
+                messages.warning(request, "Choose  Company  And Try Again")
                 return redirect("csp_app:candidate")
             entity_fk = master_entity.objects.get(pk= entity)
             if vendor == None or vendor == '':
@@ -1159,7 +1159,7 @@ def edit_candidate(request):
                 return redirect("csp_app:candidate")
             salarytype_fk = salary_type.objects.get(pk= salarytype)
             if entity == None or entity == '':
-                messages.warning(request, "Choose  Entity  And Try Again")
+                messages.warning(request, "Choose  Company  And Try Again")
                 return redirect("csp_app:candidate")
             entity_fk = master_entity.objects.get(pk= entity)
             if vendor == None or vendor == '':
@@ -1430,7 +1430,7 @@ def create_candidate(request):
                 return redirect("csp_app:new_candidate")
             salarytype_fk = salary_type.objects.get(pk= salarytype)
             if entity == None or entity == '':
-                messages.warning(request, "Choose  Entity  And Try Again")
+                messages.warning(request, "Choose  Company  And Try Again")
                 return redirect("csp_app:new_candidate")
             entity_fk = master_entity.objects.get(pk= entity)
             if vendor == None or vendor == '':
@@ -1735,7 +1735,7 @@ def save_new_candidate(request):
                 return redirect("csp_app:new_candidate")
             salarytype_fk = salary_type.objects.get(pk= salarytype)
             if entity == None or entity == '':
-                messages.warning(request, "Choose  Entity  And Try Again")
+                messages.warning(request, "Choose  Company  And Try Again")
                 return redirect("csp_app:new_candidate")
             entity_fk = master_entity.objects.get(pk= entity)
             if vendor == None or vendor == '':
@@ -2103,7 +2103,7 @@ def delete_entity(request):
             entity_d = master_department.objects.filter(fk_entity_code=entity_id, status=active_status)
             entity_c = master_candidate.objects.filter(fk_entity_code=entity_id, status=active_status)
             if len(entity_a) >= 1 or len(entity_d) >= 1 or len(entity_c) >= 1:
-                messages.error(request, "Entity Refrenced By Other Module Cannot Delete")
+                messages.error(request, "Company Refrenced By Other Module Cannot Delete")
                 return redirect('csp_app:entity')
             else:
                 selected_entity = master_entity.objects.get(pk = entity_id, status= active_status)
@@ -2111,7 +2111,7 @@ def delete_entity(request):
                 selected_entity.modified_date_time = datetime.now()
                 selected_entity.status = deactive_status
                 selected_entity.save()
-                messages.success(request, "Entity Deleted Successfully")
+                messages.success(request, "Company Deleted Successfully")
                 return redirect('csp_app:entity')
         return render(request, 'csp_app/entity.html', {'allcandidates': all_active_candidates,})
     except UnboundLocalError:
@@ -2208,17 +2208,17 @@ def save_edit_entity(request):
                             messages.warning(request, "No Changes Detected")
                             return redirect('csp_app:entity')
                         a = master_entity.objects.get(entity_name= name , status= active_status)
-                        messages.error(request, "Entity Already Exist")
+                        messages.error(request, "Company Already Exist")
                         return redirect('csp_app:entity')
                     except ObjectDoesNotExist:
                         entity.entity_name = name 
                         entity.modified_by = str(request.user)
                         entity.modified_date_time = datetime.now()
                         entity.save()
-                        messages.success(request, "Entity Updated Successfully")
+                        messages.success(request, "Company Updated Successfully")
                         return redirect('csp_app:entity')
                 else:
-                    messages.warning(request, "Entity Name Cannot Be Blank")
+                    messages.warning(request, "Company Name Cannot Be Blank")
                     return redirect('csp_app:entity')         
            
         return render(request, 'csp_app/editentity.html', {'e_list': created_by_entities(), 'allcandidates': all_active_candidates,'view_entity_list': entity, 'entity_list': entity_list})
@@ -2232,16 +2232,16 @@ def create_entity(request):
     if request.method == 'POST':
         entity_name = request.POST.get("entity_name")
         if entity_name == None or entity_name == ' ':
-            messages.warning(request, "Entity Name Expected")
+            messages.warning(request, "Company Name Expected")
             return redirect('csp_app:entity')
         try:
             duplicate_entity = master_entity.objects.get(entity_name=entity_name , status = active_status)
-            messages.error(request, "Entity Already Exist")
+            messages.error(request, "Company Already Exist")
             return redirect('csp_app:entity')
         except ObjectDoesNotExist:
             new_entity = master_entity(entity_name= entity_name , created_by = str(request.user),created_date_time= datetime.now() )
             new_entity.save()
-            messages.success(request, "Entity Created Successfully")
+            messages.success(request, "Company Created Successfully")
             return redirect('csp_app:entity')
     return render(request, 'csp_app/entity.html', {'allcandidates': all_active_candidates,})
 
@@ -2345,7 +2345,7 @@ def save_edit_vendor(request):
                 vendor_email_pwd = request.POST.get("e_vendor_email_pwd")
                 entity = request.POST.get("e_vendor_entity")
                 if entity == None or entity == '':
-                    messages.warning(request, "Choose Entity and Try Again")
+                    messages.warning(request, "Choose Company and Try Again")
                     return redirect('csp_app:vendor')
                 entity_fk = master_entity.objects.get(pk = entity)
                 if port == None or port == '':
@@ -2401,7 +2401,7 @@ def create_vendor(request):
         smtp = request.POST.get("smtp_name")
         port = request.POST.get("mail_port")
         if entity == None or entity == '':
-            messages.warning(request, "Choose Entity And Try Again")
+            messages.warning(request, "Choose Company And Try Again")
             return redirect('csp_app:vendor')
         if port == None or port == '':
             messages.warning(request, "Choose Port And Try Again")
@@ -2536,7 +2536,7 @@ def  create_department(request):
             return redirect('csp_app:department')
         entity = request.POST.get("dept_entity")
         if entity == None or entity == '':
-            messages.warning(request, "Choose Entity And Try Again")
+            messages.warning(request, "Choose Company And Try Again")
             return redirect('csp_app:department')
         entity_fk = master_entity.objects.get(pk=entity)
         try:
@@ -2592,7 +2592,7 @@ def save_edit_department(request):
                     name = request.POST.get("e_dept_name")
                     entity = request.POST.get("e_dept_entity")
                     if entity == None or entity == '':
-                        messages.warning(request, "Choose Entity and Try Again")
+                        messages.warning(request, "Choose Company and Try Again")
                         return redirect('csp_app:department')
                     entity_fk = master_entity.objects.get(pk = entity)
                     try:
@@ -3202,7 +3202,7 @@ def create_region(request):
         region_pk = request.POST.get("region_name")
         entity = request.POST.get("region_entity")
         if entity == None or entity == '':
-            messages.warning(request, "Choose Entity And Try Again")
+            messages.warning(request, "Choose Company And Try Again")
             return redirect('csp_app:region')
         if region_pk == None or region_pk== '':
             messages.warning(request, "Region Cannot Be Blank")
@@ -3289,7 +3289,7 @@ def save_edit_region(request):
                     name_pk = request.POST.get("e_region_name")
                     entity = request.POST.get("e_region_entity")
                     if entity == None or entity == '':
-                        messages.warning(request, "Choose Entity and Try Again")
+                        messages.warning(request, "Choose Company and Try Again")
                         return redirect('csp_app:region')
                     entity_fk = master_entity.objects.get(pk = entity)
                     name = zones.objects.get(pk = name_pk)
@@ -3350,7 +3350,7 @@ def  create_state(request):
             return redirect('csp_app:state')
         entity = request.POST.get("state_entity")
         if entity == None or entity == '':
-            messages.warning(request, "Entity Cannot Be Blank")
+            messages.warning(request, "Company Cannot Be Blank")
             return redirect('csp_app:state')
         entity_fk = master_entity.objects.get(pk=entity)
         zone_fk = zones.objects.get(zone_name= region)
@@ -3419,7 +3419,7 @@ def save_edit_state(request):
                         return redirect('csp_app:state')
                     entity = request.POST.get("e_state_entity")
                     if entity == None or entity == '':
-                        messages.warning(request, "Entity Cannot Be Blank")
+                        messages.warning(request, "Company Cannot Be Blank")
                         return redirect('csp_app:state')
                     entity_fk = master_entity.objects.get(pk=entity)
                     zone_fk = zones.objects.get(zone_name= region)
