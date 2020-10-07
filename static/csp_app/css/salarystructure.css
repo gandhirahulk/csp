@@ -1,3 +1,8 @@
+.header-info{
+    text-align: justify;
+    display: flex;
+    justify-content: space-between;
+}
 .ss-table{
     width: 100%;
     border-collapse: collapse;

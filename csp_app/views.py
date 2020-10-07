@@ -352,7 +352,9 @@ def process_requests(request, cid):
             hiring = request.POST.get("c_hiring_type")
             doj = request.POST.get("c_doj")        
             replacement = request.POST.get("c_replacement")
+             
             referral = request.POST.get("c_referral")
+             
             subsource = request.POST.get("c_sub_source")
             entity = request.POST.get("c_entity")
             vendor = request.POST.get("c_vendor")
@@ -365,7 +367,6 @@ def process_requests(request, cid):
             state = request.POST.get("c_state")
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
-            loc_code = request.POST.get("c_gross_salary") #check
             # ta_spoc = request.user.email #check
             onboarding_spoc = "workmail052020@gmail.com" #check
             reporting_manager = request.POST.get("c_reporting_manager")
@@ -374,6 +375,7 @@ def process_requests(request, cid):
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
             gross_salary = request.POST.get("c_gross_salary")
+            loc_code = gross_salary
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
@@ -945,7 +947,9 @@ def edit_salary_structure(request):
             hiring = request.POST.get("c_hiring_type")
             doj = request.POST.get("c_doj")        
             replacement = request.POST.get("c_replacement")
+             
             referral = request.POST.get("c_referral")
+             
             subsource = request.POST.get("c_sub_source")
             entity = request.POST.get("c_entity")
             vendor = request.POST.get("c_vendor")
@@ -958,8 +962,6 @@ def edit_salary_structure(request):
             state = request.POST.get("c_state")
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
-            # loc_code = request.POST.get("c_location_code") #check
-            loc_code = request.POST.get("c_gross_salary") #check
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
             onboarding_spoc = 'workmail052020@gmail.com' #check
@@ -969,6 +971,7 @@ def edit_salary_structure(request):
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
             gross_salary = request.POST.get("c_gross_salary")
+            loc_code = gross_salary
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
                 return redirect("csp_app:candidate")
@@ -1045,7 +1048,7 @@ def edit_salary_structure(request):
             Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
             fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
             Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= float(gross_salary.replace(',', '')), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
+            Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
             new_dummy_candidate.save()
 
             save_new_code = dummy_candidate_code(candidate_code= new_code)
@@ -1061,104 +1064,23 @@ def edit_salary_structure(request):
                 wage = minimum_wage.wages
             except ObjectDoesNotExist:
                 wage = 0
-            g_salary = dummy.Gross_Salary_Amount * 0.50
-            basic = g_salary if wage < g_salary else wage
-                
-            if dummy.fk_state_code.state_name == 'Maharashtra' or dummy.fk_state_code.state_name == 'West Bengal':
-                hra = basic * 0.05
-            else:
-                hra = 0
-            sb_1 = wage // 12
-            sb_2 = 7000 // 12
-            sb = sb_2 if sb_1 < sb_2 else sb_1
-            
-            
-            if dummy.fk_state_code.state_name == 'Keral':
-                sa_1 = 200
-            else:
-                sa_1 = 0
-
-            sa_2 = dummy.Gross_Salary_Amount - (basic + hra + sb)
-            sa = sa_1 if sa_1 > sa_2 else sa_2
-            gross = basic + hra + sb + sa
-            grossalary = gross if gross > g_salary else g_salary
-
-            #ee
-            bsa = basic + sa
-            pf_gross = bsa if bsa < 15000 else 15000 
-            epf_1 = pf_gross * 0.12
-            epf_2 = 15000 * 0.12
-            epf = epf_1 if epf_1 < epf_2 else epf_2
-
-            if grossalary <= 21000:
-                esic_1 = grossalary*0.075
-            else:
-                esic_1 = 0
-            esic_2 = 0
-            esic = esic_1 if esic_1 > esic_2 else esic_2
-
-            td = epf + esic
-            ths = grossalary - td
-            #er
-            erpf_1 = pf_gross * 0.12
-            erpf_2 = 15000 * 0.12
-            erpf = erpf_1 if erpf_1 < erpf_2 else erpf_2
-            erpf_admin = erpf / 12
-            if grossalary <= 21000:
-                ersic_1 = grossalary*0.0325
-            else:
-                ersic_1 = 0
-            ersic_2 = 0
-            ersic = ersic_1 if ersic_1 > ersic_2 else ersic_2
-            gpac = 500000
-            gpi_1 = 24 * grossalary
-            gpi_2 = gpi_1 if gpi_1 > gpac else gpac
-            gpa = (gpi_2 * 0.20)/1000 / 12
-            gpa = round(gpa,2)
-            gmi = 91.66 if grossalary > 21000 else 0
-            tec = erpf + erpf_admin + ersic + gpa + gmi
-            ctc = grossalary + tec
-            
-            if dummy.Salary_Type.pk == 2:
-                var_1 = grossalary / 80
-                var_2 = dummy.Gross_Salary_Amount * 0.20
-                var = var_1 if var_1 > var_2 else var_2
-                annual_var = var * 12
-            elif dummy.Salary_Type.pk == 3:
-                var_1 = grossalary / 75
-                var_2 = dummy.Gross_Salary_Amount * 0.25
-                var = var_1 if var_1 > var_2 else var_2
-                annual_var = var * 12
-            else:
-                var = 'infinity'
-                annual_var = 0
-            #annual
-            annual_basic = basic * 12
-            annual_hra = hra * 12
-            annual_sb = sb * 12
-            annual_sa = sa * 12
-            annual_gs = grossalary * 12
-            annual_epf = epf * 12
-            annual_esic = esic * 12
-            annual_td = td * 12
-            annual_ths = ths * 12
-            annual_eprf = erpf * 12
-            annual_ersic = ersic * 12
-            annual_pfadmin = erpf_admin * 12
-            annual_gpa = round(gpa * 12, 2)
-            annual_gmi = gmi * 12
-            annual_tec = tec * 12
-            annual_ctc = round(ctc * 12 , 2)
-            diff = dummy.Gross_Salary_Amount - grossalary
-            return render(request, 'candidate/editsalarystructure.html', {'selected_candidate': selected_candidate, 'dummy': dummy, 'basic': basic, 'hra': hra, 'sb': sb, 'sa': sa, 'gross_salary': grossalary, 'annualbasic': annual_basic, 'annualhra': annual_hra, 
-            'annualsb': annual_sb, 'annualsa': annual_sa, 'annualgs': annual_gs, 'annualepf': annual_epf, 'annualesic': annual_esic, 'annualtd': annual_td,
-            'annualths': annual_ths, 'epf': epf, 'esic': esic, 'td': td, 'ths': ths, 'erpf': erpf, 'erpf_admin': erpf_admin, 'ersic': ersic, 'gpa': gpa, 'gmi': gmi,
-            'annualerpf': annual_eprf, 'annualerpf_admin': annual_pfadmin, 'annualersic': annual_ersic, 'annualgpa': annual_gpa, 'annualgmi': annual_gmi, 'tec': tec, 'annual_tec': annual_tec, 'ctc': ctc, 'annual_ctc': annual_ctc,
-            'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
-            'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
-            'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
-            'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-            'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': annual_var, 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': diff})  
+            gsa = dummy.Gross_Salary_Amount
+            state_name = dummy.fk_state_code.state_name
+            salary_pk = dummy.Salary_Type.pk
+            mwc = convert_to_INR(minimum_wage.wages)
+            gsa_value = convert_to_INR(dummy.Gross_Salary_Amount)
+            basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2 = salary_structure_calculation(gsa, wage, state_name, salary_pk)
+            print(basic)
+            print(convert_to_INR(basic))
+            return render(request, 'candidate/editsalarystructure.html', {'mwc':mwc, 'gsa':gsa_value, 'selected_candidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
+                'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
+                'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),
+                'annualerpf': convert_to_INR(annual_eprf), 'annualerpf_admin': convert_to_INR(annual_pfadmin), 'annualersic': convert_to_INR(annual_ersic), 'annualgpa': convert_to_INR(annual_gpa), 'annualgmi': convert_to_INR(annual_gmi), 'tec': convert_to_INR(tec), 'annual_tec': convert_to_INR(annual_tec), 'ctc': convert_to_INR(ctc), 'annual_ctc': convert_to_INR(annual_ctc),
+                'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+                'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
+                'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
+                'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
+                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': convert_to_INR(annual_var), 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': convert_to_INR(diff), 'gpac': convert_to_INR(gpi_2)})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -1188,9 +1110,10 @@ def edit_candidate(request):
             Pan = request.POST.get("c_pan")
             hiring = request.POST.get("c_hiring_type")
             doj = request.POST.get("c_doj")        
-            replacement = request.POST.get("c_replace")
-            print(replacement)
+            replacement = request.POST.get("c_replacement")
+             
             referral = request.POST.get("c_referral")
+             
             subsource = request.POST.get("c_sub_source")
             entity = request.POST.get("c_entity")
             vendor = request.POST.get("c_vendor")
@@ -1204,7 +1127,7 @@ def edit_candidate(request):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             # loc_code = request.POST.get("c_location_code") #check
-            loc_code = request.POST.get("c_gross_salary") #check
+             #check
 
             # ta_spoc = request.POST.get("c_ta_spoc") #check
             onboarding_spoc = 'workmail052020@gmail.com' #check
@@ -1214,6 +1137,7 @@ def edit_candidate(request):
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
             gross_salary = request.POST.get("c_gross_salary")
+            loc_code = gross_salary
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
                 return redirect("csp_app:candidate")
@@ -1288,6 +1212,7 @@ def edit_candidate(request):
             special_allowance = request.POST.get("sa")
             annualspecial_allowance = request.POST.get("annualsa")
             ss_gross_salary = request.POST.get("gs")
+            print(ss_gross_salary)
             annualgross_salary = request.POST.get("annualgs")
             employee_pf = request.POST.get("epf")
             annualemployee_pf = request.POST.get("annualepf")
@@ -1348,20 +1273,18 @@ def edit_candidate(request):
             selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
             selected_candidate.Laptop_Allocation= la_fk
             selected_candidate.Salary_Type= salarytype_fk
-            selected_candidate.Gross_Salary_Amount= float(ss_gross_salary.replace(',',''))
+            selected_candidate.Gross_Salary_Amount= INR_to_number(ss_gross_salary)
             selected_candidate.Personal_Email_Id = email
             selected_candidate.modified_by = str(request.user)
             selected_candidate.modified_date_time= datetime.now()
             selected_candidate.save()
-            new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= float(basic.replace(',','')), annual_basic= float(annualbasic.replace(',','')), house_rent_allowance= float(house_rent_allowance.replace(',','')), annual_house_rent_allowance= float(annualhouse_rent_allowance.replace(',','')), statutory_bonus=float(statutory_bonus.replace(',','')), annual_statutory_bonus= float(annualstatutory_bonus.replace(',','')),
-                special_allowance=float(special_allowance.replace(',','')), annual_special_allowance=float(annualspecial_allowance.replace(',','')),gross_salary=float(ss_gross_salary.replace(',','')), annual_gross_salary=float(annualgross_salary.replace(',','')), employee_pf= float(employee_pf.replace(',','')), annual_employee_pf= float(annualemployee_pf.replace(',','')),
-                employee_esic= float(employee_esic.replace(',','')), annual_employee_esic= float(annualemployer_esic.replace(',','')), employee_total_contribution= float(employee_total_contribution.replace(',','')), annual_employee_total_contribution= float(annualemployee_total_contribution.replace(',','')), employer_pf= float(employer_pf.replace(',','')), annual_employer_pf= float(annualemployer_pf.replace(',','')),
-                employer_pf_admin=float(employer_pf_admin.replace(',','')), annual_employer_pf_admin= float(annualemployer_pf_admin.replace(',','')), employer_esic= float(employer_esic.replace(',','')), annual_employer_esic= float(annualemployer_esic.replace(',','')), group_personal_accident= float(group_personal_accident.replace(',','')), annual_group_personal_accident= float(annualgroup_personal_accident.replace(',','')),
-                group_mediclaim_insurance= float(group_mediclaim_insurance.replace(',','')), annual_group_mediclaim_insurance = float(annualgroup_mediclaim_insurance.replace(',','')), employer_total_contribution= float(employer_total_contribution.replace(',','')), annual_employer_total_contribution= float(annualemployer_total_contribution.replace(',','')), cost_to_company=float(cost_to_company.replace(',','')),
-                annual_cost_to_company= float(annualcost_to_company.replace(',','')), take_home_salary= float(take_home_salary.replace(',','')), annual_take_home_salary= float(annualtake_home_salary.replace(',','')))
-            print("before")
+            new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
+                special_allowance=INR_to_number(special_allowance), annual_special_allowance=INR_to_number(annualspecial_allowance),gross_salary=INR_to_number(ss_gross_salary), annual_gross_salary=INR_to_number(annualgross_salary), employee_pf= INR_to_number(employee_pf), annual_employee_pf= INR_to_number(annualemployee_pf),
+                employee_esic= INR_to_number(employee_esic), annual_employee_esic= INR_to_number(annualemployer_esic), employee_total_contribution= INR_to_number(employee_total_contribution), annual_employee_total_contribution= INR_to_number(annualemployee_total_contribution), employer_pf= INR_to_number(employer_pf), annual_employer_pf= INR_to_number(annualemployer_pf),
+                employer_pf_admin=INR_to_number(employer_pf_admin), annual_employer_pf_admin= INR_to_number(annualemployer_pf_admin), employer_esic= INR_to_number(employer_esic), annual_employer_esic= INR_to_number(annualemployer_esic), group_personal_accident= INR_to_number(group_personal_accident), annual_group_personal_accident= INR_to_number(annualgroup_personal_accident),
+                group_mediclaim_insurance= INR_to_number(group_mediclaim_insurance), annual_group_mediclaim_insurance = INR_to_number(annualgroup_mediclaim_insurance), employer_total_contribution= INR_to_number(employer_total_contribution), annual_employer_total_contribution= INR_to_number(annualemployer_total_contribution), cost_to_company=INR_to_number(cost_to_company),
+                annual_cost_to_company= INR_to_number(annualcost_to_company))
             new_salary_structure.save()
-            print("after")
             alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
             our_email = EmailMessage(
                 'Candidate Account Updated.',
@@ -1443,7 +1366,7 @@ def candidate_form_lists():
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists())
 def create_candidate(request):
     entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
-       
+    
     try:
         if request.method == 'POST':
             firstname = request.POST.get("c_firstname").capitalize()
@@ -1461,7 +1384,9 @@ def create_candidate(request):
             hiring = request.POST.get("c_hiring_type")
             doj = request.POST.get("c_doj")        
             replacement = request.POST.get("c_replacement")
+             
             referral = request.POST.get("c_referral")
+             
             subsource = request.POST.get("c_sub_source")
             entity = request.POST.get("c_entity")
             vendor = request.POST.get("c_vendor")
@@ -1474,8 +1399,6 @@ def create_candidate(request):
             state = request.POST.get("c_state")
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
-            # loc_code = request.POST.get("c_location_code") #check
-            loc_code = request.POST.get("c_gross_salary")#check
 
             ta_spoc = request.user.email #check
             onboarding_spoc = 'workmail052020@gmail.com' #check
@@ -1485,6 +1408,7 @@ def create_candidate(request):
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
             gross_salary = request.POST.get("c_gross_salary")
+            loc_code = gross_salary
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
                 return redirect("csp_app:new_candidate")
@@ -1570,7 +1494,7 @@ def create_candidate(request):
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= float(gross_salary.replace(',', '')), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
+                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
                 new_dummy_candidate.save()
 
                 save_new_code = dummy_candidate_code(candidate_code= new_code)
@@ -1586,111 +1510,131 @@ def create_candidate(request):
                     wage = minimum_wage.wages
                 except ObjectDoesNotExist:
                     wage = 0
-                g_salary = dummy.Gross_Salary_Amount * 0.50
-                basic = g_salary if wage < g_salary else wage
-                    
-                if dummy.fk_state_code.state_name == 'Maharashtra' or dummy.fk_state_code.state_name == 'West Bengal':
-                    hra = basic * 0.05
-                else:
-                    hra = 0
-                sb_1 = wage // 12
-                sb_2 = 7000 // 12
-                sb = sb_2 if sb_1 < sb_2 else sb_1
-                
-                
-                if dummy.fk_state_code.state_name == 'Keral':
-                    sa_1 = 200
-                else:
-                    sa_1 = 0
-
-                sa_2 = dummy.Gross_Salary_Amount - (basic + hra + sb)
-                sa = sa_1 if sa_1 > sa_2 else sa_2
-                gross = basic + hra + sb + sa
-                grossalary = gross if gross > g_salary else g_salary
-
-                #ee
-                bsa = basic + sa
-                pf_gross = bsa if bsa < 15000 else 15000 
-                epf_1 = pf_gross * 0.12
-                epf_2 = 15000 * 0.12
-                epf = epf_1 if epf_1 < epf_2 else epf_2
-
-                if grossalary <= 21000:
-                    esic_1 = grossalary*0.075
-                else:
-                    esic_1 = 0
-                esic_2 = 0
-                esic = esic_1 if esic_1 > esic_2 else esic_2
-
-                td = epf + esic
-                ths = grossalary - td
-                #er
-                erpf_1 = pf_gross * 0.12
-                erpf_2 = 15000 * 0.12
-                erpf = erpf_1 if erpf_1 < erpf_2 else erpf_2
-                erpf_admin = erpf / 12
-                if grossalary <= 21000:
-                    ersic_1 = grossalary*0.0325
-                else:
-                    ersic_1 = 0
-                ersic_2 = 0
-                ersic = ersic_1 if ersic_1 > ersic_2 else ersic_2
-                gpac = 500000
-                gpi_1 = 24 * grossalary
-                gpi_2 = gpi_1 if gpi_1 > gpac else gpac
-                gpa = (gpi_2 * 0.20)/1000 / 12
-                gpa = round(gpa,2)
-                gmi = 91.66 if grossalary > 21000 else 0
-                tec = erpf + erpf_admin + ersic + gpa + gmi
-                ctc = grossalary + tec
-                
-                if dummy.Salary_Type.pk == 2:
-                    var_1 = grossalary / 80
-                    var_2 = dummy.Gross_Salary_Amount * 0.20
-                    var = var_1 if var_1 > var_2 else var_2
-                    annual_var = var * 12
-                elif dummy.Salary_Type.pk == 3:
-                    var_1 = grossalary / 75
-                    var_2 = dummy.Gross_Salary_Amount * 0.25
-                    var = var_1 if var_1 > var_2 else var_2
-                    annual_var = var * 12
-                else:
-                    var = 'infinity'
-                    annual_var = 0
-                #annual
-                annual_basic = basic * 12
-                annual_hra = hra * 12
-                annual_sb = sb * 12
-                annual_sa = sa * 12
-                annual_gs = grossalary * 12
-                annual_epf = epf * 12
-                annual_esic = esic * 12
-                annual_td = td * 12
-                annual_ths = ths * 12
-                annual_eprf = erpf * 12
-                annual_ersic = ersic * 12
-                annual_pfadmin = erpf_admin * 12
-                annual_gpa = round(gpa * 12, 2)
-                annual_gmi = gmi * 12
-                annual_tec = tec * 12
-                annual_ctc = round(ctc * 12 , 2)
-                diff = dummy.Gross_Salary_Amount - grossalary
+                gsa = dummy.Gross_Salary_Amount
+                state_name = dummy.fk_state_code.state_name
+                salary_pk = dummy.Salary_Type.pk
+                mwc = convert_to_INR(minimum_wage.wages)
+                gsa_value = convert_to_INR(dummy.Gross_Salary_Amount)
+                basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpac = salary_structure_calculation(gsa, wage, state_name, salary_pk)
                 # print(diff)
-                return render(request, 'candidate/salary_structure.html', {'dummy': dummy, 'basic': basic, 'hra': hra, 'sb': sb, 'sa': sa, 'gross_salary': grossalary, 'annualbasic': annual_basic, 'annualhra': annual_hra, 
-                'annualsb': annual_sb, 'annualsa': annual_sa, 'annualgs': annual_gs, 'annualepf': annual_epf, 'annualesic': annual_esic, 'annualtd': annual_td,
-                'annualths': annual_ths, 'epf': epf, 'esic': esic, 'td': td, 'ths': ths, 'erpf': erpf, 'erpf_admin': erpf_admin, 'ersic': ersic, 'gpa': gpa, 'gmi': gmi,
-                'annualerpf': annual_eprf, 'annualerpf_admin': annual_pfadmin, 'annualersic': annual_ersic, 'annualgpa': annual_gpa, 'annualgmi': annual_gmi, 'tec': tec, 'annual_tec': annual_tec, 'ctc': ctc, 'annual_ctc': annual_ctc,
+                return render(request, 'candidate/salary_structure.html', {'mwc':mwc, 'gsa':gsa_value,'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
+                'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
+                'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),
+                'annualerpf': convert_to_INR(annual_eprf), 'annualerpf_admin': convert_to_INR(annual_pfadmin), 'annualersic': convert_to_INR(annual_ersic), 'annualgpa': convert_to_INR(annual_gpa), 'annualgmi': convert_to_INR(annual_gmi), 'tec': convert_to_INR(tec), 'annual_tec': convert_to_INR(annual_tec), 'ctc': convert_to_INR(ctc), 'annual_ctc': convert_to_INR(annual_ctc),
                 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
                 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
                 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
                 'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': annual_var, 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': diff})
+                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': convert_to_INR(annual_var), 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': convert_to_INR(diff), 'gpac': convert_to_INR(gpi_2)})
                 
 
             return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,})
 
     except IndexError:
         return HttpResponse("No Data To Display.")
+
+def convert_to_INR(x):
+    from babel.numbers import format_currency
+    return format_currency(x, 'INR', locale='en_IN')
+
+def INR_to_number(x):
+    x = str(x)
+    return int(''.join(filter(str.isdigit, x)))
+
+def salary_structure_calculation(gsa, wage, state_name, salary_pk):
+    print(gsa)
+    g_salary = gsa * 0.50
+    print(g_salary)
+    basic = g_salary if wage < g_salary else wage
+
+    if state_name == 'Maharashtra' or state_name == 'West Bengal':
+        hra = basic * 0.05
+    else:
+        hra = 0
+    sb_1 = wage // 12
+    sb_2 = 7000 // 12
+    sb = sb_2 if sb_1 < sb_2 else sb_1
+
+
+    if state_name == 'Kerala':
+        sa_1 = 200
+    else:
+        sa_1 = 0
+
+    sa_2 = gsa - (basic + hra + sb)
+    sa = sa_1 if sa_1 > sa_2 else sa_2
+    gross = basic + hra + sb + sa
+    grossalary = gross if gross > g_salary else g_salary
+
+    #ee
+    bsa = basic + sa
+    pf_gross = bsa if bsa < 15000 else 15000 
+    epf_1 = pf_gross * 0.12
+    epf_2 = 15000 * 0.12
+    epf = epf_1 if epf_1 < epf_2 else epf_2
+
+    if grossalary <= 21000:
+        esic_1 = grossalary*0.075
+    else:
+        esic_1 = 0
+    esic_2 = 0
+    esic = esic_1 if esic_1 > esic_2 else esic_2
+
+    td = epf + esic
+    ths = grossalary - td
+    #er
+    erpf_1 = pf_gross * 0.12
+    erpf_2 = 15000 * 0.12
+    erpf = erpf_1 if erpf_1 < erpf_2 else erpf_2
+    erpf_admin = erpf / 12
+    if grossalary <= 21000:
+        ersic_1 = grossalary*0.0325
+    else:
+        ersic_1 = 0
+    ersic_2 = 0
+    ersic = ersic_1 if ersic_1 > ersic_2 else ersic_2
+    gpac = 500000
+    gpi_1 = 24 * grossalary
+    gpi_2 = gpi_1 if gpi_1 > gpac else gpac
+    gpa = (gpi_2 * 0.20)/1000 / 12
+    gpa = round(gpa,2)
+    gmi = 91.66 if grossalary > 21000 else 0
+    tec = erpf + erpf_admin + ersic + gpa + gmi
+    ctc = grossalary + tec
+
+    if salary_pk == 2:
+        var_1 = grossalary / 80
+        var_2 = gsa * 0.20
+        var = var_1 if var_1 > var_2 else var_2
+        annual_var = var * 12
+    elif salary_pk == 3:
+        var_1 = grossalary / 75
+        var_2 = gsa * 0.25
+        var = var_1 if var_1 > var_2 else var_2
+        annual_var = var * 12
+    else:
+        var = 'infinity'
+        annual_var = 0
+    #annual
+    annual_basic = basic * 12
+    annual_hra = hra * 12
+    annual_sb = sb * 12
+    annual_sa = sa * 12
+    annual_gs = grossalary * 12
+    annual_epf = epf * 12
+    annual_esic = esic * 12
+    annual_td = td * 12
+    annual_ths = ths * 12
+    annual_eprf = erpf * 12
+    annual_ersic = ersic * 12
+    annual_pfadmin = erpf_admin * 12
+    annual_gpa = round(gpa * 12, 2)
+    annual_gmi = gmi * 12
+    annual_tec = tec * 12
+    annual_ctc = round(ctc * 12 , 2)
+    diff = gsa - grossalary
+    print(basic)
+    return basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2
 
 
 @login_required(login_url='/notlogin/')
@@ -1713,7 +1657,9 @@ def save_new_candidate(request):
             hiring = request.POST.get("c_hiring_type")
             doj = request.POST.get("c_doj")        
             replacement = request.POST.get("c_replacement")
+             
             referral = request.POST.get("c_referral")
+             
             subsource = request.POST.get("c_sub_source")
             entity = request.POST.get("c_entity")
             vendor = request.POST.get("c_vendor")
@@ -1726,8 +1672,6 @@ def save_new_candidate(request):
             state = request.POST.get("c_state")
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
-            # loc_code = request.POST.get("c_location_code") #check
-            loc_code = request.POST.get("c_gross_salary") #check
 
             ta_spoc = request.user.email #check
             onboarding_spoc = 'workmail052020@gmail.com' #check
@@ -1737,7 +1681,7 @@ def save_new_candidate(request):
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
             gross_salary = request.POST.get("c_gross_salary")
-
+            loc_code = gross_salary
             basic = request.POST.get("basic")
             annualbasic = request.POST.get("annualbasic")
             house_rent_allowance = request.POST.get("hra")
@@ -1747,6 +1691,7 @@ def save_new_candidate(request):
             special_allowance = request.POST.get("sa")
             annualspecial_allowance = request.POST.get("annualsa")
             ss_gross_salary = request.POST.get("gs")
+            print(ss_gross_salary)
             annualgross_salary = request.POST.get("annualgs")
             employee_pf = request.POST.get("epf")
             annualemployee_pf = request.POST.get("annualepf")
@@ -1855,17 +1800,17 @@ def save_new_candidate(request):
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= float(ss_gross_salary.replace(',', '')), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
+                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= INR_to_number(ss_gross_salary), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
                 new_candidate.save()
                 
                 save_new_code = csp_candidate_code(candidate_code= new_code)
                 save_new_code.save()
-                new_salary_structure = salary_structure(candidate_code= new_code, basic= float(basic.replace(',','')), annual_basic= float(annualbasic.replace(',','')), house_rent_allowance= float(house_rent_allowance.replace(',','')), annual_house_rent_allowance= float(annualhouse_rent_allowance.replace(',','')), statutory_bonus=float(statutory_bonus.replace(',','')), annual_statutory_bonus= float(annualstatutory_bonus.replace(',','')),
-                special_allowance=float(special_allowance.replace(',','')), annual_special_allowance=float(annualspecial_allowance.replace(',','')),gross_salary=float(ss_gross_salary.replace(',','')), annual_gross_salary=float(annualgross_salary.replace(',','')), employee_pf= float(employee_pf.replace(',','')), annual_employee_pf= float(annualemployee_pf.replace(',','')),
-                employee_esic= float(employee_esic.replace(',','')), annual_employee_esic= float(annualemployer_esic.replace(',','')), employee_total_contribution= float(employee_total_contribution.replace(',','')), annual_employee_total_contribution= float(annualemployee_total_contribution.replace(',','')), employer_pf= float(employer_pf.replace(',','')), annual_employer_pf= float(annualemployer_pf.replace(',','')),
-                employer_pf_admin=float(employer_pf_admin.replace(',','')), annual_employer_pf_admin= float(annualemployer_pf_admin.replace(',','')), employer_esic= float(employer_esic.replace(',','')), annual_employer_esic= float(annualemployer_esic.replace(',','')), group_personal_accident= float(group_personal_accident.replace(',','')), annual_group_personal_accident= float(annualgroup_personal_accident.replace(',','')),
-                group_mediclaim_insurance= float(group_mediclaim_insurance.replace(',','')), annual_group_mediclaim_insurance = float(annualgroup_mediclaim_insurance.replace(',','')), employer_total_contribution= float(employer_total_contribution.replace(',','')), annual_employer_total_contribution= float(annualemployer_total_contribution.replace(',','')), cost_to_company=float(cost_to_company.replace(',','')),
-                annual_cost_to_company= float(annualcost_to_company.replace(',','')))
+                new_salary_structure = salary_structure(candidate_code= new_code, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
+                special_allowance=INR_to_number(special_allowance), annual_special_allowance=INR_to_number(annualspecial_allowance),gross_salary=INR_to_number(ss_gross_salary), annual_gross_salary=INR_to_number(annualgross_salary), employee_pf= INR_to_number(employee_pf), annual_employee_pf= INR_to_number(annualemployee_pf),
+                employee_esic= INR_to_number(employee_esic), annual_employee_esic= INR_to_number(annualemployer_esic), employee_total_contribution= INR_to_number(employee_total_contribution), annual_employee_total_contribution= INR_to_number(annualemployee_total_contribution), employer_pf= INR_to_number(employer_pf), annual_employer_pf= INR_to_number(annualemployer_pf),
+                employer_pf_admin=INR_to_number(employer_pf_admin), annual_employer_pf_admin= INR_to_number(annualemployer_pf_admin), employer_esic= INR_to_number(employer_esic), annual_employer_esic= INR_to_number(annualemployer_esic), group_personal_accident= INR_to_number(group_personal_accident), annual_group_personal_accident= INR_to_number(annualgroup_personal_accident),
+                group_mediclaim_insurance= INR_to_number(group_mediclaim_insurance), annual_group_mediclaim_insurance = INR_to_number(annualgroup_mediclaim_insurance), employer_total_contribution= INR_to_number(employer_total_contribution), annual_employer_total_contribution= INR_to_number(annualemployer_total_contribution), cost_to_company=INR_to_number(cost_to_company),
+                annual_cost_to_company= INR_to_number(annualcost_to_company))
                 new_salary_structure.save()
                 limtemplate = render_to_string('emailtemplates/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
                 our_email = EmailMessage(

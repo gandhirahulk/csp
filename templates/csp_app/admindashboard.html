@@ -309,17 +309,17 @@
         <div class="sidebar">
             <ul>
                    
-                <li onclick="showMe('Candidate', 'can-expand')" id="Candidate"><a href="{% url 'csp_app:candidate' %}">
+                <li title="Candidates" onclick="showMe('Candidate', 'can-expand')" id="Candidate"><a href="{% url 'csp_app:candidate' %}">
                     <span class="icon"><i class="fas fa-users"></i></span>
                     <span class="title">Candidate</span>
                     <span class="expand"><i class="fas fa-caret-right" id="can-expand"></i></span></a></li> 
                 
-                <li onclick="showMe('User', 'user-expand')" id="User"><a href="{% url 'csp_app:user' %}">
+                <li title="Users" onclick="showMe('User', 'user-expand')" id="User"><a href="{% url 'csp_app:user' %}">
                     <span class="icon"><i class="fas fa-users-cog"></i></span>
                     <span class="title">User</span>
                     <span class="expand"><i class="fas fa-caret-right" id="user-expand"></i></span></a></li>
                     
-                <li onclick="showMe('Organization', 'org-expand')" id="Organization"><a href="{% url 'csp_app:entity' %}">
+                <li title="Organization" onclick="showMe('Organization', 'org-expand')" id="Organization"><a href="{% url 'csp_app:entity' %}">
                     <span class="icon"><i class="fas fa-sitemap"></i></span>
                     <span class="title">Organization</span><span class="expand"><i class="fas fa-caret-right" id="org-expand"></i></span></a></li>
                 

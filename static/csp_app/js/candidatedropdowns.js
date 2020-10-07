@@ -1,5 +1,19 @@
 $(document).ready(function(){ 
 
+    var r = document.getElementsByName('c_replacement');
+    
+    if ($('#hiring').val() == '1'){
+            $('#c_replacement').attr("disabled", false);
+        } else {
+            $('#c_replacement').prop("value", '');                
+            $('#c_replacement').attr("disabled", true);
+    }
+    if ($('#referral').val() == '1'){
+            $('#c_referral').attr("disabled", false);
+        } else {
+            $('#c_referral').prop("value", '');
+            $('#c_referral').attr("disabled", true);
+    }
 
 
     
