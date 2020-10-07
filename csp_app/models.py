@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+from .extvalidate import validate_file_extension
 
 class status(models.Model):
     pk_status_code = models.AutoField(primary_key=True)
@@ -441,7 +442,7 @@ class candidate_document(models.Model):
     fk_candidate_code = models.ForeignKey(master_candidate, on_delete=models.CASCADE)
     document_catagory = models.ForeignKey( mandatory_documents, on_delete=models.CASCADE, default=1)
     file_name = models.CharField(max_length=200)
-    file_upload = models.FileField(upload_to='documents/')
+    file_upload = models.FileField(upload_to='documents/', validators=[validate_file_extension])
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
     modified_by = models.CharField(max_length=100, null=True,blank=True)

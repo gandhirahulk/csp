@@ -1939,17 +1939,22 @@ def candidate_document_upload(request, candidate_id):
             file_name = request.POST.get("c_filename")
             print(file_name)
             c_file = request.FILES['file']
+            
             # if file_catogory == None or file_catogory == '':
             #     messages.warning(request, "Choose File Catogory")
             #     return redirect('csp_app:document_upload')
-            if c_file == None or c_file == '':
+            if c_file == None or c_file == '' :
                 messages.warning(request, "Choose File")
                 return redirect('csp_app:document_upload')
             file_name = c_file.name
-            fs = FileSystemStorage()
-            filename = fs.save(file_name, c_file)
-            print(fs.url(filename))
-            file_url = fs.url(filename)          
+            print(file_name)
+            if file_name.endswith('.pdf') or file_name.endswith('.jpg') or file_name.endswith('.png'):                
+                fs = FileSystemStorage()
+                filename = fs.save(file_name, c_file)
+                file_url = fs.url(filename)   
+            else:
+                messages.error(request, "File Format Not Supported")
+                return redirect('csp_app:document_upload', candidate_id = candidate_id )    
             catogory_fk = mandatory_documents.objects.get(pk = f_catogory)
             try:
                 duplicate_doc = candidate_document.objects.get(file_name=file_name, file_upload = c_file, fk_candidate_code= candidate_fk, status = active_status)
@@ -1972,19 +1977,13 @@ def candidate_document_upload(request, candidate_id):
 def candidate_delete_document(request):
     try:
         if request.method == 'POST':
-            print("post-----------------")
             document_id = request.POST.get("delete_id")          
-            selected_document = candidate_document.objects.get(pk = document_id, status= active_status)
-            print('sdf')
-            print(selected_document.fk_candidate_code_id)
-            selected_document.modified_by = str(request.user)
-            selected_document.modified_date_time = datetime.now()
-            selected_document.status = deactive_status
-            selected_document.save()
+            selected_document = candidate_document.objects.get(pk = document_id, status= active_status)            
+            selected_document.delete()
             messages.success(request, "Document Deleted Successfully")
             return redirect('csp_app:document_upload', selected_document.fk_candidate_code_id)
-        all_active_candidates = vendor_candidates(request.user)
-        return render(request, 'csp_app/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
+        
+        return render(request, 'csp_app/candidatedocuments.html', {})        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 

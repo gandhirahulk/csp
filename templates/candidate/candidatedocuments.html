@@ -35,8 +35,42 @@
             <span>{{ eachc.pk }} | {{ eachc.First_Name }} {{ eachc.Middle_Name }} {{ eachc.Last_Name }}</span>                
       
         </div>
-<div class="tab-container" style="margin-top: 55px;">
-    <button id="new_document" class="add-new-btn">Add Document</button>
+<div style="margin-top: 55px;">
+    <div class="document_form_header">
+        <div class="forms-heading">
+            <h2>Add New Document</h2>
+        </div>
+        <div class="hr_line">&nbsp;</div>
+     
+    </div>
+    <div class="document_form_content">
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="forms-input-holder">
+                <label for="" style="width: 40%;">Document Catogory</label>
+                <select  id="c_catogory" name="c_catogory" required="true">
+                    <option value="" disabled selected>Select Document Catogory</option>
+                    {% if mandatory_list %}
+                        {% for eachmandatory in mandatory_list %}
+                            <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+                <label for="">File Name</label>
+                <input type="text" placeholder="File Name" name="c_filename" id="c_filename" required="true" autofocus="true" tabindex="1"  >
+                <label for="">Choose File</label>
+                <input type="file" placeholder="File" name="file" id="c_file" required="true" tabindex="2">
+          
+            </div>
+
+                    
+              
+    </div>
+    <div class="document_form_footer">
+            <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
+        </form>
+    </div>
+  
 
 </div>
 
@@ -61,14 +95,15 @@
                             <form action="" method="POST">{% csrf_token %}
                                 <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
                                 <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id">
-                                {% if request.user.groups.all %}
+                                
+                            </form>
+                            {% if request.user.groups.all %}
                                 {% for eachgroup in request.user.groups.all %}
                                     {% if eachgroup.name != 'Candidate' %}
                                 <input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
                                 {% endif %}
                                 {% endfor %}       
                                       {% endif %}
-                            </form>
                         </td>
                     
                     </tr>
@@ -88,46 +123,11 @@
   
 </div>
 
-<div id="document_form" class="form_modal" style="padding-top: 10%;">
-    <div class="form_header">
-        <div class="forms-heading">
-            <h2>Add New Document</h2>
-        </div>
-        <div class="hr_line">&nbsp;</div>
-     
-    </div>
-    <div class="form_content">
-        <form method="POST" action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="forms-input-holder">
-                <label for="">Document Catogory</label>
-                <select  id="c_catogory" name="c_catogory" required="true">
-                    <option value="" disabled selected>Select Document Catogory</option>
-                    {% if mandatory_list %}
-                        {% for eachmandatory in mandatory_list %}
-                            <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
 
-            <div class="forms-input-holder">
-                <label for="">File Name</label>
-                <input type="text" placeholder="File Name" name="c_filename" id="c_filename" required="true" autofocus="true" tabindex="1"  >
-            </div>
-            <div class="forms-input-holder">
-                <label for="">Choose File</label>
-                <input type="file" placeholder="File" name="file" id="c_file" required="true" tabindex="2">
-            </div>         
-              
-    </div>
-    <div class="form_footer">
-            <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
-        </form>
-    </div>
-  
-  </div>
 
+
+    {% endfor %}
+{% endif %} 
 <div id="delete_document_form" class="form_modal" style="padding-top: 15%;">
     <div class="delete_form_header">
         <div class="forms-heading">
@@ -135,16 +135,13 @@
         </div>     
     </div>
     <div class="delete_form_footer">
-        <form action="" method="post">
+        <form action="{% url 'csp_app:candidate_delete_document' %}" method="POST">
             {% csrf_token %}
             <button type="submit" formaction="{% url 'csp_app:candidate_delete_document' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
             <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
         </form>
     </div>
 </div>
-    {% endfor %}
-{% endif %} 
-
 <script>
     $(document).ready(function(){
         $(document).keyup(function(){

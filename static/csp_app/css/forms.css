@@ -487,4 +487,30 @@ input:-webkit-autofill+label.move-out {
       width: 50%;
       padding-left: 5px;
     }
+
+  .document_form_header{
+    margin: auto;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    
+    text-align: center;
+    padding: 5px;
+  }
+
+  .document_form_content{
+    margin: auto;
+    padding: 20px;
+    overflow: auto;
+    /* text-align: center; */
+    padding-bottom: 0px;
+  }
+
+  .document_form_footer{
+    margin: auto;
+    padding: 20px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    text-align: center;
+    padding-top: 0px;
+  }
   
