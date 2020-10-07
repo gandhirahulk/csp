@@ -1,7 +1,14 @@
 $(document).ready(function(){ 
-
-    var r = document.getElementsByName('c_replacement');
     
+    // to remove required when reject
+    // var x = $('input,select').filter('[required]:visible');    
+    // for(var i=0; i< x.length;i++){
+    //     var ids = x[i].id
+    //     if (ids != ''){
+    //         $('#'+ ids).attr("required", false);
+    //     }       
+    // }
+   
     if ($('#hiring').val() == '1'){
             $('#c_replacement').attr("disabled", false);
         } else {
@@ -329,4 +336,16 @@ $(document).ready(function(){
     });
 
     showMe('Candidate', 'can-expand');
+});
+
+
+$('#reject').click(function(){
+    var x = $('input,select').filter('[required]:visible');    
+    for(var i=0; i< x.length;i++){
+        var ids = x[i].id
+        if (ids != ''){
+            $('#'+ ids).attr("required", false);
+        }       
+    }
+    
 });

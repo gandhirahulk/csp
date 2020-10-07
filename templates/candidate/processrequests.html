@@ -197,7 +197,7 @@
                         <input type="text" disabled value="{{ eachcandidate.PAN_Number }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="12" value="{{ eachcandidate.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+                        <input type="text" tabindex="12" value="{{ eachcandidate.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{3}[P]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
       
                     </div>
                 </div>
@@ -686,7 +686,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="36" readonly value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
+                        <input type="text" tabindex="36" readonly value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
                     </div>
                 </div>
                 <a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">view salary structure</a>
@@ -696,21 +696,20 @@
         </div>
 
         <div class="candidate_form_footer">
+            <button class="delete-forms-close-btn" id="reject" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button>                 
+
             {% if request.user.groups.all %}
                 {% for eachgroup in request.user.groups.all %}
                     {% if eachgroup.name == 'Vendor' %}
                         <input type="hidden" value="vendor" name="ve_status">
-                        <button class="delete-forms-close-btn" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button>                 
                         <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve to Send LOI to Candidate</button> 
                     {% elif eachgroup.name == 'Admin' %}   
                         <input type="hidden" value="vendor" name="ve_status">
-                        <button class="delete-forms-close-btn" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button>                 
                         <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve to Send the Details to Vendor For LOI</button> 
                 
 
                     {% else %}
                         <input type="hidden" value="onboarding" name="o_status">
-                        <button class="delete-forms-close-btn" formaction="{% url 'csp_app:reject_candidate_onboarding' eachcandidate.pk %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button> 
                         <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve to Send the Details to Vendor For LOI</button> 
                     {% endif %}
                 {% endfor %}
