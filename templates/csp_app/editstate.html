@@ -5,7 +5,7 @@
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -32,7 +32,7 @@
     <table id="state-table" class="dataTable">
         <thead>
             <tr>
-                <th>Entity</th>
+                <th>Company</th>
 
                 <th>Region</th>
 
@@ -85,7 +85,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="e_id" value="{{ eachstate.pk}}">
                     <div class="forms-input-holder">
-                        <label for="">Entity</label>
+                        <label for="">Company</label>
                 
                         <select name="e_state_entity" required="true" id="state_entity">
                        

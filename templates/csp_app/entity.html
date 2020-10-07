@@ -1,11 +1,11 @@
 {% extends 'csp_app/admindashboard.html' %}
 {% load static %}
-{% block titleblock %} Entity {% endblock %}
+{% block titleblock %}  Company {% endblock %}
 
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns active-tab"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns active-tab">Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -23,7 +23,7 @@
 
 {% block tabcontentblock %}
 <div class="tab-container">
-    <button id="new_entity" class="add-new-btn">New Entity</button>
+    <button id="new_entity" class="add-new-btn">New Company</button>
 
 </div>
 
@@ -32,7 +32,7 @@
     <table id="entity-table" class="dataTable">
         <thead>
             <tr>
-                <th>Entity Name</th>
+                <th>Company Name</th>
                 <th class="sort-latest" >time</th>
                 <th>Action</th>
             </tr>
@@ -67,7 +67,7 @@
 <div id="entity_form" class="form_modal" style="padding-top: 15%;">
     <div class="form_header">
         <div class="forms-heading">
-            <h2>Create New Entity</h2>
+            <h2>Create New Company</h2>
         </div>
         <div class="hr_line">&nbsp;</div>
      
@@ -76,13 +76,13 @@
         <form method="POST" action="{% url 'csp_app:create_entity' %}">
             {% csrf_token %}
             <div class="forms-input-holder">   
-                <label for="entity_name">Entity Name</label>
-                <input type="text" placeholder="Entity Name" name="entity_name" id="name" title="Enity Name" required="true" maxlength="50">
+                <label for="entity_name">Company Name</label>
+                <input type="text" placeholder="Company Name" name="entity_name" id="name" title="Enity Name" required="true" maxlength="50">
             </div>           
               
     </div>
     <div class="form_footer">
-            <button type="submit" formaction="{% url 'csp_app:create_entity' %}" class="forms-save-btn">Save Entity</button>
+            <button type="submit" formaction="{% url 'csp_app:create_entity' %}" class="forms-save-btn">Save Company</button>
         </form>
     </div>
   
@@ -91,7 +91,7 @@
 <div id="delete_entity_form" class="form_modal" style="padding-top: 15%;">
     <div class="delete_form_header">
         <div class="forms-heading">
-            <h2>Delete This Entity?</h2>
+            <h2>Delete This Company?</h2>
         </div>     
     </div>
     <div class="delete_form_footer">

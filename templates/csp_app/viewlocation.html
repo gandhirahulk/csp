@@ -5,7 +5,7 @@
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Entity</a>
+        <a href="{% url 'csp_app:entity' %}" class="tab-btns"> Company</a>
         <a href="{% url 'csp_app:vendor' %}" class="tab-btns">Vendor</a>    
         <a href="{% url 'csp_app:department' %}" class="tab-btns">Department</a>    
         <a href="{% url 'csp_app:function' %}" class="tab-btns">Function</a>    
@@ -32,7 +32,7 @@
     <table id="location-table" class="dataTable">
         <thead>
             <tr>
-                <th>Entity</th>
+                <th>Company</th>
                 <td class="sort-latest" >time</td>
                 <th>Region</th>
                 <th>State</th>
@@ -90,7 +90,7 @@
                     <legend>Basic Details</legend>
                     <table>
                         <tr>
-                            <td><label for="">Entity : </label> {{ eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code }}</td>
+                            <td><label for="">Company : </label> {{ eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code }}</td>
                         </tr>
                         <tr>
                             <td><label for="">Region : </label> {{ eachlocation.fk_city_code.fk_state_code.fk_region_code }}</td>
