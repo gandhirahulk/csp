@@ -3,11 +3,14 @@
 {% block titleblock %} New Candidate {% endblock %}
 
 {% block bodyblock %} 
-
+{% if selected_candidate %}
+{% for eachc in selected_candidate %}
     <div class="tabs">
-        <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>   
+        <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>  
+        <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns">Documents</a> 
     </div>
-
+    {% endfor %}
+{% endif %}
 {% endblock %}
 
 {% block tabcontentblock %}
