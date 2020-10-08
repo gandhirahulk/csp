@@ -1568,6 +1568,7 @@ def INR_to_number(x):
     
 
 def salary_structure_calculation(gsa, wage, state_name, salary_pk):
+    import numpy
     print(gsa)
     g_salary = gsa * 0.50
     print(g_salary)
@@ -1580,7 +1581,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_pk):
     sb_1 = wage / 12
     sb_2 = 7000 / 12
     sb = sb_2 if sb_1 < sb_2 else sb_1
-
+    sb = numpy.ceil(sb)
 
     if state_name == 'Kerala':
         sa_1 = 200
