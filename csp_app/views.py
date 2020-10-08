@@ -1552,7 +1552,11 @@ def convert_to_INR(x):
     return format_currency(x, 'INR', locale='en_IN')
 
 def INR_to_number(x):
+    
+    print(x)
     x = str(x)
+    print(x)
+    print(int(''.join(filter(str.isdigit, x))))
     return int(''.join(filter(str.isdigit, x)))
 
 def salary_structure_calculation(gsa, wage, state_name, salary_pk):

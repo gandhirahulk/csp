@@ -24,6 +24,7 @@ urlpatterns = [
     path('export_city/', exports.export_city, name='export_city'),
     path('export_region/', exports.export_region, name='export_region'),
     path('export_location/', exports.export_location, name='export_location'),
+    path('export_candidate/', exports.export_candidate, name='export_candidate'),
 
 
     path('candidates/', views.index, name='index'),

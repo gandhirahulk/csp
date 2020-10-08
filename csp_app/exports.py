@@ -11,6 +11,90 @@ FORMAT = "%Y-%m-%d"
 TIME = "%H:%M"
 TZ = 'ASIA/KOLKATA'
 
+def export_candidate(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="CSP_Candidates.xls"'
+ 
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Candidate')
+    row_num = 0
+ 
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+
+    columns = ['Candidate Code', 'First Name', 'Middle Name', 'Last Name', 'Date of Birth', 
+    'Contact Number', 'Emergency Cintact Number', 'Personal Email Id', 'Gender', 'Father Name', 
+    'Father Date of Birth', 'Adhaar Number', 'PAN Number', 'Hiring Type', 'Replacement UID', 'Sub Source' , 'Referral UID', 'Date of Joining',
+    'Company', 'vendor', 'Department', 'Function', 'Team', 'SUb Team', 'Designation','Region', 'State', 'City', 'Location',
+    'TA SPOC Email', 'Onboarding SPOC EMail', 'Reporting Manager', 'Reporting Manager Email', 'Email ID Creation', 'Laptop ALlocation', 'Salary Type', 
+    ' Entered Gross Salary Amount', 'Calculated Gross Salary', 'Candidate STatus', 'Onboarding Status', 'Vendor status',
+    'Created By', 'Created Date', 'Created Time', 'Modified By', 'Modified Date','Modified Time', 'Status', ]
+ 
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+ 
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+ 
+    rows = master_candidate.objects.filter(status=active_status)
+    for row in rows:
+        row_num += 1
+        ws.write(row_num, 0, row.pk_candidate_code, font_style)
+        ws.write(row_num, 1, row.First_Name, font_style)
+        ws.write(row_num, 2, row.Middle_Name, font_style)
+        ws.write(row_num, 3, row.Last_Name, font_style)
+        ws.write(row_num, 4, row.Date_of_Birth, font_style)
+        ws.write(row_num, 5, row.Contact_Number, font_style)
+        ws.write(row_num, 6, row.Emergency_Contact_Number, font_style)
+        ws.write(row_num, 7, row.Personal_Email_Id, font_style)
+        ws.write(row_num, 8, row.Gender.gender_name, font_style)
+        ws.write(row_num, 9, row.Father_Name, font_style)
+        ws.write(row_num, 10, row.Father_Date_of_Birth, font_style)
+        ws.write(row_num, 11, row.Aadhaar_Number, font_style)
+        ws.write(row_num, 12, row.PAN_Number, font_style)
+        ws.write(row_num, 13, row.Type_of_Hiring.hiring_type_name, font_style)
+        ws.write(row_num, 14, row.Replacement, font_style)
+        ws.write(row_num, 15, row.Sub_Source.sub_source_name, font_style)
+        ws.write(row_num, 16, row.Referral, font_style)
+        ws.write(row_num, 17, row.Date_of_Joining, font_style)
+        ws.write(row_num, 18, row.fk_entity_code.entity_name, font_style)
+        ws.write(row_num, 19, row.fk_vendor_code.vendor_name, font_style)
+        ws.write(row_num, 20, row.fk_department_code.department_name, font_style)
+
+        ws.write(row_num, 21, row.fk_function_code.function_name, font_style)
+        ws.write(row_num, 22, row.fk_team_code.team_name, font_style)
+        ws.write(row_num, 23, row.fk_subteam_code.sub_team_name, font_style)
+        ws.write(row_num, 24, row.fk_designation_code.designation_name, font_style)
+        ws.write(row_num, 25, row.fk_region_code.region_name.zone_name, font_style)
+        ws.write(row_num, 26, row.fk_state_code.state_name.state_name, font_style)
+        ws.write(row_num, 27, row.fk_city_code.city_name, font_style)
+        ws.write(row_num, 28, row.fk_location_code.location_name, font_style)
+        ws.write(row_num, 29, row.TA_Spoc_Email_Id, font_style)
+        ws.write(row_num, 30, row.Onboarding_Spoc_Email_Id, font_style)
+        ws.write(row_num, 31, row.Reporting_Manager, font_style)
+        ws.write(row_num, 32, row.Reporting_Manager_E_Mail_ID, font_style)
+        ws.write(row_num, 33, row.E_Mail_ID_Creation , font_style)
+        ws.write(row_num, 34, row.Laptop_Allocation.option_name , font_style)
+        ws.write(row_num, 35, row.Salary_Type.salary_type_name , font_style)
+        ws.write(row_num, 36, row.location_code, font_style)
+        ws.write(row_num, 37, row.Gross_Salary_Amount, font_style)
+        ws.write(row_num, 38, row.candidate_status.status_name, font_style)
+        ws.write(row_num, 39, row.onboarding_status.status_name, font_style)
+        ws.write(row_num, 40, row.vendor_status.status_name, font_style)
+
+
+
+
+
+        write_time_details(ws, 41, row_num, row, font_style) 
+        
+    
+ 
+    wb.save(response)
+    return response
+
+
 def export_entity(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="CSP_Entity.xls"'

@@ -17,18 +17,17 @@
 
     <div class="tabs">
         {% if view_candidate %}
-        {% for eachc in view_candidate %}
-        <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>  
-        
-            
+            {% for eachc in view_candidate %}
+                <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>             
+                    
                 <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a> 
-         
+                
             {% endfor %}
         {% endif %} 
     </div>
     {% endif %}
     {% endfor %}       
-          {% endif %}
+{% endif %}
 
        
  
