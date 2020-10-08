@@ -26,7 +26,9 @@
 <div class="tab-container">
     <button id="new_location" class="add-new-btn">New Location</button> 
 </div>
-
+<input type="hidden" name="" id="email">
+<input type="hidden" name="" id="phone_no">
+<input type="hidden" name="" id="spocemail">
 <div class="table-container">
     <a href="{% url 'csp_app:export_location' %}" class="export-btn">Export <i class="fas fa-file-export"></i> </a>
     <table id="location-table" class="dataTable">
