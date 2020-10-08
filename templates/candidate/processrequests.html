@@ -689,7 +689,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >           
                     </div>
                     <div>
-                        <input type="number" tabindex="36" readonly value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
+                        <input type="number" tabindex="36" value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
                     </div>
                 </div>
                 <a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">view salary structure</a>

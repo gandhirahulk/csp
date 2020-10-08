@@ -159,7 +159,7 @@ def create_wages(request):
                 messages.warning(request, "Choose  Wage And Try Again")
                 return redirect("csp_app:minimumwages")
             try:
-                dup_wage = master_minimum_wages.objects.get(fk_state_code= state_fk, fk_skill_code= skill_fk, wages= wage, status= active_status)
+                dup_wage = master_minimum_wages.objects.get(fk_state_code= state_fk, fk_skill_code= skill_fk,status= active_status)
                 messages.error(request, "Minimum wages Already Exist")
                 return redirect("csp_app:minimumwages")
             except ObjectDoesNotExist:
@@ -277,7 +277,7 @@ def save_edit_wages(request):
 def vendor_candidates(usrname):
     try:
         a = []
-        s_vendor = master_vendor.objects.filter(vendor_email_id= usrname, status=active_status)
+        s_vendor = master_vendor.objects.filter(spoc_email_id= usrname, status=active_status)
         for e in s_vendor:
             a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= approve_onboarding, status= active_status))
         
@@ -288,7 +288,7 @@ def vendor_candidates(usrname):
 
 def vendor_pending_candidates(usrname):
     try:
-        s_vendor = master_vendor.objects.filter(vendor_email_id= usrname, status=active_status)
+        s_vendor = master_vendor.objects.filter(spoc_email_id= usrname, status=active_status)
         a = []
         for e in s_vendor:
             a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk, vendor_status= pending_vendor,onboarding_status= approve_onboarding, status= active_status))

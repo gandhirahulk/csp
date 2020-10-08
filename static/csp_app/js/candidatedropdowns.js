@@ -77,16 +77,17 @@ $(document).ready(function(){
             dataType: 'Json',
             success: function(data){
                 var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
-                if (data['state_name'] == 'ASSAM'){
-                    $('#c_aadhaar').attr("required", false);
-                    
-                }
+                
                 $('#c_salary').attr("min", data['amount']);
                 $('#name').attr('val',data['amount'] )
                 $('#c_salary').attr("title", wages);
                 $('#wage_result').text(wages);
                 if (amt > data['amount']){
                     $('#calculate').attr("disabled", false);
+                }
+                if (data['state_name'] == 'ASSAM'){
+                    $('#c_aadhaar').attr("required", false);
+                    
                 }
 
                 
