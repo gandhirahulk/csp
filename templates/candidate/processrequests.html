@@ -3,11 +3,15 @@
 {% block titleblock %} Process Requests {% endblock %}
 
 {% block bodyblock %} 
-
+{% if selected_candidate %}
+    {% for eachcandidate in selected_candidate %}
     <div class="tabs">
         <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>   
         <a href="{% url 'csp_app:pending_request' %}" class="tab-btns active-tab">Pending Requests <button disabled id="request_count" >{{ count }}</button> </a>   
+        <a href="{% url 'csp_app:document_upload' eachcandidate.pk %}" class="tab-btns">Documents</a> 
     </div>
+    {% endfor %}
+{% endif %}
 
 {% endblock %}
 
@@ -686,7 +690,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="36" readonly value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
+                        <input type="number" tabindex="36" readonly value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
                     </div>
                 </div>
                 <a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">view salary structure</a>

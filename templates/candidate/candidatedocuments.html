@@ -51,9 +51,10 @@
         <div class="hr_line">&nbsp;</div>
      
     </div>
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
     <div class="document_form_content">
-        <form method="POST" action="" enctype="multipart/form-data">
-            {% csrf_token %}
+       
             <div class="forms-input-holder">
                 <label for="" style="width: 40%;">Document Catogory</label>
                 <select  id="c_catogory" name="c_catogory" required="true">
@@ -76,9 +77,9 @@
     </div>
     <div class="document_form_footer">
             <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
-        </form>
+       
     </div>
-  
+    </form>
 
 </div>
 
@@ -103,15 +104,15 @@
                             <form action="" method="POST">{% csrf_token %}
                                 <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
                                 <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id">
-                                
-                            </form>
-                            {% if request.user.groups.all %}
+                                {% if request.user.groups.all %}
                                 {% for eachgroup in request.user.groups.all %}
                                     {% if eachgroup.name != 'Candidate' %}
                                 <input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
                                 {% endif %}
                                 {% endfor %}       
                                       {% endif %}
+                            </form>
+                            
                         </td>
                     
                     </tr>
@@ -131,25 +132,25 @@
   
 </div>
 
-
-
-
-    {% endfor %}
-{% endif %} 
 <div id="delete_document_form" class="form_modal" style="padding-top: 15%;">
     <div class="delete_form_header">
         <div class="forms-heading">
-            <h2>Delete This document?</h2>
+            <h2>Delete This Document?</h2>
         </div>     
     </div>
     <div class="delete_form_footer">
-        <form action="{% url 'csp_app:candidate_delete_document' %}" method="POST">
+        <form action="" method="POST">
             {% csrf_token %}
-            <button type="submit" formaction="{% url 'csp_app:candidate_delete_document' %}" value="" id="delete_me" name="delete_id" class="forms-delete-btn">Delete</button>
+            <button type="submit" value="" id="delete_me"   name="delete_id" class="forms-delete-btn">Delete</button>
             <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
         </form>
     </div>
 </div>
+
+
+    {% endfor %}
+{% endif %} 
+
 <script>
     $(document).ready(function(){
         $(document).keyup(function(){

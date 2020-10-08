@@ -71,8 +71,12 @@ def custom_send_email(request):
     
     return HttpResponse("Mail Sent")
 
+
+
+
+
 @login_required(login_url='/notlogin/')
-# @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
 def candidate_profile(request):
     print(request.user)
     try:
@@ -1529,7 +1533,7 @@ def create_candidate(request):
                 salary_pk = dummy.Salary_Type.pk
                 mwc = convert_to_INR(minimum_wage.wages)
                 gsa_value = convert_to_INR(dummy.Gross_Salary_Amount)
-                basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpac = salary_structure_calculation(gsa, wage, state_name, salary_pk)
+                basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2 = salary_structure_calculation(gsa, wage, state_name, salary_pk)
                 # print(diff)
                 return render(request, 'candidate/salary_structure.html', {'mwc':mwc, 'gsa':gsa_value,'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                 'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
@@ -1553,11 +1557,14 @@ def convert_to_INR(x):
 
 def INR_to_number(x):
     
-    print(x)
+    
     x = str(x)
-    print(x)
-    print(int(''.join(filter(str.isdigit, x))))
-    return int(''.join(filter(str.isdigit, x)))
+    y = x.replace('₹','')
+    z = y.replace(',','')
+    print(z)
+    return z
+    # return int(''.join(filter(str.isdigit, x)))
+    
 
 def salary_structure_calculation(gsa, wage, state_name, salary_pk):
     print(gsa)
@@ -1929,19 +1936,34 @@ def change_candidate_status(request):
 @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Candidate').exists())
 def candidate_document_upload(request, candidate_id):
     try:
-        # candidate_id = 'C000000006'
-
-        candidate = master_candidate.objects.filter(pk = candidate_id)
-        candidate_fk = master_candidate.objects.get(pk = candidate_id)
+        document_id = request.POST.get("delete_id")
+        if document_id == None:
+            candidate = master_candidate.objects.filter(pk = candidate_id)
+            candidate_fk = master_candidate.objects.get(pk = candidate_id)
+            
+            document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+            
+            mandatory_list = mandatory_documents.objects.all()
+        if request.POST.get("delete_id") != None or request.POST.get("delete_id") != '':
+            
+                 
+            try:
+                selected_document = candidate_document.objects.get(pk = document_id)     
+                cid = selected_document.fk_candidate_code.pk       
+                selected_document.delete()
+                messages.success(request, "Document Deleted Successfully")
+                return redirect('csp_app:document_upload', cid)
+            except ObjectDoesNotExist:
+                pass
+            
         
-        document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
         
-        mandatory_list = mandatory_documents.objects.all()
+        
         if request.method == 'POST':
             f_catogory = request.POST.get("c_catogory")
             print(f_catogory)
-            file_name = request.POST.get("c_filename")
-            print(file_name)
+            file_name_entered = request.POST.get("c_filename")
+           
             c_file = request.FILES['file']
             
             # if file_catogory == None or file_catogory == '':
@@ -1961,13 +1983,17 @@ def candidate_document_upload(request, candidate_id):
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )    
             catogory_fk = mandatory_documents.objects.get(pk = f_catogory)
             try:
-                duplicate_doc = candidate_document.objects.get(file_name=file_name, file_upload = c_file, fk_candidate_code= candidate_fk, status = active_status)
+                duplicate_catogory = candidate_document.objects.get(document_catagory= catogory_fk, fk_candidate_code= candidate_id, status= active_status)
+                messages.error(request, "File Already Exist Delete Existing File To Save New One")
+                return redirect('csp_app:document_upload', candidate_id = candidate_id )
+                duplicate_doc = candidate_document.objects.get(file_name=file_name_entered, file_upload = c_file, fk_candidate_code= candidate_fk, status = active_status)
                 messages.error(request, "Duplicate File Name")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )
+                
             except ObjectDoesNotExist:
-                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= filename, file_upload = file_url, created_by= str(request.user), created_date_time= datetime.now())
+                new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= file_name_entered, file_upload = file_url, created_by= str(request.user), created_date_time= datetime.now())
                 new_document.save()
-                messages.success(request, "Duplicate Saved Successfully")
+                messages.success(request, "Document Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
         all_active_candidates = vendor_candidates(request.user)
         return render(request, 'candidate/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
@@ -1976,20 +2002,20 @@ def candidate_document_upload(request, candidate_id):
         return HttpResponse("No Data To Display.")
 
 
-@login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Candidate').exists())
-def candidate_delete_document(request):
-    try:
-        if request.method == 'POST':
-            document_id = request.POST.get("delete_id")          
-            selected_document = candidate_document.objects.get(pk = document_id, status= active_status)            
-            selected_document.delete()
-            messages.success(request, "Document Deleted Successfully")
-            return redirect('csp_app:document_upload', selected_document.fk_candidate_code_id)
+# @login_required(login_url='/notlogin/')
+# @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Candidate').exists())
+# def candidate_delete_document(request):
+#     try:
+#         if request.method == 'POST':
+#             document_id = request.POST.get("delete_id")          
+#             selected_document = candidate_document.objects.get(pk = document_id, status= active_status)            
+#             selected_document.delete()
+#             messages.success(request, "Document Deleted Successfully")
+#             return redirect('csp_app:entity')
         
-        return render(request, 'csp_app/candidatedocuments.html', {})        
-    except UnboundLocalError:
-        return HttpResponse("No Data To Display.")
+#         return render(request, 'csp_app/candidatedocuments.html', {})        
+#     except UnboundLocalError:
+#         return HttpResponse("No Data To Display.")
 
 
 @login_required(login_url='/notlogin/')
