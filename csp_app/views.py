@@ -1600,7 +1600,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_pk):
     epf = epf_1 if epf_1 < epf_2 else epf_2
 
     if grossalary <= 21000:
-        esic_1 = grossalary*0.075
+        esic_1 = grossalary*0.0075
     else:
         esic_1 = 0
     esic_2 = 0
