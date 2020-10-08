@@ -129,7 +129,7 @@
                           
                     </div>
                     <div>
-                        <input type="email" tabindex="7" value="{{ eachcandidate.Personal_Email_Id }}" name="c_email" id="email" placeholder="Email Id">
+                        <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" tabindex="7" value="{{ eachcandidate.Personal_Email_Id }}" name="c_email" id="email" placeholder="Email Id">
 
                     </div>
                 </div>
@@ -604,7 +604,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
                     </div>
                     <div>
-                        <input type="email" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                        <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                     </div>
                 </div>
 

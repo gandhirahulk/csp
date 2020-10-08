@@ -68,13 +68,15 @@
         
 
         $('#name').bind('keypress', alphaNumeric);
+
         $('#search-bar').bind('keypress', noSpecial);
         
         $('#phone_no').bind('keypress', onlyNumbers);
         $('#c_aadhaar').bind('keypress', onlyNumbers);
         $('#c_contact').bind('keypress', onlyNumbers);
         $('#c_emergency').bind('keypress', onlyNumbers);
-
+        $('#email').bind('keypress', alphaNumeric);
+        $('#reporting_manager_email').bind('keypress', alphaNumeric);
         $('#c_salary').bind('keypress', money);
         $('#wage').bind('keypress', money);
         $('#c_pan').bind('keypress', pan);
@@ -453,7 +455,14 @@
             if(e.keyCode == 32) {
                 e.preventDefault();
                 return false;
-            }     
+            }    
+            // if ((e.keyCode > 64 && e.keyCode < 91) || (e.keyCode > 96 && e.keyCode < 123)  || e.keyCode == 8 || e.keyCode == 189 || e.keyCode == 190 || e.keyCode == 50){
+            //     console.log('');
+            // } else {
+            //     e.preventDefault();
+            //     return false;
+            // }
+ 
         });
         var input = document.getElementById('phone_no');
         input.addEventListener('keydown', function(e){      
