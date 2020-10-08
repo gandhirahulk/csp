@@ -40,8 +40,8 @@
                             <th>Candidate ID</th>
                             <th>Candidate Name</th>
                             <th>Contact Details</th>
-                            <th>Designation</th>
                             <th>Vendor</th>
+                            <th>Designation</th>                            
                             <th>Vendor Status</th>
                             <th>Onboarding Status</th>
                             <th>Status</th>
@@ -67,8 +67,9 @@
                                             <div>{{ eachcandidate.Personal_Email_Id }}</div>
                                             <div>{{ eachcandidate.Contact_Number }}</div>
                                         </td>
-                                        <td>{{ eachcandidate.fk_designation_code }}</td>
                                         <td>{{ eachcandidate.fk_vendor_code }}</td>
+
+                                        <td>{{ eachcandidate.fk_designation_code }}</td>
                                         <td class="action-col">{{ eachcandidate.vendor_status }}</td>
                                         <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
                                         <td class="action-col">

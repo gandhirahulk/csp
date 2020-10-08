@@ -1254,8 +1254,7 @@ def edit_candidate(request):
             annualtake_home_salary = request.POST.get("annualths")
             cost_to_company = request.POST.get("ctc")
             annualcost_to_company = request.POST.get("annualctc")
-            take_home_salary = request.POST.get("ths")
-            annualtake_home_salary = request.POST.get("annualths")
+            
 
             selected_candidate = master_candidate.objects.get(pk = cid)
             selected_candidate.First_Name=firstname
@@ -1740,6 +1739,8 @@ def save_new_candidate(request):
             annualemployer_total_contribution = request.POST.get("annualtec")
             cost_to_company = request.POST.get("ctc")
             annualcost_to_company = request.POST.get("annualctc")
+            take_home_salary = request.POST.get("ths")
+            annualtake_home_salary = request.POST.get("annualths")
 
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
