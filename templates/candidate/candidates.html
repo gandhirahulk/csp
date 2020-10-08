@@ -108,52 +108,21 @@
                                 </td>
                                 <td >
                               
-                                                {{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}
+                                    {{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}
                                            
                                 </td>
                                 <td style="text-align: center;">
                                     <div>{{ eachcandidate.Personal_Email_Id }}</div>
                                     <div>{{ eachcandidate.Contact_Number }}</div>
                                 </td>
-                                <td>{{ eachcandidate.fk_designation_code }}</td>
                                 <td>{{ eachcandidate.fk_vendor_code }}</td>
+                                <td>{{ eachcandidate.fk_designation_code }}</td>                                
                                 <td class="action-col">{{ eachcandidate.vendor_status }}</td>
                                 <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
                                 <td class="action-col">
                                     {{ eachcandidate.status }}
                                 </td>
-                                <!-- <td class="action-col">
-                                    <input type="hidden" value="{{ eachcandidate.pk }}" name="view_id" id="selected_id">
-                                    {% if request.user.groups.all %}
-                                        {% for eachgroup in request.user.groups.all %}
-                                            {% if eachgroup.name == 'Admin' %}
-                                                <select name="c_status" id="c_status" onchange="statusAdmin('{{ eachcandidate.pk }}', 'change_candidate_status', 'change_me')">
-                                                    <option value="{{ eachcandidate.candidate_status_id }}" label="{{ eachcandidate.candidate_status }}" selected="True">{{ eachcandidate.candidate_status }}</option>
-                                                    {% if c_status_list %}
-                                                        {% for eachstatus in c_status_list %}
-                                                            {% if eachstatus.pk != eachcandidate.candidate_status_id %}
-                                                                <option value="{{ eachstatus.pk }}" label="{{ eachstatus.status_name }}">{{ eachstatus.status_name }}</option>
-                                                            {% endif %}                                        
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                </select>                                    
-                                            {% endif %}   
-                                            {% if eachgroup.name == 'Vendor' %}
-                                                <select name="v_status" id="v_status" onchange="statusVendor('{{ eachcandidate.pk }}', 'change_candidate_status_vendor', 'v_change_me')">
-                                                    <option value="{{ eachcandidate.vendor_status_id }}" label="{{ eachcandidate.vendor_status }}" selected="True">{{ eachcandidate.vendor_status }}</option>
-                                                    {% if v_status_list %}
-                                                        {% for eachstatus in v_status_list %}
-                                                            {% if eachstatus.pk != eachcandidate.vendor_status_id %}
-                                                                <option value="{{ eachstatus.pk }}" label="{{ eachstatus.status_name }}">{{ eachstatus.status_name }}</option>
-                                                            {% endif %}                                        
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                </select>                                    
-                                            {% endif %}                                          
-                                        {% endfor %}
-                                    {% endif %}
-                                </td> -->
-                                
+                               
                             </tr>
         
                         {% endfor %}                
