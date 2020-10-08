@@ -1577,8 +1577,8 @@ def salary_structure_calculation(gsa, wage, state_name, salary_pk):
         hra = basic * 0.05
     else:
         hra = 0
-    sb_1 = wage // 12
-    sb_2 = 7000 // 12
+    sb_1 = wage / 12
+    sb_2 = 7000 / 12
     sb = sb_2 if sb_1 < sb_2 else sb_1
 
 
