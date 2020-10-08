@@ -84,7 +84,7 @@
                <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Email ID</label>
-                <input tabindex="7" type="email" value="{{ eachc.Personal_Email_Id }}" maxlength="50" name="c_email" tabindex="7" id="email" placeholder="Email Id">
+                <input tabindex="7" type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" value="{{ eachc.Personal_Email_Id }}" maxlength="50" name="c_email" tabindex="7" id="email" placeholder="Email Id">
                  </div>
                 <div class="margin-left">
                 <label for="" >Gender</label>
@@ -405,7 +405,7 @@
                 <div class="margin-left">
                 <label for="" >Reporting / Hiring Manager Email ID</label>
 
-                <input type="email" tabindex="32" value="{{ eachc.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" id="reporting_manager_email" name="c_reporting_manager_email" required="true">
+                <input type="text" tabindex="32" value="{{ eachc.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" id="reporting_manager_email" name="c_reporting_manager_email" required="true">
          
             </div>
         </div>
