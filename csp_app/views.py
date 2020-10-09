@@ -1098,7 +1098,7 @@ def edit_salary_structure(request):
                 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
                 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
                 'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': convert_to_INR(annual_var), 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': convert_to_INR(diff), 'gpac': convert_to_INR(gpi_2)})
+                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': convert_to_INR(var), 'annual_var': convert_to_INR(annual_var), 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': convert_to_INR(diff), 'gpac': convert_to_INR(gpi_2)})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -1544,7 +1544,7 @@ def create_candidate(request):
                 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
                 'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
                 'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
-                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': var, 'annual_var': convert_to_INR(annual_var), 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': convert_to_INR(diff), 'gpac': convert_to_INR(gpi_2)})
+                'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': convert_to_INR(var), 'annual_var': convert_to_INR(annual_var), 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': convert_to_INR(diff), 'gpac': convert_to_INR(gpi_2)})
                 
 
             return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,})
