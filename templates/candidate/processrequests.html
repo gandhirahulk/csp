@@ -534,7 +534,7 @@
                     <div>
                         <select name="c_city" id="c_city" required="true" tabindex="27">
                             <option value="{{ eachcandidate.fk_city_code_id }}" selected  label="{{ eachcandidate.fk_city_code }}">{{ eachcandidate.fk_city_code.fk_state_code_id }}</option>
-                            <option value="" disabled label=" " class="empty">Select City</option>
+                            <option value="" disabled label="" class="empty">Select City</option>
 
                             {% if city_list %}
                                 {% for eachcity in city_list %}
@@ -702,6 +702,7 @@
                     </div>
                     <div>
                         <input type="number" tabindex="36" value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
+                        <span id="wage_result" style="color: #bf0711;"></span>
                     </div>
                 </div>
                 <a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">view salary structure</a>

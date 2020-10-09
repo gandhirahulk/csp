@@ -77,9 +77,7 @@ $(document).ready(function(){
                 if (data['state_name'] == 'ASSAM'){
                     $('#c_aadhaar').attr("required", false);
                     
-                }
-
-                
+                }             
 
             }
         });
@@ -198,6 +196,37 @@ $(document).ready(function(){
             $('#c_city .empty').css("display", "");
             $('#c_city .empty').prop("selected", true);
         }
+        var state = $('#c_state').val();
+        var type = $('#c_desg').val();
+        var amt = $(this).val();
+        var min = $('#name').val();
+        if (amt > min){
+            $('#wage_result').text('');
+        }
+        $.ajax({
+            url: '/csp_minimum_wage_list/',
+            data: {
+                'search_state': state,
+                'search_type': type,                
+            },
+            dataType: 'Json',
+            success: function(data){
+                var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
+                
+                $('#c_salary').attr("min", data['amount']);
+                $('#name').attr('val',data['amount'] )
+                $('#c_salary').attr("title", wages);
+                $('#wage_result').text(wages);
+                if (amt > data['amount']){
+                    $('#calculate').attr("disabled", false);
+                }
+                if (data['state_name'] == 'ASSAM'){
+                    $('#c_aadhaar').attr("required", false);
+                    
+                }             
+
+            }
+        });
     });
     
     $('#c_city').change(function() {
@@ -299,6 +328,39 @@ $(document).ready(function(){
             $('#c_subteam .empty').prop("selected", true);
         }
     });
+    $('#c_desg').change(function(){
+        var state = $('#c_state').val();
+        var type = $('#c_desg').val();
+        var amt = $(this).val();
+        var min = $('#name').val();
+        if (amt > min){
+            $('#wage_result').text('');
+        }
+        $.ajax({
+            url: '/csp_minimum_wage_list/',
+            data: {
+                'search_state': state,
+                'search_type': type,                
+            },
+            dataType: 'Json',
+            success: function(data){
+                var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
+                
+                $('#c_salary').attr("min", data['amount']);
+                $('#name').attr('val',data['amount'] )
+                $('#c_salary').attr("title", wages);
+                $('#wage_result').text(wages);
+                if (amt > data['amount']){
+                    $('#calculate').attr("disabled", false);
+                }
+                if (data['state_name'] == 'ASSAM'){
+                    $('#c_aadhaar').attr("required", false);
+                    
+                }             
+
+            }
+        });
+    })
 
     $('#c_subteam').change(function() {
         var filter = $(this).val();

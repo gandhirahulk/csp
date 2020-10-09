@@ -427,7 +427,7 @@ def process_requests(request, cid):
             emergency_no = request.POST.get("c_emergency")
             email = request.POST.get("c_email")
             c_gender = request.POST.get("c_gender")
-            fathername = request.POST.get("c_fathername")
+            fathername = request.POST.get("c_fathername").capitalize()
             father_dob = request.POST.get("c_father_dob")
             aadhaar = request.POST.get("c_aadhaar")
             Pan = request.POST.get("c_pan")
