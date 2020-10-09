@@ -110,19 +110,97 @@ def change_password(request):
 def minimum_wage_list(request):
     state_id = request.GET.get('search_state')
     desg_id = request.GET.get('search_type')
-
     state = master_state.objects.get(pk=state_id)
     desg = master_designation.objects.get(pk=desg_id)
-
     output = {}
     wage_list = master_minimum_wages.objects.get(fk_state_code=state.state_name_id, fk_skill_code= desg.fk_skill_code_id, status=active_status)
-    # output['wage_list'] = list(wage_list.values())
     output['desg_type'] = wage_list.fk_skill_code.skill_name
     output['state_name'] = wage_list.fk_state_code.state_name
     output['amount'] = wage_list.wages
-    print(output)
     return JsonResponse(output)
 
+def check_duplicate_candidate_new(request):
+    aadhaar = request.GET.get('aadhaar')
+    pan = request.GET.get('pan')
+    contact_no = request.GET.get('contact_no')
+    fathername = request.GET.get('father')
+    firstname = request.GET.get('firstname')
+    dob = request.GET.get('dob')
+    email = request.GET.get('email')
+    result = {}
+    try:                
+        dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
+        result['adhaar'] = dup_candidate_aadhaar.pk_candidate_code
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['adhaar'] = ''
+    try:
+        dup_candidate_pan = master_candidate.objects.get(PAN_Number= pan, status= active_status)
+        result['pan'] = dup_candidate_pan.pk_candidate_code
+    except ObjectDoesNotExist:
+        result['pan'] = ''
+    try:
+        dup_candidate_contact = master_candidate.objects.get(Contact_Number= contact_no, status= active_status)
+        result['contact'] = dup_candidate_contact.pk_candidate_code
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['contact'] = ''
+    try:
+       
+        dup_candidate_details = master_candidate.objects.get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
+        result['details'] = dup_candidate_details.pk_candidate_code
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['details'] = ''
+    try:
+        dup_candidate_email = master_candidate.objects.get(Personal_Email_Id=email, status= active_status)
+        result['email'] = dup_candidate_email.pk_candidate_code
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['email'] = ''
+    return JsonResponse(result)
+
+def check_duplicate_candidate_edit(request):
+    aadhaar = request.GET.get('aadhaar')
+    pan = request.GET.get('pan')
+    contact_no = request.GET.get('contact_no')
+    fathername = request.GET.get('father')
+    firstname = request.GET.get('firstname')
+    dob = request.GET.get('dob')
+    email = request.GET.get('email')
+    candidate_id = request.GET.get('cid')
+    result = {}
+    try:                
+        dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Aadhaar_Number= aadhaar, status= active_status)
+        result['adhaar'] = dup_candidate_aadhaar.pk_candidate_code
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['adhaar'] = ''
+    try:
+        dup_candidate_pan = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(PAN_Number= pan, status= active_status)
+        result['pan'] = dup_candidate_pan.pk_candidate_code
+    except ObjectDoesNotExist:
+        result['pan'] = ''
+    try:
+        dup_candidate_contact = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Contact_Number= contact_no, status= active_status)
+        result['contact'] = dup_candidate_contact.pk_candidate_code
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['contact'] = ''
+    try:
+       
+        dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
+        result['details'] = dup_candidate_details.pk_candidate_code
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['details'] = ''
+    try:
+        dup_candidate_email = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Personal_Email_Id=email, status= active_status)
+        result['email'] = dup_candidate_email.pk_candidate_code
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['email'] = ''
+    return JsonResponse(result)
 
 
 @login_required(login_url='/notlogin/')
@@ -1230,7 +1308,6 @@ def edit_candidate(request):
             special_allowance = request.POST.get("sa")
             annualspecial_allowance = request.POST.get("annualsa")
             ss_gross_salary = request.POST.get("gs")
-            print(ss_gross_salary)
             annualgross_salary = request.POST.get("annualgs")
             employee_pf = request.POST.get("epf")
             annualemployee_pf = request.POST.get("annualepf")
@@ -1254,77 +1331,113 @@ def edit_candidate(request):
             annualtake_home_salary = request.POST.get("annualths")
             cost_to_company = request.POST.get("ctc")
             annualcost_to_company = request.POST.get("annualctc")
+                    
+            try:                
+                dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Aadhaar_Number= aadhaar, status= active_status)
+                messages.error( request, "Aadhaar Number Already Exist")
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_pan = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(PAN_Number= pan, status= active_status)
+                messages.error( request, "PAN  Already Exist")
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_contact = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Contact_Number= contact_no, status= active_status)
+                messages.error( request, "Contact Number Already Exist")
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
             
-
-            selected_candidate = master_candidate.objects.get(pk = cid)
-            selected_candidate.First_Name=firstname
-            selected_candidate.Middle_Name=middlename
-            selected_candidate.Last_Name= lastname
-            selected_candidate.Date_of_Joining= doj
-            selected_candidate.Date_of_Birth= dob
-            selected_candidate.Father_Name= fathername
-            selected_candidate.Father_Date_of_Birth= father_dob
-            selected_candidate.Aadhaar_Number= aadhaar
-            selected_candidate.PAN_Number= Pan
-            selected_candidate.Contact_Number= contact_no
-            selected_candidate.Emergency_Contact_Number= emergency_no
-            selected_candidate.Type_of_Hiring= hiring_fk
-            selected_candidate.Replacement= replacement
-            selected_candidate.Sub_Source= subsource_fk
-            selected_candidate.Referral= referral
-            selected_candidate.fk_vendor_code= vendor_fk
-            selected_candidate.fk_entity_code= entity_fk
-            selected_candidate.fk_department_code= department_fk
-            selected_candidate.fk_function_code= function_fk
-            selected_candidate.fk_team_code= team_fk
-            selected_candidate.fk_subteam_code= sub_team_fk
-            selected_candidate.fk_designation_code= designation_fk
-            selected_candidate.fk_region_code= region_fk
-            selected_candidate.fk_state_code= state_fk
-            selected_candidate.fk_city_code= city_fk
-            selected_candidate.fk_location_code= location_fk
-            selected_candidate.location_code= loc_code,
-            selected_candidate.Reporting_Manager= reporting_manager
-            selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
-            selected_candidate.Gender= gender_fk 
-            selected_candidate.E_Mail_ID_Creation= email_creation
-            # selected_candidate.TA_Spoc_Email_Id= ta_spoc #confirm from sir whther taspoc can be edited or no
-            selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
-            selected_candidate.Laptop_Allocation= la_fk
-            selected_candidate.Salary_Type= salarytype_fk
-            selected_candidate.Gross_Salary_Amount= INR_to_number(ss_gross_salary)
-            selected_candidate.Personal_Email_Id = email
-            selected_candidate.modified_by = str(request.user)
-            selected_candidate.modified_date_time= datetime.now()
-            selected_candidate.save()
-            new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
-                special_allowance=INR_to_number(special_allowance), annual_special_allowance=INR_to_number(annualspecial_allowance),gross_salary=INR_to_number(ss_gross_salary), annual_gross_salary=INR_to_number(annualgross_salary), employee_pf= INR_to_number(employee_pf), annual_employee_pf= INR_to_number(annualemployee_pf),
-                employee_esic= INR_to_number(employee_esic), annual_employee_esic= INR_to_number(annualemployer_esic), employee_total_contribution= INR_to_number(employee_total_contribution), annual_employee_total_contribution= INR_to_number(annualemployee_total_contribution), employer_pf= INR_to_number(employer_pf), annual_employer_pf= INR_to_number(annualemployer_pf),
-                employer_pf_admin=INR_to_number(employer_pf_admin), annual_employer_pf_admin= INR_to_number(annualemployer_pf_admin), employer_esic= INR_to_number(employer_esic), annual_employer_esic= INR_to_number(annualemployer_esic), group_personal_accident= INR_to_number(group_personal_accident), annual_group_personal_accident= INR_to_number(annualgroup_personal_accident),
-                group_mediclaim_insurance= INR_to_number(group_mediclaim_insurance), annual_group_mediclaim_insurance = INR_to_number(annualgroup_mediclaim_insurance), employer_total_contribution= INR_to_number(employer_total_contribution), annual_employer_total_contribution= INR_to_number(annualemployer_total_contribution), cost_to_company=INR_to_number(cost_to_company),
-                annual_cost_to_company= INR_to_number(annualcost_to_company), take_home_salary= INR_to_number(take_home_salary), annual_take_home_salary= INR_to_number(annualtake_home_salary))
-            new_salary_structure.save()
-            alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
-            our_email = EmailMessage(
-                'Candidate Account Updated.',
-                alltemplate,
-                settings.EMAIL_HOST_USER,
-                [ selected_candidate.TA_Spoc_Email_Id, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()
-            limtemplate = render_to_string('emailtemplates/candidate_edited_et_limited.html', {'candidate_code':cid ,'user': request.user})
-            our_email = EmailMessage(
-                'Candidate Account Updated.',
-                limtemplate,
-                settings.EMAIL_HOST_USER,
-                [ reporting_manager_email, 'sadaf.shaikh@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()
-            
-            messages.success(request, "Candidate Updated Successfully")
-            return redirect("csp_app:candidate")
+                dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
+                messages.error( request, "Candidate Already Exist")
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_email = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Personal_Email_Id=email, status= active_status)
+                messages.error( request, "Candidate Email Already Exist")
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
+                messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                
+                selected_candidate = master_candidate.objects.get(pk = cid)
+                selected_candidate.First_Name=firstname
+                selected_candidate.Middle_Name=middlename
+                selected_candidate.Last_Name= lastname
+                selected_candidate.Date_of_Joining= doj
+                selected_candidate.Date_of_Birth= dob
+                selected_candidate.Father_Name= fathername
+                selected_candidate.Father_Date_of_Birth= father_dob
+                selected_candidate.Aadhaar_Number= aadhaar
+                selected_candidate.PAN_Number= Pan
+                selected_candidate.Contact_Number= contact_no
+                selected_candidate.Emergency_Contact_Number= emergency_no
+                selected_candidate.Type_of_Hiring= hiring_fk
+                selected_candidate.Replacement= replacement
+                selected_candidate.Sub_Source= subsource_fk
+                selected_candidate.Referral= referral
+                selected_candidate.fk_vendor_code= vendor_fk
+                selected_candidate.fk_entity_code= entity_fk
+                selected_candidate.fk_department_code= department_fk
+                selected_candidate.fk_function_code= function_fk
+                selected_candidate.fk_team_code= team_fk
+                selected_candidate.fk_subteam_code= sub_team_fk
+                selected_candidate.fk_designation_code= designation_fk
+                selected_candidate.fk_region_code= region_fk
+                selected_candidate.fk_state_code= state_fk
+                selected_candidate.fk_city_code= city_fk
+                selected_candidate.fk_location_code= location_fk
+                selected_candidate.location_code= loc_code,
+                selected_candidate.Reporting_Manager= reporting_manager
+                selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
+                selected_candidate.Gender= gender_fk 
+                selected_candidate.E_Mail_ID_Creation= email_creation
+                # selected_candidate.TA_Spoc_Email_Id= ta_spoc #confirm from sir whther taspoc can be edited or no
+                selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
+                selected_candidate.Laptop_Allocation= la_fk
+                selected_candidate.Salary_Type= salarytype_fk
+                selected_candidate.Gross_Salary_Amount= INR_to_number(ss_gross_salary)
+                selected_candidate.Personal_Email_Id = email
+                selected_candidate.modified_by = str(request.user)
+                selected_candidate.modified_date_time= datetime.now()
+                selected_candidate.save()
+                new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
+                    special_allowance=INR_to_number(special_allowance), annual_special_allowance=INR_to_number(annualspecial_allowance),gross_salary=INR_to_number(ss_gross_salary), annual_gross_salary=INR_to_number(annualgross_salary), employee_pf= INR_to_number(employee_pf), annual_employee_pf= INR_to_number(annualemployee_pf),
+                    employee_esic= INR_to_number(employee_esic), annual_employee_esic= INR_to_number(annualemployer_esic), employee_total_contribution= INR_to_number(employee_total_contribution), annual_employee_total_contribution= INR_to_number(annualemployee_total_contribution), employer_pf= INR_to_number(employer_pf), annual_employer_pf= INR_to_number(annualemployer_pf),
+                    employer_pf_admin=INR_to_number(employer_pf_admin), annual_employer_pf_admin= INR_to_number(annualemployer_pf_admin), employer_esic= INR_to_number(employer_esic), annual_employer_esic= INR_to_number(annualemployer_esic), group_personal_accident= INR_to_number(group_personal_accident), annual_group_personal_accident= INR_to_number(annualgroup_personal_accident),
+                    group_mediclaim_insurance= INR_to_number(group_mediclaim_insurance), annual_group_mediclaim_insurance = INR_to_number(annualgroup_mediclaim_insurance), employer_total_contribution= INR_to_number(employer_total_contribution), annual_employer_total_contribution= INR_to_number(annualemployer_total_contribution), cost_to_company=INR_to_number(cost_to_company),
+                    annual_cost_to_company= INR_to_number(annualcost_to_company), take_home_salary= INR_to_number(take_home_salary), annual_take_home_salary= INR_to_number(annualtake_home_salary))
+                new_salary_structure.save()
+                alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
+                our_email = EmailMessage(
+                    'Candidate Account Updated.',
+                    alltemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ selected_candidate.TA_Spoc_Email_Id, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+                limtemplate = render_to_string('emailtemplates/candidate_edited_et_limited.html', {'candidate_code':cid ,'user': request.user})
+                our_email = EmailMessage(
+                    'Candidate Account Updated.',
+                    limtemplate,
+                    settings.EMAIL_HOST_USER,
+                    [ reporting_manager_email, 'sadaf.shaikh@udaan.com'],
+                ) 
+                our_email.fail_silently = False
+                our_email.send()
+                
+                messages.success(request, "Candidate Updated Successfully")
+                return redirect("csp_app:candidate")
 
         return render(request, 'candidate/editcandidate.html', {'allcandidates': all_active_candidates,'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
@@ -1492,17 +1605,43 @@ def create_candidate(request):
                 messages.warning(request, "Choose  Location  And Try Again")
                 return redirect("csp_app:new_candidate")
             location_fk = master_location.objects.get(pk= location)
+               
+            try:                
+                dup_candidate_aadhaar = master_candidate.get(Aadhaar_Number= aadhaar, status= active_status)
+                messages.error( request, "Aadhaar Number Already Exist")
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
             try:
-                # a = master_candidate.objects.get(pk = 1)
-                dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
-                messages.error( request, "Candidate Aadhaar Number Already Exist")
+                dup_candidate_pan = master_candidate.get(PAN_Number= pan, status= active_status)
+                messages.error( request, "PAN  Already Exist")
                 return redirect("csp_app:new_candidate")
-                dup_candidate_pan = master_candidate.objects.get(PAN_Number= Pan, status= active_status)
-                messages.error( request, "Candidate PAN Number Already Exist")
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_contact = master_candidate.get(Contact_Number= contact_no, status= active_status)
+                messages.error( request, "Contact Number Already Exist")
                 return redirect("csp_app:new_candidate")
-                dup_candidate_pan = master_candidate.objects.get(Contact_Number= contact_no, status= active_status)
-                messages.error( request, "Candidate Contact Number Already Exist")
+            except ObjectDoesNotExist:
+                pass
+            try:
+            
+                dup_candidate_details = master_candidate.get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
+                messages.error( request, "Candidate Already Exist")
                 return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_email = master_candidate.get(Personal_Email_Id=email, status= active_status)
+                messages.error( request, "Candidate Email Already Exist")
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_details = master_candidate.objects.get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
+                messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
+                return redirect("csp_app:new_candidate")
+            
             except ObjectDoesNotExist:
                 last_code_query = dummy_candidate_code.objects.latest('candidate_code')                
                 last_code_str = last_code_query.candidate_code
@@ -1812,12 +1951,31 @@ def save_new_candidate(request):
                 dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
                 messages.error( request, "Candidate Aadhaar Number Already Exist")
                 return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
                 dup_candidate_pan = master_candidate.objects.get(PAN_Number= Pan, status= active_status)
                 messages.error( request, "Candidate PAN Number Already Exist")
                 return redirect("csp_app:new_candidate")
-                dup_candidate_pan = master_candidate.objects.get(Contact_Number= contact_no, status= active_status)
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_contact = master_candidate.objects.get(Contact_Number= contact_no, status= active_status)
                 messages.error( request, "Candidate Contact Number Already Exist")
                 return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_details = master_candidate.objects.get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
+                messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
+                return redirect("csp_app:new_candidate")
+            except ObjectDoesNotExist:
+                pass
+            try:
+                dup_candidate_email = master_candidate.objects.get(Personal_Email_Id=email, status= active_status)
+                messages.error( request, "Candidate Email Already Exist")
+                return redirect("csp_app:new_candidate")
+            
             except ObjectDoesNotExist:
                 
                 last_code_query = csp_candidate_code.objects.latest('candidate_code')                

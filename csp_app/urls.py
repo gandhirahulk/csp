@@ -67,7 +67,9 @@ urlpatterns = [
     path('csp_candidates/edit_candidate/', views.edit_candidate, name= 'edit_candidate'),
     path('csp_candidates/create_new/', views.create_candidate, name= 'create_candidate'),
     path('csp_candidates/save_new/', views.save_new_candidate, name= 'save_new_candidate'),
-
+    path('csp_candidates/check_duplicacy_new/', views.check_duplicate_candidate_new, name= 'check_duplicate_candidate_new'),
+    path('csp_candidates/check_duplicacy_edit/', views.check_duplicate_candidate_edit, name= 'check_duplicate_candidate_edit'),
+   
     path('csp_candidates/view_candidate/', views.view_candidate, name= 'view_candidate'),
     path('csp_candidates/change_status/', views.change_candidate_status, name= 'change_candidate_status'),
     path('csp_candidates/vendor_change_status/', views.change_candidate_status_vendor, name= 'change_candidate_status_vendor'),

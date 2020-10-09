@@ -37,7 +37,7 @@
                 <div>
                 <label class="move-out" for="c_firstname">Candidate Code</label>
 
-                <input class="input-text" value="{{ eachc.pk }}" style="background: #f5f5fa;" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" readonly  >
+                <input class="input-text" value="{{ eachc.pk }}" style="background: #f5f5fa;" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" readonly id="cid" >
                 </div>
                 <!-- <div class="margin-left">
                     <label for="">Middle Name</label>
@@ -70,7 +70,8 @@
                 <div>
                 <label for="">Contact Number</label>
                 <input tabindex="5" type="text" value="{{ eachc.Contact_Number }}" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
-                 </div>
+                <small id="contactmsg"></small>    
+                </div>
                 <div class="margin-left">
                 <label for="" >Emergency Number</label>
                 <input tabindex="6" type="text" value="{{ eachc.Emergency_Contact_Number }}" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
@@ -116,11 +117,12 @@
                 <div>
                 <label for="">Aadhaar Number</label>
                 <input tabindex="11" type="text" value="{{ eachc.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
-                 </div>
+                <small id="adhaarmsg"></small>    
+                </div>
                 <div class="margin-left">
                 <label for="" >PAN Number</label>
                 <input tabindex="12" type="text" value="{{ eachc.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{3}[P]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
-      
+                <small id="panmsg"></small>    
             </div>
         </div>
                <div class="candidate-forms-input-holder">
@@ -475,6 +477,7 @@
         
         <button id="calculate" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
  </form>
+ <small id="detailsmsg"></small>    
     </div>
     <input type="hidden" id="name">
     <input type="hidden" id="phone_no">
@@ -482,6 +485,7 @@
   </div>
   {% endfor %}
 {% endif %}
+<script src="{% static 'csp_app/js/candidateeditajax.js' %}"></script>
 <script src="{% static 'csp_app/js/candidatedropdowns.js' %}"></script>
 
 <script src="{% static 'csp_app/js/candidatedom.js' %}"></script>
