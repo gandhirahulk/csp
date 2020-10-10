@@ -65,14 +65,20 @@ $(document).ready(function(){
             },
             dataType: 'Json',
             success: function(data){
-                var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
+                if (data['amount'] != -1){
+                    var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
                 
+                      
+                } else {
+                    var wages = 'Minimum wage not defined for selected state and designation.'
+                }
                 $('#c_salary').attr("min", data['amount']);
                 $('#name').attr('val',data['amount'] )
                 $('#c_salary').attr("title", wages);
                 $('#wage_result').text(wages);
-                if (amt > data['amount']){
+                if (amt >= data['amount']){
                     $('#calculate').attr("disabled", false);
+                    $('#wage_result').text('');
                 }
                 if (data['state_name'] == 'ASSAM'){
                     $('#c_aadhaar').attr("required", false);
@@ -211,15 +217,25 @@ $(document).ready(function(){
             },
             dataType: 'Json',
             success: function(data){
-                var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
-                
+                console.log(data['amount']);
+                if (amt >= data['amount']){
+                    $('#calculate').attr("disabled", false);
+                    $('#wage_result').text('');
+                }
+                if (data['amount'] != -1){
+                    var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];                    
+                    $('#wage_result').text(wages);
+                    console.log(wages);
+                } else {
+                    var wages = 'Minimum wage not defined for selected state and designation.'
+                    $('#wage_result').text(wages);
+                    console.log(wages);
+                }
                 $('#c_salary').attr("min", data['amount']);
                 $('#name').attr('val',data['amount'] )
                 $('#c_salary').attr("title", wages);
-                $('#wage_result').text(wages);
-                if (amt > data['amount']){
-                    $('#calculate').attr("disabled", false);
-                }
+                
+                
                 if (data['state_name'] == 'ASSAM'){
                     $('#c_aadhaar').attr("required", false);
                     
@@ -344,19 +360,28 @@ $(document).ready(function(){
             },
             dataType: 'Json',
             success: function(data){
-                var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
+                if (data['amount'] != -1){
+                    var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
                 
+                      
+                } else {
+                    var wages = 'Minimum wage not defined for selected state and designation.'
+                }
                 $('#c_salary').attr("min", data['amount']);
                 $('#name').attr('val',data['amount'] )
                 $('#c_salary').attr("title", wages);
                 $('#wage_result').text(wages);
-                if (amt > data['amount']){
+                if (amt >= data['amount']){
+                    console.log('crossed');
                     $('#calculate').attr("disabled", false);
+                    $('#wage_result').text('');
+                    console.log('no');
                 }
                 if (data['state_name'] == 'ASSAM'){
                     $('#c_aadhaar').attr("required", false);
                     
-                }             
+                }   
+                        
 
             }
         });

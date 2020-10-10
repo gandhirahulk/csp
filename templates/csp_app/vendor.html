@@ -160,18 +160,19 @@
 
         <div class="forms-input-holder">
             <label for="">Company</label>
-            <input type="search" style="width: 60%;" class="search-entity" name="" id="search-entity" placeholder="Search By Company Name" onkeyup="filterCompany('search-entity','entity-ul')">
-            <div class="select-all">
-                <input type="checkbox" name="" id="selectall"> Select All        
-            </div>
+            <input type="search" class="search-entity" name="" id="search-entity" placeholder="Search By Company Name" onkeyup="filterCompany('search-entity','entity-ul')">
+           
         
         </div>
+        
       
         <div class="entity-holder" id="entity-ul">
+            <div><input type="checkbox" name="" id="selectall" value="Select All"> Select All</div>       
+
             {% if entity_list %}
                 {% for eachentity in entity_list %}
                         <div style="flex-grow: 1;
-                        width: 33%;">    
+                        width: 100%;">    
                         <span>
 
                             <input type="checkbox" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
@@ -180,6 +181,7 @@
                         </div>  
                 {% endfor %}                
             {% endif %} 
+            <p></p>
         </div>
         
   </div>

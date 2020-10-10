@@ -109,11 +109,15 @@ def minimum_wage_list(request):
     state = master_state.objects.get(pk=state_id)
     desg = master_designation.objects.get(pk=desg_id)
     output = {}
-    wage_list = master_minimum_wages.objects.get(fk_state_code=state.state_name_id, fk_skill_code= desg.fk_skill_code_id, status=active_status)
-    output['desg_type'] = wage_list.fk_skill_code.skill_name
-    output['state_name'] = wage_list.fk_state_code.state_name
-    output['amount'] = wage_list.wages
-    return JsonResponse(output)
+    try:
+        wage_list = master_minimum_wages.objects.get(fk_state_code=state.state_name_id, fk_skill_code= desg.fk_skill_code_id, status=active_status)
+        output['desg_type'] = wage_list.fk_skill_code.skill_name
+        output['state_name'] = wage_list.fk_state_code.state_name
+        output['amount'] = wage_list.wages
+        return JsonResponse(output)
+    except ObjectDoesNotExist:
+        output['amount'] = -1
+        return JsonResponse(output)
 
 def check_duplicate_candidate_new(request):
     aadhaar = request.GET.get('aadhaar')
