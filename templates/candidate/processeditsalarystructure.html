@@ -719,19 +719,17 @@
                     {% if eachgroup.name == 'Vendor' %}
                         <input type="hidden" value="vendor" name="ve_status">
                         <!-- <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve to Send LOI to Candidate</button>  -->
-                        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' %}" type="submit" style="width: auto;">Calculate Salary Structure</button> 
+                        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' %}" type="submit" style="width: auto;">Approve to Send LOI to Candidate</button> 
                     
                     {% elif eachgroup.name == 'Admin' %}   
                         <input type="hidden" value="vendor" name="ve_status">
-        <button id="calculate" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure_process' %}" type="submit">Calculate Salary Structure</button>
-
                         <!-- <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve to Send the Details to Vendor For LOI</button>  -->
-                        <!-- <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' %}" type="submit" style="width: auto;">Calculate Salary Structure</button>  -->
+                        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' %}" type="submit" style="width: auto;">Calculate Salary Structure</button> 
                 
 
                     {% else %}
                         <input type="hidden" value="onboarding" name="o_status">
-                        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' %}" type="submit" style="width: auto;">Calculate Salary Structure</button> 
+                        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' %}" type="submit" style="width: auto;">Approve to Send the Details to Vendor For LOI</button> 
                     {% endif %}
                 {% endfor %}
             {% endif %}

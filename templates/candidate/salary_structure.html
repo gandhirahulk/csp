@@ -470,7 +470,11 @@
             <div class="form_content" id="s-wrapper" style="width: 80vw;">
                 
                 <div class="ss canvas_div_pdf"> 
-                    <div class="header-info"><span> <strong> Name : </strong> {{ dummy.First_Name }} {{ dummy.Middle_Name }} {{ dummy.Last_Name }}</span> <span><strong> Email : </strong> {{ dummy.Personal_Email_Id}} </span> <span><strong>  Phone : </strong> {{ dummy.Contact_Number }}</span></div>
+                    <div>
+                        <div style="font-size: 16px;"> <strong> Name : </strong> {{ dummy.First_Name }} {{ dummy.Middle_Name }} {{ dummy.Last_Name }}</div> 
+                        <div style="font-size: 16px;"><strong> Email : </strong> {{ dummy.Personal_Email_Id}} </div> 
+                        <div style="font-size: 16px;"><strong>  Phone : </strong> {{ dummy.Contact_Number }}</div>
+                    </div>
            
                     <div class="salary-heading-one">
                         <h3>Salary Structure</h3>
@@ -485,37 +489,57 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% if basic != '₹0.00' %}
                             <tr>
                                 <td>Basic</td>
                                 <td><input type="text" name="basic"  readonly value="{{ basic  }}"></td>
                                 <td><input type="text" name="annualbasic" value=" {{ annualbasic   }}" readonly></td>
                             </tr>
+                            {% endif %}
+                            {% if hra != '₹0.00' %}
                             <tr>
                                 <td>House Rent Allowance</td>
                                 <td><input type="text" name="hra"  readonly value="{{ hra   }}"></td>
                                 <td><input type="text" name="annualhra"  readonly value="{{ annualhra   }}"></td>
                             </tr>
+                            {% endif %}
+                            {% if sb != '₹0.00' %}
                             <tr>
                                 <td>Statutory Bonus</td>
-                                <td ><input type="text" name="sb"  readonly value="{{ sb   }}"></td>
-                                <td><input type="text" name="annualsb"  readonly value="{{ annualsb   }}"></td>
+                                <td ><input type="text" name="sb"  readonly value="{{ sb }}"></td>
+                                <td><input type="text" name="annualsb"  readonly value="{{ annualsb }}"></td>
                             </tr>
+                            {% endif %}
+                            {% if sa != '₹0.00' %}
+                            
                             <tr>
                                 <td>Special Allowance</td>
-                                <td ><input type="text" name="sa"  readonly value="{{ sa   }}"></td>
-                                <td><input type="text" name="annualsa"  readonly value="{{ annualsa   }}"></td>
+                                <td ><input type="text" name="sa"  readonly value="{{ sa }}"></td>
+                                <td><input type="text" name="annualsa"  readonly value="{{ annualsa }}"></td>
                             </tr>
-                          
+                            {% endif %}
+                            {% if fs == '₹0.00' %}
                             <tr class="ss-table-total-one">
                                 <td>Gross Salary (A)</td>
                                 <td ><input type="text" name="gs"  readonly value="{{ gross_salary   }}"></td>
                                 <td><input type="text" name="annualgs"  readonly value="{{ annualgs   }}"></td>
                             </tr>
-                            {% if variable != 'infinity' %}
+                            {% endif %}
+                            {% if fs != '₹0.00' %}
+                            <tr>
+                                <td>Fixed Salary </td>
+                                <td ><input type="text" name="var"  readonly value="{{ fs   }}"></td>
+                                <td><input type="text" name="annualvar"  readonly value="{{ annual_fs   }}"></td>
+                            </tr>
                             <tr>
                                 <td>Variable </td>
                                 <td ><input type="text" name="var"  readonly value="{{ variable   }}"></td>
                                 <td><input type="text" name="annualvar"  readonly value="{{ annual_var   }}"></td>
+                            </tr>
+                            <tr class="ss-table-total-one">
+                                <td>Gross Salary (A)</td>
+                                <td ><input type="text" name="gs"  readonly value="{{ gross_salary   }}"></td>
+                                <td><input type="text" name="annualgs"  readonly value="{{ annualgs   }}"></td>
                             </tr>
                             {% endif %}
                           
@@ -596,16 +620,22 @@
                                 <td><input type="text" name="ersic"  readonly value="{{ ersic   }}"></td>
                                 <td><input type="text" name="annualersic"  readonly value="{{ annualersic   }}"></td>
                             </tr>
+                            
+                            {% if gpa != '₹0.00' %}
                             <tr>
                                 <td>Group Personal Accident</td>
                                 <td ><input type="text" name="gpa"  readonly value="{{ gpa   }}"></td>
                                 <td><input type="text" name="annualgpa"  readonly value="{{ annualgpa   }}"></td>
                             </tr>
+                            {% endif %}
+                            {% if gmi != '₹0.00' %}
+
                             <tr>
                                 <td>Group Mediclaim Insurance</td>
                                 <td ><input type="text" name="gmi"  readonly value="{{ gmi   }}"></td>
                                 <td><input type="text" name="annualgmi"  readonly value="{{ annualgmi   }}"></td>
                             </tr>
+                            {% endif %}
                             <tr class="ss-table-total-three">
                                 <td>Total Employer Contribution (D) </td>
                                 <td ><input type="text" name="tec"  readonly value="{{ tec   }}"></td>
