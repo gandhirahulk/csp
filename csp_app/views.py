@@ -42,6 +42,9 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
+dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code='C000000005').get(Personal_Email_Id= 'sdfworkk@gmail.com')
+print(dup_candidate_aadhaar.Contact_Number)
+
 def custom_send_email(request):
     
     # EMAIL_USE_SSL = False
@@ -169,12 +172,14 @@ def check_duplicate_candidate_edit(request):
     try:                
         dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Aadhaar_Number= aadhaar, status= active_status)
         result['adhaar'] = dup_candidate_aadhaar.pk_candidate_code
+        
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['adhaar'] = ''
     try:
         dup_candidate_pan = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(PAN_Number= pan, status= active_status)
         result['pan'] = dup_candidate_pan.pk_candidate_code
+        return JsonResponse(result)
     except ObjectDoesNotExist:
         result['pan'] = ''
     try:
@@ -193,6 +198,7 @@ def check_duplicate_candidate_edit(request):
     try:
         dup_candidate_email = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Personal_Email_Id=email, status= active_status)
         result['email'] = dup_candidate_email.pk_candidate_code
+        print(dup_candidate_email.Personal_Email_Id)
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['email'] = ''
