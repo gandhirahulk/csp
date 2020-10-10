@@ -71,10 +71,6 @@ def custom_send_email(request):
     
     return HttpResponse("Mail Sent")
 
-
-
-
-
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
 def candidate_profile(request):
@@ -328,7 +324,7 @@ def save_edit_wages(request):
                         messages.warning(request, "Choose  Wage And Try Again")
                         return redirect("csp_app:minimumwages")
                     try:
-                        d = master_minimum_wages.objects.get(fk_state_code=state_fk, fk_skill_code= skill_fk, wages= wage, status= active_status)
+                        d = master_minimum_wages.objects.get(fk_state_code=state_fk, fk_skill_code= skill_fk,status= active_status)
                         messages.error(request, "Minimum Wages Already Exist")
                         return redirect('csp_app:minimumwages')
                         # print(5)
