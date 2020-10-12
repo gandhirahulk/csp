@@ -1514,9 +1514,17 @@ def salary_structure_post_values(request):
     basic = request.POST.get("basic")
     annualbasic = request.POST.get("annualbasic")
     house_rent_allowance = request.POST.get("hra")
+    if house_rent_allowance == None:
+        house_rent_allowance = 0
     annualhouse_rent_allowance = request.POST.get("annualhra")
+    if annualhouse_rent_allowance == None:
+        annualhouse_rent_allowance = 0
     statutory_bonus = request.POST.get("sb")
+    if statutory_bonus == None:
+        statutory_bonus = 0
     annualstatutory_bonus = request.POST.get("annualsb")
+    if annualstatutory_bonus == None:
+        annualstatutory_bonus = 0
     special_allowance = request.POST.get("sa")
     annualspecial_allowance = request.POST.get("annualsa")
     ss_gross_salary = request.POST.get("gs")
@@ -2150,9 +2158,17 @@ def save_new_candidate(request):
             basic = request.POST.get("basic")
             annualbasic = request.POST.get("annualbasic")
             house_rent_allowance = request.POST.get("hra")
+            if house_rent_allowance == None:
+                house_rent_allowance = 0
             annualhouse_rent_allowance = request.POST.get("annualhra")
+            if annualhouse_rent_allowance == None:
+                annualhouse_rent_allowance = 0
             statutory_bonus = request.POST.get("sb")
+            if statutory_bonus == None:
+                statutory_bonus = 0
             annualstatutory_bonus = request.POST.get("annualsb")
+            if annualstatutory_bonus == None:
+                annualstatutory_bonus = 0
             special_allowance = request.POST.get("sa")
             annualspecial_allowance = request.POST.get("annualsa")
             ss_gross_salary = request.POST.get("gs")
