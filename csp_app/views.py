@@ -1681,9 +1681,8 @@ def edit_candidate(request):
                 messages.warning(request, "Choose  Location  And Try Again")
                 return redirect("csp_app:candidate")
             location_fk = master_location.objects.get(pk= location)
-            # if email == None or email == '':
             ss_gross_salary, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary = salary_structure_post_values(request)
-                    
+            
             try:                
                 dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Aadhaar_Number= aadhaar, status= active_status)
                 messages.error( request, "Aadhaar Number Already Exist")
@@ -1725,46 +1724,9 @@ def edit_candidate(request):
                 new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
                 dummy = dummy_candidate.objects.get(pk=new_code)
                 
-                selected_candidate = master_candidate.objects.get(pk = cid)
-                selected_candidate.First_Name=firstname
-                selected_candidate.Middle_Name=middlename
-                selected_candidate.Last_Name= lastname
-                selected_candidate.Date_of_Joining= doj
-                selected_candidate.Date_of_Birth= dob
-                selected_candidate.Father_Name= fathername
-                selected_candidate.Father_Date_of_Birth= father_dob
-                selected_candidate.Aadhaar_Number= aadhaar
-                selected_candidate.PAN_Number= Pan
-                selected_candidate.Contact_Number= contact_no
-                selected_candidate.Emergency_Contact_Number= emergency_no
-                selected_candidate.Type_of_Hiring= hiring_fk
-                selected_candidate.Replacement= replacement
-                selected_candidate.Sub_Source= subsource_fk
-                selected_candidate.Referral= referral
-                selected_candidate.fk_vendor_code= vendor_fk
-                selected_candidate.fk_entity_code= entity_fk
-                selected_candidate.fk_department_code= department_fk
-                selected_candidate.fk_function_code= function_fk
-                selected_candidate.fk_team_code= team_fk
-                selected_candidate.fk_subteam_code= sub_team_fk
-                selected_candidate.fk_designation_code= designation_fk
-                selected_candidate.fk_region_code= region_fk
-                selected_candidate.fk_state_code= state_fk
-                selected_candidate.fk_city_code= city_fk
-                selected_candidate.fk_location_code= location_fk
-                selected_candidate.location_code= loc_code,
-                selected_candidate.Reporting_Manager= reporting_manager
-                selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
-                selected_candidate.Gender= gender_fk 
-                selected_candidate.E_Mail_ID_Creation= email_creation
-                selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
-                selected_candidate.Laptop_Allocation= la_fk
-                selected_candidate.Salary_Type= salarytype_fk
-                selected_candidate.Gross_Salary_Amount= INR_to_number(ss_gross_salary)
-                selected_candidate.Personal_Email_Id = email
-                selected_candidate.modified_by = str(request.user)
-                selected_candidate.modified_date_time= datetime.now()
-                selected_candidate.save()
+       
+                selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gross_salary)
+
                 new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
                     special_allowance=INR_to_number(special_allowance), annual_special_allowance=INR_to_number(annualspecial_allowance),gross_salary=INR_to_number(ss_gross_salary), annual_gross_salary=INR_to_number(annualgross_salary), employee_pf= INR_to_number(employee_pf), annual_employee_pf= INR_to_number(annualemployee_pf),
                     employee_esic= INR_to_number(employee_esic), annual_employee_esic= INR_to_number(annualemployer_esic), employee_total_contribution= INR_to_number(employee_total_contribution), annual_employee_total_contribution= INR_to_number(annualemployee_total_contribution), employer_pf= INR_to_number(employer_pf), annual_employer_pf= INR_to_number(annualemployer_pf),
