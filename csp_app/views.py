@@ -1850,7 +1850,7 @@ def edit_candidate(request):
             except ObjectDoesNotExist:
                 pass
             try:
-                dup_candidate_pan = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(PAN_Number= pan, status= active_status)
+                dup_candidate_pan = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(PAN_Number= Pan, status= active_status)
                 messages.error( request, "PAN  Already Exist")
                 return redirect("csp_app:new_candidate")
             except ObjectDoesNotExist:
