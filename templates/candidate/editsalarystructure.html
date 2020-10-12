@@ -545,32 +545,26 @@
                         <td><input type="text" name="annualsa"  readonly value="{{ annualsa }}"></td>
                     </tr>
                     {% endif %}
-                    {% if fs == '₹0.00' %}
-                    <tr class="ss-table-total-one">
-                        <td>Gross Salary (A)</td>
-                        <td ><input type="text" name="gs"  readonly value="{{ gross_salary   }}"></td>
-                        <td><input type="text" name="annualgs"  readonly value="{{ annualgs   }}"></td>
-                    </tr>
-                    {% endif %}
+                    
                     {% if fs != '₹0.00' %}
                     <tr>
                         <td>Fixed Salary </td>
-                        <td ><input type="text" name="var"  readonly value="{{ fs   }}"></td>
-                        <td><input type="text" name="annualvar"  readonly value="{{ annual_fs   }}"></td>
+                        <td ><input type="text" name="fs"  readonly value="{{ fs   }}"></td>
+                        <td><input type="text" name="annualfs"  readonly value="{{ annual_fs   }}"></td>
                     </tr>
                     <tr>
                         <td>Variable </td>
                         <td ><input type="text" name="var"  readonly value="{{ variable   }}"></td>
                         <td><input type="text" name="annualvar"  readonly value="{{ annual_var   }}"></td>
                     </tr>
+                    {% endif %}
+                    {% if gross_salary == '₹0.00' %}
                     <tr class="ss-table-total-one">
                         <td>Gross Salary (A)</td>
                         <td ><input type="text" name="gs"  readonly value="{{ gross_salary   }}"></td>
                         <td><input type="text" name="annualgs"  readonly value="{{ annualgs   }}"></td>
                     </tr>
-                    {% endif %}
-                  
-                   
+                    {% endif %}                   
                 </tbody>
             </table>
             <div>

@@ -518,6 +518,7 @@ class salary_structure(models.Model):
     annual_take_home_salary = models.FloatField()
     cost_to_company = models.FloatField()
     annual_cost_to_company = models.FloatField()
-
+    fixed_salary = models.FloatField()
+    annual_fixed_salary = models.FloatField()
 
     
