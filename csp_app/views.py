@@ -1672,7 +1672,7 @@ def edit_candidate(request):
             # loc_code = request.POST.get("c_location_code") #check
              #check
 
-            # ta_spoc = request.POST.get("c_ta_spoc") #check
+            ta_spoc = request.POST.get("c_ta_spoc") #check
             onboarding_spoc = 'workmail052020@gmail.com' #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
