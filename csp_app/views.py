@@ -2252,8 +2252,8 @@ def salary_structure_calculation(gsa, wage, state_name, salary_pk):
     annual_eprf = erpf * 12
     annual_ersic = ersic * 12
     annual_pfadmin = erpf_admin * 12
-    annual_gpa = gpa * 12
-    annual_gmi = gmi * 12
+    annual_gpa = round(gpa * 12,2)
+    annual_gmi = round(gmi * 12,2)
     annual_tec = tec * 12
     annual_ctc = numpy.ceil(ctc * 12)
     annual_fs = fs * 12
