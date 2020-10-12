@@ -2970,7 +2970,7 @@ def create_vendor(request):
                     'CSP_APP: New vendor account created.',
                     newtemplate,
                     settings.EMAIL_HOST_USER,
-                    [ vendor_email],
+                    [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com'],
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
