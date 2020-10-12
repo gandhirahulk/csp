@@ -1512,7 +1512,11 @@ def update_selected_candidate(cid, firstname, middlename, lastname, doj, dob, fa
 
 def salary_structure_post_values(request):
     basic = request.POST.get("basic")
+    if basic == None:
+        basic = 0
     annualbasic = request.POST.get("annualbasic")
+    if annualbasic == None:
+        annualbasic = 0
     house_rent_allowance = request.POST.get("hra")
     if house_rent_allowance == None:
         house_rent_allowance = 0
@@ -1526,31 +1530,83 @@ def salary_structure_post_values(request):
     if annualstatutory_bonus == None:
         annualstatutory_bonus = 0
     special_allowance = request.POST.get("sa")
+    if special_allowance == None:
+        special_allowance = 0
     annualspecial_allowance = request.POST.get("annualsa")
+    if annualspecial_allowance == None:
+        annualspecial_allowance = 0
     ss_gross_salary = request.POST.get("gs")
+    if ss_gross_salary == None:
+        ss_gross_salary = 0
     annualgross_salary = request.POST.get("annualgs")
+    if annualgross_salary == None:
+        annualgross_salary = 0
     employee_pf = request.POST.get("epf")
+    if employee_pf == None:
+        employee_pf = 0
     annualemployee_pf = request.POST.get("annualepf")
+    if annualemployee_pf == None:
+        annualemployee_pf = 0
     employee_esic = request.POST.get("esic")
+    if employee_esic == None:
+        employee_esic = 0
     annualemployee_esic = request.POST.get("annualesic")
+    if annualemployee_esic == None:
+        annualemployee_esic = 0
     employee_total_contribution = request.POST.get("tc")
+    if employee_total_contribution == None:
+        employee_total_contribution = 0
     annualemployee_total_contribution = request.POST.get("annualtc")
+    if annualemployee_total_contribution == None:
+        annualemployee_total_contribution = 0
     employer_pf = request.POST.get("erpf")
+    if employee_pf == None:
+        employee_pf = 0
     annualemployer_pf = request.POST.get("annualerpf")
+    if annualemployee_pf == None:
+        annualemployee_pf = 0
     employer_pf_admin = request.POST.get("erpfadmin")
+    if employer_pf_admin == None:
+        employer_pf_admin = 0
     annualemployer_pf_admin = request.POST.get("annualerpfadmin")
+    if annualemployer_pf_admin  == None:
+        annualemployer_pf_admin  = 0
     employer_esic = request.POST.get("ersic")
+    if employer_esic  == None:
+        employer_esic  = 0
     annualemployer_esic = request.POST.get("annualersic")
+    if annualemployer_esic  == None:
+        annualemployer_esic  = 0
     group_personal_accident = request.POST.get("gpa")
+    if group_personal_accident  == None:
+        group_personal_accident  = 0
     annualgroup_personal_accident = request.POST.get("annualgpa")
+    if annualgroup_personal_accident  == None:
+        annualgroup_personal_accident  = 0
     group_mediclaim_insurance = request.POST.get("gmi")
+    if group_mediclaim_insurance == None:
+        group_mediclaim_insurance  = 0
     annualgroup_mediclaim_insurance = request.POST.get("annualgmi")
+    if annualgroup_mediclaim_insurance  == None:
+        annualgroup_mediclaim_insurance  = 0
     employer_total_contribution = request.POST.get("tec")
+    if employer_total_contribution  == None:
+        employer_total_contribution  = 0
     annualemployer_total_contribution = request.POST.get("annualtec")
+    if annualemployer_total_contribution  == None:
+        annualemployer_total_contribution  = 0
     take_home_salary = request.POST.get("ths")
+    if take_home_salary  == None:
+        take_home_salary  = 0
     annualtake_home_salary = request.POST.get("annualths")
+    if annualtake_home_salary  == None:
+        annualtake_home_salary  = 0
     cost_to_company = request.POST.get("ctc")
+    if cost_to_company  == None:
+        cost_to_company  = 0
     annualcost_to_company = request.POST.get("annualctc")
+    if annualcost_to_company  == None:
+        annualcost_to_company  = 0
     return ss_gross_salary, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary
 
 def create_dummy(firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request):
@@ -1689,8 +1745,103 @@ def edit_candidate(request):
                 messages.warning(request, "Choose  Location  And Try Again")
                 return redirect("csp_app:candidate")
             location_fk = master_location.objects.get(pk= location)
-            ss_gross_salary, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary = salary_structure_post_values(request)
-            
+            # ss_gross_salary, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary = salary_structure_post_values(request)
+            basic = request.POST.get("basic")
+            if basic == None:
+                basic = 0
+            annualbasic = request.POST.get("annualbasic")
+            if annualbasic == None:
+                annualbasic = 0
+            house_rent_allowance = request.POST.get("hra")
+            if house_rent_allowance == None:
+                house_rent_allowance = 0
+            annualhouse_rent_allowance = request.POST.get("annualhra")
+            if annualhouse_rent_allowance == None:
+                annualhouse_rent_allowance = 0
+            statutory_bonus = request.POST.get("sb")
+            if statutory_bonus == None:
+                statutory_bonus = 0
+            annualstatutory_bonus = request.POST.get("annualsb")
+            if annualstatutory_bonus == None:
+                annualstatutory_bonus = 0
+            special_allowance = request.POST.get("sa")
+            if special_allowance == None:
+                special_allowance = 0
+            annualspecial_allowance = request.POST.get("annualsa")
+            if annualspecial_allowance == None:
+                annualspecial_allowance = 0
+            ss_gross_salary = request.POST.get("gs")
+            if ss_gross_salary == None:
+                ss_gross_salary = 0
+            annualgross_salary = request.POST.get("annualgs")
+            if annualgross_salary == None:
+                annualgross_salary = 0
+            employee_pf = request.POST.get("epf")
+            if employee_pf == None:
+                employee_pf = 0
+            annualemployee_pf = request.POST.get("annualepf")
+            if annualemployee_pf == None:
+                annualemployee_pf = 0
+            employee_esic = request.POST.get("esic")
+            if employee_esic == None:
+                employee_esic = 0
+            annualemployee_esic = request.POST.get("annualesic")
+            if annualemployee_esic == None:
+                annualemployee_esic = 0
+            employee_total_contribution = request.POST.get("tc")
+            if employee_total_contribution == None:
+                employee_total_contribution = 0
+            annualemployee_total_contribution = request.POST.get("annualtc")
+            if annualemployee_total_contribution == None:
+                annualemployee_total_contribution = 0
+            employer_pf = request.POST.get("erpf")
+            if employee_pf == None:
+                employee_pf = 0
+            annualemployer_pf = request.POST.get("annualerpf")
+            if annualemployee_pf == None:
+                annualemployee_pf = 0
+            employer_pf_admin = request.POST.get("erpfadmin")
+            if employer_pf_admin == None:
+                employer_pf_admin = 0
+            annualemployer_pf_admin = request.POST.get("annualerpfadmin")
+            if annualemployer_pf_admin  == None:
+                annualemployer_pf_admin  = 0
+            employer_esic = request.POST.get("ersic")
+            if employer_esic  == None:
+                employer_esic  = 0
+            annualemployer_esic = request.POST.get("annualersic")
+            if annualemployer_esic  == None:
+                annualemployer_esic  = 0
+            group_personal_accident = request.POST.get("gpa")
+            if group_personal_accident  == None:
+                group_personal_accident  = 0
+            annualgroup_personal_accident = request.POST.get("annualgpa")
+            if annualgroup_personal_accident  == None:
+                annualgroup_personal_accident  = 0
+            group_mediclaim_insurance = request.POST.get("gmi")
+            if group_mediclaim_insurance == None:
+                group_mediclaim_insurance  = 0
+            annualgroup_mediclaim_insurance = request.POST.get("annualgmi")
+            if annualgroup_mediclaim_insurance  == None:
+                annualgroup_mediclaim_insurance  = 0
+            employer_total_contribution = request.POST.get("tec")
+            if employer_total_contribution  == None:
+                employer_total_contribution  = 0
+            annualemployer_total_contribution = request.POST.get("annualtec")
+            if annualemployer_total_contribution  == None:
+                annualemployer_total_contribution  = 0
+            take_home_salary = request.POST.get("ths")
+            if take_home_salary  == None:
+                take_home_salary  = 0
+            annualtake_home_salary = request.POST.get("annualths")
+            if annualtake_home_salary  == None:
+                annualtake_home_salary  = 0
+            cost_to_company = request.POST.get("ctc")
+            if cost_to_company  == None:
+                cost_to_company  = 0
+            annualcost_to_company = request.POST.get("annualctc")
+            if annualcost_to_company  == None:
+                annualcost_to_company  = 0
             try:                
                 dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Aadhaar_Number= aadhaar, status= active_status)
                 messages.error( request, "Aadhaar Number Already Exist")
@@ -2156,7 +2307,11 @@ def save_new_candidate(request):
             gross_salary = request.POST.get("c_gross_salary")
             loc_code = gross_salary
             basic = request.POST.get("basic")
+            if basic == None:
+                basic = 0
             annualbasic = request.POST.get("annualbasic")
+            if annualbasic == None:
+                annualbasic = 0
             house_rent_allowance = request.POST.get("hra")
             if house_rent_allowance == None:
                 house_rent_allowance = 0
@@ -2170,33 +2325,83 @@ def save_new_candidate(request):
             if annualstatutory_bonus == None:
                 annualstatutory_bonus = 0
             special_allowance = request.POST.get("sa")
+            if special_allowance == None:
+                special_allowance = 0
             annualspecial_allowance = request.POST.get("annualsa")
+            if annualspecial_allowance == None:
+                annualspecial_allowance = 0
             ss_gross_salary = request.POST.get("gs")
-            print(ss_gross_salary)
+            if ss_gross_salary == None:
+                ss_gross_salary = 0
             annualgross_salary = request.POST.get("annualgs")
+            if annualgross_salary == None:
+                annualgross_salary = 0
             employee_pf = request.POST.get("epf")
+            if employee_pf == None:
+                employee_pf = 0
             annualemployee_pf = request.POST.get("annualepf")
+            if annualemployee_pf == None:
+                annualemployee_pf = 0
             employee_esic = request.POST.get("esic")
+            if employee_esic == None:
+                employee_esic = 0
             annualemployee_esic = request.POST.get("annualesic")
+            if annualemployee_esic == None:
+                annualemployee_esic = 0
             employee_total_contribution = request.POST.get("tc")
+            if employee_total_contribution == None:
+                employee_total_contribution = 0
             annualemployee_total_contribution = request.POST.get("annualtc")
+            if annualemployee_total_contribution == None:
+                annualemployee_total_contribution = 0
             employer_pf = request.POST.get("erpf")
+            if employee_pf == None:
+                employee_pf = 0
             annualemployer_pf = request.POST.get("annualerpf")
+            if annualemployee_pf == None:
+                annualemployee_pf = 0
             employer_pf_admin = request.POST.get("erpfadmin")
+            if employer_pf_admin == None:
+                employer_pf_admin = 0
             annualemployer_pf_admin = request.POST.get("annualerpfadmin")
+            if annualemployer_pf_admin  == None:
+                annualemployer_pf_admin  = 0
             employer_esic = request.POST.get("ersic")
+            if employer_esic  == None:
+                employer_esic  = 0
             annualemployer_esic = request.POST.get("annualersic")
+            if annualemployer_esic  == None:
+                annualemployer_esic  = 0
             group_personal_accident = request.POST.get("gpa")
+            if group_personal_accident  == None:
+                group_personal_accident  = 0
             annualgroup_personal_accident = request.POST.get("annualgpa")
+            if annualgroup_personal_accident  == None:
+                annualgroup_personal_accident  = 0
             group_mediclaim_insurance = request.POST.get("gmi")
+            if group_mediclaim_insurance == None:
+                group_mediclaim_insurance  = 0
             annualgroup_mediclaim_insurance = request.POST.get("annualgmi")
+            if annualgroup_mediclaim_insurance  == None:
+                annualgroup_mediclaim_insurance  = 0
             employer_total_contribution = request.POST.get("tec")
+            if employer_total_contribution  == None:
+                employer_total_contribution  = 0
             annualemployer_total_contribution = request.POST.get("annualtec")
-            cost_to_company = request.POST.get("ctc")
-            annualcost_to_company = request.POST.get("annualctc")
+            if annualemployer_total_contribution  == None:
+                annualemployer_total_contribution  = 0
             take_home_salary = request.POST.get("ths")
+            if take_home_salary  == None:
+                take_home_salary  = 0
             annualtake_home_salary = request.POST.get("annualths")
-
+            if annualtake_home_salary  == None:
+                annualtake_home_salary  = 0
+            cost_to_company = request.POST.get("ctc")
+            if cost_to_company  == None:
+                cost_to_company  = 0
+            annualcost_to_company = request.POST.get("annualctc")
+            if annualcost_to_company  == None:
+                annualcost_to_company  = 0
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
                 return redirect("csp_app:new_candidate")
