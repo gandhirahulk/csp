@@ -1689,8 +1689,47 @@ def edit_candidate(request):
                 messages.warning(request, "Choose  Location  And Try Again")
                 return redirect("csp_app:candidate")
             location_fk = master_location.objects.get(pk= location)
-            ss_gross_salary, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary = salary_structure_post_values(request)
-            
+            # ss_gross_salary, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary = salary_structure_post_values(request)
+            basic = request.POST.get("basic")
+            annualbasic = request.POST.get("annualbasic")
+            house_rent_allowance = request.POST.get("hra")
+            if house_rent_allowance == None:
+                house_rent_allowance = 0
+            annualhouse_rent_allowance = request.POST.get("annualhra")
+            if annualhouse_rent_allowance == None:
+                annualhouse_rent_allowance = 0
+            statutory_bonus = request.POST.get("sb")
+            if statutory_bonus == None:
+                statutory_bonus = 0
+            annualstatutory_bonus = request.POST.get("annualsb")
+            if annualstatutory_bonus == None:
+                annualstatutory_bonus = 0
+            special_allowance = request.POST.get("sa")
+            annualspecial_allowance = request.POST.get("annualsa")
+            ss_gross_salary = request.POST.get("gs")
+            annualgross_salary = request.POST.get("annualgs")
+            employee_pf = request.POST.get("epf")
+            annualemployee_pf = request.POST.get("annualepf")
+            employee_esic = request.POST.get("esic")
+            annualemployee_esic = request.POST.get("annualesic")
+            employee_total_contribution = request.POST.get("tc")
+            annualemployee_total_contribution = request.POST.get("annualtc")
+            employer_pf = request.POST.get("erpf")
+            annualemployer_pf = request.POST.get("annualerpf")
+            employer_pf_admin = request.POST.get("erpfadmin")
+            annualemployer_pf_admin = request.POST.get("annualerpfadmin")
+            employer_esic = request.POST.get("ersic")
+            annualemployer_esic = request.POST.get("annualersic")
+            group_personal_accident = request.POST.get("gpa")
+            annualgroup_personal_accident = request.POST.get("annualgpa")
+            group_mediclaim_insurance = request.POST.get("gmi")
+            annualgroup_mediclaim_insurance = request.POST.get("annualgmi")
+            employer_total_contribution = request.POST.get("tec")
+            annualemployer_total_contribution = request.POST.get("annualtec")
+            take_home_salary = request.POST.get("ths")
+            annualtake_home_salary = request.POST.get("annualths")
+            cost_to_company = request.POST.get("ctc")
+            annualcost_to_company = request.POST.get("annualctc")
             try:                
                 dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Aadhaar_Number= aadhaar, status= active_status)
                 messages.error( request, "Aadhaar Number Already Exist")
