@@ -455,7 +455,17 @@
             if(e.keyCode == 32) {
                 e.preventDefault();
                 return false;
-            }    
+            }   
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+    
+                e.preventDefault();
+                return false;
+            } 
+            if(e.keyCode == 219 || e.keyCode == 221) {
+                
+                e.preventDefault();
+                return false;
+            }  
             
  
         });
@@ -478,6 +488,16 @@
                 e.preventDefault();
                 return false;
             }     
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+    
+                e.preventDefault();
+                return false;
+            } 
+            if(e.keyCode == 219 || e.keyCode == 221) {
+                
+                e.preventDefault();
+                return false;
+            } 
         });
         
        

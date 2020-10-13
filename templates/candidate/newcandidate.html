@@ -24,7 +24,7 @@
      
     </div>
     <div class="candidate_form_content">
-        <form method="POST" autocomplete="off">
+        <form method="POST" autocomplete="off" id="new-candidate">
             {% csrf_token %}
             <div class="candidate-forms-input-holder">
                 <div>
@@ -322,7 +322,7 @@
                 <div class="margin-left">
                 <label for="" >Reporting / Hiring Manager Email ID</label>
 
-                <input type="email" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
          
             </div>
         </div>

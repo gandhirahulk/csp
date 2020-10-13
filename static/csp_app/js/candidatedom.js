@@ -28,6 +28,16 @@ input.addEventListener('keydown', function(e){
         e.preventDefault();
         return false;
     }     
+    if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+    
+        e.preventDefault();
+        return false;
+    } 
+    if(e.keyCode == 219 || e.keyCode == 221) {
+        
+        e.preventDefault();
+        return false;
+    }  
 });
 
 var input = document.getElementById('email');
@@ -40,6 +50,12 @@ input.addEventListener('keydown', function(e){
         return false;
     }   
     if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+    
+        e.preventDefault();
+        return false;
+    } 
+    if(e.keyCode == 219 || e.keyCode == 221) {
+        
         e.preventDefault();
         return false;
     }      
@@ -79,9 +95,16 @@ input.addEventListener('keydown', function(e){
         return false;
     }   
     if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+    
         e.preventDefault();
         return false;
-    }      
+    } 
+    if(e.keyCode == 219 || e.keyCode == 221) {
+        
+        e.preventDefault();
+        return false;
+    } 
+        
 });
 var input = document.getElementById('c_firstname');
 input.addEventListener('keydown', function(e){      
