@@ -34,7 +34,7 @@
         <form method="POST" autocomplete="off" id="new-candidate">
             {% csrf_token %}
             <div class="candidate-forms-input-holder">
-                <div>
+                <div style="width: 100%;">
                 <label class="move-out" for="c_firstname">Candidate Code</label>
 
                 <input class="input-text" value="{{ eachc.pk }}" style="background: #f5f5fa;" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" readonly id="cid" >
