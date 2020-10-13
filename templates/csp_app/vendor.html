@@ -155,7 +155,7 @@
         <div class="forms-input-holder">
         <label for="">SPOC Email ID</label>
 
-            <input type="email" placeholder="SPOC Email ID" name="vendor_spoc_email" id="spocemail" required="true">
+            <input type="text" placeholder="SPOC Email ID" name="vendor_spoc_email" id="spocemail" required="true" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})">
         </div>
 
         <div class="forms-input-holder">
@@ -264,6 +264,11 @@
                 e.preventDefault();
                 return false;
             }     
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+    
+                e.preventDefault();
+                return false;
+            } 
         });
         var input = document.getElementById('phone_no');
         input.addEventListener('keydown', function(e){      
@@ -284,6 +289,11 @@
                 e.preventDefault();
                 return false;
             }     
+            if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
+    
+                e.preventDefault();
+                return false;
+            } 
         });
        
     });

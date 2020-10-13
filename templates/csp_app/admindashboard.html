@@ -75,8 +75,9 @@
         $('#c_aadhaar').bind('keypress', onlyNumbers);
         $('#c_contact').bind('keypress', onlyNumbers);
         $('#c_emergency').bind('keypress', onlyNumbers);
-        $('#email').bind('keypress', alphaNumeric);
-        $('#reporting_manager_email').bind('keypress', alphaNumeric);
+        $('#email').bind('keypress', emailChars);
+        $('#spocemail').bind('keypress', emailChars);
+        $('#reporting_manager_email').bind('keypress', emailChars);
         $('#c_salary').bind('keypress', money);
         $('#wage').bind('keypress', money);
         $('#c_pan').bind('keypress', pan);

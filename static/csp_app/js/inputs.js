@@ -46,6 +46,12 @@ function pan(event) {
     
 }
 
+function emailChars(event){
+    var value = String.fromCharCode(event.which);
+    var pattern = new RegExp(/[A-Z0-9.-]/i);
+    return pattern.test(value); 
+}
+
 
 
 
