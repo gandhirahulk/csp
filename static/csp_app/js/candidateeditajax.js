@@ -139,6 +139,7 @@ $(document).ready(function(){
                     $('#emailmsg').html(duplicate_msg).css('color','red');
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    console.log('work toh karra hai');
                 } 
                 if (data['email'] == ''){
                     $('#emailmsg').html('');
