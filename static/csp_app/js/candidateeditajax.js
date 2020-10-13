@@ -26,9 +26,13 @@ $(document).ready(function(){
                 if (data['adhaar'] != ''){
                     var duplicate_msg = 'Adhaar Number Already Exist With Candidate ID : ' + data['adhaar'] ;
                     $('#adhaarmsg').html(duplicate_msg).css('color','red');
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
                 } 
                 if (data['adhaar'] == ''){
                     $('#adhaarmsg').html('');
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
                 }
             }
         });
@@ -59,9 +63,13 @@ $(document).ready(function(){
                 if (data['contact'] != ''){
                     var duplicate_msg = 'Contact Number Already Exist With Candidate ID : ' + data['contact'] ;
                     $('#contactmsg').html(duplicate_msg).css('color','red');
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
                 } 
                 if (data['contact'] == ''){
                     $('#contactmsg').html('');
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
                 }
             }
         });
@@ -92,9 +100,13 @@ $(document).ready(function(){
                 if (data['pan'] != ''){
                     var duplicate_msg = 'PAN Number Already Exist With Candidate ID : ' + data['pan'] ;
                     $('#panmsg').html(duplicate_msg).css('color','red');
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
                 } 
                 if (data['pan'] == ''){
                     $('#panmsg').html('');
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
                 }
             }
         });
@@ -125,9 +137,13 @@ $(document).ready(function(){
                 if (data['email'] != ''){
                     var duplicate_msg = 'Email ID Already Exist With Candidate ID : ' + data['email'] ;
                     $('#emailmsg').html(duplicate_msg).css('color','red');
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
                 } 
                 if (data['email'] == ''){
                     $('#emailmsg').html('');
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
                 }
             }
         });
@@ -158,9 +174,13 @@ $(document).ready(function(){
                 if (data['details'] != ''){
                     var duplicate_msg = 'Candidate Already Exist with Candidate ID : ' + data['details'] ;
                     $('#detailsmsg').html(duplicate_msg).css('color','red');
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
                 } 
                 if (data['details'] == ''){
                     $('#detailsmsg').html('');
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
                 }
             }
         });
@@ -191,9 +211,13 @@ $(document).ready(function(){
                 if (data['details'] != ''){
                     var duplicate_msg = 'Candidate Already Exist with Candidate ID : ' + data['details'] ;
                     $('#detailsmsg').html(duplicate_msg).css('color','red');
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
                 } 
                 if (data['details'] == ''){
                     $('#detailsmsg').html('');
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
                 }
             }
         });
@@ -225,9 +249,13 @@ $(document).ready(function(){
                 if (data['details'] != ''){
                     var duplicate_msg = 'Candidate Already Exist with Candidate ID : ' + data['details'] ;
                     $('#detailsmsg').html(duplicate_msg).css('color','red');
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
                 } 
                 if (data['details'] == ''){
                     $('#detailsmsg').html('');
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
                 }
             }
         });

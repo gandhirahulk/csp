@@ -32,7 +32,7 @@
      
     </div>
     <div class="candidate_form_content">
-        <form method="POST" autocomplete="off">
+        <form method="POST" autocomplete="off" id="new-candidate">
             {% csrf_token %}
             <div class="candidate-forms-input-holder">
                 
@@ -477,7 +477,7 @@
     <div class="candidate_form_footer">
         <a href="{% url 'csp_app:candidate' %}" class="delete-forms-close-btn">Cancel</a>
         
-        <button id="calculate" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
+        <button id="calculate" title="" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
         <small id="detailsmsg"></small>     
     </div>
     <input type="hidden" id="name">
@@ -558,7 +558,7 @@
                         <td><input type="text" name="annualvar"  readonly value="{{ annual_var   }}"></td>
                     </tr>
                     {% endif %}
-                    {% if gross_salary == '₹0.00' %}
+                    {% if gross_salary != '₹0.00' %}
                     <tr class="ss-table-total-one">
                         <td>Gross Salary (A)</td>
                         <td ><input type="text" name="gs"  readonly value="{{ gross_salary   }}"></td>
@@ -686,6 +686,8 @@
                     
                 </tbody>
             </table>
+            <p> * The above salary structure doesn't contains Professional Tax Calculation.</p>
+
         </div>
 
 

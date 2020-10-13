@@ -25,7 +25,7 @@
      
     </div>
     <div class="candidate_form_content">
-        <form method="POST" autocomplete="off">
+        <form method="POST" autocomplete="off" id="new-candidate">
             {% csrf_token %}
             <div class="candidate-forms-input-holder">
                 <div>
@@ -446,7 +446,7 @@
               
     </div>
     <div class="candidate_form_footer">
-        <button class="forms-save-btn" style="width: auto;" onclick="showDelete('salary_structure')">Calculate Salary Structure</button>
+        <button class="forms-save-btn" id="calculate" title="" style="width: auto;" onclick="showDelete('salary_structure')">Calculate Salary Structure</button>
  
             <!-- <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
     </form> -->
@@ -531,7 +531,7 @@
                                 <td><input type="text" name="annualvar"  readonly value="{{ annual_var   }}"></td>
                             </tr>
                             {% endif %}
-                            {% if gross_salary == '₹0.00' %}
+                            {% if gross_salary != '₹0.00' %}
                             <tr class="ss-table-total-one">
                                 <td>Gross Salary (A)</td>
                                 <td ><input type="text" name="gs"  readonly value="{{ gross_salary   }}"></td>
@@ -574,7 +574,7 @@
                             {% endif %}
                             {% if td != '₹0.00' %}
                             <tr class="ss-table-total-three1">
-                                <td>Total Contribution (B) <div><small>*Excl Professional Tax Contribution</small></div> </td>
+                                <td>Total Contribution (B) </td>
                                 <td ><input type="text" name="tc"  readonly value="{{ td   }}"></td>
                                 <td><input type="text" name="annualtc"  readonly value="{{ annualtd   }}"></td>
                             </tr>
@@ -582,7 +582,7 @@
                             {% if ths != '₹0.00' %}
                                                    
                             <tr class="ss-table-total-two">
-                                <td>Take Home Salary (C) = (A - B) <div><small>*Excl Professional Tax Contribution</small></div> </td>
+                                <td>Take Home Salary (C) = (A - B) </td>
                                 <td ><input type="text" name="ths"  readonly value="{{ ths   }}"></td>
                                 <td><input type="text" name="annualths"  readonly value="{{ annualths   }}"></td>
                             </tr>
@@ -654,7 +654,7 @@
                             {% endif %}
                             {% if ctc != '₹0.00' %}
                             <tr class="ctc-row">
-                                <td>Cost To Company (CTC) (E) = (A + D) <div><small>*Excl Professional Tax Contribution</small></div>  </td>
+                                <td>Cost To Company (CTC) (E) = (A + D)</td>
                                 <td ><input type="text" name="ctc"  readonly value="{{ ctc   }}"></td>
                                 <td><input type="text" name="annualctc"  readonly value="{{ annual_ctc   }}"></td>                            
                             </tr>
@@ -662,12 +662,16 @@
                             
                         </tbody>
                     </table>
+                <p> * The above salary structure doesn't contains Professional Tax Calculation.</p>
+                   
                 </div>
 
 
 
 
                 <div class="ssc">
+                    <p>&nbsp;</p>
+                    <br>
                     <p>&nbsp;</p>
                     <div class="ssc-heading-one">
                         <h3>Salary Structure Calculation : Consideration</h3>
@@ -758,10 +762,12 @@
                         </tbody>
                     </table>
                 </div>
+     
             </div>
         
-        
+       
         <div class="form_footer" style="width: 80vw;background: #fff;">
+            
                 <button onclick="getPDF()" class="delete-forms-close-btn" style="width: auto;">Save as PDF</button>        
                 <button class="forms-save-btn" formaction="{% url 'csp_app:save_new_candidate' %}" type="submit">Save Candidate</button>
             </form>

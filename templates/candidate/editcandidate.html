@@ -31,7 +31,7 @@
      
     </div>
     <div class="candidate_form_content">
-        <form method="POST" autocomplete="off">
+        <form method="POST" autocomplete="off" id="new-candidate">
             {% csrf_token %}
             <div class="candidate-forms-input-holder">
                 <div>
@@ -476,7 +476,7 @@
     <div class="candidate_form_footer">
         <a href="{% url 'csp_app:candidate' %}" class="delete-forms-close-btn">Cancel</a>
         
-        <button id="calculate" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
+        <button id="calculate" title="" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
  </form>
  <small id="detailsmsg"></small>    
     </div>
