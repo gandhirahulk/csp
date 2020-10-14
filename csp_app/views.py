@@ -2253,6 +2253,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_pk):
     ersic = numpy.ceil(ersic)
     
     if salary_pk == 2:
+        
         var_1 = (grossalary / 0.80) - grossalary
         var_2 = gsa * 0.20
         var = var_1 if var_1 > var_2 else var_2
@@ -2263,7 +2264,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_pk):
         
         grossalary = grossalary + var
     elif salary_pk == 3:
-        var_1 = (grossalary / 0.80) - grossalary
+        var_1 = (grossalary / 0.75) - grossalary
         var_2 = gsa * 0.25
         var = var_1 if var_1 > var_2 else var_2
         var = numpy.ceil(var)
@@ -2440,6 +2441,7 @@ def save_new_candidate(request):
             annualtake_home_salary = request.POST.get("annualths")
             if annualtake_home_salary  == None:
                 annualtake_home_salary  = 0
+            variable = request.POST.get("var")  
             if variable  == None:
                 variable  = 0
             annualvariable = request.POST.get("annualvar")
