@@ -82,7 +82,7 @@ urlpatterns = [
     path('csp_candidates/process_requests/reject_request/<str:cid>/', views.reject_candidate_vendor, name= 'reject_candidate_vendor'),
 
     path('csp_candidates/process_requests/reject_request/<str:cid>/', views.reject_candidate_onboarding, name= 'reject_candidate_onboarding'),
-    path('csp_candidates/process_requests/salary_structure/', views.edit_salary_structure_process, name= 'edit_salary_structure_process'),
+    path('csp_candidates/process_requests/salary_structure/<str:cid>/', views.edit_salary_structure_process, name= 'edit_salary_structure_process'),
     #ajax
     path('csp_minimum_wage_list/', views.minimum_wage_list, name="csp_minimum_wage_list"),
 
