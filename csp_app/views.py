@@ -168,7 +168,7 @@ def check_duplicate_candidate_edit(request):
     firstname = request.GET.get('firstname')
     dob = request.GET.get('dob')
     email = request.GET.get('email')
-    candidate_id = request.GET.get('cid')
+    candidate_id = request.GET.get('candidate_id')
     result = {}
     try:                
         dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Aadhaar_Number= aadhaar, status= active_status)
