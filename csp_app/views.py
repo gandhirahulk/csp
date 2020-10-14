@@ -422,6 +422,7 @@ def process_requests(request, cid):
         c_status_list = candidate_status.objects.all()
         v_status_list = vendor_status.objects.all()
         if request.method == 'POST':
+            candidate_id = request.POST.get('cid')
             firstname = request.POST.get("c_firstname").capitalize()
             middlename = request.POST.get("c_middlename").capitalize()
             lastname = request.POST.get("c_lastname").capitalize()
@@ -529,38 +530,38 @@ def process_requests(request, cid):
             try:                
                 dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Aadhaar_Number= aadhaar, status= active_status)
                 messages.error( request, "Aadhaar Number Already Exist")
-                return redirect("csp_app:new_candidate")
+                return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
                 pass
             try:
                 dup_candidate_pan = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(PAN_Number= pan, status= active_status)
                 messages.error( request, "PAN  Already Exist")
-                return redirect("csp_app:new_candidate")
+                return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
                 pass
             try:
                 dup_candidate_contact = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Contact_Number= contact_no, status= active_status)
                 messages.error( request, "Contact Number Already Exist")
-                return redirect("csp_app:new_candidate")
+                return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
                 pass
             try:
             
                 dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
                 messages.error( request, "Candidate Already Exist")
-                return redirect("csp_app:new_candidate")
+                return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
                 pass
             try:
                 dup_candidate_email = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Personal_Email_Id=email, status= active_status)
                 messages.error( request, "Candidate Email Already Exist")
-                return redirect("csp_app:new_candidate")
+                return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
                 pass
             try:
                 dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
                 messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
-                return redirect("csp_app:new_candidate")
+                return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
                 selected_candidate = master_candidate.objects.get(pk= cid)
                 changes_list = {}
