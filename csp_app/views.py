@@ -42,6 +42,7 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
+
 def custom_send_email(request):
     
     # EMAIL_USE_SSL = False
@@ -2196,140 +2197,90 @@ def INR_to_number(x):
     y = x.replace('₹','')
     z = y.replace(',','')  
     return z
-    
 
 
-def salary_structure_calculation(gsa, wage, state_name, salary_pk):
+def salary_structure_calculation(gsa, wage, state_name, salary_type):
     import numpy
-    if salary_pk == 2:
-        fs = gsa * 0.20
-        g_salary = numpy.ceil(fs * 0.50)
-      
-        
-
-    elif salary_pk == 3:
-        fs = gsa * 0.25
-        g_salary = numpy.ceil(fs * 0.50)
-
-      
-
+    if salary_type == 1:
+        fixed_salary = gsa
+    elif salary_type == 2:
+        fixed_salary = gsa * 0.80
     else:
-        
-        var = 0
-        annual_var = 0
-        fs=0
-        g_salary = numpy.ceil(gsa * 0.50)
-    
-    basic = g_salary if wage < g_salary else wage
-
-    
-    
+        fixed_salary = gsa * 0.75
+    basic = numpy.maximum(wage, fixed_salary * 0.50)
     if state_name == 'Maharashtra' or state_name == 'West Bengal':
         hra = basic * 0.05
     else:
-        hra = 0
-    sb_1 = wage / 12
-    sb_2 = 7000 / 12
-    sb = sb_2 if sb_1 < sb_2 else sb_1
-    sb = numpy.ceil(sb)
+        hra = 0 
+    stat_bonus = numpy.ceil(numpy.maximum(wage / 12, 7000 / 12))
     if state_name == 'Kerala':
-        sa_1 = 200
+        special_allowance = 200
     else:
-        sa_1 = 0
-    sa_2 = gsa - (basic + hra + sb)
-    sa = sa_1 if sa_1 > sa_2 else sa_2
-    
-    bsa = basic + sa
-    pf_gross = bsa if bsa < 15000 else 15000 
-    epf_1 = pf_gross * 0.12
-    epf_2 = 15000 * 0.12
-    epf = epf_1 if epf_1 < epf_2 else epf_2
-    epf = numpy.ceil(epf)
-    if salary_pk == 2:
-        fs = basic + hra + sb + sa
-        
-        var_1 = (fs / 0.80) - fs
-        var_2 = gsa * 0.20
-        var = var_1 if var_1 > var_2 else var_2
-        var = numpy.ceil(var)
-        annual_var = numpy.ceil(var * 12)        
-        grossalary = fs + var
+        special_allowance = 0
+    special_allowance = numpy.ceil(numpy.maximum(special_allowance, fixed_salary-(basic + hra + stat_bonus)))
+    fixed_salary = (basic + hra + stat_bonus + special_allowance)
 
-    elif salary_pk == 3:
-        fs = basic + hra + sb + sa
-        var_1 = (fs / 0.75) - fs
-        var_2 = gsa * 0.25
-        var = var_1 if var_1 > var_2 else var_2
-        var = numpy.ceil(var)
-        annual_var = numpy.ceil(var * 12)
-        grossalary = fs + var
+    if salary_type == 1:
+        variable_p = 0
+        percent = 0
+    elif salary_type == 2:
+        variable_p = gsa * 0.20
+        percent = 0.20
+    else:
+        variable_p = gsa * 0.25
+        percent = 0.25
 
+    # variable = numpy.ceil((fixed_salary/(1-variable_p))-fixed_salary)
+    variable = numpy.maximum(variable_p, 0)
+
+    gross_salary = fixed_salary + variable
+
+    pf_gross = numpy.minimum(basic + special_allowance, 15000)
+    epf = round(pf_gross * 0.12)
+    epf_admin = round(epf / 12)
+    if fixed_salary <= 21000:
+        employer_esic = fixed_salary * 0.0325
+        employee_esic = fixed_salary * 0.0075
+        mediclaim = 0
     else:
-        
-        var = 0
-        annual_var = 0
-        fs=0        
-        gross = basic + hra + sb + sa
-        grossalary = gross if gross > g_salary else g_salary
+        employer_esic = 0
+        employee_esic = 0
+        mediclaim = 91.66
     
-    if grossalary <= 21000:
-        esic_1 = grossalary*0.0075
-    else:
-        esic_1 = 0
-    esic_2 = 0
-    esic = esic_1 if esic_1 > esic_2 else esic_2
-    esic = numpy.ceil(esic)
-    td = epf + esic
-    td = numpy.ceil(td)
-    ths = grossalary - td
-    ths = numpy.ceil(ths)
-    #er
-    erpf_1 = pf_gross * 0.12
-    erpf_2 = 15000 * 0.12
-    erpf = erpf_1 if erpf_1 < erpf_2 else erpf_2
-    erpf = numpy.ceil(erpf)
-    erpf_admin = erpf / 12
-    erpf_admin = numpy.ceil(erpf_admin)
-    if grossalary <= 21000:
-        ersic_1 = grossalary*0.0325
-    else:
-        ersic_1 = 0
-    ersic_2 = 0
-    ersic = ersic_1 if ersic_1 > ersic_2 else ersic_2
-    ersic = numpy.ceil(ersic)
-    
-    
-    gpac = 500000
-    gpi_1 = 24 * grossalary
-    gpi_2 = gpi_1 if gpi_1 > gpac else gpac
-    gpa = (gpi_2 * 0.20)/1000 / 12
-    gpa = round(gpa,2)
-    gmi = 91.66 if grossalary > 21000 else 0
-    tec = erpf + erpf_admin + ersic + gpa + gmi
-    
-    
+    gpa_coverage = numpy.maximum(gross_salary * 24 , 500000)
+    gpa_premium = gpa_coverage / 1000 * 0.2 / 12    
+
+    t_employee_contribution = epf + employee_esic
   
-    ctc = grossalary + tec
-    #annual
+    t_employer_contribution = epf + epf_admin + employer_esic + mediclaim + gpa_premium
+    ctc = gross_salary + t_employer_contribution
+
+    take_home = fixed_salary - t_employee_contribution
+
     annual_basic = basic * 12
     annual_hra = hra * 12
-    annual_sb = numpy.ceil(sb * 12)
-    annual_sa = numpy.ceil(sa * 12)
-    annual_gs = numpy.ceil(grossalary * 12)
+    annual_sb = numpy.ceil(stat_bonus * 12)
+    annual_sa = numpy.ceil(special_allowance * 12)
+    annual_gs = numpy.ceil(gross_salary * 12)
     annual_epf = epf * 12
-    annual_esic = esic * 12
-    annual_td = td * 12
-    annual_ths = ths * 12
-    annual_eprf = erpf * 12
-    annual_ersic = ersic * 12
-    annual_pfadmin = erpf_admin * 12
-    annual_gpa = round(gpa * 12,2)
-    annual_gmi = round(gmi * 12,2)
-    annual_tec = numpy.ceil(tec * 12)
+    annual_esic = employee_esic * 12
+    annual_td = t_employee_contribution * 12
+    annual_ths = take_home * 12
+    annual_eprf = epf * 12
+    annual_ersic = employer_esic * 12
+    annual_pfadmin = epf_admin * 12
+    annual_gpa = round(mediclaim * 12,2)
+    annual_gmi = round(gpa_premium * 12,2)
+    annual_tec = numpy.ceil(t_employer_contribution * 12)
     annual_ctc = numpy.ceil(ctc * 12)
-    annual_fs = numpy.ceil(fs * 12)
-    diff = gsa - grossalary
-    return basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2, fs, annual_fs
+    annual_fs = numpy.ceil(fixed_salary * 12)
+    annual_var = numpy.ceil(variable * 12)
+    diff = gsa - gross_salary
+    if salary_type == 1:
+        fixed_salary = 0
+        variable = 0
+    return basic, hra, stat_bonus, special_allowance, gross_salary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, employee_esic, t_employee_contribution, take_home, epf, epf_admin, employer_esic, mediclaim, gpa_premium, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, t_employer_contribution, annual_tec, ctc, annual_ctc, variable, annual_var, diff, gpa_coverage, fixed_salary, annual_fs
+
 
 
 @login_required(login_url='/notlogin/')
