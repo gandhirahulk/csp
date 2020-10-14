@@ -827,6 +827,8 @@ def process_requests(request, cid):
         return HttpResponse("No Data To Display.")
 
 
+
+
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Admin').exists())
 def reject_candidate_onboarding(request, cid):
@@ -859,7 +861,7 @@ def reject_candidate_vendor(request, cid):
         selected_candidate = master_candidate.objects.get(pk = cid)
         for eachgroup in request.user.groups.all():
             if str(eachgroup) == 'Admin':
-                
+                selected_candidate.onboarding_status = reject_onboarding
                 selected_candidate.vendor_status = reject_vendor
                 selected_candidate.save()
                 alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
@@ -1219,7 +1221,7 @@ def edit_salary_structure(request):
         email = request.POST.get("c_email")
         c_gender = request.POST.get("c_gender")
         fathername = request.POST.get("c_fathername")
-        father_dob = request.POST.get("c_father_dob")
+        father_dob = request.POST.get("c_father_dob").capitalize()
         aadhaar = request.POST.get("c_aadhaar")
         Pan = request.POST.get("c_pan")
         hiring = request.POST.get("c_hiring_type")
@@ -1652,7 +1654,6 @@ def create_dummy(firstname, middlename, lastname, doj, dob, fathername, father_d
 def edit_candidate(request): 
     try:
         if request.method == 'POST':
-            print('edit')
             candidate_id = request.POST.get("c_id")   
             entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
             candidate_list = master_candidate.objects.filter(pk=candidate_id)
@@ -2166,8 +2167,8 @@ def create_candidate(request):
                 gsa = dummy.Gross_Salary_Amount
                 state_name = dummy.fk_state_code.state_name
                 salary_pk = dummy.Salary_Type.pk
-                mwc = convert_to_INR(minimum_wage.wages)
-                gsa_value = convert_to_INR(dummy.Gross_Salary_Amount)
+                mwc =minimum_wage.wages
+                gsa_value = dummy.Gross_Salary_Amount
                 basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2, fs , annual_fs= salary_structure_calculation(gsa, wage, state_name, salary_pk)
                 # print(diff)
                 return render(request, 'candidate/salary_structure.html', {'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value),'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
