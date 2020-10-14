@@ -2201,8 +2201,28 @@ def INR_to_number(x):
 
 def salary_structure_calculation(gsa, wage, state_name, salary_pk):
     import numpy
-    g_salary = numpy.ceil(gsa * 0.50)
+    if salary_pk == 2:
+        fs = gsa * 0.20
+        g_salary = numpy.ceil(fs * 0.50)
+      
+        
+
+    elif salary_pk == 3:
+        fs = gsa * 0.25
+        g_salary = numpy.ceil(fs * 0.50)
+
+      
+
+    else:
+        
+        var = 0
+        annual_var = 0
+        fs=0
+        g_salary = numpy.ceil(gsa * 0.50)
+    
     basic = g_salary if wage < g_salary else wage
+
+    
     
     if state_name == 'Maharashtra' or state_name == 'West Bengal':
         hra = basic * 0.05
@@ -2218,14 +2238,40 @@ def salary_structure_calculation(gsa, wage, state_name, salary_pk):
         sa_1 = 0
     sa_2 = gsa - (basic + hra + sb)
     sa = sa_1 if sa_1 > sa_2 else sa_2
-    gross = basic + hra + sb + sa
-    grossalary = gross if gross > g_salary else g_salary
+    
     bsa = basic + sa
     pf_gross = bsa if bsa < 15000 else 15000 
     epf_1 = pf_gross * 0.12
     epf_2 = 15000 * 0.12
     epf = epf_1 if epf_1 < epf_2 else epf_2
     epf = numpy.ceil(epf)
+    if salary_pk == 2:
+        fs = basic + hra + sb + sa
+        
+        var_1 = (fs / 0.80) - fs
+        var_2 = gsa * 0.20
+        var = var_1 if var_1 > var_2 else var_2
+        var = numpy.ceil(var)
+        annual_var = numpy.ceil(var * 12)        
+        grossalary = fs + var
+
+    elif salary_pk == 3:
+        fs = basic + hra + sb + sa
+        var_1 = (fs / 0.75) - fs
+        var_2 = gsa * 0.25
+        var = var_1 if var_1 > var_2 else var_2
+        var = numpy.ceil(var)
+        annual_var = numpy.ceil(var * 12)
+        grossalary = fs + var
+
+    else:
+        
+        var = 0
+        annual_var = 0
+        fs=0        
+        gross = basic + hra + sb + sa
+        grossalary = gross if gross > g_salary else g_salary
+    
     if grossalary <= 21000:
         esic_1 = grossalary*0.0075
     else:
@@ -2252,29 +2298,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_pk):
     ersic = ersic_1 if ersic_1 > ersic_2 else ersic_2
     ersic = numpy.ceil(ersic)
     
-    if salary_pk == 2:
-        
-        var_1 = (grossalary / 0.80) - grossalary
-        var_2 = gsa * 0.20
-        var = var_1 if var_1 > var_2 else var_2
-        var = numpy.ceil(var)
-        annual_var = numpy.ceil(var * 12)
-
-        fs = grossalary
-        
-        grossalary = grossalary + var
-    elif salary_pk == 3:
-        var_1 = (grossalary / 0.75) - grossalary
-        var_2 = gsa * 0.25
-        var = var_1 if var_1 > var_2 else var_2
-        var = numpy.ceil(var)
-        annual_var = numpy.ceil(var * 12)
-        fs = grossalary
-        grossalary = grossalary + var
-    else:
-        var = 0
-        annual_var = 0
-        fs=0
+    
     gpac = 500000
     gpi_1 = 24 * grossalary
     gpi_2 = gpi_1 if gpi_1 > gpac else gpac
@@ -2282,7 +2306,9 @@ def salary_structure_calculation(gsa, wage, state_name, salary_pk):
     gpa = round(gpa,2)
     gmi = 91.66 if grossalary > 21000 else 0
     tec = erpf + erpf_admin + ersic + gpa + gmi
-
+    
+    
+  
     ctc = grossalary + tec
     #annual
     annual_basic = basic * 12
