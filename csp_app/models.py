@@ -392,7 +392,7 @@ class dummy_candidate(models.Model):
     fk_state_code = models.ForeignKey(master_state, on_delete=models.CASCADE)
     fk_city_code = models.ForeignKey(master_city, on_delete=models.CASCADE)
     fk_location_code = models.ForeignKey(master_location, on_delete=models.CASCADE)
-    location_code = models.CharField(max_length=10)#not_sure
+    location_code = models.CharField(max_length=20)#not_sure
     TA_Spoc_Email_Id = models.EmailField()
     Onboarding_Spoc_Email_Id = models.EmailField()
     Reporting_Manager = models.CharField(max_length=20) #should come from employees table ?
