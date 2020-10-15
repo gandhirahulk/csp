@@ -64,11 +64,7 @@
                             </tr>
                             {% endif %}
                         
-                            <tr class="ss-table-total-one">
-                                <td>Gross Salary (A)</td>
-                                <td ><input type="text" name="gs"  readonly value="{{ s.gross_salary|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualgs"  readonly value="{{ s.annual_gross_salary|floatformat:2  }}"></td>
-                            </tr>
+                            
                             {% if s.variable != 0.00 %}
                             <tr>
                                 <td>Fixed Salary </td>
@@ -81,25 +77,22 @@
                                 <td><input type="text" name="annualvar"  readonly value="{{ s.annual_var|floatformat:2  }}"></td>
                             </tr>
                             {% endif %}
-                        
-                        
-                        </tbody>
-                    </table>
-                    <div>
-                        &nbsp;
-                    </div>
-                    <div class="salary-heading-two">
-                        <h3>Employee Contributions</h3>
-                    </div> 
-                    <table class="ss-table">
-                        <thead>
+                            <tr class="ss-table-total-one">
+                                <td>Gross Salary (A)</td>
+                                <td ><input type="text" name="gs"  readonly value="{{ s.gross_salary|floatformat:2  }}"></td>
+                                <td><input type="text" name="annualgs"  readonly value="{{ s.annual_gross_salary|floatformat:2  }}"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr class="salary-heading-two">
+                                <td colspan="3" style="text-align: center;"><h3>Employee Contributions</h3></td>
+                            </tr>
                             <tr class="ss-table-heading-two">
                                 <th>Particulars</th>
                                 <th>Monthly</th>
                                 <th>Annual</th>
                             </tr>
-                        </thead>
-                        <tbody>
                             <tr>
                                 <td>Employee PF</td>
                                 <td><input type="text" name="epf"  readonly value="{{ s.employee_pf|floatformat:2  }}"></td>
@@ -115,35 +108,26 @@
                                 <td ><input type="text" name="tc"  readonly value="{{ s.employee_total_contribution|floatformat:2  }}"></td>
                                 <td><input type="text" name="annualtc"  readonly value="{{ s.annual_employee_total_contribution|floatformat:2  }}"></td>
                             </tr>
-                            <!-- <tr>
-                                <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
-                            </tr>  -->
+                            
                         
                             <tr class="ss-table-total-two">
                                 <td>Take Home Salary (C) = (A - B) </td>
                                 <td ><input type="text" name="ths"  readonly value="{{ s.take_home_salary|floatformat:2  }}"></td>
                                 <td><input type="text" name="annualths"  readonly value="{{ s.annual_take_home_salary|floatformat:2  }}"></td>
                             </tr>
-                            <!-- <tr>
-                                <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
-                            </tr>  -->
-                        </tbody>
-                    </table>
-                    <div>
-                        &nbsp;
-                    </div>
-                    <div class="salary-heading-three">
-                        <h3>Employer Contributions</h3>
-                    </div> 
-                    <table class="ss-table">
-                        <thead>
+                            
+
+                            <tr>
+                                <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr class="salary-heading-three">
+                                <td colspan="3" style="text-align: center;"><h3>Employer Contributions</h3></td>
+                            </tr>
                             <tr class="ss-table-heading-three">
                                 <th>Particulars</th>
                                 <th>Monthly</th>
                                 <th>Annual</th>
                             </tr>
-                        </thead>
-                        <tbody>
                             <tr>
                                 <td>Employer PF</td>
                                 <td><input type="text" name="erpf"  readonly value="{{ s.employer_pf|floatformat:2  }}"></td>
@@ -181,18 +165,14 @@
                                 <td ><input type="text" name="ctc"  readonly value="{{ s.cost_to_company|floatformat:2  }}"></td>
                                 <td><input type="text" name="annualctc"  readonly value="{{ s.annual_cost_to_company|floatformat:2  }}"></td>                            
                             </tr>
-                            <!-- <tr>
-                                <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
-                            </tr>  -->
+                           
+                        
                         </tbody>
                     </table>
+                    
                     <p> * The above salary structure doesn't contains Professional Tax Calculation.</p>
                 </div>
-
-
-
-
-               
+              
             </div>
 
 

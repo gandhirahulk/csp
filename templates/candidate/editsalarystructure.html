@@ -506,7 +506,6 @@
             <div class="salary-heading-one">
                 <h3>Salary Structure</h3>
             </div>
-
             <table class="ss-table">
                 <thead>
                     <tr class="ss-table-heading-one">
@@ -552,6 +551,7 @@
                         <td ><input type="text" name="fs"  readonly value="{{ fs   }}"></td>
                         <td><input type="text" name="annualfs"  readonly value="{{ annual_fs   }}"></td>
                     </tr>
+                    
                     <tr>
                         <td>Variable </td>
                         <td ><input type="text" name="var"  readonly value="{{ variable   }}"></td>
@@ -564,24 +564,19 @@
                         <td ><input type="text" name="gs"  readonly value="{{ gross_salary   }}"></td>
                         <td><input type="text" name="annualgs"  readonly value="{{ annualgs   }}"></td>
                     </tr>
-                    {% endif %}                   
-                </tbody>
-            </table>
-            <div>
-                &nbsp;
-            </div>
-            <div class="salary-heading-two">
-                <h3>Employee Contributions</h3>
-            </div> 
-            <table class="ss-table">
-                <thead>
+                    {% endif %}
+                    
+                    <tr>
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                    <tr class="salary-heading-two">
+                        <td colspan="3" style="text-align: center;"><h3>Employee Contributions</h3></td>
+                    </tr>
                     <tr class="ss-table-heading-two">
                         <th>Particulars</th>
                         <th>Monthly</th>
                         <th>Annual</th>
                     </tr>
-                </thead>
-                <tbody>
                     {% if epf != '₹0.00' %}
                     <tr>
                         <td>Employee PF</td>
@@ -604,35 +599,24 @@
                     </tr>
                     {% endif %}
                     {% if ths != '₹0.00' %}
-                                           
+                                            
                     <tr class="ss-table-total-two">
                         <td>Take Home Salary (C) = (A - B) </td>
                         <td ><input type="text" name="ths"  readonly value="{{ ths   }}"></td>
                         <td><input type="text" name="annualths"  readonly value="{{ annualths   }}"></td>
                     </tr>
                     {% endif %}
-
-                    <!-- <tr>
-                        <td colspan="3"><small>*Excl Professional Tax Contribution</small></td>
-                    </tr>  -->
-                </tbody>
-            </table>
-            <div>
-                &nbsp;
-            </div>
-            <div class="salary-heading-three">
-                <h3>Employer Contributions</h3>
-            </div> 
-            <table class="ss-table">
-                <thead>
+                    <tr>
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                    <tr class="salary-heading-three">
+                        <td colspan="3" style="text-align: center;"><h3>Employer Contributions</h3></td>
+                    </tr>
                     <tr class="ss-table-heading-three">
                         <th>Particulars</th>
                         <th>Monthly</th>
                         <th>Annual</th>
                     </tr>
-                </thead>
-                <tbody>
-                    
                     {% if erpf != '₹0.00' %}
                     <tr>
                         <td>Employer PF</td>
@@ -678,7 +662,7 @@
                     {% endif %}
                     {% if ctc != '₹0.00' %}
                     <tr class="ctc-row">
-                        <td>Cost To Company (CTC) (E) = (A + D) </td>
+                        <td>Cost To Company (CTC) (E) = (A + D)</td>
                         <td ><input type="text" name="ctc"  readonly value="{{ ctc   }}"></td>
                         <td><input type="text" name="annualctc"  readonly value="{{ annual_ctc   }}"></td>                            
                     </tr>
