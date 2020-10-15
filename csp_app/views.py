@@ -4769,7 +4769,12 @@ def  create_user(request):
         email = request.POST.get('email')
         group = request.POST.get('usergroup')
         try:
-        
+            try:
+                Onboarding_SPOC_email = User.objects.get(groups__name='Onboarding SPOC')
+                messages.error(request, "Only One Onboarding SPOC Can Be Created.")
+                return redirect('csp_app:user')
+            except ObjectDoesNotExist:
+                pass
             password = User.objects.make_random_password()
             assign_group = Group.objects.get(name=group) 
             
@@ -4783,6 +4788,7 @@ def  create_user(request):
             if group == 'Admin':
                 user.is_staff = True
             # user.groups = group
+            
             assign_group.user_set.add(user)
             user.save()
             template = render_to_string('emailtemplates/new_user_et.html', {'user': firstname ,'username': email, 'password': password})
