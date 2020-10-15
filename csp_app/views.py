@@ -43,7 +43,7 @@ all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
 Onboarding_SPOC = User.objects.get(groups__name='Onboarding SPOC')
-print(Onboarding_SPOC)
+
 
 
 
@@ -2805,6 +2805,7 @@ def remove_specials(a):
     return a
 
 
+
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Recruiter').exists())
 def view_candidate(request):
@@ -2874,13 +2875,18 @@ def change_candidate_status(request):
 @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Candidate').exists())
 def candidate_document_upload(request, candidate_id):
     try:
+        
+        
         document_id = request.POST.get("delete_id")
         if document_id == None:
             candidate = master_candidate.objects.filter(pk = candidate_id)
             candidate_fk = master_candidate.objects.get(pk = candidate_id)
-            
-            document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
-            
+            flag = check_for_mandatory_documents_upload(candidate_id)
+            if flag == 1:
+                document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+            else:
+                document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status).exclude(document_catagory_id=1)
+
             mandatory_list = mandatory_documents.objects.all()
         if request.POST.get("delete_id") != None or request.POST.get("delete_id") != '':
             
@@ -2899,20 +2905,17 @@ def candidate_document_upload(request, candidate_id):
         
         if request.method == 'POST':
             f_catogory = request.POST.get("c_catogory")
-            print(f_catogory)
+          
             file_name_entered = request.POST.get("c_filename")
            
             c_file = request.FILES['file']
             
-            # if file_catogory == None or file_catogory == '':
-            #     messages.warning(request, "Choose File Catogory")
-            #     return redirect('csp_app:document_upload')
             if c_file == None or c_file == '' :
                 messages.warning(request, "Choose File")
                 return redirect('csp_app:document_upload')
             file_name = c_file.name
-            print(file_name)
-            if file_name.endswith('.pdf') or file_name.endswith('.jpg') or file_name.endswith('.png'):                
+           
+            if file_name.endswith('.pdf') or file_name.endswith('.jpg') or file_name.endswith('.png') or file_name.endswith('.JPG') or file_name.endswith('.PNG'):                
                 fs = FileSystemStorage()
                 filename = fs.save(file_name, c_file)
                 file_url = fs.url(filename)   
@@ -2920,10 +2923,13 @@ def candidate_document_upload(request, candidate_id):
                 messages.error(request, "File Format Not Supported")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )    
             catogory_fk = mandatory_documents.objects.get(pk = f_catogory)
+          
             try:
-                duplicate_catogory = candidate_document.objects.get(document_catagory= catogory_fk, fk_candidate_code= candidate_id, status= active_status)
-                messages.error(request, "File Already Exist Delete Existing File To Save New One")
-                return redirect('csp_app:document_upload', candidate_id = candidate_id )
+                if f_catogory != '0':
+                    
+                    duplicate_catogory = candidate_document.objects.get(document_catagory= catogory_fk, fk_candidate_code= candidate_id, status= active_status)
+                    messages.error(request, "File Already Exist Delete Existing File To Save New One")
+                    return redirect('csp_app:document_upload', candidate_id = candidate_id )
                 duplicate_doc = candidate_document.objects.get(file_name=file_name_entered, file_upload = c_file, fk_candidate_code= candidate_fk, status = active_status)
                 messages.error(request, "Duplicate File Name")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )
@@ -2938,6 +2944,17 @@ def candidate_document_upload(request, candidate_id):
 
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
+
+def check_for_mandatory_documents_upload(candidate_id):
+    selected_candidate = master_candidate.objects.get(pk_candidate_code=candidate_id, status=active_status)
+    mandatory_list = mandatory_documents.objects.all().exclude(pk=0)
+    candidate_document_list = candidate_document.objects.filter(fk_candidate_code = selected_candidate).exclude(document_catagory_id=0)
+    mandatory_document_len = len(mandatory_list)
+    candidate_document_len = len(candidate_document_list)
+    if mandatory_document_len == candidate_document_len:
+        return 1
+    else:
+        return -1
 
 
 # @login_required(login_url='/notlogin/')

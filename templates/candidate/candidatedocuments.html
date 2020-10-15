@@ -53,7 +53,7 @@
     </div>
     <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
-    <div class="document_form_content">
+        <div class="document_form_content">
        
             <div class="forms-input-holder">
                 <label for="" style="width: 40%;">Document Catogory</label>
@@ -70,15 +70,14 @@
                 <label for="">Choose File</label>
                 <input type="file" placeholder="File" name="file" id="c_file" required="true" tabindex="2">
           
-            </div>
-
-                    
+            </div>                   
               
-    </div>
-    <div class="document_form_footer">
+        </div>
+        <div class="document_form_footer">
+            
             <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
-       
-    </div>
+        
+        </div>
     </form>
 
 </div>
