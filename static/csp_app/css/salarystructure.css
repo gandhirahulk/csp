@@ -128,3 +128,11 @@
     /* background: #E6F2E0; */
     font-weight: bold;
 }
+
+.ss-table-fixed-salary{
+    background-color:  #E7F3E2 ;
+}
+
+.ss-table-variable{
+    background-color: #DCF2E7;
+}

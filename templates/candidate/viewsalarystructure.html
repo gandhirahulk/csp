@@ -7,8 +7,7 @@
 {% block tabcontentblock %}
 {% if salaryst %}
     {% for s in salaryst %}
-        <div id="salary_structure" class="form_modal" style="padding-top: 2%;display: block;">
-                
+        <div id="salary_structure" class="form_modal" style="padding-top: 2%;display: block;">                
                     
             <div class="form_header" style="width: 80vw;background: #fff;">
                 <div class="forms-heading" style="background: #fff;">
@@ -66,12 +65,12 @@
                         
                             
                             {% if s.variable != 0.00 %}
-                            <tr>
+                            <tr class="ss-table-fixed-salary">
                                 <td>Fixed Salary </td>
                                 <td ><input type="text" name="fs"  readonly value="{{ s.fixed_salary   }}"></td>
                                 <td><input type="text" name="annualfs"  readonly value="{{ s.annual_fixed_salary  }}"></td>
                             </tr>
-                            <tr>
+                            <tr class="ss-table-variable">
                                 <td>Variable </td>
                                 <td ><input type="text" name="var"  readonly value="{{ s.variable|floatformat:2  }}"></td>
                                 <td><input type="text" name="annualvar"  readonly value="{{ s.annual_var|floatformat:2  }}"></td>
@@ -175,11 +174,11 @@
               
             </div>
 
-
-        <div class="form_footer" style="width: 80vw;background: #fff;">
+            <div class="form_footer" style="width: 80vw;background: #fff;">
                 <button onclick="getPDF()" class="delete-forms-close-btn" style="width: auto;">Save as PDF</button>        
-               
-        </div>
+                
+            </div>
+
         </div>
     {% endfor %}
 {% endif %}

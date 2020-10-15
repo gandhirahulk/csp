@@ -520,13 +520,13 @@
                         {% endif %}
                         
                         {% if fs != '₹0.00' %}
-                        <tr>
+                        <tr class="ss-table-fixed-salary">
                             <td>Fixed Salary </td>
                             <td ><input type="text" name="fs"  readonly value="{{ fs   }}"></td>
                             <td><input type="text" name="annualfs"  readonly value="{{ annual_fs   }}"></td>
                         </tr>
                         
-                        <tr>
+                        <tr class="ss-table-variable">
                             <td>Variable </td>
                             <td ><input type="text" name="var"  readonly value="{{ variable   }}"></td>
                             <td><input type="text" name="annualvar"  readonly value="{{ annual_var   }}"></td>
