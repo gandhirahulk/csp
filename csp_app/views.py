@@ -2440,7 +2440,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_type):
         variable_p = gsa * 0.25
         percent = 0.25
 
-    variable = numpy.ceil((fixed_salary/(1-variable_p))-fixed_salary)
+    variable = numpy.ceil((fixed_salary/(1-percent))-fixed_salary)
     # variable = numpy.maximum(variable_p, 0)
 
     gross_salary = fixed_salary + variable
