@@ -4,27 +4,26 @@
 {% block titleblock %} Process Requests {% endblock %}
 
 {% block bodyblock %} 
-{% if selected_candidate %}
-    {% for eachcandidate in selected_candidate %}
+{% if eachcandidate %}
     <div class="tabs">
         <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>   
         <a href="{% url 'csp_app:pending_request' %}" class="tab-btns active-tab">Pending Requests <button disabled id="request_count" >{{ count }}</button> </a>   
-        <a href="{% url 'csp_app:document_upload' eachcandidate.pk %}" class="tab-btns">Documents</a> 
+        <a href="{% url 'csp_app:document_upload' cid %}" class="tab-btns">Documents</a> 
     </div>
-    {% endfor %}
+   
 {% endif %}
 
 {% endblock %}
 
 {% block tabcontentblock %}
 
-{% if selected_candidate %}
-    {% for eachcandidate in selected_candidate %}
+{% if eachcandidate %}
+ 
     <div class="crumbs" style="z-index: 1;"><span><a href="{% url 'csp_app:candidate' %}">Pending Requests</a></span>
         <span><i class="fas fa-chevron-right"></i></span>
         <span>Process Request</span>
         <span><i class="fas fa-chevron-right"></i></span>
-        <span>{{ eachcandidate.pk }} | {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</span>                
+        <span>{{ cid }} | {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</span>                
   
     </div>
 
@@ -55,10 +54,10 @@
                         <label for="cid">Candidate ID</label>    
                     </div>
                     <div>
-                        <input disabled value="{{ eachcandidate.pk }}" type="text" maxlength="30" placeholder="Candidate ID"    >
+                        <input disabled value="{{ cid }}" type="text" maxlength="30" placeholder="Candidate ID"    >
                     </div>
                     <div>
-                        <input value="{{ eachcandidate.pk }}" readonly type="text" maxlength="30" placeholder="Candidate ID" name="cid" id="cid"  required="true" >
+                        <input value="{{ cid }}" readonly type="text" maxlength="30" placeholder="Candidate ID" name="cid" id="cid"  required="true" >
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -707,29 +706,29 @@
                         <span id="wage_result" style="color: #bf0711;"></span>
                     </div>
                 </div>
-                <a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">view salary structure</a>
+                <a href="/view_salary_structure/{{ cid }}/" target="_blank">view salary structure</a>
                 
 
 
         </div>
 
         <div class="candidate_form_footer">
-            <button class="delete-forms-close-btn" id="reject" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button>                 
+            <button class="delete-forms-close-btn" id="reject" formaction="{% url 'csp_app:reject_candidate_vendor' cid %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button>                 
 
             {% if request.user.groups.all %}
                 {% for eachgroup in request.user.groups.all %}
                     {% if eachgroup.name == 'Vendor' %}
                         <input type="hidden" value="vendor" name="ve_status">
-                        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' eachcandidate.pk %}" type="submit" style="width: auto;">Calculate Salary Structure</button> 
+                        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' cid %}" type="submit" style="width: auto;">Calculate Salary Structure</button> 
                     
                     {% elif eachgroup.name == 'Admin' %}   
                         <input type="hidden" value="vendor" name="ve_status">
-                        <button id="calculate" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure_process' eachcandidate.pk %}" type="submit">Calculate Salary Structure</button>
+                        <button id="calculate" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure_process' cid %}" type="submit">Calculate Salary Structure</button>
                     
 
                     {% else %}
                         <input type="hidden" value="onboarding" name="o_status">
-                        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' eachcandidate.pk %}" type="submit" style="width: auto;">Calculate Salary Structure</button> 
+                        <button class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' cid %}" type="submit" style="width: auto;">Calculate Salary Structure</button> 
                     {% endif %}
                 {% endfor %}
             {% endif %}
@@ -756,11 +755,11 @@
         <div class="form_content" id="s-wrapper" style="width: 80vw;">
             
             <div class="ss canvas_div_pdf"> 
-                <!-- <div>
+                <div>
                     <div style="font-size: 16px;"> <strong> Name : </strong> {{ dummy.First_Name }} {{ dummy.Middle_Name }} {{ dummy.Last_Name }}</div> 
                     <div style="font-size: 16px;"><strong> Email : </strong> {{ dummy.Personal_Email_Id}} </div> 
                     <div style="font-size: 16px;"><strong>  Phone : </strong> {{ dummy.Contact_Number }}</div>
-                </div> -->
+                </div>
                 <div class="salary-heading-one">
                     <h3>Salary Structure</h3>
                 </div>
@@ -856,7 +855,7 @@
                         {% endif %}
                         {% if td != '₹0.00' %}
                         <tr class="ss-table-total-three1">
-                            <td>Total Contribution (B) <div><small>*Excl Professional Tax Contribution</small></div> </td>
+                            <td>Total Contribution (B)</td>
                             <td ><input type="text" name="tc"  readonly value="{{ td   }}"></td>
                             <td><input type="text" name="annualtc"  readonly value="{{ annualtd   }}"></td>
                         </tr>
@@ -864,7 +863,7 @@
                         {% if ths != '₹0.00' %}
                                             
                         <tr class="ss-table-total-two">
-                            <td>Take Home Salary (C) = (A - B) <div><small>*Excl Professional Tax Contribution</small></div> </td>
+                            <td>Take Home Salary (C) = (A - B)</td>
                             <td ><input type="text" name="ths"  readonly value="{{ ths   }}"></td>
                             <td><input type="text" name="annualths"  readonly value="{{ annualths   }}"></td>
                         </tr>
@@ -934,7 +933,7 @@
                         {% endif %}
                         {% if ctc != '₹0.00' %}
                         <tr class="ctc-row">
-                            <td>Cost To Company (CTC) (E) = (A + D) <div><small>*Excl Professional Tax Contribution</small></div>  </td>
+                            <td>Cost To Company (CTC) (E) = (A + D)</td>
                             <td ><input type="text" name="ctc"  readonly value="{{ ctc   }}"></td>
                             <td><input type="text" name="annualctc"  readonly value="{{ annual_ctc   }}"></td>                            
                         </tr>
@@ -950,10 +949,13 @@
 
 
             <div class="ssc">
-                <p>&nbsp;</p>
-                <br>
-                <p>&nbsp;</p>
-
+                <div>
+                    <p>&nbsp;</p>
+                    <br>
+                    <p>&nbsp;</p>
+                </div>
+               
+                
                 <div class="ssc-heading-one">
                     <h3>Salary Structure Calculation : Consideration</h3>
                 </div>
@@ -962,7 +964,7 @@
                     <thead>
                         <tr class="ssc-heading-four">
                             <th style="text-align: left;">State</th>
-                            <!-- <th style="text-align: right;">{{ dummy.fk_state_code }}</th> -->
+                            <th style="text-align: right;">{{ dummy.fk_state_code }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -981,11 +983,11 @@
                     
                         <tr>
                             <td>Designation</td>
-                            <!-- <td>{{ dummy.fk_designation_code }}</td> -->
+                            <td>{{ dummy.fk_designation_code }}</td>
                         </tr>
                         <tr>
                             <td>Skill Type</td>
-                            <!-- <td>{{ dummy.fk_designation_code.fk_skill_code }}</td> -->
+                            <td>{{ dummy.fk_designation_code.fk_skill_code }}</td>
                         </tr>
                         <tr>
                             <td>Minimum Wage Considered</td>
@@ -1006,7 +1008,7 @@
                         
                         <tr>
                             <td>Salary Type Selected</td>
-                            <!-- <td>{{ dummy.Salary_Type }}</td> -->
+                            <td>{{ dummy.Salary_Type }}</td>
                         </tr>
 
                         <tr class="ssc-heading-four">
@@ -1051,23 +1053,23 @@
                     {% for eachgroup in request.user.groups.all %}
                         {% if eachgroup.name == 'Vendor' %}
                             <input type="hidden" value="vendor" name="ve_status">
-                            <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk  %}" type="submit" style="width: auto;">Approve to Send LOI to Candidate</button> 
+                            <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' cid  %}" type="submit" style="width: auto;">Approve to Send LOI to Candidate</button> 
                         
                         {% elif eachgroup.name == 'Admin' %}   
                             <input type="hidden" value="vendor" name="ve_status">
-                            <button class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit">Approve to Send the Details to Vendor For LOI</button>
+                            <button class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:process_request' cid %}" type="submit">Approve to Send the Details to Vendor For LOI</button>
                     
 
                         {% else %}
                             <input type="hidden" value="onboarding" name="o_status">
-                            <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' eachcandidate.pk %}" type="submit" style="width: auto;">Approve to Send the Details to Vendor For LOI</button> 
+                            <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' cid %}" type="submit" style="width: auto;">Approve to Send the Details to Vendor For LOI</button> 
                         {% endif %}
                     {% endfor %}
                 {% endif %}      
             </form>
         </div>
     </div>
-    {% endfor %}
+    
 {% endif %}
 <script src="{% static 'csp_app/js/candidateeditajax.js' %}"></script>
 <script src="{% static 'csp_app/js/candidatedropdowns.js' %}"></script>
