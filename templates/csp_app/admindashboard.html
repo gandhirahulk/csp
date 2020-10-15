@@ -214,7 +214,7 @@
                     <form action="" method="POST">
                         {% csrf_token %}
                         <input type="hidden" value="{{ eachcandidate.pk }}" name="view_id">
-                        <input type="submit" value="View Profile" id="view" style="border: none; outline: none; color: blue;background: none;cursor: pointer;" formaction="{% url 'csp_app:view_edit_candidate' %}">
+                        <input type="submit" value="View Profile" id="view" style="border: none; outline: none; color: blue;background: none;cursor: pointer;" formaction="{% url 'csp_app:view_candidate' %}">
                    
                     </form>
                     <fieldset class="fds">

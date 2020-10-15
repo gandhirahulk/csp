@@ -96,7 +96,7 @@ input:-webkit-autofill+label.move-out {
 .view-candidate-forms-input-holder select,
 .view-candidate-forms-input-holder input
 {
-  background: beige;
+  background: #f5f5fa;
 }
 
 .form_content .entity-holder{

@@ -71,19 +71,9 @@
                  </div>
                 <div class="margin-left">
                 <label for="" >Gender</label>
-
-                <select tabindex="8" name="c_gender" id="c_gender" required="true">
-                    <!-- <option value="" disabled selected>Select Gender</option> -->
-                    <option value="{{ me.Gender_id }}" label="{{ me.Gender }}" selected>{{ me.Gender }}</option>
-
-                    {% if gender_list %}
-                        {% for eachgender in gender_list %}                            
-                            {% if eachgender.pk != me.Gender_id %}
-                                <option value="{{ eachgender.pk }}" label="{{ eachgender.gender_name }}">{{ eachgender.gender_name }}</option>
-                            {% endif %}
-                        {% endfor %}                
-                    {% endif %}
-                </select>
+                <input readonly type="text" value="{{ me.Gender }}">
+                
+            
             </div>
         </div>
            
@@ -93,8 +83,8 @@
                 <input readonly tabindex="9" type="text" value="{{ me.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
                  </div>
                 <div class="margin-left">
-                <label for="" >Father Date of Birth</label>
-                <input readonly tabindex="10" type="date" value="{{ me.Father_Date_of_Birth }}" name="c_father_dob" id="c_father_dob" required="true" tabindex="4" >
+                <label for="" >Mother Name</label>
+                <input readonly tabindex="10" type="text" value="{{ me.Mother_Name }}" name="c_father_dob" id="c_father_dob" required="true" tabindex="4" >
        
                 </div>
         </div>
@@ -113,16 +103,8 @@
                <div class="view-candidate-forms-input-holder">
                 <div>               
                 <label for="">Type Of Hiring</label>
-                <select tabindex="13" name="c_hiring_type" id="hiring" >
-                    <option value="{{ me.Type_of_Hiring_id }}" selected label="{{ me.Type_of_Hiring }}">{{ me.Type_of_Hiring }}</option>
-                    {% if hiring_type_list %}
-                        {% for eachhiring_type in hiring_type_list %}
-                            {% if eachhiring_type.pk !=  me.Type_of_Hiring_id %}
-                                <option value="{{ eachhiring_type.pk }}" label="{{ eachhiring_type.hiring_type_name }}">{{ eachhiring_type.hiring_type_name }}</option>
-                            {% endif %}
-                        {% endfor %}                
-                    {% endif %}
-                </select>
+                <input readonly type="text" value="{{ me.Type_of_Hiring  }}">
+              
                  </div>
                  <div class="margin-left">
                     <label for="">Replacement UID </label>
@@ -130,27 +112,19 @@
                 </div>
         </div>
 
-               <div class="view-candidate-forms-input-holder">
+            <div class="view-candidate-forms-input-holder">
                 <div>
                     <label for="">Sub Source</label>
-                    <select tabindex="15" name="c_sub_source" id="referral" >
-                        <option value="{{ me.Sub_Source_id }}" label="{{ me.Sub_Source }}" selected>{{ me.Sub_Source }}</option>
-                        {% if sub_source_list %}
-                            {% for eachsub_source in sub_source_list %}
-                                {% if eachsub_source.pk != me.Sub_Source_id %}
-                                <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
-                                {% endif %}                       
-                            {% endfor %}                
-                        {% endif %}
-                    </select>
-                     </div>
+                    <input readonly type="text" value="{{ me.Sub_Source  }}">
+
+                </div>
                
                 <div class="margin-left">
-                <label for="" >Referal UID</label>
-                <input readonly tabindex="16" type="text" disabled value="{{ me.Referral }}" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                    <label for="" >Referal UID</label>
+                    <input readonly tabindex="16" type="text" value="{{ me.Referral }}" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
           
+                </div>
             </div>
-        </div>
                <div class="view-candidate-forms-input-holder">
                
                  <div>
@@ -160,214 +134,74 @@
                 </div>
                 <div class="margin-left">
                 <label for="" >Company</label>
-
-                <select tabindex="18" name="c_entity" id="c_entity" required="true">
-                    <option value="{{ me.fk_entity_code_id }}" label="{{ me.fk_entity_code }}" selected>{{me.fk_entity_code}}</option>
-                    {% if entity_list %}
-                        {% for eachentity in entity_list %}
-                            {% if eachentity.pk != me.fk_entity_code_id %}
-                                <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
-                            {% endif %}                        
-                        {% endfor %}                
-                    {% endif %}
-                </select>
+                <input readonly type="text" value="{{ me.fk_entity_code }}">
+            
             </div>
         </div>
 
             <div class="view-candidate-forms-input-holder">
                 <div>
                     <label for="">Vendor</label>
+                    <input readonly type="text" value="{{ me.fk_vendor_code }}">
 
-                    <select tabindex="19" name="c_vendor" id="c_vendor" required="true">
-                        <option value="{{ me.fk_vendor_code_id }}" label="{{ me.fk_vendor_code }}" selected>{{me.fk_vendor_code}}</option>
-
-                        <option value="" label="" class="empty">Select Vendor</option>
-
-                        {% if vendor_list %}
-                            {% for eachvendor in vendor_list %}
-                            {% if eachvendor.pk != me.fk_vendor_code_id %}
-
-                                <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
-                        {% endif %}
-                            
-                                {% endfor %}                
-                        {% endif %}
-                    </select>
                  </div>
                 <div class="margin-left">
                 <label for="" >Department</label>
+                <input readonly type="text" value="{{ me.fk_department_code }}">
 
-                <select tabindex="20" name="c_dept" id="c_dept" required="true">
-                    <option value="{{ me.fk_department_code_id }}" label="{{ me.fk_department_code }}" selected>{{me.fk_department_code}}</option>
-
-                    <option value="" label="" class="empty">Select Department</option>
-
-                    {% if department_list %}
-                        {% for eachdepartment in department_list %}
-                        {% if eachdepartment.pk != me.fk_department_code_id %}
-
-                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
-                            {% endif %}                
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
+         
             </div>
         </div>
                <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Function</label>
+            <input readonly type="text" value="{{ me.fk_function_code }}">
 
-                <select tabindex="21" name="c_function" id="c_function" required="true">
-                    <option value="{{ me.fk_function_code_id }}" label="{{ me.fk_function_code }}" selected>{{ me.fk_function_code.fk_department_code_id }}</option>
-                    <option value="" label="" class="empty">Select Function</option>
-
-                    {% if function_list %}
-                        {% for eachfunction in function_list %}
-                        {% if eachfunction.pk != me.fk_function_code_id %}
-
-                            <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
-                    {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
+               
                  </div>
                 <div class="margin-left">
                 <label for="" >Team</label>
+                <input readonly type="text" value="{{ me.fk_team_code }}">
 
-                <select tabindex="22" name="c_team" id="c_team" required="true">
-                    <option value="{{ me.fk_team_code_id }}" label="{{ me.fk_team_code }}" selected>{{ me.fk_team_code.fk_function_code_id }}</option>
-                    <option value="" label="" class="empty">Select Team</option>
-
-                    {% if team_list %}
-                        {% for eachteam in team_list %}
-                        {% if eachteam.pk != me.fk_team_code_id %}
-
-                            <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
-                    {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
             </div>
         </div>
                <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Sub Team</label>
+            <input readonly type="text" value="{{ me.fk_subteam_code }}">
 
-                <select tabindex="23" name="c_subteam" id="c_subteam" required="true">
-                    <option value="{{ me.fk_subteam_code_id }}" label="{{ me.fk_subteam_code }}" selected>{{ me.fk_subteam_code.fk_team_code_id }}</option>
-                    <option value="" label="" class="empty">Select Sub Team</option>
-
-                    {% if sub_team_list %}
-                        {% for eachsubteam in sub_team_list %}
-                        {% if eachsubteam.pk != me.fk_subteam_code_id %}
-
-                            <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
-                    {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
                  </div>
                 <div class="margin-left">
                 <label for="" >Designation</label>
+                <input readonly type="text" value="{{ me.fk_designation_code }}">
 
-                <select tabindex="24" name="c_desg" id="c_desg" required="true">
-                    <option value="{{ me.fk_designation_code_id }}" label="{{ me.fk_designation_code }}" selected>{{ me.fk_designation_code.fk_sub_team_code_id }}</option>
-                    <option value="" label="" class="empty">Select Designation</option>
-
-                    {% if designation_list %}
-                        {% for eachdesignation in designation_list %}
-                        {% if eachdesignation.pk != me.fk_designation_code_id %}
-
-                        <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
-                        {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
             </div>
         </div>
                <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Region</label>
 
-                <select tabindex="25" name="c_region" id="c_region" required="true">
-                    <option value="{{ me.fk_region_code_id }}" label="{{ me.fk_region_code }}" selected>{{ me.fk_region_code.fk_entity_code_id }}</option>
-
-                    <option value="" label="" class="empty">Select Region</option>
-
-                    {% if region_list %}
-                        {% for eachregion in region_list %}
-                        {% if eachregion.pk != me.fk_region_code_id %}
-
-                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
-                    {% endif %}
-                       
-                            {% endfor %}                
-                    {% endif %}
-                </select>
+            <input readonly type="text" value="{{ me.fk_region_code }}">
+           
                  </div>
                 <div class="margin-left">
                 <label for="" >State</label>
+                <input readonly type="text" value="{{ me.fk_state_code }}">
 
-                <select tabindex="26" name="c_state" id="c_state" required="true">
-                    <option value="{{ me.fk_state_code_id }}" label="{{ me.fk_state_code }}" selected>{{ me.fk_state_code.fk_region_code_id }}</option>
-
-                    <option value="" label="" class="empty">Select State</option>
-
-                    {% if state_list %}
-                        {% for eachstate in state_list %}
-                        {% if eachstate.pk != me.fk_state_code_id %}
-
-                            <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
-                    {% endif %}
-                       
-                            {% endfor %}                
-                    {% endif %}
-                </select>
+       
             </div>
         </div>
                <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">City</label>
+            <input readonly type="text" value="{{ me.fk_city_code }}">
 
-                <select tabindex="27" name="c_city" id="c_city" required="true">
-                    <option value="{{ me.fk_city_code_id }}" label="{{ me.fk_city_code }}" selected>{{ me.fk_city_code.fk_state_code_id }}</option>
-
-                    <option value="" label="" class="empty">Select City</option>
-
-                    {% if city_list %}
-                        {% for eachcity in city_list %}
-                        {% if eachcity.pk != me.fk_city_code_id %}
-
-                            <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
-                    {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
+              
                  </div>
                 <div class="margin-left">
                 <label for="" >Location</label>
+                <input readonly type="text" value="{{ me.fk_location_code }}">
 
-                <select tabindex="28" name="c_location" id="c_location" required="true">
-                    <option value="{{ me.fk_location_code_id }}" label="{{ me.fk_location_code }}" selected>{{ me.fk_location_code.fk_city_code_id }}</option>
-
-                    <option value="" label="" class="empty">Select Location</option>
-
-                    {% if location_list %}
-                        {% for eachlocation in location_list %}
-                        {% if eachlocation.pk != me.fk_location_code_id %}
-
-                            <option value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
-                    {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
             </div>
         </div>
         <div class="view-candidate-forms-input-holder">
@@ -396,47 +230,20 @@
                <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Email ID Creation</label>
-
-                <select tabindex="33" name="c_email_creation" id="c_email_creation" required="true">
-                    <option value="{{ me.E_Mail_ID_Creation }}" label="{{ me.E_Mail_ID_Creation }}" selected>{{ me.E_Mail_ID_Creation }}</option>
-                    <option value="Yes" >Yes</option>
-                    <option value="No" >No</option>                    
-                </select>
+                <input readonly type="text" value="{{ me.E_Mail_ID_Creation }}" id="">
+                
                  </div>
                 <div class="margin-left">
                 <label for="" >Laptop Allocation</label>
-
-                <select tabindex="34" name="c_laptop_allocation" id="c_laptop_allocation" required="true">
-                    <option value="{{ me.Laptop_Allocation_id }}" label="{{ me.Laptop_Allocation }}" selected>{{ me.Laptop_Allocation }}</option>
-                    {% if laptop_allocation_list %}
-                        {% for eachlaptop_allocation in laptop_allocation_list %}
-                        {% if eachlaptop_allocation.pk != me.Laptop_Allocation_id %}
-
-                            <option value="{{ eachlaptop_allocation.pk }}" label="{{ eachlaptop_allocation.option_name }}">{{ eachlaptop_allocation.option_name }}</option>
-                    {% endif %}                    
-                       
-                            {% endfor %}                
-                    {% endif %}                    
-                </select>
+                <input readonly type="text" value="{{ me.Laptop_Allocation }}" id="">
+               
             </div>
         </div>
                <div class="view-candidate-forms-input-holder">
                 <div>
             <label for="">Salary Type</label>
-
-                <select tabindex="35" name="c_salary_type" id="c_salary_type" required="true">
-                    <option value="{{ me.Salary_Type_id }}" label="{{ me.Salary_Type }}" selected>{{ me.Salary_Type }}</option>
-
-                    {% if salary_type_list %}
-                        {% for eachsalary_type in salary_type_list %}
-                        {% if eachsalary_type.pk != me.Salary_Type_id %}
-
-                            <option value="{{ eachsalary_type.pk }}" label="{{ eachsalary_type.salary_type_name }}">{{ eachsalary_type.salary_type_name }}</option>
-                    {% endif %}                   
-                       
-                            {% endfor %}                
-                    {% endif %}                   
-                </select>
+            <input readonly type="text" value="{{ me.Salary_Type }}" id="">
+                
                  </div>
                 <div class="margin-left">
                 <label for="" >Gross Salary</label>
