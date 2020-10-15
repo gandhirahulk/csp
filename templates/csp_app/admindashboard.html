@@ -63,6 +63,8 @@
         $('#c_middlename').bind('keypress', onlyAlphabets);
         $('#c_lastname').bind('keypress', onlyAlphabets);
         $('#c_fathername').bind('keypress', onlyAlphabets);
+        $('#c_mothername').bind('keypress', onlyAlphabets);
+
         $('#spoc').bind('keypress', onlyAlphabets);
         $('#loc_name').bind('keypress', alphaNumeric);
         
@@ -151,22 +153,7 @@
           $('#lastname').bind('keypress', onlyAlphabets); 
         });
 
-        $('#c_dob').change(function(){
-            var fToday = new Date($('#c_dob').val()); 
-            console.log(fToday);
-            var month = fToday.getMonth() + 1;
-            var day = fToday.getDate();
-            var maxYear = fToday.getFullYear() - 85;
-            var minYear = fToday.getFullYear() - 16;
-            if(month < 10)
-                month = '0' + month.toString();
-            if(day < 10)
-                day = '0' + day.toString();          
-            var maxAge= maxYear + '-' + month + '-' + day;     
-            var minAge= minYear + '-' + month + '-' + day;
-            $('#c_father_dob').attr('min', maxAge);
-            $('#c_father_dob').attr('max', minAge);
-        })
+    
       });
     </script>
 </head>
