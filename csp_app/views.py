@@ -433,7 +433,7 @@ def process_requests(request, cid):
             email = request.POST.get("c_email")
             c_gender = request.POST.get("c_gender")
             fathername = request.POST.get("c_fathername").capitalize()
-            father_dob = request.POST.get("c_father_dob")
+            mothername = request.POST.get("c_mothername").capitalize()
             aadhaar = request.POST.get("c_aadhaar")
             Pan = request.POST.get("c_pan")
             hiring = request.POST.get("c_hiring_type")
@@ -587,9 +587,9 @@ def process_requests(request, cid):
                 if selected_candidate.Father_Name != fathername:
                     changes_list['Father Name'] = [ selected_candidate.Father_Name, fathername ]
                 selected_candidate.Father_Name= fathername
-                if selected_candidate.Father_Date_of_Birth != father_dob:
-                    changes_list['Father DOB'] = [ selected_candidate.Father_Date_of_Birth, father_dob ]
-                selected_candidate.Father_Date_of_Birth= father_dob
+                if selected_candidate.Mother_Name != mothername:
+                    changes_list['Mother Name'] = [ selected_candidate.Mother_Name, mothername ]
+                selected_candidate.Mother_Name= mothername
                 if selected_candidate.Aadhaar_Number != aadhaar:
                     changes_list['Aadhaar Number'] = [ selected_candidate.Aadhaar_Number, aadhaar ]                    
                 selected_candidate.Aadhaar_Number= aadhaar
@@ -1085,8 +1085,8 @@ def edit_salary_structure_process(request, cid):
                 emergency_no = request.POST.get("c_emergency")
                 email = request.POST.get("c_email")
                 c_gender = request.POST.get("c_gender")
-                fathername = request.POST.get("c_fathername")
-                father_dob = request.POST.get("c_father_dob").capitalize()
+                fathername = request.POST.get("c_fathername").capitalize()
+                mothername = request.POST.get("c_mothername").capitalize()
                 aadhaar = request.POST.get("c_aadhaar")
                 Pan = request.POST.get("c_pan")
                 hiring = request.POST.get("c_hiring_type")
@@ -1220,7 +1220,7 @@ def edit_salary_structure_process(request, cid):
                     messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
                     return redirect("csp_app:candidate")
                 except ObjectDoesNotExist:
-                    new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
+                    new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
                     dummy = dummy_candidate.objects.get(pk=new_code)
                     minimum_wage = ''
                                 #monthly
@@ -1238,7 +1238,7 @@ def edit_salary_structure_process(request, cid):
                     mwc = minimum_wage.wages
                     gsa_value = dummy.Gross_Salary_Amount
                     basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2, fs, annual_fs = salary_structure_calculation(gsa, wage, state_name, salary_pk)
-                    selected_candidate, ss_gross_salary = update_selected_dummy(dummy.pk_candidate_code, firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gross_salary)
+                    selected_candidate, ss_gross_salary = update_selected_dummy(dummy.pk_candidate_code, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gross_salary)
 
                     return render(request, 'candidate/processeditsalarystructure.html', {'count':count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                     'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
@@ -1269,7 +1269,7 @@ def edit_salary_structure_process(request, cid):
         #     email = request.POST.get("c_email")
         #     c_gender = request.POST.get("c_gender")
         #     fathername = request.POST.get("c_fathername")
-        #     father_dob = request.POST.get("c_father_dob").capitalize()
+        #     mothername = request.POST.get("c_mothername").capitalize()
         #     aadhaar = request.POST.get("c_aadhaar")
         #     Pan = request.POST.get("c_pan")
         #     hiring = request.POST.get("c_hiring_type")
@@ -1403,7 +1403,7 @@ def edit_salary_structure_process(request, cid):
         #         messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
         #         return redirect("csp_app:candidate")
         #     except ObjectDoesNotExist:
-        #         new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
+        #         new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
         #         dummy = dummy_candidate.objects.get(pk=new_code)
         #         minimum_wage = ''
         #                     #monthly
@@ -1421,7 +1421,7 @@ def edit_salary_structure_process(request, cid):
         #         mwc = minimum_wage.wages
         #         gsa_value = dummy.Gross_Salary_Amount
         #         basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2, fs, annual_fs = salary_structure_calculation(gsa, wage, state_name, salary_pk)
-        #         # selected_candidate, ss_gross_salary = update_selected_dummy(dummy.pk_candidate_code, firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gross_salary)
+        #         # selected_candidate, ss_gross_salary = update_selected_dummy(dummy.pk_candidate_code, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gross_salary)
                 
         #         return render(request, 'candidate/processeditsalarystructure.html', {'cid':candidate_id,'count':count, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'selected_candidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
         #         'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
@@ -1458,8 +1458,8 @@ def edit_salary_structure(request):
             emergency_no = request.POST.get("c_emergency")
             email = request.POST.get("c_email")
             c_gender = request.POST.get("c_gender")
-            fathername = request.POST.get("c_fathername")
-            father_dob = request.POST.get("c_father_dob").capitalize()
+            fathername = request.POST.get("c_fathername").capitalize()
+            mothername = request.POST.get("c_mothername").capitalize()
             aadhaar = request.POST.get("c_aadhaar")
             Pan = request.POST.get("c_pan")
             hiring = request.POST.get("c_hiring_type")
@@ -1593,7 +1593,7 @@ def edit_salary_structure(request):
                 messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
                 return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
-                new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
+                new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
                 dummy = dummy_candidate.objects.get(pk=new_code)
                 minimum_wage = ''
                             #monthly
@@ -1611,7 +1611,7 @@ def edit_salary_structure(request):
                 mwc = minimum_wage.wages
                 gsa_value = dummy.Gross_Salary_Amount
                 basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2, fs, annual_fs = salary_structure_calculation(gsa, wage, state_name, salary_pk)
-                selected_candidate, ss_gross_salary = update_selected_dummy(dummy.pk_candidate_code, firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gross_salary)
+                selected_candidate, ss_gross_salary = update_selected_dummy(dummy.pk_candidate_code, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gross_salary)
 
                 return render(request, 'candidate/editsalarystructure.html', {'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachc': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                 'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
@@ -1624,7 +1624,7 @@ def edit_salary_structure(request):
                 'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': convert_to_INR(var), 'annual_var': convert_to_INR(annual_var), 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': convert_to_INR(diff), 'gpac': convert_to_INR(gpi_2), 'fs': convert_to_INR(fs), 'annual_fs': convert_to_INR(annual_fs)})
 
                     # selected_candidate = ''
-                    # selected_candidate, ss_gross_salary = update_selected_candidate(cid, firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email)
+                    # selected_candidate, ss_gross_salary = update_selected_candidate(cid, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email)
                     # candidate_id = selected_candidate.pk
                     # candidate_id = ''
                     # new_salary_structure = salary_structure(candidate_code= candidate_id, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(hra), annual_house_rent_allowance= INR_to_number(annual_hra), statutory_bonus=INR_to_number(sb), annual_statutory_bonus= INR_to_number(annual_sb),
@@ -1659,7 +1659,7 @@ def edit_salary_structure(request):
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
-def update_selected_dummy(cid, firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gs):
+def update_selected_dummy(cid, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gs):
     print(1)
     selected_candidate = dummy_candidate.objects.get(pk = cid)
     selected_candidate.First_Name=firstname
@@ -1668,7 +1668,7 @@ def update_selected_dummy(cid, firstname, middlename, lastname, doj, dob, father
     selected_candidate.Date_of_Joining= doj
     selected_candidate.Date_of_Birth= dob
     selected_candidate.Father_Name= fathername
-    selected_candidate.Father_Date_of_Birth= father_dob
+    selected_candidate.Mother_Name= mothername
     selected_candidate.Aadhaar_Number= aadhaar
     selected_candidate.PAN_Number= Pan
     selected_candidate.Contact_Number= contact_no
@@ -1711,7 +1711,7 @@ def update_selected_dummy(cid, firstname, middlename, lastname, doj, dob, father
 
 
 
-def update_selected_candidate(cid, firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gs):
+def update_selected_candidate(cid, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gs):
     selected_candidate = master_candidate.objects.get(pk = cid)
     selected_candidate.First_Name=firstname
     selected_candidate.Middle_Name=middlename
@@ -1719,7 +1719,7 @@ def update_selected_candidate(cid, firstname, middlename, lastname, doj, dob, fa
     selected_candidate.Date_of_Joining= doj
     selected_candidate.Date_of_Birth= dob
     selected_candidate.Father_Name= fathername
-    selected_candidate.Father_Date_of_Birth= father_dob
+    selected_candidate.Mother_Name= mothername
     selected_candidate.Aadhaar_Number= aadhaar
     selected_candidate.PAN_Number= Pan
     selected_candidate.Contact_Number= contact_no
@@ -1869,13 +1869,13 @@ def salary_structure_post_values(request):
         annualcost_to_company  = 0
     return ss_gross_salary, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary
 
-def create_dummy(firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request):
+def create_dummy(firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request):
     last_code_query = dummy_candidate_code.objects.latest('candidate_code')                
     last_code_str = last_code_query.candidate_code
     next_code_int = int(last_code_str[1:]) + 1
     new_code = 'D' + str(next_code_int).zfill(9) #pk_candidate_code
     loc_code = remove_specials(loc_code)
-    new_dummy_candidate = dummy_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= father_dob,
+    new_dummy_candidate = dummy_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Mother_Name= mothername,
     Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
     Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
     fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
@@ -1907,8 +1907,8 @@ def edit_candidate(request):
             emergency_no = request.POST.get("c_emergency")
             email = request.POST.get("c_email")
             c_gender = request.POST.get("c_gender")
-            fathername = request.POST.get("c_fathername")
-            father_dob = request.POST.get("c_father_dob")
+            fathername = request.POST.get("c_fathername").capitalize()
+            mothername = request.POST.get("c_mothername").capitalize()
             aadhaar = request.POST.get("c_aadhaar")
             Pan = request.POST.get("c_pan")
             hiring = request.POST.get("c_hiring_type")
@@ -2151,11 +2151,11 @@ def edit_candidate(request):
                 messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
                 return redirect("csp_app:new_candidate")
             except ObjectDoesNotExist:
-                new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
+                new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
                 dummy = dummy_candidate.objects.get(pk=new_code)
                 
        
-                selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, ss_gross_salary)
+                selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, ss_gross_salary)
 
                 new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
                     special_allowance=INR_to_number(special_allowance), annual_special_allowance=INR_to_number(annualspecial_allowance),gross_salary=INR_to_number(ss_gross_salary), annual_gross_salary=INR_to_number(annualgross_salary), employee_pf= INR_to_number(employee_pf), annual_employee_pf= INR_to_number(annualemployee_pf),
@@ -2229,8 +2229,8 @@ def create_candidate(request):
             emergency_no = request.POST.get("c_emergency")
             email = request.POST.get("c_email")
             c_gender = request.POST.get("c_gender")
-            fathername = request.POST.get("c_fathername")
-            father_dob = request.POST.get("c_father_dob")
+            fathername = request.POST.get("c_fathername").capitalize()
+            mothername = request.POST.get("c_mothername").capitalize()
             aadhaar = request.POST.get("c_aadhaar")
             Pan = request.POST.get("c_pan")
             hiring = request.POST.get("c_hiring_type")
@@ -2363,7 +2363,7 @@ def create_candidate(request):
                 return redirect("csp_app:new_candidate")
             
             except ObjectDoesNotExist:
-                new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, father_dob, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
+                new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
                 dummy = dummy_candidate.objects.get(pk=new_code)
                 minimum_wage = ''
                                 #monthly
@@ -2506,8 +2506,8 @@ def save_new_candidate(request):
             emergency_no = request.POST.get("c_emergency")
             email = request.POST.get("c_email")
             c_gender = request.POST.get("c_gender")
-            fathername = request.POST.get("c_fathername")
-            father_dob = request.POST.get("c_father_dob")
+            fathername = request.POST.get("c_fathername").capitalize()
+            mothername = request.POST.get("c_mothername").capitalize()
             aadhaar = request.POST.get("c_aadhaar")
             Pan = request.POST.get("c_pan")
             hiring = request.POST.get("c_hiring_type")
@@ -2749,7 +2749,7 @@ def save_new_candidate(request):
                 print(loc_code)
                 loc_code = remove_specials(loc_code)
                 print(loc_code)
-                new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Father_Date_of_Birth= father_dob,
+                new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Mother_Name= mothername,
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
