@@ -131,8 +131,11 @@
 
 .ss-table-fixed-salary{
     background-color:  #E7F3E2 ;
+    font-weight: bold;
+
 }
 
 .ss-table-variable{
     background-color: #DCF2E7;
+    font-weight: bold;
 }

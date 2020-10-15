@@ -35,138 +35,263 @@
                                 <th>Annual</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        {% if s.variable != 0.00 %}
+                            <tbody>
 
-                            <tr>
-                                <td>Basic</td>
-                                <td><input type="text" name="basic"  readonly value="{{ s.basic  }}"></td>
-                                <td><input type="text" name="annualbasic" value=" {{ s.annual_basic|floatformat:2  }}" readonly></td>
-                            </tr>
-  
-                            {% if s.house_rent_allowance != 0.00 %}
-                            <tr>
-                                <td>House Rent Allowance</td>
-                                <td><input type="text" name="hra"  readonly value="{{ s.house_rent_allowance|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualhra"  readonly value="{{ s.annual_house_rent_allowance|floatformat:2  }}"></td>
-                            </tr>
-                            {% endif %}
-                            <tr>
-                                <td>Statutory Bonus</td>
-                                <td ><input type="text" name="sb"  readonly value="{{ s.statutory_bonus|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualsb"  readonly value="{{ s.annual_statutory_bonus|floatformat:2  }}"></td>
-                            </tr>
-                            {% if s.special_allowance != 0.00 %}
-                            <tr>
-                                <td>Special Allowance</td>
-                                <td ><input type="text" name="sa"  readonly value="{{ s.special_allowance|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualsa"  readonly value="{{ s.annual_special_allowance|floatformat:2  }}"></td>
-                            </tr>
-                            {% endif %}
-                        
+                                <tr>
+                                    <td>Basic</td>
+                                    <td><input type="text" name="basic"  readonly value="{{ s.basic  }}"></td>
+                                    <td><input type="text" name="annualbasic" value=" {{ s.annual_basic|floatformat:2  }}" readonly></td>
+                                </tr>
+    
+                                {% if s.house_rent_allowance != 0.00 %}
+                                <tr>
+                                    <td>House Rent Allowance</td>
+                                    <td><input type="text" name="hra"  readonly value="{{ s.house_rent_allowance|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualhra"  readonly value="{{ s.annual_house_rent_allowance|floatformat:2  }}"></td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <td>Statutory Bonus</td>
+                                    <td ><input type="text" name="sb"  readonly value="{{ s.statutory_bonus|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualsb"  readonly value="{{ s.annual_statutory_bonus|floatformat:2  }}"></td>
+                                </tr>
+                                {% if s.special_allowance != 0.00 %}
+                                <tr>
+                                    <td>Special Allowance</td>
+                                    <td ><input type="text" name="sa"  readonly value="{{ s.special_allowance|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualsa"  readonly value="{{ s.annual_special_allowance|floatformat:2  }}"></td>
+                                </tr>
+                                {% endif %}
                             
-                            {% if s.variable != 0.00 %}
-                            <tr class="ss-table-fixed-salary">
-                                <td>Fixed Salary </td>
-                                <td ><input type="text" name="fs"  readonly value="{{ s.fixed_salary   }}"></td>
-                                <td><input type="text" name="annualfs"  readonly value="{{ s.annual_fixed_salary  }}"></td>
-                            </tr>
-                            <tr class="ss-table-variable">
-                                <td>Variable </td>
-                                <td ><input type="text" name="var"  readonly value="{{ s.variable|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualvar"  readonly value="{{ s.annual_var|floatformat:2  }}"></td>
-                            </tr>
-                            {% endif %}
-                            <tr class="ss-table-total-one">
-                                <td>Gross Salary (A)</td>
-                                <td ><input type="text" name="gs"  readonly value="{{ s.gross_salary|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualgs"  readonly value="{{ s.annual_gross_salary|floatformat:2  }}"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">&nbsp;</td>
-                            </tr>
-                            <tr class="salary-heading-two">
-                                <td colspan="3" style="text-align: center;"><h3>Employee Contributions</h3></td>
-                            </tr>
-                            <tr class="ss-table-heading-two">
-                                <th>Particulars</th>
-                                <th>Monthly</th>
-                                <th>Annual</th>
-                            </tr>
-                            <tr>
-                                <td>Employee PF</td>
-                                <td><input type="text" name="epf"  readonly value="{{ s.employee_pf|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualepf"  readonly value="{{ s.annuale_employee_pf|floatformat:2  }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Employee ESIC</td>
-                                <td><input type="text" name="esic"  readonly value="{{ s.employee_esic|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualesic"  readonly value="{{ s.annual_employee_esic|floatformat:2  }}"></td>
-                            </tr>
-                            <tr class="ss-table-total-three1">
-                                <td>Total Contribution (B) </td>
-                                <td ><input type="text" name="tc"  readonly value="{{ s.employee_total_contribution|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualtc"  readonly value="{{ s.annual_employee_total_contribution|floatformat:2  }}"></td>
-                            </tr>
+                                
+                                {% if s.variable != 0.00 %}
+                                <tr class="ss-table-fixed-salary">
+                                    <td>Fixed Salary (A) </td>
+                                    <td ><input type="text" name="fs"  readonly value="{{ s.fixed_salary   }}"></td>
+                                    <td><input type="text" name="annualfs"  readonly value="{{ s.annual_fixed_salary  }}"></td>
+                                </tr>
+                                <tr class="ss-table-variable">
+                                    <td>Variable (B)</td>
+                                    <td ><input type="text" name="var"  readonly value="{{ s.variable|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualvar"  readonly value="{{ s.annual_var|floatformat:2  }}"></td>
+                                </tr>
+                                {% endif %}
+                                <tr class="ss-table-total-one">
+                                    <td>Gross Salary (C) = (A + B)</td>
+                                    <td ><input type="text" name="gs"  readonly value="{{ s.gross_salary|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualgs"  readonly value="{{ s.annual_gross_salary|floatformat:2  }}"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">&nbsp;</td>
+                                </tr>
+                                <tr class="salary-heading-two">
+                                    <td colspan="3" style="text-align: center;"><h3>Employee Contributions</h3></td>
+                                </tr>
+                                <tr class="ss-table-heading-two">
+                                    <th>Particulars</th>
+                                    <th>Monthly</th>
+                                    <th>Annual</th>
+                                </tr>
+                                <tr>
+                                    <td>Employee PF</td>
+                                    <td><input type="text" name="epf"  readonly value="{{ s.employee_pf|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualepf"  readonly value="{{ s.annuale_employee_pf|floatformat:2  }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Employee ESIC</td>
+                                    <td><input type="text" name="esic"  readonly value="{{ s.employee_esic|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualesic"  readonly value="{{ s.annual_employee_esic|floatformat:2  }}"></td>
+                                </tr>
+                                <tr class="ss-table-total-three1">
+                                    <td>Total Contribution (D) </td>
+                                    <td ><input type="text" name="tc"  readonly value="{{ s.employee_total_contribution|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualtc"  readonly value="{{ s.annual_employee_total_contribution|floatformat:2  }}"></td>
+                                </tr>
+                                
                             
-                        
-                            <tr class="ss-table-total-two">
-                                <td>Take Home Salary (C) = (A - B) </td>
-                                <td ><input type="text" name="ths"  readonly value="{{ s.take_home_salary|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualths"  readonly value="{{ s.annual_take_home_salary|floatformat:2  }}"></td>
-                            </tr>
-                            
+                                <tr class="ss-table-total-two">
+                                    <td>Take Home Salary (E) = (A - D) </td>
+                                    <td ><input type="text" name="ths"  readonly value="{{ s.take_home_salary|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualths"  readonly value="{{ s.annual_take_home_salary|floatformat:2  }}"></td>
+                                </tr>
+                                
 
-                            <tr>
-                                <td colspan="3">&nbsp;</td>
-                            </tr>
-                            <tr class="salary-heading-three">
-                                <td colspan="3" style="text-align: center;"><h3>Employer Contributions</h3></td>
-                            </tr>
-                            <tr class="ss-table-heading-three">
-                                <th>Particulars</th>
-                                <th>Monthly</th>
-                                <th>Annual</th>
-                            </tr>
-                            <tr>
-                                <td>Employer PF</td>
-                                <td><input type="text" name="erpf"  readonly value="{{ s.employer_pf|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualerpf"  readonly value="{{ s.annual_employer_pf|floatformat:2  }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Employer PF Admin</td>
-                                <td><input type="text" name="erpfadmin"  readonly value="{{ s.employer_pf_admin|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualerpfadmin"  readonly value="{{ s.annual_employer_pf_admin|floatformat:2  }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Employer ESIC</td>
-                                <td><input type="text" name="ersic"  readonly value="{{ s.employer_esic|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualersic"  readonly value="{{ s.annual_employer_esic|floatformat:2  }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Group Personal Accident</td>
-                                <td ><input type="text" name="gpa"  readonly value="{{ s.group_personal_accident|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualgpa"  readonly value="{{ s.annual_group_personal_accident|floatformat:2  }}"></td>
-                            </tr>
-                            {% if s.group_mediclaim_insurance != 0.00 %}
-                            <tr>
-                                <td>Group Mediclaim Insurance</td>
-                                <td ><input type="text" name="gmi"  readonly value="{{ s.group_mediclaim_insurance|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualgmi"  readonly value="{{ s.annual_group_mediclaim_insurance|floatformat:2  }}"></td>
-                            </tr>
-                            {% endif %}
-                            <tr class="ss-table-total-three">
-                                <td>Total Employer Contribution (D) </td>
-                                <td ><input type="text" name="tec"  readonly value="{{ s.employer_total_contribution|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualtec"  readonly value="{{ s.annual_employer_total_contribution|floatformat:2  }}"></td>
-                            </tr>
-                            <tr class="ctc-row">
-                                <td>Cost To Company (CTC) (E) = (A + D)  </td>
-                                <td ><input type="text" name="ctc"  readonly value="{{ s.cost_to_company|floatformat:2  }}"></td>
-                                <td><input type="text" name="annualctc"  readonly value="{{ s.annual_cost_to_company|floatformat:2  }}"></td>                            
-                            </tr>
-                           
-                        
-                        </tbody>
+                                <tr>
+                                    <td colspan="3">&nbsp;</td>
+                                </tr>
+                                <tr class="salary-heading-three">
+                                    <td colspan="3" style="text-align: center;"><h3>Employer Contributions</h3></td>
+                                </tr>
+                                <tr class="ss-table-heading-three">
+                                    <th>Particulars</th>
+                                    <th>Monthly</th>
+                                    <th>Annual</th>
+                                </tr>
+                                <tr>
+                                    <td>Employer PF</td>
+                                    <td><input type="text" name="erpf"  readonly value="{{ s.employer_pf|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualerpf"  readonly value="{{ s.annual_employer_pf|floatformat:2  }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Employer PF Admin</td>
+                                    <td><input type="text" name="erpfadmin"  readonly value="{{ s.employer_pf_admin|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualerpfadmin"  readonly value="{{ s.annual_employer_pf_admin|floatformat:2  }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Employer ESIC</td>
+                                    <td><input type="text" name="ersic"  readonly value="{{ s.employer_esic|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualersic"  readonly value="{{ s.annual_employer_esic|floatformat:2  }}"></td>
+                                </tr>
+                                {% if s.group_personal_accident != 0.00 %}
+                                <tr>
+                                    <td>Group Personal Accident</td>
+                                    <td ><input type="text" name="gpa"  readonly value="{{ s.group_personal_accident|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualgpa"  readonly value="{{ s.annual_group_personal_accident|floatformat:2  }}"></td>
+                                </tr>
+                                {% endif %}
+                                {% if s.group_mediclaim_insurance != 0.00 %}
+                                <tr>
+                                    <td>Group Mediclaim Insurance</td>
+                                    <td ><input type="text" name="gmi"  readonly value="{{ s.group_mediclaim_insurance|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualgmi"  readonly value="{{ s.annual_group_mediclaim_insurance|floatformat:2  }}"></td>
+                                </tr>
+                                {% endif %}
+                                <tr class="ss-table-total-three">
+                                    <td>Total Employer Contribution (F) </td>
+                                    <td ><input type="text" name="tec"  readonly value="{{ s.employer_total_contribution|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualtec"  readonly value="{{ s.annual_employer_total_contribution|floatformat:2  }}"></td>
+                                </tr>
+                                <tr class="ctc-row">
+                                    <td>Cost To Company (CTC) (G) = (C + F)  </td>
+                                    <td ><input type="text" name="ctc"  readonly value="{{ s.cost_to_company|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualctc"  readonly value="{{ s.annual_cost_to_company|floatformat:2  }}"></td>                            
+                                </tr>
+                            
+                            
+                            </tbody>
+                        {% else %}
+                            <tbody>
+
+                                <tr>
+                                    <td>Basic</td>
+                                    <td><input type="text" name="basic"  readonly value="{{ s.basic  }}"></td>
+                                    <td><input type="text" name="annualbasic" value=" {{ s.annual_basic|floatformat:2  }}" readonly></td>
+                                </tr>
+    
+                                {% if s.house_rent_allowance != 0.00 %}
+                                <tr>
+                                    <td>House Rent Allowance</td>
+                                    <td><input type="text" name="hra"  readonly value="{{ s.house_rent_allowance|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualhra"  readonly value="{{ s.annual_house_rent_allowance|floatformat:2  }}"></td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <td>Statutory Bonus</td>
+                                    <td ><input type="text" name="sb"  readonly value="{{ s.statutory_bonus|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualsb"  readonly value="{{ s.annual_statutory_bonus|floatformat:2  }}"></td>
+                                </tr>
+                                {% if s.special_allowance != 0.00 %}
+                                <tr>
+                                    <td>Special Allowance</td>
+                                    <td ><input type="text" name="sa"  readonly value="{{ s.special_allowance|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualsa"  readonly value="{{ s.annual_special_allowance|floatformat:2  }}"></td>
+                                </tr>
+                                {% endif %}                           
+                                
+                               
+                                <tr class="ss-table-total-one">
+                                    <td>Gross Salary (A)</td>
+                                    <td ><input type="text" name="gs"  readonly value="{{ s.gross_salary|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualgs"  readonly value="{{ s.annual_gross_salary|floatformat:2  }}"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">&nbsp;</td>
+                                </tr>
+                                <tr class="salary-heading-two">
+                                    <td colspan="3" style="text-align: center;"><h3>Employee Contributions</h3></td>
+                                </tr>
+                                <tr class="ss-table-heading-two">
+                                    <th>Particulars</th>
+                                    <th>Monthly</th>
+                                    <th>Annual</th>
+                                </tr>
+                                <tr>
+                                    <td>Employee PF</td>
+                                    <td><input type="text" name="epf"  readonly value="{{ s.employee_pf|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualepf"  readonly value="{{ s.annuale_employee_pf|floatformat:2  }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Employee ESIC</td>
+                                    <td><input type="text" name="esic"  readonly value="{{ s.employee_esic|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualesic"  readonly value="{{ s.annual_employee_esic|floatformat:2  }}"></td>
+                                </tr>
+                                <tr class="ss-table-total-three1">
+                                    <td>Total Contribution (B) </td>
+                                    <td ><input type="text" name="tc"  readonly value="{{ s.employee_total_contribution|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualtc"  readonly value="{{ s.annual_employee_total_contribution|floatformat:2  }}"></td>
+                                </tr>
+                                
+                            
+                                <tr class="ss-table-total-two">
+                                    <td>Take Home Salary (C) = (A - B) </td>
+                                    <td ><input type="text" name="ths"  readonly value="{{ s.take_home_salary|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualths"  readonly value="{{ s.annual_take_home_salary|floatformat:2  }}"></td>
+                                </tr>
+                                
+
+                                <tr>
+                                    <td colspan="3">&nbsp;</td>
+                                </tr>
+                                <tr class="salary-heading-three">
+                                    <td colspan="3" style="text-align: center;"><h3>Employer Contributions</h3></td>
+                                </tr>
+                                <tr class="ss-table-heading-three">
+                                    <th>Particulars</th>
+                                    <th>Monthly</th>
+                                    <th>Annual</th>
+                                </tr>
+                                <tr>
+                                    <td>Employer PF</td>
+                                    <td><input type="text" name="erpf"  readonly value="{{ s.employer_pf|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualerpf"  readonly value="{{ s.annual_employer_pf|floatformat:2  }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Employer PF Admin</td>
+                                    <td><input type="text" name="erpfadmin"  readonly value="{{ s.employer_pf_admin|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualerpfadmin"  readonly value="{{ s.annual_employer_pf_admin|floatformat:2  }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Employer ESIC</td>
+                                    <td><input type="text" name="ersic"  readonly value="{{ s.employer_esic|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualersic"  readonly value="{{ s.annual_employer_esic|floatformat:2  }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Group Personal Accident</td>
+                                    <td ><input type="text" name="gpa"  readonly value="{{ s.group_personal_accident|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualgpa"  readonly value="{{ s.annual_group_personal_accident|floatformat:2  }}"></td>
+                                </tr>
+                                {% if s.group_mediclaim_insurance != 0.00 %}
+                                <tr>
+                                    <td>Group Mediclaim Insurance</td>
+                                    <td ><input type="text" name="gmi"  readonly value="{{ s.group_mediclaim_insurance|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualgmi"  readonly value="{{ s.annual_group_mediclaim_insurance|floatformat:2  }}"></td>
+                                </tr>
+                                {% endif %}
+                                <tr class="ss-table-total-three">
+                                    <td>Total Employer Contribution (D) </td>
+                                    <td ><input type="text" name="tec"  readonly value="{{ s.employer_total_contribution|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualtec"  readonly value="{{ s.annual_employer_total_contribution|floatformat:2  }}"></td>
+                                </tr>
+                                <tr class="ctc-row">
+                                    <td>Cost To Company (CTC) (E) = (A + D)  </td>
+                                    <td ><input type="text" name="ctc"  readonly value="{{ s.cost_to_company|floatformat:2  }}"></td>
+                                    <td><input type="text" name="annualctc"  readonly value="{{ s.annual_cost_to_company|floatformat:2  }}"></td>                            
+                                </tr>
+                            
+                            
+                            </tbody>
+                        {% endif %}
                     </table>
                     
                     <p> * The above salary structure doesn't contains Professional Tax Calculation.</p>
