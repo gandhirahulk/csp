@@ -42,6 +42,10 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
+Onboarding_SPOC = User.objects.get(groups__name='Onboarding SPOC')
+print(Onboarding_SPOC)
+
+
 
 def custom_send_email(request):
     
@@ -455,7 +459,7 @@ def process_requests(request, cid):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             # ta_spoc = request.user.email #check
-            onboarding_spoc = "workmail052020@gmail.com" #check
+            onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -705,7 +709,7 @@ def process_requests(request, cid):
                             'Candidate account edited by admin.',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC ],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -736,7 +740,7 @@ def process_requests(request, cid):
                         'Candidate account edited.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -766,7 +770,7 @@ def process_requests(request, cid):
                         'Candidate account edited by vendor.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -846,7 +850,7 @@ def reject_candidate_onboarding(request, cid):
             'Candidate Rejected.',
             alltemplate,
             settings.EMAIL_HOST_USER,
-            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
         ) 
         our_email.fail_silently = False
         our_email.send()
@@ -873,7 +877,7 @@ def reject_candidate_vendor(request, cid):
                     'Candidate Rejected By Admin.',
                     alltemplate,
                     settings.EMAIL_HOST_USER,
-                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
@@ -897,7 +901,7 @@ def reject_candidate_vendor(request, cid):
                     'Candidate Rejected.',
                     alltemplate,
                     settings.EMAIL_HOST_USER,
-                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
@@ -911,7 +915,7 @@ def reject_candidate_vendor(request, cid):
                     'Candidate Rejected.',
                     alltemplate,
                     settings.EMAIL_HOST_USER,
-                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com'],
+                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
@@ -1109,7 +1113,7 @@ def edit_salary_structure_process(request, cid):
                 location = request.POST.get("c_location")
 
                 ta_spoc = request.POST.get("c_ta_spoc") #check
-                onboarding_spoc = 'workmail052020@gmail.com' #check
+                onboarding_spoc = Onboarding_SPOC #check
                 reporting_manager = request.POST.get("c_reporting_manager")
                 reporting_manager_email = request.POST.get("c_reporting_manager_email")
                 email_creation = request.POST.get("c_email_creation")
@@ -1482,7 +1486,7 @@ def edit_salary_structure(request):
             location = request.POST.get("c_location")
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
-            onboarding_spoc = 'workmail052020@gmail.com' #check
+            onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -1933,7 +1937,7 @@ def edit_candidate(request):
              #check
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
-            onboarding_spoc = 'workmail052020@gmail.com' #check
+            onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -2253,7 +2257,7 @@ def create_candidate(request):
             location = request.POST.get("c_location")
 
             ta_spoc = request.user.email #check
-            onboarding_spoc = 'workmail052020@gmail.com' #check
+            onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -2530,7 +2534,7 @@ def save_new_candidate(request):
             location = request.POST.get("c_location")
 
             ta_spoc = request.user.email #check
-            onboarding_spoc = 'workmail052020@gmail.com' #check
+            onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager")
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -3279,7 +3283,7 @@ def delete_vendor(request):
                 #     messages.error(request, "Vendor Account Not Found")
                 #     return redirect('csp_app:vendor')
                 msg = 'Vendor account disabled for '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' by ' + str(request.user) + ' .'
-                send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com',[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
+                send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com' ,[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
       
                 messages.success(request, "Vendor Deleted Successfully")
                 return redirect('csp_app:vendor')
