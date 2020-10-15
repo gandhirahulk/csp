@@ -2806,14 +2806,14 @@ def remove_specials(a):
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Recruiter').exists())
 def view_candidate(request):
     candidate_list = master_candidate.objects.filter(status = active_status)
     try:
         if request.method == 'POST':
             candidate_id = request.POST.get("view_id")
-            view_candidate_list = master_candidate.objects.filter(pk = candidate_id)
-        return render(request, 'candidate/viewcandidate.html', {'allcandidates': all_active_candidates,'view_candidate_list': view_candidate_list, 'candidate_list': candidate_list})
+            view_candidate_list = master_candidate.objects.get(pk = candidate_id)
+        return render(request, 'candidate/viewcandidate.html', {'allcandidates': all_active_candidates,'me': view_candidate_list, 'candidate_list': candidate_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 

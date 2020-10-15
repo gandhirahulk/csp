@@ -11,102 +11,262 @@
 {% endblock %}
 
 {% block tabcontentblock %}
-{% if request.user.groups.all %}
-{% for eachgroup in request.user.groups.all %}
-{% if eachgroup.name != 'Vendor' %}
-<div class="tab-container">
-    <button id="new_candidate" class="add-new-btn">New Candidate</button>
-   
+<div class="crumbs"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
+    <span><i class="fas fa-chevron-right"></i></span>
+    <span >View Candidate</span>
+    <span><i class="fas fa-chevron-right"></i></span>
+    <span style="color: dimgray;">{{ me.pk }} | {{ me.First_Name }} {{ me.Middle_Name }} {{ me.Last_Name }}</span>
 </div>
-{% endif %}
-
-{% endfor %}
-
-{% endif %}
-<div class="table-container">
-  
-    <table id="candidate-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Candidate Name</th>
-                <th>Contact No.</th>
-                <th>Designation</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if candidate_list %}
-                {% for eachcandidate in candidate_list %}
-
-                    <tr>
-                        <td>{{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}</td>
-                        <td>{{ eachcandidate.Contact_Number }}</td>
-                        <td>{{ eachcandidate.Designation }}</td>
-                        <td>{{ eachcandidate.status }}</td>
-                        <td style="text-align: center;"><a href="http://">view</a> | <a href="http://">edit</a> | <a href="http://">delete</a></td>
-                    </tr>
-
-                {% endfor %}                
-
-            {% else %}
-                {% for eachcandidate in candidate_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
-
-<div class="form_modal" style="display: block;">
-
-    <div class="form_header">
+<div class="candidate_form">
+    <div class="candidate_form_header">
         <div class="forms-heading">
-            <h2>Candidate Details</h2>
+            <h2>View Candidate Profile</h2>
         </div>
-        <div class="hr_line">&nbsp;</div>            
+        <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
+     
     </div>
-    {% if view_candidate_list %}
-        {% for eachcandidate in view_candidate_list %}
-            <div class="view_form_content" style="padding-left: 13rem;">
-                <div class="forms-label-holder">
-                    <label for="">candidate Name : </label> <label for="">{{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</label>
-                </div>
-                <div class="forms-label-holder">
-                    <label for="">Father Name : </label> <label for="">{{ eachcandidate.Father_Name }}</label>
-                </div>
-                <div class="forms-label-holder">
-                    <label for="">Contact No. : </label> <label for="">{{ eachcandidate.Contact_Number }}</label>
-                </div>
-                <div class="forms-label-holder">
-                    <label for="">Status : </label> <label for="">{{ eachcandidate.status }}</label>
-                </div>
-                <div class="forms-label-holder">
-                    <label for="">Created By : </label> <label for="">{{ eachcandidate.created_by }}</label>
-                </div>
-                <div class="forms-label-holder">
-                    <label for="">Created Date Time : </label> <label for="">{{ eachcandidate.created_date_time }}</label>
-                </div>
-                <div class="forms-label-holder">    
-                    <label for="">Modified By : </label> <label for="">{{ eachcandidate.modified_by }}</label>
-                </div>
-                <div class="forms-label-holder">
-                    <label for="">Modified Date Time : </label> <label for="">{{ eachcandidate.modified_date_time }}</label>
-                </div>              
+    <div class="candidate_form_content">
+        <div class="view-candidate-forms-input-holder">
+            <div>
+            <label class="move-out" for="c_firstname">Candidate Code</label>
+
+            <input readonly value="{{ me.pk }}" class="no-right" style="background: #f5f5fa;    margin-right: 80px;" type="text" maxlength="30" placeholder="Candidate Code" name="c_id" >
             </div>
-        {% endfor %}
-    {% endif %} 
-    <div class="form_footer">
-        <button onclick="location.href = '/csp_candidates/'" class="forms-save-btn">Close</button>
+           
+        </div>
+        <div class="view-candidate-forms-input-holder">
+            <div>
+            <label class="move-out" for="c_firstname">First Name</label>
+
+            <input readonly tabindex="1" class="input-text" value="{{ me.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true" autocapitalize="on" autofocus="true" tabindex="1"  >
+            </div>
+            <div class="margin-left">
+                <label for="">Middle Name</label>
+                <input readonly tabindex="2" type="text" value="{{ me.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename" autocapitalize="on" tabindex="2">
+            </div>
+        </div>
+        <div class="view-candidate-forms-input-holder">
+            <div>
+            <label for="">Last Name</label>
+            <input readonly tabindex="3" type="text" value="{{ me.Last_Name }}" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname"  autocapitalize="on" tabindex="3">
+        
+            </div>
+            <div class="margin-left">
+                <label for="" >Candidate Date of Birth</label>
+                <input readonly tabindex="4" type="date" value="{{ me.Date_of_Birth }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
+            </div>
+        </div>
+           <div class="view-candidate-forms-input-holder">
+            <div>
+            <label for="">Contact Number</label>
+            <input readonly tabindex="5" type="text" value="{{ me.Contact_Number }}" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+             </div>
+            <div class="margin-left">
+            <label for="" >Emergency Number</label>
+            <input readonly tabindex="6" type="text" value="{{ me.Emergency_Contact_Number }}" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" onblur="sameNumber('c_contact', 'c_emergency', this)" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+            <span id='message'></span>    
+        </div>
+        </div>
+           <div class="view-candidate-forms-input-holder">
+            <div>
+            <label for="">Email ID</label>
+            <input readonly tabindex="7" type="email" value="{{ me.Personal_Email_Id }}" maxlength="50" name="c_email" tabindex="7" id="email" placeholder="Email Id">
+             </div>
+            <div class="margin-left">
+            <label for="" >Gender</label>
+            <input readonly type="text" value="{{ me.Gender }}">
+            
+        
+        </div>
     </div>
-             
+       
+           <div class="view-candidate-forms-input-holder">
+            <div>
+            <label for="">Father Name</label>
+            <input readonly tabindex="9" type="text" value="{{ me.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true" tabindex="5">
+             </div>
+            <div class="margin-left">
+            <label for="" >Mother Name</label>
+            <input readonly tabindex="10" type="text" value="{{ me.Mother_Name }}" name="c_father_dob" id="c_father_dob" required="true" tabindex="4" >
+   
+            </div>
+    </div>
+        
+           <div class="view-candidate-forms-input-holder">
+            <div>
+            <label for="">Aadhaar Number</label>
+            <input readonly tabindex="11" type="text" value="{{ me.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+             </div>
+            <div class="margin-left">
+            <label for="" >PAN Number</label>
+            <input readonly tabindex="12" type="text" value="{{ me.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+  
+        </div>
+    </div>
+           <div class="view-candidate-forms-input-holder">
+            <div>               
+            <label for="">Type Of Hiring</label>
+            <input readonly type="text" value="{{ me.Type_of_Hiring  }}">
+          
+             </div>
+             <div class="margin-left">
+                <label for="">Replacement UID </label>
+                <input readonly tabindex="14" type="text"  value="{{ me.Replacement }}" placeholder="Replacement UID" name="c_replace" id = "c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+            </div>
+    </div>
+
+        <div class="view-candidate-forms-input-holder">
+            <div>
+                <label for="">Sub Source</label>
+                <input readonly type="text" value="{{ me.Sub_Source  }}">
+
+            </div>
+           
+            <div class="margin-left">
+                <label for="" >Referal UID</label>
+                <input readonly tabindex="16" type="text" value="{{ me.Referral }}" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+      
+            </div>
+        </div>
+           <div class="view-candidate-forms-input-holder">
+           
+             <div>
+                <label for="" >Date of Joining</label>
+                <input readonly tabindex="17" type="date" value="{{ me.Date_of_Joining }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+           
+            </div>
+            <div class="margin-left">
+            <label for="" >Company</label>
+            <input readonly type="text" value="{{ me.fk_entity_code }}">
+        
+        </div>
+    </div>
+
+        <div class="view-candidate-forms-input-holder">
+            <div>
+                <label for="">Vendor</label>
+                <input readonly type="text" value="{{ me.fk_vendor_code }}">
+
+             </div>
+            <div class="margin-left">
+            <label for="" >Department</label>
+            <input readonly type="text" value="{{ me.fk_department_code }}">
+
+     
+        </div>
+    </div>
+           <div class="view-candidate-forms-input-holder">
+            <div>
+        <label for="">Function</label>
+        <input readonly type="text" value="{{ me.fk_function_code }}">
+
+           
+             </div>
+            <div class="margin-left">
+            <label for="" >Team</label>
+            <input readonly type="text" value="{{ me.fk_team_code }}">
+
+        </div>
+    </div>
+           <div class="view-candidate-forms-input-holder">
+            <div>
+        <label for="">Sub Team</label>
+        <input readonly type="text" value="{{ me.fk_subteam_code }}">
+
+             </div>
+            <div class="margin-left">
+            <label for="" >Designation</label>
+            <input readonly type="text" value="{{ me.fk_designation_code }}">
+
+        </div>
+    </div>
+           <div class="view-candidate-forms-input-holder">
+            <div>
+        <label for="">Region</label>
+
+        <input readonly type="text" value="{{ me.fk_region_code }}">
+       
+             </div>
+            <div class="margin-left">
+            <label for="" >State</label>
+            <input readonly type="text" value="{{ me.fk_state_code }}">
+
+   
+        </div>
+    </div>
+           <div class="view-candidate-forms-input-holder">
+            <div>
+        <label for="">City</label>
+        <input readonly type="text" value="{{ me.fk_city_code }}">
+
+          
+             </div>
+            <div class="margin-left">
+            <label for="" >Location</label>
+            <input readonly type="text" value="{{ me.fk_location_code }}">
+
+        </div>
+    </div>
+    <div class="view-candidate-forms-input-holder">
+        <div>
+            <label for="" >TA SPOC Email ID</label>
+            <input readonly tabindex="29" type="email" readonly value="{{ me.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
+        </div>
+        <div class="margin-left">
+            <label for="" >Onboarding SPOC Email ID</label>
+            <input readonly tabindex="30" type="email" readonly value="{{ me.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
+        </div>
+    </div>
+    <div class="view-candidate-forms-input-holder">
+        <div>
+            <label for="">Reporting / Hiring Manager Name</label>
+            <input readonly type="text" tabindex="31" value="{{ me.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50" autocapitalize="on">
+             </div>
+            <div class="margin-left">
+            <label for="" >Reporting / Hiring Manager Email ID</label>
+
+            <input readonly type="email" tabindex="32" value="{{ me.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" id="reporting_manager_email" name="c_reporting_manager_email" required="true">
+     
+        </div>
+    </div>
+        
+           <div class="view-candidate-forms-input-holder">
+            <div>
+        <label for="">Email ID Creation</label>
+            <input readonly type="text" value="{{ me.E_Mail_ID_Creation }}" id="">
+            
+             </div>
+            <div class="margin-left">
+            <label for="" >Laptop Allocation</label>
+            <input readonly type="text" value="{{ me.Laptop_Allocation }}" id="">
+           
+        </div>
+    </div>
+           <div class="view-candidate-forms-input-holder">
+            <div>
+        <label for="">Salary Type</label>
+        <input readonly type="text" value="{{ me.Salary_Type }}" id="">
+            
+             </div>
+            <div class="margin-left">
+            <label for="" >Gross Salary</label>
+            <input readonly tabindex="36" type="text" value="{{ me.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
+            <span id="wage_result" style="color: #bf0711;"></span>
+        </div>
+
+    </div>
+    <div class="view-candidate-forms-input-holder">
+        <div>
+            <label for="" >Onboarding Status</label>
+            <input readonly tabindex="37" type="text" value="{{ me.onboarding_status }}" placeholder="Onboarding Status" disabled="true">
+        </div>
+        <div class="margin-left">
+            <label for="" >Vendor Status</label>
+            <input readonly tabindex="38" type="text" value="{{ me.vendor_status }}" placeholder="Vendor Status" disabled="true">
+        </div>
+    </div>
+          
+</div>
   
   </div>
 
