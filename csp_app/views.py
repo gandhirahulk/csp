@@ -2449,8 +2449,8 @@ def salary_structure_calculation(gsa, wage, state_name, salary_type):
     epf = round(pf_gross * 0.12)
     epf_admin = round(epf / 12)
     if fixed_salary <= 21000:
-        employer_esic = fixed_salary * 0.0325
-        employee_esic = fixed_salary * 0.0075
+        employer_esic = numpy.ceil(fixed_salary * 0.0325)
+        employee_esic = numpy.ceil(fixed_salary * 0.0075)
         mediclaim = 0
     else:
         employer_esic = 0
