@@ -42,8 +42,8 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
-Onboarding_SPOC = User.objects.get(groups__name='Onboarding SPOC')
-
+Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+Onboarding_SPOC = Onboarding_SPOC_list.email
 
 
 
