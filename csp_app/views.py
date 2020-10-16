@@ -2469,7 +2469,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_type):
     t_employer_contribution = epf + epf_admin + employer_esic + mediclaim + gpa_premium
     ctc = gross_salary + t_employer_contribution
 
-    take_home = fixed_salary - t_employee_contribution
+    take_home = gross_salary - t_employee_contribution
 
     annual_basic = basic * 12
     annual_hra = hra * 12
