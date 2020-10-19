@@ -456,7 +456,36 @@
                 <div class="margin-left">
                 <label for="" >Gross Salary</label>
                 <input class="info" tabindex="36" type="number" value="{{ eachc.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1" max="100000">
-                <span id="wage_info">yes</span>
+                <span id="wage_info" class="">
+                    State : Chosen State
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Skill Type</th>
+                                <th>Minimum Wage</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>skilled</td>
+                                <td>12000</td>
+                            </tr>
+                            <tr>
+                                <td>skilled</td>
+                                <td>12000</td>
+                            </tr>
+                            <tr>
+                                <td>skilled</td>
+                                <td>12000</td>
+                            </tr>
+                            <tr>
+                                <td>skilled</td>
+                                <td>12000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </span>
                 <span id="wage_result" style="color: #bf0711;"></span>
 
             </div>
@@ -479,8 +508,13 @@
         
         <button id="calculate" title="" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
  </form>
- <small id="detailsmsg"></small>    
+ <div>
+    <small id="detailsmsg"></small>    
+
+ </div>
     </div>
+
+
     <input type="hidden" id="name">
     <input type="hidden" id="phone_no">
     <input type="hidden" id="spocemail">

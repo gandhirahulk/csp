@@ -187,6 +187,8 @@ $(document).ready(function(){
         fathername = $('#c_fathername').val();
         firstname = $('#c_firstname').val();
         dob = $('#c_dob').val();
+        middlename = $('#c_middlename').val();
+        lastname = $('#c_lastname').val();
         contact = 0
         aadhaar = 000000
         pan = 0
@@ -196,6 +198,8 @@ $(document).ready(function(){
             data: {
                 'fathername': fathername,
                 'firstname': firstname,
+                'middlename' : middlename,
+                'lastname' : lastname,
                 'dob':dob,     
                 'contact_no': contact,    
                 'aadhaar': aadhaar, 
@@ -222,6 +226,8 @@ $(document).ready(function(){
         fathername = $('#c_fathername').val();
         firstname = $('#c_firstname').val();
         dob = $('#c_dob').val();
+        middlename = $('#c_middlename').val();
+        lastname = $('#c_lastname').val();
         contact = 0
         aadhaar = 000000
         pan = 0
@@ -231,6 +237,8 @@ $(document).ready(function(){
             data: {
                 'fathername': fathername,
                 'firstname': firstname,
+                'middlename' : middlename,
+                'lastname' : lastname,
                 'dob':dob,     
                 'contact_no': contact,    
                 'aadhaar': aadhaar, 
@@ -257,7 +265,8 @@ $(document).ready(function(){
         fathername = $('#c_fathername').val();
         firstname = $('#c_firstname').val();
         dob = $('#c_dob').val();
-      
+        middlename = $('#c_middlename').val();
+        lastname = $('#c_lastname').val();
         contact = 0
         aadhaar = 000000
         pan = 0
@@ -267,6 +276,8 @@ $(document).ready(function(){
             data: {
                 'fathername': fathername,
                 'firstname': firstname,
+                'middlename' : middlename,
+                'lastname' : lastname,
                 'dob':dob,     
                 'contact_no': contact,    
                 'aadhaar': aadhaar, 

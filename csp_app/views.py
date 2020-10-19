@@ -128,8 +128,10 @@ def check_duplicate_candidate_new(request):
     aadhaar = request.GET.get('aadhaar')
     pan = request.GET.get('pan')
     contact_no = request.GET.get('contact_no')
-    fathername = request.GET.get('father')
+    fathername = request.GET.get('fathername')
     firstname = request.GET.get('firstname')
+    middlename = request.GET.get('middlename')
+    lastname = request.GET.get('lastname')
     dob = request.GET.get('dob')
     email = request.GET.get('email')
     result = {}
@@ -152,7 +154,7 @@ def check_duplicate_candidate_new(request):
         result['contact'] = ''
     try:
        
-        dup_candidate_details = master_candidate.objects.get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
+        dup_candidate_details = master_candidate.objects.get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob,Middle_Name= middlename, Last_Name = lastname, status= active_status)
         result['details'] = dup_candidate_details.pk_candidate_code
         return JsonResponse(result)
     except ObjectDoesNotExist:
@@ -169,8 +171,10 @@ def check_duplicate_candidate_edit(request):
     aadhaar = request.GET.get('aadhaar')
     pan = request.GET.get('pan')
     contact_no = request.GET.get('contact_no')
-    fathername = request.GET.get('father')
+    fathername = request.GET.get('fathername')
     firstname = request.GET.get('firstname')
+    middlename = request.GET.get('middlename')
+    lastname = request.GET.get('lastname')
     dob = request.GET.get('dob')
     email = request.GET.get('email')
     candidate_id = request.GET.get('candidate_id')
@@ -195,8 +199,9 @@ def check_duplicate_candidate_edit(request):
     except ObjectDoesNotExist:
         result['contact'] = ''
     try:
+        # dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Date_of_Birth=dob, Father_Name = fathername, status= active_status)
        
-        dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob, status= active_status)
+        dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Father_Name= fathername, First_Name= firstname, Middle_Name= middlename, Last_Name = lastname, Date_of_Birth=dob, status= active_status)
         result['details'] = dup_candidate_details.pk_candidate_code
         return JsonResponse(result)
     except ObjectDoesNotExist:
@@ -2931,7 +2936,7 @@ def candidate_document_upload(request, candidate_id):
                     messages.error(request, "File Already Exist Delete Existing File To Save New One")
                     return redirect('csp_app:document_upload', candidate_id = candidate_id )
                 duplicate_doc = candidate_document.objects.get(file_name=file_name_entered, file_upload = c_file, fk_candidate_code= candidate_fk, status = active_status)
-                messages.error(request, "Duplicate File Name")
+                messages.error(request, "Duplicate Document Name")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )
                 
             except ObjectDoesNotExist:

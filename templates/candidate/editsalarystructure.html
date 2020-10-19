@@ -84,7 +84,8 @@
                 <div>
                 <label for="">Email ID</label>
                 <input tabindex="7" type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" value="{{ eachc.Personal_Email_Id }}" maxlength="50" name="c_email" tabindex="7" id="email" placeholder="Email Id">
-                 </div>
+                <small id="emailmsg"></small>         
+            </div>
                 <div class="margin-left">
                 <label for="" >Gender</label>
 
@@ -478,8 +479,12 @@
         <a href="{% url 'csp_app:candidate' %}" class="delete-forms-close-btn">Cancel</a>
         
         <button id="calculate" title="" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure' %}" type="submit">Calculate Salary Structure</button>
-        <small id="detailsmsg"></small>     
     </div>
+    <div>
+        <small id="detailsmsg"></small>    
+    
+     </div>  
+
     <input type="hidden" id="name">
     <input type="hidden" id="phone_no">
     <input type="hidden" id="spocemail">

@@ -195,6 +195,8 @@ $(document).ready(function(){
         fathername = $('#c_fathername').val();
         firstname = $('#c_firstname').val();
         dob = $('#c_dob').val();
+        middlename = $('#c_middlename').val();
+        lastname = $('#c_lastname').val();
         contact = 0
         aadhaar = 000000
         pan = 0
@@ -209,7 +211,9 @@ $(document).ready(function(){
                 'contact_no': contact,    
                 'aadhaar': aadhaar, 
                 'pan':pan,
-                'email': email,       
+                'email': email,  
+                'middlename' : middlename,
+                'lastname' : lastname,     
             },
             dataType: 'Json',
             success: function(data){
@@ -232,6 +236,8 @@ $(document).ready(function(){
         fathername = $('#c_fathername').val();
         firstname = $('#c_firstname').val();
         dob = $('#c_dob').val();
+        middlename = $('#c_middlename').val();
+        lastname = $('#c_lastname').val();
         contact = 0
         aadhaar = 000000
         pan = 0
@@ -246,7 +252,9 @@ $(document).ready(function(){
                 'contact_no': contact,    
                 'aadhaar': aadhaar, 
                 'pan':pan,
-                'email': email,      
+                'email': email,  
+                'middlename' : middlename,
+                'lastname' : lastname,    
             },
             dataType: 'Json',
             success: function(data){
@@ -269,7 +277,8 @@ $(document).ready(function(){
         fathername = $('#c_fathername').val();
         firstname = $('#c_firstname').val();
         dob = $('#c_dob').val();
-      
+        middlename = $('#c_middlename').val();
+        lastname = $('#c_lastname').val();
         contact = 0
         aadhaar = 000000
         pan = 0
@@ -280,6 +289,8 @@ $(document).ready(function(){
                 'fathername': fathername,
                 'firstname': firstname,
                 'dob':dob,     
+                'middlename' : middlename,
+                'lastname' : lastname,
                 'candidate_id': candidate_id,
                 'contact_no': contact,    
                 'aadhaar': aadhaar, 
@@ -288,7 +299,10 @@ $(document).ready(function(){
             },
             dataType: 'Json',
             success: function(data){
+                
+
                 if (data['details'] != ''){
+
                     var duplicate_msg = 'Candidate Already Exist with Candidate ID : ' + data['details'] ;
                     $('#detailsmsg').html(duplicate_msg).css('color','red');
                     $('#new-candidate').attr('onsubmit','return false;');
