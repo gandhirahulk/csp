@@ -522,14 +522,14 @@ input:-webkit-autofill+label.move-out {
 
 #wage_info {
   position: absolute;
-  top: 0;
-  transform: translateY(70%);  
+  transform: translateY(110%);
   display: none;
   background: white;
   z-index: 20;
-  min-width: 100%;
   padding: 1rem;
-  border: 1px solid black;
+  box-shadow: 0px 0px 1px 0px #000000;
+  right: 25%;
+
 }
 
 .inline{
