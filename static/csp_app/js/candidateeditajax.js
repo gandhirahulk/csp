@@ -181,17 +181,25 @@ $(document).ready(function(){
             },
             dataType: 'Json',
             success: function(data){
-                if (data['email'] != ''){
-                    var duplicate_msg = 'Email ID Already Exist With Candidate ID : ' + data['email'] ;
-                    $('#emailmsg').html(duplicate_msg).css('color','red');
+                if (data['invalid_domain'] != ''){
+                    $('#emailmsg').html(data['invalid_domain']).css('color','red');
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
-                    console.log('work toh karra hai');
-                } 
-                if (data['email'] == ''){
+                } else {
                     $('#emailmsg').html('');
                     $('#new-candidate').attr('onsubmit','return true;');
                     $('#calculate').attr('title', 'Calculate Salary Structure');
+                    if (data['email'] != ''){
+                        var duplicate_msg = 'Email ID Already Exist With Candidate ID : ' + data['email'] ;
+                        $('#emailmsg').html(duplicate_msg).css('color','red');
+                        $('#new-candidate').attr('onsubmit','return false;');
+                        $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    } 
+                    if (data['email'] == ''){
+                        $('#emailmsg').html('');
+                        $('#new-candidate').attr('onsubmit','return true;');
+                        $('#calculate').attr('title', 'Calculate Salary Structure');
+                    }
                 }
             }
         });
