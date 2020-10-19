@@ -513,4 +513,25 @@ input:-webkit-autofill+label.move-out {
     text-align: center;
     padding-top: 0px;
   }
+
+
   
+.info {
+  position: relative;
+}
+
+#wage_info {
+  position: absolute;
+  top: 0;
+  transform: translateY(70%);  
+  display: none;
+  background: white;
+  z-index: 20;
+  min-width: 100%;
+  padding: 1rem;
+  border: 1px solid black;
+}
+
+.inline{
+  display: block;
+}

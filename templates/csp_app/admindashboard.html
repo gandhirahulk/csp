@@ -56,7 +56,21 @@
         $(".sidebar").hover(function () {
             $(".wrapper").toggleClass("collapse");
         });
-        
+        $(".info").hover(function () {
+            // alert('ok');
+            $("#wage_info").toggleClass("inline");
+            // alert('no ok');
+        });
+        // setTimeout(hidediv(0), 2000000000000);
+        // var h = 0;
+        // $('#alerts').onm(function(){
+        //     h = 1
+        //     console.log("hover" + h);
+        // })
+        // $('#alerts').blur(function(){
+        //     h = 0
+        //     console.log("hover gone" + h);
+        // });
 
         $('#c_firstname').bind('keypress', onlyAlphabets);
         $('#c_middlename').bind('keypress', onlyAlphabets);
@@ -351,12 +365,37 @@
         </div>
     </div>
     <script type="text/javascript">
-        function hidediv(){
-                    $( '#alerts' ).removeClass( 'animate__animated animate__slideOutRight animate__fast' ).show().addClass( 'animate__animated animate__slideInRight animate__fast' );
+    function hidediv(stay){
+            console.log(stay);
+            if(stay != 0){
+                console.log('in');
+                $( '#alerts' ).removeClass( 'animate__animated animate__slideOutRight animate__fast' ).show().addClass( 'animate__animated animate__slideInRight animate__fast' );
     
-                    $( '#alerts' ).removeClass( 'animate__animated animate__slideInRight animate__fast' ).addClass( 'animate__animated animate__slideOutRight animate__fast' );
-                }
-        setTimeout("hidediv()", 2000);    
+                $( '#alerts' ).removeClass( 'animate__animated animate__slideInRight animate__fast' ).addClass( 'animate__animated animate__slideOutRight animate__fast' );
+
+            } else {
+                console.log('Dont Go');
+            }
+            
+    }
+    
+
+        $("#alerts").hover(function () {
+            setTimeout("hidediv(0)", 2000);
+        },
+        function () {
+            setTimeout("hidediv(1)", 2000);
+        }
+        );
+        setTimeout("hidediv(1)", 2000);
+
+        function donthide(){
+            console.log('okay');
+        }           
+   
+
+                
+        
     </script>
     <script type="text/javascript">
       
@@ -452,23 +491,12 @@
                
             });
             $('#search-bar').on('change', function() {
-                console.log(this.value);
+                
                 var c_code = $('#search-bar').value;
-                console.log(c_code);
+               
                $('#' + this.value).css("display", "block");              
            });
-        //    $(document).keyup(function(){
-        //     if (event.keyCode === 27){
-        //         $("#entity_form").css("display", "none");
-        //         $("#delete_entity_form").css("display", "none");
-        //     }
-        //     });
-        //     $(window).click(function(e) {
-        //         if (e.target.id === 'entity_form' || e.target.id === 'delete_entity_form') {
-        //             $("#entity_form").css("display", "none");
-        //             $("#delete_entity_form").css("display", "none");
-        //         }   
-        //     }); 
+   
         });
     </script>
 </body>

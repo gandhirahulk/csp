@@ -37,6 +37,47 @@ $(document).ready(function(){
             }
         });
     });
+    
+    
+    $('#calculate').mouseover(function(){
+        aadhaar = $('#c_aadhaar').val()
+        pan = $('#c_pan').val();
+        contact = $('#c_contact').val()
+        fathername = $('#c_fathername').val();
+        firstname = $('#c_firstname').val();
+        dob = $('#c_dob').val();
+        email = $('#email').val();
+        $.ajax({
+            url: '/csp_candidates/check_duplicacy_new/',
+            data: {
+                'aadhaar': aadhaar, 
+                'pan':pan,
+                'contact':contact,
+                'fathername': fathername,
+                'dob': dob,
+                'email': email,       
+                'firstname': firstname,       
+            },
+            dataType: 'Json',
+            success: function(data){
+            
+                if (data['adhaar'] != '' || data['contact'] != '' || data['pan'] != '' || data['email'] != '' || data['details'] != ''){
+                  
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    
+                } 
+                if (data['adhaar'] == '' || data['contact'] == '' || data['pan'] == '' || data['email'] == '' || data['details'] == ''){
+
+                   
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
+                }
+            }
+        });
+    });
+    
+
     $('#c_contact').keyup(function(){
         contact = $('#c_contact').val()
         pan = ''
