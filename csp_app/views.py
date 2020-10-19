@@ -2493,7 +2493,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_type):
     if salary_type == 1:
         fixed_salary = 0
         variable = 0
-    return basic, hra, stat_bonus, special_allowance, gross_salary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, employee_esic, t_employee_contribution, take_home, epf, epf_admin, employer_esic, mediclaim, gpa_premium, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, t_employer_contribution, annual_tec, ctc, annual_ctc, variable, annual_var, diff, gpa_coverage, fixed_salary, annual_fs
+    return basic, hra, stat_bonus, special_allowance, gross_salary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, employee_esic, t_employee_contribution, take_home, epf, epf_admin, employer_esic,  gpa_premium, mediclaim, annual_eprf, annual_pfadmin, annual_ersic, annual_gmi, annual_gpa, t_employer_contribution, annual_tec, ctc, annual_ctc, variable, annual_var, diff, gpa_coverage, fixed_salary, annual_fs
 
 
 
