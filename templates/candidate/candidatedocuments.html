@@ -56,8 +56,8 @@
         <div class="document_form_content">
        
             <div class="forms-input-holder">
-                <label for="" style="width: 40%;">Document Catogory</label>
-                <select  id="c_catogory" name="c_catogory" required="true">
+                <label for="c_catogory" style="width: 40%;">Document Catogory</label>
+                <select  id="c_catogory" style="width: 60%;" name="c_catogory" required="true">
                     <option value="" disabled selected>Select Document Catogory</option>
                     {% if mandatory_list %}
                         {% for eachmandatory in mandatory_list %}
@@ -65,10 +65,12 @@
                         {% endfor %}                
                     {% endif %}
                 </select>
-                <label for="">Document Name</label>
-                <input type="text" placeholder="Document Name" name="c_filename" id="c_filename" required="true" autofocus="true" tabindex="1"  >
-                <label for="">Choose File</label>
-                <input type="file" placeholder="File" name="file" id="c_file" required="true" tabindex="2">
+                
+                <label for="c_filename" id="doc_name_l"  style="width: 40%;display: none;">Document Name</label>
+                <input type="text" id="doc_name_t" disabled style="width: 60%;display: none;" placeholder="Document Name" name="c_filename" id="c_filename" required="true"    >
+          
+                 <label for="" style="width: 40%;">Choose File</label>
+                <input type="file" style="width: 60%;" placeholder="File" name="file" id="c_file" required="true" >
           
             </div>                   
               
@@ -102,7 +104,7 @@
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}
                                 <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
-                                <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id">
+                                <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> | 
                                 {% if request.user.groups.all %}
                                 {% for eachgroup in request.user.groups.all %}
                                     {% if eachgroup.name != 'Candidate' %}
@@ -169,7 +171,25 @@
         });
         $('#close_delete').click(function(){
             $("#delete_document_form").css("display", "none");
-        });      
+        });   
+        
+        $('#c_catogory').change(function(){
+            var cat = $(this).val();
+            console.log(cat);
+            if (cat == 0){
+                $('#doc_name_l').css("display","block");
+                $('#doc_name_t').css("display","block");
+                $('#doc_name_t').attr("disabled",false);
+
+
+            } else {
+                $('#doc_name_l').css("display","none");
+                $('#doc_name_t').css("display","none");
+                $('#doc_name_t').attr("disabled",true);
+
+
+            }
+        })
     })
 </script>
 <script>

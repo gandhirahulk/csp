@@ -68,6 +68,8 @@ input:-webkit-autofill+label.move-out {
 }
 
 .forms-input-holder > input,
+
+
 .forms-input-holder > select,
 .search-input > input,
 .forms-input-holder > label,
@@ -76,7 +78,9 @@ input:-webkit-autofill+label.move-out {
 .view-candidate-forms-input-holder select,
 .view-candidate-forms-input-holder input,
 .request-forms-input-holder select,
-.request-forms-input-holder input{
+.request-forms-input-holder input,
+
+.forms-input-holder span input{
     /* padding: 10px;
     border: none;
     outline: none;
@@ -123,7 +127,8 @@ input:-webkit-autofill+label.move-out {
   width: 75%;
 }
 
-.forms-input-holder > label{
+.forms-input-holder > label,
+.forms-input-holder span label{
   width: 25%;
   border: none;
   text-align: left;

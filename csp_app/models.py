@@ -338,7 +338,7 @@ class master_candidate(models.Model):
     fk_state_code = models.ForeignKey(master_state, on_delete=models.CASCADE)
     fk_city_code = models.ForeignKey(master_city, on_delete=models.CASCADE)
     fk_location_code = models.ForeignKey(master_location, on_delete=models.CASCADE)
-    location_code = models.CharField(max_length=100)#not_sure
+    Gross_Salary_Entered = models.FloatField()
     TA_Spoc_Email_Id = models.EmailField()
     Onboarding_Spoc_Email_Id = models.EmailField()
     Reporting_Manager = models.CharField(max_length=20) #should come from employees table ?
@@ -392,7 +392,7 @@ class dummy_candidate(models.Model):
     fk_state_code = models.ForeignKey(master_state, on_delete=models.CASCADE)
     fk_city_code = models.ForeignKey(master_city, on_delete=models.CASCADE)
     fk_location_code = models.ForeignKey(master_location, on_delete=models.CASCADE)
-    location_code = models.CharField(max_length=20)#not_sure
+    Gross_Salary_Entered = models.FloatField()
     TA_Spoc_Email_Id = models.EmailField()
     Onboarding_Spoc_Email_Id = models.EmailField()
     Reporting_Manager = models.CharField(max_length=20) #should come from employees table ?

@@ -1697,8 +1697,8 @@ def update_selected_dummy(cid, firstname, middlename, lastname, doj, dob, father
     selected_candidate.fk_state_code= state_fk
     selected_candidate.fk_city_code= city_fk
     selected_candidate.fk_location_code= location_fk
-    loc_code = remove_specials(loc_code)
-    selected_candidate.location_code= loc_code,
+    
+    selected_candidate.Gross_Salary_Entered= loc_code
     selected_candidate.Reporting_Manager= reporting_manager
     selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
     selected_candidate.Gender= gender_fk 
@@ -1748,8 +1748,8 @@ def update_selected_candidate(cid, firstname, middlename, lastname, doj, dob, fa
     selected_candidate.fk_state_code= state_fk
     selected_candidate.fk_city_code= city_fk
     selected_candidate.fk_location_code= location_fk
-    loc_code = remove_specials(loc_code)
-    selected_candidate.location_code= loc_code,
+    
+    selected_candidate.Gross_Salary_Entered= loc_code
     selected_candidate.Reporting_Manager= reporting_manager
     selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
     selected_candidate.Gender= gender_fk 
@@ -1887,7 +1887,7 @@ def create_dummy(firstname, middlename, lastname, doj, dob, fathername, motherna
     new_dummy_candidate = dummy_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Mother_Name= mothername,
     Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
     Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
-    fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
+    fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, Gross_Salary_Entered= loc_code,
     Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
     Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
     new_dummy_candidate.save()
@@ -1950,6 +1950,8 @@ def edit_candidate(request):
             salarytype = request.POST.get("c_salary_type")
             gross_salary = request.POST.get("c_gross_salary")
             loc_code = request.POST.get("c_gross_salary")
+            print('$$$$')
+            print(loc_code)
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
                 return redirect("csp_app:candidate")
@@ -2160,10 +2162,14 @@ def edit_candidate(request):
                 messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
                 return redirect("csp_app:new_candidate")
             except ObjectDoesNotExist:
+                print('))))))')
+                print(loc_code)
                 new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
                 dummy = dummy_candidate.objects.get(pk=new_code)
                 
-       
+                loc_code = remove_specials(loc_code)
+                print('88888')
+                print(loc_code)
                 selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, ss_gross_salary)
 
                 new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
@@ -2755,13 +2761,11 @@ def save_new_candidate(request):
                 last_code_str = last_code_query.candidate_code
                 next_code_int = int(last_code_str[1:]) + 1
                 new_code = 'C' + str(next_code_int).zfill(9) 
-                print(loc_code)
                 loc_code = remove_specials(loc_code)
-                print(loc_code)
                 new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Mother_Name= mothername,
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
-                fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, location_code= loc_code,
+                fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, Gross_Salary_Entered= loc_code,
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
                 Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= INR_to_number(ss_gross_salary), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
                 new_candidate.save()
@@ -2890,7 +2894,11 @@ def candidate_document_upload(request, candidate_id):
             if flag == 1:
                 document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
             else:
-                document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status).exclude(document_catagory_id=1)
+                is_vendor = User.objects.filter(username= request.user, groups__name='Vendor')
+                if len(is_vendor) > 0:
+                    document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+                else:
+                    document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status).exclude(document_catagory_id=1)
 
             mandatory_list = mandatory_documents.objects.all()
         if request.POST.get("delete_id") != None or request.POST.get("delete_id") != '':
@@ -2935,11 +2943,13 @@ def candidate_document_upload(request, candidate_id):
                     duplicate_catogory = candidate_document.objects.get(document_catagory= catogory_fk, fk_candidate_code= candidate_id, status= active_status)
                     messages.error(request, "File Already Exist Delete Existing File To Save New One")
                     return redirect('csp_app:document_upload', candidate_id = candidate_id )
-                duplicate_doc = candidate_document.objects.get(file_name=file_name_entered, file_upload = c_file, fk_candidate_code= candidate_fk, status = active_status)
+                duplicate_doc = candidate_document.objects.get(file_name=file_name_entered, fk_candidate_code= candidate_fk, status = active_status)
                 messages.error(request, "Duplicate Document Name")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )
                 
             except ObjectDoesNotExist:
+                if file_name_entered == None or file_name_entered == '':
+                    file_name_entered = file_name
                 new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= file_name_entered, file_upload = file_url, created_by= str(request.user), created_date_time= datetime.now())
                 new_document.save()
                 messages.success(request, "Document Saved Successfully")

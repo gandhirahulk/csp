@@ -9,16 +9,22 @@ $(document).ready(function(){
         firstname = $('#c_firstname').val();
         dob = $('#c_dob').val();
         email = $('#email').val();
+        
+        middlename = $('#c_middlename').val();
+        lastname = $('#c_lastname').val();
         $.ajax({
             url: '/csp_candidates/check_duplicacy_new/',
             data: {
+                'fathername': fathername,
+                'firstname': firstname,
+                'dob':dob,     
+                'middlename' : middlename,
+                'lastname' : lastname,
+                'candidate_id': candidate_id,
+                'contact_no': contact,    
                 'aadhaar': aadhaar, 
                 'pan':pan,
-                'contact':contact,
-                'fathername': fathername,
-                'dob': dob,
                 'email': email,       
-                'firstname': firstname,       
             },
             dataType: 'Json',
             success: function(data){
