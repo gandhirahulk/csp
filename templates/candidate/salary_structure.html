@@ -446,7 +446,8 @@
               
     </div>
     <div class="candidate_form_footer">
-        <button class="forms-save-btn" id="calculate" title="" style="width: auto;" onclick="showDelete('salary_structure')">Calculate Salary Structure</button>
+        <a href="{% url 'csp_app:candidate' %}" class="delete-forms-close-btn">Cancel</a>
+        <button class="forms-save-btn" id="calculate" title="Please Fill Out All The Fields" style="width: auto;" onclick="showDelete('salary_structure')">Calculate Salary Structure</button>
  
             <!-- <button class="forms-save-btn" formaction="{% url 'csp_app:create_candidate' %}" type="submit">Save Candidate</button>
     </form> -->
