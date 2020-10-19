@@ -138,17 +138,21 @@ def check_duplicate_candidate_new(request):
     try:                
         dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
         result['adhaar'] = dup_candidate_aadhaar.pk_candidate_code
+        result['invalid_domain'] = ''
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['adhaar'] = ''
     try:
         dup_candidate_pan = master_candidate.objects.get(PAN_Number= pan, status= active_status)
         result['pan'] = dup_candidate_pan.pk_candidate_code
+        result['invalid_domain'] = ''
+        return JsonResponse(result)
     except ObjectDoesNotExist:
         result['pan'] = ''
     try:
         dup_candidate_contact = master_candidate.objects.get(Contact_Number= contact_no, status= active_status)
         result['contact'] = dup_candidate_contact.pk_candidate_code
+        result['invalid_domain'] = ''
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['contact'] = ''
@@ -156,15 +160,23 @@ def check_duplicate_candidate_new(request):
        
         dup_candidate_details = master_candidate.objects.get(Father_Name= fathername, First_Name= firstname, Date_of_Birth=dob,Middle_Name= middlename, Last_Name = lastname, status= active_status)
         result['details'] = dup_candidate_details.pk_candidate_code
+        result['invalid_domain'] = ''
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['details'] = ''
     try:
-        dup_candidate_email = master_candidate.objects.get(Personal_Email_Id=email, status= active_status)
-        result['email'] = dup_candidate_email.pk_candidate_code
-        return JsonResponse(result)
+        if email.endswith('gmail.com') or email.endswith('yahoo.com') or email.endswith('hotmail.com') or email.endswith('outlook.com'):
+
+            dup_candidate_email = master_candidate.objects.get(Personal_Email_Id=email, status= active_status)
+            result['email'] = dup_candidate_email.pk_candidate_code
+            result['invalid_domain'] = ''
+            return JsonResponse(result)
+        else:
+            result['invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com'
+            return JsonResponse(result)
     except ObjectDoesNotExist:
         result['email'] = ''
+        result['invalid_domain'] = ''
     return JsonResponse(result)
 
 def check_duplicate_candidate_edit(request):
@@ -182,19 +194,21 @@ def check_duplicate_candidate_edit(request):
     try:                
         dup_candidate_aadhaar = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Aadhaar_Number= aadhaar, status= active_status)
         result['adhaar'] = dup_candidate_aadhaar.pk_candidate_code
-        
+        result['invalid_domain'] = ''
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['adhaar'] = ''
     try:
         dup_candidate_pan = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(PAN_Number= pan, status= active_status)
         result['pan'] = dup_candidate_pan.pk_candidate_code
+        result['invalid_domain'] = ''
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['pan'] = ''
     try:
         dup_candidate_contact = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Contact_Number= contact_no, status= active_status)
         result['contact'] = dup_candidate_contact.pk_candidate_code
+        result['invalid_domain'] = ''
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['contact'] = ''
@@ -203,15 +217,23 @@ def check_duplicate_candidate_edit(request):
        
         dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Father_Name= fathername, First_Name= firstname, Middle_Name= middlename, Last_Name = lastname, Date_of_Birth=dob, status= active_status)
         result['details'] = dup_candidate_details.pk_candidate_code
+        result['invalid_domain'] = ''
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['details'] = ''
     try:
-        dup_candidate_email = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Personal_Email_Id=email, status= active_status)
-        result['email'] = dup_candidate_email.pk_candidate_code
-        return JsonResponse(result)
+        if email.endswith('gmail.com') or email.endswith('yahoo.com') or email.endswith('hotmail.com') or email.endswith('outlook.com'):
+
+            dup_candidate_email = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Personal_Email_Id=email, status= active_status)
+            result['email'] = dup_candidate_email.pk_candidate_code
+            result['invalid_domain'] = ''
+            return JsonResponse(result)
+        else:
+            result['invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com'
+            return JsonResponse(result)
     except ObjectDoesNotExist:
         result['email'] = ''
+        result['invalid_domain'] = ''
     return JsonResponse(result)
 
 
