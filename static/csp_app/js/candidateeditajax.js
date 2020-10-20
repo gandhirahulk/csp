@@ -1,7 +1,7 @@
 $(document).ready(function(){ 
 
     
-    $('#calculate').mouseover(function(){
+    $('#calculate').mouseenter(function(){
         aadhaar = $('#c_aadhaar').val()
         pan = $('#c_pan').val();
         contact = $('#c_contact').val()
@@ -29,17 +29,20 @@ $(document).ready(function(){
             dataType: 'Json',
             success: function(data){
             
-                if (data['adhaar'] != '' || data['contact'] != '' || data['pan'] != '' || data['email'] != '' || data['details'] != ''){
+                if (data['adhaar'] != '' || data['contact'] != '' || data['pan'] != '' || data['email'] != '' || data['details'] != '' || data['invalid_domain'] != ''){
                   
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
                     
                 } 
-                if (data['adhaar'] == '' || data['contact'] == '' || data['pan'] == '' || data['email'] == '' || data['details'] == ''){
+                if (data['adhaar'] == '' && data['contact'] == '' && data['pan'] == '' && data['email'] == '' && data['details'] == '' && data['invalid_domain'] == ''){
 
                    
                     $('#new-candidate').attr('onsubmit','return true;');
                     $('#calculate').attr('title', 'Calculate Salary Structure');
+                    $('#detailsmsg').html('').css('color','red');
+
                 }
             }
         });
@@ -75,11 +78,15 @@ $(document).ready(function(){
                     $('#adhaarmsg').html(duplicate_msg).css('color','red');
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+
                 } 
                 if (data['adhaar'] == ''){
                     $('#adhaarmsg').html('');
                     $('#new-candidate').attr('onsubmit','return true;');
                     $('#calculate').attr('title', 'Calculate Salary Structure');
+                    $('#detailsmsg').html('').css('color','red');
+
                 }
             }
         });
@@ -112,11 +119,15 @@ $(document).ready(function(){
                     $('#contactmsg').html(duplicate_msg).css('color','red');
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+
                 } 
                 if (data['contact'] == ''){
                     $('#contactmsg').html('');
                     $('#new-candidate').attr('onsubmit','return true;');
                     $('#calculate').attr('title', 'Calculate Salary Structure');
+                    $('#detailsmsg').html('').css('color','red');
+
                 }
             }
         });
@@ -149,11 +160,15 @@ $(document).ready(function(){
                     $('#panmsg').html(duplicate_msg).css('color','red');
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+
                 } 
                 if (data['pan'] == ''){
                     $('#panmsg').html('');
                     $('#new-candidate').attr('onsubmit','return true;');
                     $('#calculate').attr('title', 'Calculate Salary Structure');
+                    $('#detailsmsg').html('').css('color','red');
+
                 }
             }
         });
@@ -185,6 +200,8 @@ $(document).ready(function(){
                     $('#emailmsg').html(data['invalid_domain']).css('color','red');
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+
                 } else {
                     $('#emailmsg').html('');
                     $('#new-candidate').attr('onsubmit','return true;');
@@ -194,11 +211,15 @@ $(document).ready(function(){
                         $('#emailmsg').html(duplicate_msg).css('color','red');
                         $('#new-candidate').attr('onsubmit','return false;');
                         $('#calculate').attr('title', 'Please Recheck Entered Data');
+                        $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+
                     } 
                     if (data['email'] == ''){
                         $('#emailmsg').html('');
                         $('#new-candidate').attr('onsubmit','return true;');
                         $('#calculate').attr('title', 'Calculate Salary Structure');
+                        $('#detailsmsg').html('').css('color','red');
+
                     }
                 }
             }
