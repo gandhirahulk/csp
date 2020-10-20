@@ -66,7 +66,7 @@
                     <input tabindex="4" type="date" value="{{ eachc.Date_of_Birth }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" tabindex="6" >
                 </div>
             </div>
-               <div class="candidate-forms-input-holder">
+            <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Contact Number</label>
                 <input tabindex="5" type="text" value="{{ eachc.Contact_Number }}" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
@@ -78,7 +78,7 @@
                 <span id='message'></span>    
             </div>
             </div>
-               <div class="candidate-forms-input-holder">
+            <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Email ID</label>
                 <input tabindex="7" type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" value="{{ eachc.Personal_Email_Id }}" maxlength="50" name="c_email" tabindex="7" id="email" placeholder="Email Id">
@@ -100,9 +100,9 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
+            </div>
            
-               <div class="candidate-forms-input-holder">
+            <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Father Name</label>
                 <input tabindex="9" type="text" value="{{ eachc.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true">
@@ -111,9 +111,9 @@
                 <label for="" >Mother Name</label>
                 <input tabindex="10" type="text" value="{{ eachc.Mother_Name }}" name="c_mothername" id="c_mothername" required="true" placeholder="Mother Name">       
             </div>
-        </div>
+            </div>
             
-               <div class="candidate-forms-input-holder">
+            <div class="candidate-forms-input-holder">
                 <div>
                 <label for="">Aadhaar Number</label>
                 <input tabindex="11" type="text" value="{{ eachc.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
@@ -124,8 +124,8 @@
                 <input tabindex="12" type="text" value="{{ eachc.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{3}[P]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
                 <small id="panmsg"></small>    
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
+            </div>
+            <div class="candidate-forms-input-holder">
                 <div>               
                 <label for="">Type Of Hiring</label>
                 <select tabindex="13" name="c_hiring_type" id="hiring" >
@@ -143,9 +143,9 @@
                     <label for="">Replacement UID </label>
                     <input tabindex="14" type="text"  value="{{ eachc.Replacement }}" placeholder="Replacement UID" name="c_replacement" id = "c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
                 </div>
-        </div>
+            </div>
 
-               <div class="candidate-forms-input-holder">
+            <div class="candidate-forms-input-holder">
                 <div>
                     <label for="">Sub Source</label>
                     <select tabindex="15" name="c_sub_source" id="referral" >
@@ -165,8 +165,8 @@
                 <input tabindex="16" type="text" value="{{ eachc.Referral }}" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
           
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
+            </div>
+            <div class="candidate-forms-input-holder">
                
                  <div>
                     <label for="" >Date of Joining</label>
@@ -187,7 +187,7 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
+            </div>
 
             <div class="candidate-forms-input-holder">
                 <div>
@@ -228,8 +228,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
+            </div>
+            <div class="candidate-forms-input-holder">
                 <div>
             <label for="">Function</label>
 
@@ -266,8 +266,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
+            </div>
+            <div class="candidate-forms-input-holder">
                 <div>
             <label for="">Sub Team</label>
 
@@ -304,8 +304,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
+            </div>
+            <div class="candidate-forms-input-holder">
                 <div>
             <label for="">Region</label>
 
@@ -344,8 +344,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
+            </div>
+            <div class="candidate-forms-input-holder">
                 <div>
             <label for="">City</label>
 
@@ -384,31 +384,31 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-        <div class="candidate-forms-input-holder">
-            <div>
-                <label for="" >TA SPOC Email ID</label>
-                <input tabindex="29" type="email" readonly value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
             </div>
-            <div class="margin-left">
-                <label for="" >Onboarding SPOC Email ID</label>
-                <input tabindex="30" type="email" readonly value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
-            </div>
-        </div>
-        <div class="candidate-forms-input-holder">
-            <div>
-                <label for="">Reporting / Hiring Manager Name</label>
-                <input type="text" tabindex="31" value="{{ eachc.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50" autocapitalize="on">
-                 </div>
+            <div class="candidate-forms-input-holder">
+                <div>
+                    <label for="" >TA SPOC Email ID</label>
+                    <input tabindex="29" type="email" readonly value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
+                </div>
                 <div class="margin-left">
-                <label for="" >Reporting / Hiring Manager Email ID</label>
-
-                <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" tabindex="32" value="{{ eachc.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" id="reporting_manager_email" name="c_reporting_manager_email" required="true">
-         
+                    <label for="" >Onboarding SPOC Email ID</label>
+                    <input tabindex="30" type="email" readonly value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
+                </div>
             </div>
-        </div>
+            <div class="candidate-forms-input-holder">
+                <div>
+                    <label for="">Reporting / Hiring Manager Name</label>
+                    <input type="text" tabindex="31" value="{{ eachc.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50" autocapitalize="on">
+                    </div>
+                    <div class="margin-left">
+                    <label for="" >Reporting / Hiring Manager Email ID</label>
+
+                    <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" tabindex="32" value="{{ eachc.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" id="reporting_manager_email" name="c_reporting_manager_email" required="true">
             
-               <div class="candidate-forms-input-holder">
+                </div>
+            </div>
+            
+            <div class="candidate-forms-input-holder">
                 <div>
             <label for="">Email ID Creation</label>
 
@@ -434,8 +434,8 @@
                     {% endif %}                    
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
+            </div>
+            <div class="candidate-forms-input-holder">
                 <div>
             <label for="">Salary Type</label>
 
@@ -490,17 +490,17 @@
 
             </div>
 
-        </div>
-        <div class="candidate-forms-input-holder">
-            <div>
-                <label for="" >Onboarding Status</label>
-                <input tabindex="37" type="text" value="{{ eachc.onboarding_status }}" placeholder="Onboarding Status" disabled="true">
             </div>
-            <div class="margin-left">
-                <label for="" >Vendor Status</label>
-                <input tabindex="38" type="text" value="{{ eachc.vendor_status }}" placeholder="Vendor Status" disabled="true">
+            <div class="candidate-forms-input-holder">
+                <div>
+                    <label for="" >Onboarding Status</label>
+                    <input tabindex="37" type="text" value="{{ eachc.onboarding_status }}" placeholder="Onboarding Status" disabled="true">
+                </div>
+                <div class="margin-left">
+                    <label for="" >Vendor Status</label>
+                    <input tabindex="38" type="text" value="{{ eachc.vendor_status }}" placeholder="Vendor Status" disabled="true">
+                </div>
             </div>
-        </div>
               
     </div>
     <div class="candidate_form_footer">
