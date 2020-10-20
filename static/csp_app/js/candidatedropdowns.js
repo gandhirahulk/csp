@@ -217,7 +217,7 @@ $(document).ready(function(){
             },
             dataType: 'Json',
             success: function(data){
-                console.log(data['amount']);
+                
                 if (amt >= data['amount']){
                     $('#calculate').attr("disabled", false);
                     $('#wage_result').text('');
@@ -225,11 +225,10 @@ $(document).ready(function(){
                 if (data['amount'] != -1){
                     var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];                    
                     $('#wage_result').text(wages);
-                    console.log(wages);
+                    
                 } else {
                     var wages = 'Minimum wage not defined for selected state and designation.'
                     $('#wage_result').text(wages);
-                    console.log(wages);
                 }
                 $('#c_salary').attr("min", data['amount']);
                 $('#name').attr('val',data['amount'] )
