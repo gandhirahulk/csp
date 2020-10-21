@@ -453,7 +453,7 @@ def process_requests(request, cid):
             
             all_active_candidates = candidate_list = master_candidate.objects.filter(status=active_status)
             
-            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding, vendor_status= pending_vendor, status=active_status )
+            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
             count = len(pending_candidate_list)   
     try:
         selected_candidate_data = master_candidate.objects.filter(pk= cid)
@@ -727,7 +727,22 @@ def process_requests(request, cid):
                         if selected_candidate.onboarding_status != approve_onboarding:
                             changes_list['Onboarding Status'] = [ selected_candidate.onboarding_status, approve_onboarding ]
                         selected_candidate.onboarding_status = approve_onboarding
+                        selected_candidate.vendor_status = pending_vendor
+                        selected_candidate.loi_status = loi_status.objects.get(pk=0)
+                        selected_candidate.documentation_status = documentation_status.objects.get(pk=2)
+                        selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=0)
+                        selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=0)
+                        selected_candidate.joining_status = joining_status.objects.get(pk=0)
+                        e = ecode_generation_status.objects.get(pk=0)
+                        selected_candidate.ecode_status = e.status_name
+                        if selected_candidate.E_Mail_ID_Creation == 'Yes':
+                            selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=0)
+                        if selected_candidate.Laptop_Allocation_id == 1:
+                            selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
+                        selected_candidate.candidate_status = candidate_status.objects.get(pk=2)
+                        
                         selected_candidate.save()
+                    
                         
                         limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':candidate_id ,'user': request.user, 'vendor': vendor_fk.vendor_name })
                         our_email = EmailMessage(
@@ -758,6 +773,19 @@ def process_requests(request, cid):
                     if selected_candidate.onboarding_status != approve_onboarding:
                         changes_list['Onboarding Status'] = [ selected_candidate.onboarding_status, approve_onboarding ]
                     selected_candidate.onboarding_status = approve_onboarding
+                    selected_candidate.vendor_status = pending_vendor
+                    selected_candidate.loi_status = loi_status.objects.get(pk=0)
+                    selected_candidate.documentation_status = documentation_status.objects.get(pk=2)
+                    selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=0)
+                    selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=0)
+                    selected_candidate.joining_status = joining_status.objects.get(pk=0)
+                    e = ecode_generation_status.objects.get(pk=0)
+                    selected_candidate.ecode_status = e.status_name
+                    if selected_candidate.E_Mail_ID_Creation == 'Yes':
+                        selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=0)
+                    if selected_candidate.Laptop_Allocation_id == 1:
+                        selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
+                    
                     selected_candidate.save()
                     
                     limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
@@ -787,7 +815,21 @@ def process_requests(request, cid):
                 if request.POST.get('ve_status') != None:
                     if selected_candidate.vendor_status != approve_vendor:
                         changes_list['Vendor Status'] = [ selected_candidate.vendor_status, approve_vendor ]
+                    
                     selected_candidate.vendor_status = approve_vendor
+                    selected_candidate.loi_status = loi_status.objects.get(pk=0)
+                    selected_candidate.documentation_status = documentation_status.objects.get(pk=2)
+                    selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=0)
+                    selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=0)
+                    selected_candidate.joining_status = joining_status.objects.get(pk=0)
+                    e = ecode_generation_status.objects.get(pk=0)
+                    selected_candidate.ecode_status = e.status_name
+                    if selected_candidate.E_Mail_ID_Creation == 'Yes':
+                        selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=0)
+                    if selected_candidate.Laptop_Allocation_id == 1:
+                        selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
+                    selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
+                    
                     selected_candidate.save()
                     
                     limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
@@ -831,6 +873,8 @@ def process_requests(request, cid):
                         [ selected_candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
                     ) 
                     our_email.fail_silently = False
+                    selected_candidate.loi_status = loi_status.objects.get(pk=1)
+                    selected_candidate.save()
                     our_email.send()
                     
                     try:
@@ -851,7 +895,7 @@ def process_requests(request, cid):
                         use_tls=my_use_tls,
                         use_ssl= my_use_ssl
                         ) as connection:
-                            EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id],
+                            EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id, 'sadaf.shaikh@udaan.com'],
                                         connection=connection).send()
                     except TimeoutError:
                         return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
@@ -1021,15 +1065,7 @@ def pending_requests(request):
     # count = 0 
     try:
         entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
-            # try:
-            #     specific_vendor = master_vendor.objects.filter(vendor_email_id= request.user, status=active_status)
-            #     vendor_specific_candidate = []
-            #     for e in specific_vendor:
-            #         vendor_specific_candidate.append(master_candidate.objects.filter(fk_vendor_code=e.pk, onboarding_status= approve_onboarding))
-            
-            # except ObjectDoesNotExist:
-            #     specific_vendor = ''
-            #     vendor_specific_candidate = []
+
         for eachgroup in request.user.groups.all():
             if str(eachgroup) == 'Vendor':
                 candidate_list = vendor_candidates(request.user)
@@ -1045,7 +1081,7 @@ def pending_requests(request):
                 
                 all_active_candidates = candidate_list = master_candidate.objects.filter(status=active_status)
                 
-                pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding, vendor_status= pending_vendor, status=active_status )
+                pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
                 count = len(pending_candidate_list)
             
         return render(request, 'candidate/pendingrequests.html', {'count':count,'pending_candidate_list': pending_candidate_list, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
@@ -1090,7 +1126,7 @@ def candidate(request):
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
         else:
-            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding, vendor_status= pending_vendor, status=active_status )
+            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
             count = len(pending_candidate_list)
 
     return render(request, 'candidate/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
@@ -1153,8 +1189,8 @@ def edit_salary_structure_process(request, cid):
                 
                 all_active_candidates = candidate_list = master_candidate.objects.filter(status=active_status)
                 
-                pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding, vendor_status= pending_vendor, status=active_status )
-                count = len(pending_candidate_list) 
+                pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
+                count = len(pending_candidate_list)
             if request.method == 'POST':
                 candidate_id = request.POST.get("cid")   
                 selected_candidate = master_candidate.objects.filter(pk=candidate_id)
@@ -2751,14 +2787,9 @@ def save_new_candidate(request):
             if laptopallocation == None or laptopallocation == '':
                 messages.warning(request, "Choose  Laptop Allocation And Try Again")
                 return redirect("csp_app:new_candidate")
-            if laptopallocation == 0:
-                laptop_request = laptop_request_status.objects.get(pk=3)
-            else:
-                laptop_request = laptop_request_status.objects.get(pk=0)
-            if email_creation == 'No':
-                email_request = email_creation_request_status.objects.get(pk=3)
-            else:
-                email_request = email_creation_request_status.objects.get(pk=0)
+            
+
+            
             la_fk = laptop_allocation.objects.get(pk= laptopallocation)
             if salarytype == None or salarytype == '':
                 messages.warning(request, "Choose  Salary Type And Try Again")
@@ -2845,7 +2876,9 @@ def save_new_candidate(request):
                 next_code_int = int(last_code_str[1:]) + 1
                 new_code = 'C' + str(next_code_int).zfill(9) 
                 # loc_code = remove_specials(loc_code)
-
+                laptop_request = laptop_request_status.objects.get(pk=3)          
+                
+                email_request = email_creation_request_status.objects.get(pk=3)
                 new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Mother_Name= mothername,
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
@@ -2974,15 +3007,25 @@ def candidate_document_upload(request, candidate_id):
         if document_id == None:
             candidate = master_candidate.objects.filter(pk = candidate_id)
             candidate_fk = master_candidate.objects.get(pk = candidate_id)
-            flag = check_for_mandatory_documents_upload(candidate_id)
+            flag, document_count = check_for_mandatory_documents_upload(candidate_id)
             if flag == 1:
                 document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+                candidate_fk.documentation_status = documentation_status.objects.get(pk=1)
+                candidate_fk.save()
             else:
                 is_vendor = User.objects.filter(username= request.user, groups__name='Vendor')
                 if len(is_vendor) > 0:
                     document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
                 else:
                     document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status).exclude(document_catagory_id=1)
+                if document_count > 0:
+                    candidate_fk.documentation_status = documentation_status.objects.get(pk=4)
+                    candidate_fk.save()
+                else:
+                    candidate_fk.documentation_status = documentation_status.objects.get(pk=2)
+                    candidate_fk.save()
+                
+
 
             mandatory_list = mandatory_documents.objects.all()
         if request.POST.get("delete_id") != None or request.POST.get("delete_id") != '':
@@ -2990,7 +3033,14 @@ def candidate_document_upload(request, candidate_id):
                  
             try:
                 selected_document = candidate_document.objects.get(pk = document_id)     
-                cid = selected_document.fk_candidate_code.pk       
+                cid = selected_document.fk_candidate_code.pk    
+                candidate = master_candidate.objects.get(pk = cid)  
+                if selected_document.document_catagory_id == 1:
+                    candidate.offer_letter_status = offer_letter_status.objects.get(pk = 0)
+                    candidate.save()
+                if selected_document.document_catagory_id != 0:
+                    candidate.documentation_status = documentation_status.objects.get(pk = 2)
+                    candidate.save()
                 selected_document.delete()
                 messages.success(request, "Document Deleted Successfully")
                 return redirect('csp_app:document_upload', cid)
@@ -3001,6 +3051,8 @@ def candidate_document_upload(request, candidate_id):
         
         
         if request.method == 'POST':
+            candidate_fk = master_candidate.objects.get(pk = candidate_id)
+
             f_catogory = request.POST.get("c_catogory")
           
             file_name_entered = request.POST.get("c_filename")
@@ -3036,6 +3088,9 @@ def candidate_document_upload(request, candidate_id):
                     file_name_entered = file_name
                 new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= file_name_entered, file_upload = file_url, created_by= str(request.user), created_date_time= datetime.now())
                 new_document.save()
+                if catogory_fk.pk == 1:
+                    candidate_fk.offer_letter_status = offer_letter_status.objects.get(pk = 1)
+                    candidate_fk.save()
                 messages.success(request, "Document Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
         all_active_candidates = vendor_candidates(request.user)
@@ -3051,9 +3106,9 @@ def check_for_mandatory_documents_upload(candidate_id):
     mandatory_document_len = len(mandatory_list)
     candidate_document_len = len(candidate_document_list)
     if mandatory_document_len == candidate_document_len:
-        return 1
+        return 1, candidate_document_len
     else:
-        return -1
+        return -1, candidate_document_len
 
 
 # @login_required(login_url='/notlogin/')
@@ -3112,6 +3167,8 @@ def change_candidate_status_vendor(request):
                     [ candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
                 ) 
                 our_email.fail_silently = False
+                candidate.loi_status = loi_status.objects.get(pk=1)
+                candidate.save()
                 our_email.send()
                 all_active_candidates = vendor_candidates(request.user)
                 candidate = master_candidate.objects.filter(pk = candidate_id)
@@ -3170,6 +3227,8 @@ def change_candidate_status_vendor(request):
                     [ candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
                 ) 
                 our_email.fail_silently = False
+                candidate.loi_status = loi_status.objects.get(pk=1)
+                candidate.save()
                 our_email.send()
             # msg = 'Candidate status for '+ str(candidate.First_Name) +' updated to' + str(status.status_name) +' from ' + str(prev_status) + ' with candidate code " ' + str(candidate.pk) + ' by ' + str(request.user) + ' .'
             # send_mail('Candidate Status Updated', msg,'workmail052020@gmail.com',[ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],fail_silently=False)

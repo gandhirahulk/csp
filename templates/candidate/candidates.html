@@ -47,9 +47,10 @@
                     <th>Reporting Manager</th>                            
                     <th>State</th>                            
 
+                    
+                    <th>Onboarding Status</th>
                     <th>Vendor</th>
                     <th>Vendor Status</th>
-                    <th>Onboarding Status</th>
                     <th>LOI</th>
                     <th>Documentation</th>
                     <th>Offer Letter</th>
@@ -86,9 +87,10 @@
                                         <td>{{ eachcandidate.fk_designation_code }}</td>
                                         <td>{{ eachcandidate.Reporting_Manager }}</td>
                                         <td>{{ eachcandidate.fk_state_code }}</td>                                        
+                          
+                                        <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
                                         <td>{{ eachcandidate.fk_vendor_code }}</td>
                                         <td class="action-col">{{ eachcandidate.vendor_status }}</td>
-                                        <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
                                         <td>{{ eachcandidate.loi_status }}</td>
                                         <td>{{ eachcandidate.documentation_status }}</td>
                                         <td>{{ eachcandidate.offer_letter_status }}</td>
@@ -145,9 +147,10 @@
                                         <td>{{ eachcandidate.fk_designation_code }}</td>
                                         <td>{{ eachcandidate.Reporting_Manager }}</td>
                                         <td>{{ eachcandidate.fk_state_code }}</td>                                        
-                                        <td>{{ eachcandidate.fk_vendor_code }}</td>
-                                        <td class="action-col">{{ eachcandidate.vendor_status }}</td>
                                         <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+                                        <td>{{ eachcandidate.fk_vendor_code }}</td>
+
+                                        <td class="action-col">{{ eachcandidate.vendor_status }}</td>
                                         <td>{{ eachcandidate.loi_status }}</td>
                                         <td>{{ eachcandidate.documentation_status }}</td>
                                         <td>{{ eachcandidate.offer_letter_status }}</td>
