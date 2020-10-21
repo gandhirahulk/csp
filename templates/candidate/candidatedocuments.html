@@ -43,46 +43,55 @@
             <span>{{ eachc.pk }} | {{ eachc.First_Name }} {{ eachc.Middle_Name }} {{ eachc.Last_Name }}</span>                
       
         </div>
-<div style="margin-top: 55px;">
-    <div class="document_form_header">
-        <div class="forms-heading">
-            <h2>Add New Document</h2>
-        </div>
-        <div class="hr_line">&nbsp;</div>
-     
-    </div>
-    <form method="POST" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="document_form_content">
-       
-            <div class="forms-input-holder">
-                <label for="c_catogory" style="width: 40%;">Document Catogory</label>
-                <select  id="c_catogory" style="width: 60%;" name="c_catogory" required="true">
-                    <option value="" disabled selected>Select Document Catogory</option>
-                    {% if mandatory_list %}
-                        {% for eachmandatory in mandatory_list %}
-                            <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-                
-                <label for="c_filename" id="doc_name_l"  style="width: 40%;display: none;">Document Name</label>
-                <input type="text" id="doc_name_t" disabled style="width: 60%;display: none;" placeholder="Document Name" name="c_filename" id="c_filename" required="true"    >
-          
-                 <label for="" style="width: 40%;">Choose File</label>
-                <input type="file" style="width: 60%;" placeholder="File" name="file" id="c_file" required="true" >
-          
-            </div>                   
-              
-        </div>
-        <div class="document_form_footer">
-            
-            <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
-        
-        </div>
-    </form>
+        <div style="margin-top: 55px;">
+        {% if request.user.groups.all %}
+            {% for eachgroup in request.user.groups.all %}
+                {% if eachgroup.name == 'Vendor' %}
+                    
+                    <div class="document_form_header">
+                        <div class="forms-heading">
+                            <h2>Add New Document</h2>
+                        </div>
+                        <div class="hr_line">&nbsp;</div>
+                    
+                    </div>
+                    <form method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="document_form_content">
+                    
+                            <div class="forms-input-holder">
+                                <label for="c_catogory" style="width: 40%;">Document Catogory</label>
+                                <select  id="c_catogory" style="width: 60%;" name="c_catogory" required="true">
+                                    <option value="" disabled selected>Select Document Catogory</option>
+                                    {% if mandatory_list %}
+                                        {% for eachmandatory in mandatory_list %}
+                                            <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
+                                        {% endfor %}                
+                                    {% endif %}
+                                </select>
+                                
+                                <label for="c_filename" id="doc_name_l"  style="width: 40%;display: none;">Document Name</label>
+                                <input type="text" id="doc_name_t" disabled style="width: 60%;display: none;" placeholder="Document Name" name="c_filename" id="c_filename" required="true"    >
+                        
+                                <label for="" style="width: 40%;">Choose File</label>
+                                <input type="file" style="width: 60%;" placeholder="File" name="file" id="c_file" required="true" >
+                        
+                            </div>                   
+                            
+                        </div>
+                        <div class="document_form_footer">
+                            
+                            <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
+                        
+                        </div>
+                    </form>
 
-</div>
+                    
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </div>
+        
 
 <div class="table-container">
   

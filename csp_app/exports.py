@@ -25,7 +25,7 @@ def export_candidate(request):
 
     columns = ['Candidate Code', 'First Name', 'Middle Name', 'Last Name', 'Date of Birth', 
     'Contact Number', 'Emergency Cintact Number', 'Personal Email Id', 'Gender', 'Father Name', 
-    'Father Date of Birth', 'Adhaar Number', 'PAN Number', 'Hiring Type', 'Replacement UID', 'Sub Source' , 'Referral UID', 'Date of Joining',
+    'Mother Name', 'Adhaar Number', 'PAN Number', 'Hiring Type', 'Replacement UID', 'Sub Source' , 'Referral UID', 'Date of Joining',
     'Company', 'vendor', 'Department', 'Function', 'Team', 'SUb Team', 'Designation','Region', 'State', 'City', 'Location',
     'TA SPOC Email', 'Onboarding SPOC EMail', 'Reporting Manager', 'Reporting Manager Email', 'Email ID Creation', 'Laptop ALlocation', 'Salary Type', 
     ' Entered Gross Salary Amount', 'Calculated Gross Salary', 'Candidate STatus', 'Onboarding Status', 'Vendor status',
@@ -50,7 +50,7 @@ def export_candidate(request):
         ws.write(row_num, 7, row.Personal_Email_Id, font_style)
         ws.write(row_num, 8, row.Gender.gender_name, font_style)
         ws.write(row_num, 9, row.Father_Name, font_style)
-        ws.write(row_num, 10, row.Father_Date_of_Birth, font_style)
+        ws.write(row_num, 10, row.Mother_Name, font_style)
         ws.write(row_num, 11, row.Aadhaar_Number, font_style)
         ws.write(row_num, 12, row.PAN_Number, font_style)
         ws.write(row_num, 13, row.Type_of_Hiring.hiring_type_name, font_style)
@@ -77,7 +77,7 @@ def export_candidate(request):
         ws.write(row_num, 33, row.E_Mail_ID_Creation , font_style)
         ws.write(row_num, 34, row.Laptop_Allocation.option_name , font_style)
         ws.write(row_num, 35, row.Salary_Type.salary_type_name , font_style)
-        ws.write(row_num, 36, row.location_code, font_style)
+        ws.write(row_num, 36, row.Gross_Salary_Entered, font_style)
         ws.write(row_num, 37, row.Gross_Salary_Amount, font_style)
         ws.write(row_num, 38, row.candidate_status.status_name, font_style)
         ws.write(row_num, 39, row.onboarding_status.status_name, font_style)
