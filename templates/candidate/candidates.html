@@ -38,13 +38,30 @@
             <thead>
                 <tr>
                     <th>Candidate ID</th>
-                    <th>Candidate Name</th>
-                    <th>Contact Details</th>
+                    <th>Name</th>
+                    <th>E Mail ID</th>
+                    <th>Mobile Number</th>
+                    <th>Department</th>
+                    <th>Function</th>
+                    <th>Designation</th>  
+                    <th>Reporting Manager</th>                            
+                    <th>State</th>                            
+
                     <th>Vendor</th>
-                    <th>Designation</th>                            
                     <th>Vendor Status</th>
                     <th>Onboarding Status</th>
-                    <th>Status</th>
+                    <th>LOI</th>
+                    <th>Documentation</th>
+                    <th>Offer Letter</th>
+                    <th>IT Intimation E Mail</th>
+                    <th>Joining Status</th>
+                    <th>E Code Generation</th>
+                    <th>E Mail ID Creation Request</th>
+                    <th>Laptop Request</th>
+                    <th>Final Status</th>
+                   
+                
+                 
                 </tr>
             </thead>
             <tbody>
@@ -62,17 +79,27 @@
                                         <td class="action-col" style="text-align: left;">
                                             {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
                                         </td>
-                                        <td style="text-align: center;">
-                                            <div>{{ eachcandidate.Personal_Email_Id }}</div>
-                                            <div>{{ eachcandidate.Contact_Number }}</div>
-                                        </td>
-                                        <td>{{ eachcandidate.fk_vendor_code }}</td>
-
+                                        <td>{{ eachcandidate.Personal_Email_Id }}</td>
+                                        <td>{{ eachcandidate.Contact_Number }}</td>
+                                        <td>{{ eachcandidate.fk_department_code }}</td>
+                                        <td>{{ eachcandidate.fk_function_code }}</td>
                                         <td>{{ eachcandidate.fk_designation_code }}</td>
+                                        <td>{{ eachcandidate.Reporting_Manager }}</td>
+                                        <td>{{ eachcandidate.fk_state_code }}</td>                                        
+                                        <td>{{ eachcandidate.fk_vendor_code }}</td>
                                         <td class="action-col">{{ eachcandidate.vendor_status }}</td>
                                         <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+                                        <td>{{ eachcandidate.loi_status }}</td>
+                                        <td>{{ eachcandidate.documentation_status }}</td>
+                                        <td>{{ eachcandidate.offer_letter_status }}</td>
+                                        <td>{{ eachcandidate.it_intimation_status }}</td>
+                                        <td>{{ eachcandidate.joining_status }}</td>
+                                        <td>{{ eachcandidate.ecode_status }}</td>
+                                        <td>{{ eachcandidate.email_creation_status }}</td>
+                                        <td>{{ eachcandidate.laptop_status }}</td>
+
                                         <td class="action-col">
-                                            {{ eachcandidate.status }}
+                                            {{ eachcandidate.candidate_status }}
                                         </td>
                                     </tr>
 
@@ -111,17 +138,29 @@
                                             {{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}
                                                     
                                         </td>
-                                        <td style="text-align: center;">
-                                            <div>{{ eachcandidate.Personal_Email_Id }}</div>
-                                            <div>{{ eachcandidate.Contact_Number }}</div>
-                                        </td>
+                                        <td>{{ eachcandidate.Personal_Email_Id }}</td>
+                                        <td>{{ eachcandidate.Contact_Number }}</td>
+                                        <td>{{ eachcandidate.fk_department_code }}</td>
+                                        <td>{{ eachcandidate.fk_function_code }}</td>
+                                        <td>{{ eachcandidate.fk_designation_code }}</td>
+                                        <td>{{ eachcandidate.Reporting_Manager }}</td>
+                                        <td>{{ eachcandidate.fk_state_code }}</td>                                        
                                         <td>{{ eachcandidate.fk_vendor_code }}</td>
-                                        <td>{{ eachcandidate.fk_designation_code }}</td>                                
                                         <td class="action-col">{{ eachcandidate.vendor_status }}</td>
                                         <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+                                        <td>{{ eachcandidate.loi_status }}</td>
+                                        <td>{{ eachcandidate.documentation_status }}</td>
+                                        <td>{{ eachcandidate.offer_letter_status }}</td>
+                                        <td>{{ eachcandidate.it_intimation_status }}</td>
+                                        <td>{{ eachcandidate.joining_status }}</td>
+                                        <td>{{ eachcandidate.ecode_status }}</td>
+                                        <td>{{ eachcandidate.email_creation_status }}</td>
+                                        <td>{{ eachcandidate.laptop_status }}</td>
+
                                         <td class="action-col">
-                                            {{ eachcandidate.status }}
+                                            {{ eachcandidate.candidate_status }}
                                         </td>
+                                       
                                         
                                     </tr>
 

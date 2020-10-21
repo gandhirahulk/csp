@@ -30,7 +30,7 @@
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
         });
-        console.log('2');
+     
         $('#function-table').DataTable({
             "pagingType": "full_numbers",
             "paging": true,
@@ -95,7 +95,19 @@
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
         });
-        $('#candidate-table').DataTable();
+        
+        var table = $('#candidate-table').DataTable( {
+            scrollY:        "300px",
+            scrollX:        true,
+            scrollCollapse: true,
+            
+            columnDefs: [
+                { width: '20%', targets: 0 }
+            ],
+            fixedColumns: true
+        } );
+        $('#pending-candidate-table').DataTable();
+    
         $('#document-table').DataTable();
         $('#wages-table').DataTable({
             "order": [[ 1, "desc" ]], //or asc 
