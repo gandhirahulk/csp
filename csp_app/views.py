@@ -26,10 +26,14 @@ from django.contrib.auth.hashers import make_password
 a = default_token_generator
 
 
+# 0 - reject
+# 1 - approve
+# 2 - pending
+# 3 - not applicable
+# 4 - modified
 
 
-
-deactive_status = status.objects.get(pk=2)
+deactive_status = status.objects.get(pk=0)
 active_status = status.objects.get(pk=1)
 pending_status = candidate_status.objects.get(pk=2)
 reject_onboarding = onboarding_status.objects.get(pk=0)
@@ -875,6 +879,18 @@ def reject_candidate_onboarding(request, cid):
         
         selected_candidate = master_candidate.objects.get(pk = cid)
         selected_candidate.onboarding_status = reject_onboarding
+        selected_candidate.vendor_status = vendor_status.objects.get(pk=3)
+        selected_candidate.loi_status = loi_status.objects.get(pk=3)
+        selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
+        selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
+        selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
+        selected_candidate.joining_status = joining_status.objects.get(pk=3)
+        e = ecode_generation_status.objects.get(pk=3)
+        selected_candidate.ecode_status = e.status_name
+        
+        selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
+        selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
+        selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
         selected_candidate.save()
         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
         our_email = EmailMessage(
@@ -902,6 +918,17 @@ def reject_candidate_vendor(request, cid):
             if str(eachgroup) == 'Admin':
                 selected_candidate.onboarding_status = reject_onboarding
                 selected_candidate.vendor_status = reject_vendor
+                selected_candidate.loi_status = loi_status.objects.get(pk=3)
+                selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
+                selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
+                selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
+                selected_candidate.joining_status = joining_status.objects.get(pk=3)
+                e = ecode_generation_status.objects.get(pk=3)
+                selected_candidate.ecode_status = e.status_name
+                
+                selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
+                selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
+                selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                 selected_candidate.save()
                 alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
                 our_email = EmailMessage(
@@ -926,6 +953,17 @@ def reject_candidate_vendor(request, cid):
                 return redirect("csp_app:pending_request")
             elif str(eachgroup) == 'Onboarding SPOC':
                 selected_candidate.onboarding_status = reject_onboarding
+                selected_candidate.vendor_status = vendor_status.objects.get(pk=3)
+                selected_candidate.loi_status = loi_status.objects.get(pk=3)
+                selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
+                selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
+                selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
+                selected_candidate.joining_status = joining_status.objects.get(pk=3)
+                e = ecode_generation_status.objects.get(pk=3)
+                selected_candidate.ecode_status = e.status_name
+                selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
+                selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
+                selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                 selected_candidate.save()
                 alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
                 our_email = EmailMessage(
@@ -939,7 +977,18 @@ def reject_candidate_vendor(request, cid):
                 messages.success(request, "Candidate Rejected Mail Sent To Admin.")
                 return redirect("csp_app:pending_request")
             else:       
+                
                 selected_candidate.vendor_status = reject_vendor
+                selected_candidate.loi_status = loi_status.objects.get(pk=3)
+                selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
+                selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
+                selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
+                selected_candidate.joining_status = joining_status.objects.get(pk=3)
+                e = ecode_generation_status.objects.get(pk=3)
+                selected_candidate.ecode_status = e.status_name
+                selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
+                selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
+                selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                 selected_candidate.save()
                 alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
                 our_email = EmailMessage(
@@ -2702,6 +2751,14 @@ def save_new_candidate(request):
             if laptopallocation == None or laptopallocation == '':
                 messages.warning(request, "Choose  Laptop Allocation And Try Again")
                 return redirect("csp_app:new_candidate")
+            if la_fk == 0:
+                laptop_request = laptop_request_status.objects.get(pk=3)
+            else:
+                laptop_request = laptop_request_status.objects.get(pk=0)
+            if email_creation == 'No':
+                email_request = email_creation_request_status.objects.get(pk=3)
+            else:
+                email_request = email_creation_request_status.objects.get(pk=0)
             la_fk = laptop_allocation.objects.get(pk= laptopallocation)
             if salarytype == None or salarytype == '':
                 messages.warning(request, "Choose  Salary Type And Try Again")
@@ -2787,13 +2844,14 @@ def save_new_candidate(request):
                 last_code_str = last_code_query.candidate_code
                 next_code_int = int(last_code_str[1:]) + 1
                 new_code = 'C' + str(next_code_int).zfill(9) 
-                loc_code = remove_specials(loc_code)
+                # loc_code = remove_specials(loc_code)
+
                 new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Mother_Name= mothername,
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, Gross_Salary_Entered= loc_code,
                 Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= INR_to_number(ss_gross_salary), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
+                Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= INR_to_number(ss_gross_salary), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now(), laptop_status= laptop_request, email_creation_status= email_request)
                 new_candidate.save()
                 
                 save_new_code = csp_candidate_code(candidate_code= new_code)

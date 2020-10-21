@@ -306,6 +306,104 @@ class vendor_status(models.Model):
 
     def __str__(self):
         return self.status_name
+
+class loi_status(models.Model):
+    pk_status_code = models.AutoField(primary_key=True)
+    status_name = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(  blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.status_name
+
+class documentation_status(models.Model):
+    pk_status_code = models.AutoField(primary_key=True)
+    status_name = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(  blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.status_name
+
+class offer_letter_status(models.Model):
+    pk_status_code = models.AutoField(primary_key=True)
+    status_name = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(  blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.status_name
+
+class IT_intimation_status(models.Model):
+    pk_status_code = models.AutoField(primary_key=True)
+    status_name = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(  blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.status_name
+
+class joining_status(models.Model):
+    pk_status_code = models.AutoField(primary_key=True)
+    status_name = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(  blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.status_name
+
+class ecode_generation_status(models.Model):
+    pk_status_code = models.AutoField(primary_key=True)
+    status_name = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(  blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.status_name
+
+class email_creation_request_status(models.Model):
+    pk_status_code = models.AutoField(primary_key=True)
+    status_name = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(  blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.status_name
+
+class laptop_request_status(models.Model):
+    pk_status_code = models.AutoField(primary_key=True)
+    status_name = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(  blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.status_name
+
+
     
 
 class master_candidate(models.Model):
@@ -350,7 +448,14 @@ class master_candidate(models.Model):
     candidate_status = models.ForeignKey( candidate_status, on_delete=models.CASCADE, default=2)
     onboarding_status = models.ForeignKey( onboarding_status, on_delete=models.CASCADE, default=2)
     vendor_status = models.ForeignKey( vendor_status, on_delete=models.CASCADE, default=2)
-
+    loi_status = models.ForeignKey(loi_status, on_delete=models.CASCADE, default= 0)
+    documentation_status = models.ForeignKey(documentation_status, on_delete=models.CASCADE, default= 3)
+    offer_letter_status = models.ForeignKey(offer_letter_status, on_delete=models.CASCADE, default= 3)
+    it_intimation_status = models.ForeignKey(IT_intimation_status, on_delete=models.CASCADE, default= 3)
+    joining_status = models.ForeignKey(joining_status, on_delete=models.CASCADE, default= 3)
+    ecode_status = models.CharField(max_length=50, default='Not Applicable')
+    email_creation_status = models.ForeignKey(email_creation_request_status, on_delete= models.CASCADE)
+    laptop_status = models.ForeignKey(laptop_request_status, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
     modified_by = models.CharField(max_length=100, null=True,blank=True)
