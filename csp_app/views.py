@@ -2751,7 +2751,7 @@ def save_new_candidate(request):
             if laptopallocation == None or laptopallocation == '':
                 messages.warning(request, "Choose  Laptop Allocation And Try Again")
                 return redirect("csp_app:new_candidate")
-            if la_fk == 0:
+            if laptopallocation == 0:
                 laptop_request = laptop_request_status.objects.get(pk=3)
             else:
                 laptop_request = laptop_request_status.objects.get(pk=0)
