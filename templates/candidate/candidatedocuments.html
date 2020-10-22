@@ -3,32 +3,24 @@
 {% block titleblock %} New Candidate {% endblock %}
 
 {% block bodyblock %} 
-{% if request.user.groups.all %}
-          {% for eachgroup in request.user.groups.all %}
-            {% if eachgroup.name == 'Candidate' %}
-            <div class="tabs">
-                <a href="{% url 'csp_app:candidate_profile' %}" class="tab-btns">Profile</a>   
-                <a href="" class="tab-btns active-tab">Documents</a>  
-        
-            </div>
-   
-
-    {% else %}
-
     <div class="tabs">
         {% if view_candidate %}
             {% for eachc in view_candidate %}
-                <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>             
-                    
-                <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a> 
-                
-            {% endfor %}
+                {% if request.user.groups.all %}
+                    {% for eachgroup in request.user.groups.all %}
+                        {% if eachgroup.name == 'Candidate' %}
+                            <a href="{% url 'csp_app:candidate_profile' %}" class="tab-btns">Profile</a> 
+                            <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a> 
+                        {% else %}
+                            <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>             
+                            <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a> 
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
         {% endif %} 
     </div>
-    {% endif %}
-    {% endfor %}       
-{% endif %}
-
+    
        
  
 {% endblock %}
