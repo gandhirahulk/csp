@@ -738,7 +738,7 @@ def process_requests(request, cid):
 
                 
                 if request.POST.get('ve_status') != None:                   
-                    
+                    print(changes_list)
                     if len(changes_list) > 0:
                         selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=2)
