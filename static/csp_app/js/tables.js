@@ -109,6 +109,7 @@
         $('#pending-candidate-table').DataTable();
     
         $('#document-table').DataTable();
+        $('#nocandidate-table').DataTable();
         $('#wages-table').DataTable({
             "order": [[ 1, "desc" ]], //or asc 
             "columnDefs" : [{"targets":1, "type":"date-eu"}],
