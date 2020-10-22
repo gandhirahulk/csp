@@ -742,7 +742,7 @@ def process_requests(request, cid):
                     if len(changes_list) > 0:
                         selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=2)
-                        selected_candidate.vendor_status = approve_vendor
+                        
                         selected_candidate.loi_status = loi_status.objects.get(pk=3)
                         selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
                         selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)

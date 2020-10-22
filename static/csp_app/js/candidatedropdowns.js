@@ -371,7 +371,7 @@ $(document).ready(function(){
                 $('#c_salary').attr("title", wages);
                 $('#wage_result').text(wages);
                 if (amt >= data['amount']){
-                    console.log('crossed');
+                   
                     $('#calculate').attr("disabled", false);
                     $('#wage_result').text('');
                     console.log('no');
