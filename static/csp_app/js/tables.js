@@ -102,7 +102,7 @@
             scrollCollapse: true,
             
             columnDefs: [
-                { width: '20%', targets: 0 }
+                { width: '100%', targets: 0 }
             ],
             fixedColumns: true
         } );

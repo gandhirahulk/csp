@@ -46,7 +46,7 @@
         <div style="margin-top: 55px;">
         {% if request.user.groups.all %}
             {% for eachgroup in request.user.groups.all %}
-                {% if eachgroup.name == 'Vendor' %}
+                {% if eachgroup.name == 'Vendor' or eachgroup == 'Candidate' %}
                     
                     <div class="document_form_header">
                         <div class="forms-heading">
@@ -88,6 +88,7 @@
 
                     
                 {% endif %}
+               
             {% endfor %}
         {% endif %}
         </div>

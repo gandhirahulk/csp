@@ -21,7 +21,7 @@
 {% block tabcontentblock %}
     {% if request.user.groups.all %}
         {% for eachgroup in request.user.groups.all %}
-            {% if eachgroup.name == 'Admin' or eachgroup.name == 'Recruiter' %}
+            {% if eachgroup.name == 'Admin' or eachgroup.name == 'Recruiter' or eachgroup.name == 'Onboarding SPOC' %}
             <div class="tab-container">
                 <button id="new_candidate" class="add-new-btn" onclick="location.href = '/csp_candidates/new_candidate/'" >New Candidate</button>
             

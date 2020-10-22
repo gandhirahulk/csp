@@ -453,7 +453,7 @@ class master_candidate(models.Model):
     offer_letter_status = models.ForeignKey(offer_letter_status, on_delete=models.CASCADE, default= 3)
     it_intimation_status = models.ForeignKey(IT_intimation_status, on_delete=models.CASCADE, default= 3)
     joining_status = models.ForeignKey(joining_status, on_delete=models.CASCADE, default= 3)
-    ecode_status = models.CharField(max_length=50, default='Not Applicable')
+    ecode_status = models.CharField(max_length=50, default='N/A')
     email_creation_status = models.ForeignKey(email_creation_request_status, on_delete= models.CASCADE)
     laptop_status = models.ForeignKey(laptop_request_status, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)

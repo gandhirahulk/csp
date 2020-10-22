@@ -754,6 +754,7 @@ def process_requests(request, cid):
                     if len(changes_list) > 0:
                         selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=2)
+                        selected_candidate.save()
                         #modified email
                         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                         our_email = EmailMessage(
@@ -764,79 +765,83 @@ def process_requests(request, cid):
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
-                    selected_candidate.save()
-                    
-                    limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
-                    our_email = EmailMessage(
-                        'Candidate Edited By Vendor.',
-                        limtemplate,
-                        settings.EMAIL_HOST_USER,
-                        [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com'],
-                    ) 
-                    our_email.fail_silently = False
-                    our_email.send()
-                    
-                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
-                    our_email = EmailMessage(
-                        'Candidate account edited by vendor.',
-                        alltemplate,
-                        settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
-                    ) 
-                    our_email.fail_silently = False
-                    our_email.send()
+                        messages.success(request, "Candidate Details Sent To Onboarding For Approval.")
+                        return redirect("csp_app:pending_request")
                     
 
-                    assign_group = Group.objects.get(name='Candidate')                     
-                    user = User.objects.create_user(selected_candidate.pk)
-                    password = User.objects.make_random_password()
-                    user.password = password
-                    user.set_password(user.password)
-                    user.first_name = selected_candidate.First_Name
-                    user.last_name = selected_candidate.Last_Name
-                    user.email = selected_candidate.Personal_Email_Id
-                    # if group == 'Candidate':
-                    #     user.is_staff = False
-                    assign_group.user_set.add(user)
-                    user.save()
-                    template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
-                    our_email = EmailMessage(
-                        'LOI',
-                        template,
-                        settings.EMAIL_HOST_USER,
-                        [ selected_candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
-                    ) 
-                    our_email.fail_silently = False
-                    selected_candidate.loi_status = loi_status.objects.get(pk=1)
-                    selected_candidate.save()
-                    our_email.send()
+                    else:
                     
-                    try:
-                        my_host = selected_candidate.fk_vendor_code.vendor_smtp
-                        my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
-                        my_username = selected_candidate.fk_vendor_code.vendor_email_id
-                        my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
-                        my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
-                        my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
-                        subject1 = 'LOI'
-                        body1 = 'LOI'
-                        from1 = my_username
-                        with get_connection(
-                        host=my_host, 
-                        port=my_port, 
-                        username=my_username, 
-                        password=my_password, 
-                        use_tls=my_use_tls,
-                        use_ssl= my_use_ssl
-                        ) as connection:
-                            EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id, 'sadaf.shaikh@udaan.com'],
-                                        connection=connection).send()
-                    except TimeoutError:
-                        return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
-                    # send_mail(subject, message, from_email= vendoremail, [selected_candidate.Personal_Email_Id], fail_silently=False, auth_user=vendoremail, auth_password=password)
-   
-                    messages.success(request, "Candidate approved LOI sent to candidate.")
-                    return redirect("csp_app:pending_request")
+                        limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
+                        our_email = EmailMessage(
+                            'Candidate Edited By Vendor.',
+                            limtemplate,
+                            settings.EMAIL_HOST_USER,
+                            [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com'],
+                        ) 
+                        our_email.fail_silently = False
+                        our_email.send()
+                        
+                        alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
+                        our_email = EmailMessage(
+                            'Candidate account edited by vendor.',
+                            alltemplate,
+                            settings.EMAIL_HOST_USER,
+                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                        ) 
+                        our_email.fail_silently = False
+                        our_email.send()
+                        
+
+                        assign_group = Group.objects.get(name='Candidate')                     
+                        user = User.objects.create_user(selected_candidate.pk)
+                        password = User.objects.make_random_password()
+                        user.password = password
+                        user.set_password(user.password)
+                        user.first_name = selected_candidate.First_Name
+                        user.last_name = selected_candidate.Last_Name
+                        user.email = selected_candidate.Personal_Email_Id
+                        # if group == 'Candidate':
+                        #     user.is_staff = False
+                        assign_group.user_set.add(user)
+                        user.save()
+                        template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
+                        our_email = EmailMessage(
+                            'LOI',
+                            template,
+                            settings.EMAIL_HOST_USER,
+                            [ selected_candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
+                        ) 
+                        our_email.fail_silently = False
+                        selected_candidate.loi_status = loi_status.objects.get(pk=1)
+                        selected_candidate.save()
+                        our_email.send()
+                        
+                        try:
+                            my_host = selected_candidate.fk_vendor_code.vendor_smtp
+                            my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+                            my_username = selected_candidate.fk_vendor_code.vendor_email_id
+                            my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+                            my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+                            my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+                            subject1 = 'LOI'
+                            body1 = 'LOI'
+                            from1 = my_username
+                            with get_connection(
+                            host=my_host, 
+                            port=my_port, 
+                            username=my_username, 
+                            password=my_password, 
+                            use_tls=my_use_tls,
+                            use_ssl= my_use_ssl
+                            ) as connection:
+                                EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id, 'sadaf.shaikh@udaan.com'],
+                                            connection=connection).send()
+                        except TimeoutError:
+                            return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
+                        # send_mail(subject, message, from_email= vendoremail, [selected_candidate.Personal_Email_Id], fail_silently=False, auth_user=vendoremail, auth_password=password)
+    
+                        messages.success(request, "Candidate approved LOI sent to candidate.")
+                        return redirect("csp_app:pending_request")
 
 
         return render(request, 'candidate/processrequests.html', {'selected_candidate': selected_candidate_data, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
@@ -1187,7 +1192,7 @@ def candidate(request):
     'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list, 'candidate_list': candidate_list, 'v_status_list': v_status_list})
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def new_candidate(request):    
     try:
         s_particulars = salary_structure_particulars.objects.all()
@@ -2393,7 +2398,7 @@ def candidate_form_lists():
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def create_candidate(request):
     entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
     
@@ -2672,7 +2677,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_type):
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def save_new_candidate(request):
     try:
         if request.method == 'POST':
@@ -3067,8 +3072,10 @@ def candidate_document_upload(request, candidate_id):
             else:
                 is_vendor = User.objects.filter(username= request.user, groups__name='Vendor')
                 if len(is_vendor) > 0:
+                    mandatory_list = mandatory_documents.objects.all()
                     document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
                 else:
+                    mandatory_list = mandatory_documents.objects.all().exclude(pk=1)
                     document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status).exclude(document_catagory_id=1)
                 if document_count > 0:
                     candidate_fk.documentation_status = documentation_status.objects.get(pk=4)
@@ -3079,7 +3086,7 @@ def candidate_document_upload(request, candidate_id):
                 
 
 
-            mandatory_list = mandatory_documents.objects.all()
+            
         if request.POST.get("delete_id") != None or request.POST.get("delete_id") != '':
             
                  
