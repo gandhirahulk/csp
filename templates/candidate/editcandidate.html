@@ -202,7 +202,7 @@
                             {% for eachvendor in vendor_list %}
                             {% if eachvendor.pk != eachc.fk_vendor_code_id %}
 
-                                <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
+                                <option style="display: none;" value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
                         {% endif %}
                             
                                 {% endfor %}                
@@ -221,7 +221,7 @@
                         {% for eachdepartment in department_list %}
                         {% if eachdepartment.pk != eachc.fk_department_code_id %}
 
-                            <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                            <option style="display: none;" value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
                             {% endif %}                
                         
                             {% endfor %}                
@@ -241,7 +241,7 @@
                         {% for eachfunction in function_list %}
                         {% if eachfunction.pk != eachc.fk_function_code_id %}
 
-                            <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
+                            <option style="display: none;" value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
                     {% endif %}
                         
                             {% endfor %}                
@@ -259,7 +259,7 @@
                         {% for eachteam in team_list %}
                         {% if eachteam.pk != eachc.fk_team_code_id %}
 
-                            <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
+                            <option style="display: none;" value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
                     {% endif %}
                         
                             {% endfor %}                
@@ -279,7 +279,7 @@
                         {% for eachsubteam in sub_team_list %}
                         {% if eachsubteam.pk != eachc.fk_subteam_code_id %}
 
-                            <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
+                            <option style="display: none;" value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
                     {% endif %}
                         
                             {% endfor %}                
@@ -297,7 +297,7 @@
                         {% for eachdesignation in designation_list %}
                         {% if eachdesignation.pk != eachc.fk_designation_code_id %}
 
-                        <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                        <option style="display: none;" value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
                         {% endif %}
                         
                             {% endfor %}                
@@ -318,7 +318,7 @@
                         {% for eachregion in region_list %}
                         {% if eachregion.pk != eachc.fk_region_code_id %}
 
-                            <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
+                            <option style="display: none;" value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
                     {% endif %}
                        
                             {% endfor %}                
@@ -337,7 +337,7 @@
                         {% for eachstate in state_list %}
                         {% if eachstate.pk != eachc.fk_state_code_id %}
 
-                            <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
+                            <option style="display: none;" value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
                     {% endif %}
                        
                             {% endfor %}                
@@ -358,7 +358,7 @@
                         {% for eachcity in city_list %}
                         {% if eachcity.pk != eachc.fk_city_code_id %}
 
-                            <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
+                            <option style="display: none;" value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
                     {% endif %}
                         
                             {% endfor %}                
@@ -377,7 +377,7 @@
                         {% for eachlocation in location_list %}
                         {% if eachlocation.pk != eachc.fk_location_code_id %}
 
-                            <option value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
+                            <option style="display: none;" value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
                     {% endif %}
                         
                             {% endfor %}                

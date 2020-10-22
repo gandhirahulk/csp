@@ -348,7 +348,7 @@
                             {% if vendor_list %}
                                 {% for eachvendor in vendor_list %}
                                     {% if eachvendor.pk != eachcandidate.fk_vendor_code_id %}
-                                    <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
+                                    <option style="display: none;" value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
                             {% endif %}
@@ -398,7 +398,7 @@
                             {% if function_list %}
                                 {% for eachfunction in function_list %}
                                     {% if eachfunction.pk != eachcandidate.fk_function_code_id %}
-                                    <option value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
+                                    <option style="display: none;" value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
                                     {% endif %}
                         
                                 {% endfor %}                
@@ -423,7 +423,7 @@
                             {% if team_list %}
                                 {% for eachteam in team_list %}
                                     {% if eachteam.pk != eachcandidate.fk_team_code_id %}
-                                    <option value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
+                                    <option style="display: none;" value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
                                     {% endif %}
                                     
                                 {% endfor %}                
@@ -449,7 +449,7 @@
                             {% if sub_team_list %}
                                 {% for eachsubteam in sub_team_list %}
                                     {% if eachsubteam.pk != eachcandidate.fk_subteam_code_id %}
-                                    <option value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
+                                    <option style="display: none;" value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
                             {% endif %}
@@ -474,7 +474,7 @@
                             {% if designation_list %}
                                 {% for eachdesignation in designation_list %}
                                     {% if eachdesignation.pk != eachcandidate.fk_designation_code_id %}
-                                    <option value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                                    <option style="display: none;" value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
                             {% endif %}
@@ -499,7 +499,7 @@
                             {% if region_list %}
                                 {% for eachregion in region_list %}
                                     {% if eachregion.pk != eachcandidate.fk_region_code_id %}
-                                    <option value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
+                                    <option style="display: none;" value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
                             {% endif %}
@@ -523,7 +523,7 @@
                             {% if state_list %}
                                 {% for eachstate in state_list %}
                                     {% if eachestate.pk != eachcandidate.fk_state_code_id %}
-                                    <option value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
+                                    <option style="display: none;" value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
                             {% endif %}
@@ -547,7 +547,7 @@
                             {% if city_list %}
                                 {% for eachcity in city_list %}
                                     {% if eachcity.pk != eachcandidate.fk_city_code_id %}
-                                    <option value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
+                                    <option style="display: none;" value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
                             {% endif %}
@@ -571,7 +571,7 @@
                             {% if location_list %}
                                 {% for eachlocation in location_list %}
                                     {% if eachlocation.pk != eachcandidate.fk_location_code_id %}
-                                    <option value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
+                                    <option style="display: none;" value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
                             {% endif %}
