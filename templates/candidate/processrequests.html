@@ -8,7 +8,14 @@
     <div class="tabs">
         <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>   
         <a href="{% url 'csp_app:pending_request' %}" class="tab-btns active-tab">Pending Requests <button disabled id="request_count" >{{ count }}</button> </a>   
-        <a href="{% url 'csp_app:document_upload' eachcandidate.pk %}" class="tab-btns">Documents</a> 
+        {% if request.user.groups.all %}
+            {% for eachgroup in request.user.groups.all %}
+                {% if eachgroup.name == 'Vendor' %}
+                    <a href="{% url 'csp_app:document_upload' eachcandidate.pk %}" class="tab-btns">Documents</a> 
+
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
     {% endfor %}
 {% endif %}
