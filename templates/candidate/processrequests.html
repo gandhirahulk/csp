@@ -358,7 +358,7 @@
 
                 <div class="request-forms-input-holder">
                     <div>
-                        <label for="">Depatment</label>    
+                        <label for="">Department</label>    
                     </div>
                     <div>
                         <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
@@ -372,7 +372,7 @@
                             {% if department_list %}
                                 {% for eachdepartment in department_list %}
                                     {% if eachdepartment.pk != eachcandidate.fk_department_code_id %}
-                                    <option value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                                    <option style="display: none;"  value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
                                     {% endif %}
                                     
                                 {% endfor %}                
