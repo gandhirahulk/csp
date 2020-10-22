@@ -1,6 +1,6 @@
 $(document).ready(function(){ 
 
-    
+    $('#calculate').attr("disabled", false);
     $('#calculate').mouseenter(function(){
         aadhaar = $('#c_aadhaar').val()
         pan = $('#c_pan').val();
