@@ -737,23 +737,23 @@ def process_requests(request, cid):
                     return redirect("csp_app:pending_request")
 
                 
-                if request.POST.get('ve_status') != None:
-                    selected_candidate.vendor_status = approve_vendor
-                    selected_candidate.loi_status = loi_status.objects.get(pk=0)
-                    selected_candidate.documentation_status = documentation_status.objects.get(pk=2)
-                    selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=0)
-                    selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=0)
-                    selected_candidate.joining_status = joining_status.objects.get(pk=0)
-                    e = ecode_generation_status.objects.get(pk=0)
-                    selected_candidate.ecode_status = e.status_name
-                    if selected_candidate.E_Mail_ID_Creation == 'Yes':
-                        selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=0)
-                    if selected_candidate.Laptop_Allocation_id == 1:
-                        selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
-                    selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
+                if request.POST.get('ve_status') != None:                   
+                    
                     if len(changes_list) > 0:
                         selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=2)
+                        selected_candidate.vendor_status = approve_vendor
+                        selected_candidate.loi_status = loi_status.objects.get(pk=3)
+                        selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
+                        selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
+                        selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
+                        selected_candidate.joining_status = joining_status.objects.get(pk=3)
+                        e = ecode_generation_status.objects.get(pk=3)
+                        selected_candidate.ecode_status = e.status_name
+                        if selected_candidate.E_Mail_ID_Creation == 'Yes':
+                            selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
+                        if selected_candidate.Laptop_Allocation_id == 1:
+                            selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                         selected_candidate.save()
                         #modified email
                         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
@@ -770,7 +770,19 @@ def process_requests(request, cid):
                     
 
                     else:
-                    
+                        selected_candidate.vendor_status = approve_vendor
+                        selected_candidate.loi_status = loi_status.objects.get(pk=0)
+                        selected_candidate.documentation_status = documentation_status.objects.get(pk=2)
+                        selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=0)
+                        selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=0)
+                        selected_candidate.joining_status = joining_status.objects.get(pk=0)
+                        e = ecode_generation_status.objects.get(pk=0)
+                        selected_candidate.ecode_status = e.status_name
+                        if selected_candidate.E_Mail_ID_Creation == 'Yes':
+                            selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=0)
+                        if selected_candidate.Laptop_Allocation_id == 1:
+                            selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
+                        selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
                         limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
                         our_email = EmailMessage(
                             'Candidate Edited By Vendor.',
