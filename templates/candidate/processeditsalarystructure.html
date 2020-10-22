@@ -720,16 +720,16 @@
                 {% for eachgroup in request.user.groups.all %}
                     {% if eachgroup.name == 'Vendor' %}
                         <input type="hidden" value="vendor" name="ve_status">
-                        <button id="calculate" title="Please Fill Out All The Fields" class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' cid %}" type="submit" style="width: auto;">Calculate Salary Structure</button> 
+                        <button id="calculate" title="Please Fill Out All The Fields" class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' cid %}" type="submit" style="width: auto;">Show Salary Structure</button> 
                     
                     {% elif eachgroup.name == 'Admin' %}   
                         <input type="hidden" value="vendor" name="ve_status">
-                        <button id="calculate" title="Please Fill Out All The Fields" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure_process' cid %}" type="submit">Calculate Salary Structure</button>
+                        <button id="calculate" title="Please Fill Out All The Fields" disabled="true" class="forms-save-btn" style="width: auto;" formaction="{% url 'csp_app:edit_salary_structure_process' cid %}" type="submit">Show Salary Structure</button>
                     
 
                     {% else %}
                         <input type="hidden" value="onboarding" name="o_status">
-                        <button id="calculate" title="Please Fill Out All The Fields" class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' cid %}" type="submit" style="width: auto;">Calculate Salary Structure</button> 
+                        <button id="calculate" title="Please Fill Out All The Fields" class="forms-save-btn" formaction="{% url 'csp_app:edit_salary_structure_process' cid %}" type="submit" style="width: auto;">Show Salary Structure</button> 
                     {% endif %}
                 {% endfor %}
             {% endif %}
