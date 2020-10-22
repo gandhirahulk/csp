@@ -36,139 +36,141 @@
 
         
         {% if candidate_list %}
-            {% for eachcandidate in candidate_list %}
-                <table id="candidate-table" class="dataTable">
-                    <thead>
-                        <tr>
-                            <th>Candidate ID</th>
-                            <th>Name</th>
-                            <th>E Mail ID</th>
-                            <th>Mobile Number</th>
-                            <th>Department</th>
-                            <th>Function</th>
-                            <th>Designation</th>  
-                            <th>Reporting Manager</th>                            
-                            <th>State</th>                            
+            
+            <table id="candidate-table" class="dataTable">
+                <thead>
+                    <tr>
+                        <th>Candidate ID</th>
+                        <th>Name</th>
+                        <th>E Mail ID</th>
+                        <th>Mobile Number</th>
+                        <th>Department</th>
+                        <th>Function</th>
+                        <th>Designation</th>  
+                        <th>Reporting Manager</th>                            
+                        <th>State</th>                            
 
-                            
-                            <th>Onboarding Status</th>
-                            <th>Vendor</th>
-                            <th>Vendor Status</th>
-                            <th>LOI</th>
-                            <th>Documentation</th>
-                            <th>Offer Letter</th>
-                            <th>IT Intimation E Mail</th>
-                            <th>Joining Status</th>
-                            <th>E Code Generation</th>
-                            <th>E Mail ID Creation Request</th>
-                            <th>Laptop Request</th>
-                            <th>Final Status</th>
                         
+                        <th>Onboarding Status</th>
+                        <th>Vendor</th>
+                        <th>Vendor Status</th>
+                        <th>LOI</th>
+                        <th>Documentation</th>
+                        <th>Offer Letter</th>
+                        <th>IT Intimation E Mail</th>
+                        <th>Joining Status</th>
+                        <th>E Code Generation</th>
+                        <th>E Mail ID Creation Request</th>
+                        <th>Laptop Request</th>
+                        <th>Final Status</th>
+                    
+                    
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for eachcandidate in candidate_list %}
+                    {% if request.user.groups.all %}
+                        {% for eachgroup in request.user.groups.all %}
+                            {% if eachgroup.name == 'Vendor' %}
+                                    
+                                <tr>
+                                    <td class="action-col">
+                                        <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_edit_candidate' %}"></form> 
+                                    
+                                        </td>
+                                    <td class="action-col" style="text-align: left;">
+                                        {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
+                                    </td>
+                                    <td>{{ eachcandidate.Personal_Email_Id }}</td>
+                                    <td>{{ eachcandidate.Contact_Number }}</td>
+                                    <td>{{ eachcandidate.fk_department_code }}</td>
+                                    <td>{{ eachcandidate.fk_function_code }}</td>
+                                    <td>{{ eachcandidate.fk_designation_code }}</td>
+                                    <td>{{ eachcandidate.Reporting_Manager }}</td>
+                                    <td>{{ eachcandidate.fk_state_code }}</td>                                        
                         
-                        
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if request.user.groups.all %}
-                            {% for eachgroup in request.user.groups.all %}
-                                {% if eachgroup.name == 'Vendor' %}
-                                        
-                                    <tr>
-                                        <td class="action-col">
-                                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_edit_candidate' %}"></form> 
-                                        
-                                            </td>
-                                        <td class="action-col" style="text-align: left;">
-                                            {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
-                                        </td>
-                                        <td>{{ eachcandidate.Personal_Email_Id }}</td>
-                                        <td>{{ eachcandidate.Contact_Number }}</td>
-                                        <td>{{ eachcandidate.fk_department_code }}</td>
-                                        <td>{{ eachcandidate.fk_function_code }}</td>
-                                        <td>{{ eachcandidate.fk_designation_code }}</td>
-                                        <td>{{ eachcandidate.Reporting_Manager }}</td>
-                                        <td>{{ eachcandidate.fk_state_code }}</td>                                        
-                            
-                                        <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
-                                        <td>{{ eachcandidate.fk_vendor_code }}</td>
-                                        <td class="action-col">{{ eachcandidate.vendor_status }}</td>
-                                        <td>{{ eachcandidate.loi_status }}
-                                            {% if eachcandidate.documentation_status_id == 1 %}
-                                                | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
+                                    <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+                                    <td>{{ eachcandidate.fk_vendor_code }}</td>
+                                    <td class="action-col">{{ eachcandidate.vendor_status }}</td>
+                                    <td>{{ eachcandidate.loi_status }}
+                                        {% if eachcandidate.documentation_status_id == 1 %}
+                                            | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
 
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ eachcandidate.documentation_status }}</td>
-                                        <td>{{ eachcandidate.offer_letter_status }}</td>
-                                        <td>{{ eachcandidate.it_intimation_status }}</td>
-                                        <td>{{ eachcandidate.joining_status }}</td>
-                                        <td>{{ eachcandidate.ecode_status }}</td>
-                                        <td>{{ eachcandidate.email_creation_status }}</td>
-                                        <td>{{ eachcandidate.laptop_status }}</td>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ eachcandidate.documentation_status }}</td>
+                                    <td>{{ eachcandidate.offer_letter_status }}</td>
+                                    <td>{{ eachcandidate.it_intimation_status }}</td>
+                                    <td>{{ eachcandidate.joining_status }}</td>
+                                    <td>{{ eachcandidate.ecode_status }}</td>
+                                    <td>{{ eachcandidate.email_creation_status }}</td>
+                                    <td>{{ eachcandidate.laptop_status }}</td>
 
-                                        <td class="action-col">
-                                            {{ eachcandidate.candidate_status }}
-                                        </td>
-                                    </tr>
+                                    <td class="action-col">
+                                        {{ eachcandidate.candidate_status }}
+                                    </td>
+                                </tr>
 
-                                {% else %}                          
-                                            
-                                    <tr>
-                                        <td class="action-col">
-                                            {% if request.user.groups.all %}
-                                                {% for eachgroup in request.user.groups.all %}
-                                                    {% if eachgroup.name == 'Admin' %}                                                        
-                                                        <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_edit_candidate' %}"></form> 
-                                                    {% else %}
-                                                        <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form> 
-                                                        
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endif %}
-                                        </td>
-                                        <td >
+                            {% else %}                          
                                         
-                                            {{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}
+                                <tr>
+                                    <td class="action-col">
+                                        {% if request.user.groups.all %}
+                                            {% for eachgroup in request.user.groups.all %}
+                                                {% if eachgroup.name == 'Admin' %}                                                        
+                                                    <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_edit_candidate' %}"></form> 
+                                                {% else %}
+                                                    <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form> 
                                                     
-                                        </td>
-                                        <td>{{ eachcandidate.Personal_Email_Id }}</td>
-                                        <td>{{ eachcandidate.Contact_Number }}</td>
-                                        <td>{{ eachcandidate.fk_department_code }}</td>
-                                        <td>{{ eachcandidate.fk_function_code }}</td>
-                                        <td>{{ eachcandidate.fk_designation_code }}</td>
-                                        <td>{{ eachcandidate.Reporting_Manager }}</td>
-                                        <td>{{ eachcandidate.fk_state_code }}</td>                                        
-                                        <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
-                                        <td>{{ eachcandidate.fk_vendor_code }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                    <td >
+                                    
+                                        {{ eachcandidate.First_Name }} {{ eachcandidate.Last_Name }}
+                                                
+                                    </td>
+                                    <td>{{ eachcandidate.Personal_Email_Id }}</td>
+                                    <td>{{ eachcandidate.Contact_Number }}</td>
+                                    <td>{{ eachcandidate.fk_department_code }}</td>
+                                    <td>{{ eachcandidate.fk_function_code }}</td>
+                                    <td>{{ eachcandidate.fk_designation_code }}</td>
+                                    <td>{{ eachcandidate.Reporting_Manager }}</td>
+                                    <td>{{ eachcandidate.fk_state_code }}</td>                                        
+                                    <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+                                    <td>{{ eachcandidate.fk_vendor_code }}</td>
 
-                                        <td class="action-col">{{ eachcandidate.vendor_status }}</td>
-                                        <td>{{ eachcandidate.loi_status }}
-                                            {% if eachcandidate.documentation_status_id == 1 %}
-                                                | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ eachcandidate.documentation_status }}</td>
-                                        <td>{{ eachcandidate.offer_letter_status }}</td>
-                                        <td>{{ eachcandidate.it_intimation_status }}</td>
-                                        <td>{{ eachcandidate.joining_status }}</td>
-                                        <td>{{ eachcandidate.ecode_status }}</td>
-                                        <td>{{ eachcandidate.email_creation_status }}</td>
-                                        <td>{{ eachcandidate.laptop_status }}</td>
+                                    <td class="action-col">{{ eachcandidate.vendor_status }}</td>
+                                    <td>{{ eachcandidate.loi_status }}
+                                        {% if eachcandidate.documentation_status_id == 1 %}
+                                            | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ eachcandidate.documentation_status }}</td>
+                                    <td>{{ eachcandidate.offer_letter_status }}</td>
+                                    <td>{{ eachcandidate.it_intimation_status }}</td>
+                                    <td>{{ eachcandidate.joining_status }}</td>
+                                    <td>{{ eachcandidate.ecode_status }}</td>
+                                    <td>{{ eachcandidate.email_creation_status }}</td>
+                                    <td>{{ eachcandidate.laptop_status }}</td>
 
-                                        <td class="action-col">
-                                            {{ eachcandidate.candidate_status }}
-                                        </td>
-                                        
-                                        
-                                    </tr>
+                                    <td class="action-col">
+                                        {{ eachcandidate.candidate_status }}
+                                    </td>
+                                    
+                                    
+                                </tr>
 
-                                {% endif %}                
+                            {% endif %}                
 
-                            {% endfor %}
-                        {% endif %}
-                    </tbody>   
-                </table>
-            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                </tbody>   
+            </table>
+            
         {% else %}
             
             <table id="nocandidate-table" class="dataTable">

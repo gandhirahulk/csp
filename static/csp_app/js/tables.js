@@ -96,7 +96,7 @@
             "lengthMenu": [10, 25, 50, 75, 100],
         });
         
-        var table = $('#candidate-table').DataTable( {
+        $('#candidate-table').DataTable( {
             scrollY:        "300px",
             scrollX:        true,
             scrollCollapse: true,
