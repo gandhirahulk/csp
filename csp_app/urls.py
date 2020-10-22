@@ -8,6 +8,8 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    path('resend_loi/<str:cid>/', views.resend_loi, name="resend_loi"),
+
     path('send/', views.custom_send_email, name="send"),
     path('export_entity/', exports.export_entity, name='export_entity'),
     path('export_department/', exports.export_department, name='export_department'),

@@ -91,7 +91,12 @@
                                         <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
                                         <td>{{ eachcandidate.fk_vendor_code }}</td>
                                         <td class="action-col">{{ eachcandidate.vendor_status }}</td>
-                                        <td>{{ eachcandidate.loi_status }}</td>
+                                        <td>{{ eachcandidate.loi_status }}
+                                            {% if eachcandidate.documentation_status_id == 1 %}
+                                                | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
+
+                                            {% endif %}
+                                        </td>
                                         <td>{{ eachcandidate.documentation_status }}</td>
                                         <td>{{ eachcandidate.offer_letter_status }}</td>
                                         <td>{{ eachcandidate.it_intimation_status }}</td>
@@ -151,7 +156,11 @@
                                         <td>{{ eachcandidate.fk_vendor_code }}</td>
 
                                         <td class="action-col">{{ eachcandidate.vendor_status }}</td>
-                                        <td>{{ eachcandidate.loi_status }}</td>
+                                        <td>{{ eachcandidate.loi_status }}
+                                            {% if eachcandidate.documentation_status_id == 1 %}
+                                                | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
+                                            {% endif %}
+                                        </td>
                                         <td>{{ eachcandidate.documentation_status }}</td>
                                         <td>{{ eachcandidate.offer_letter_status }}</td>
                                         <td>{{ eachcandidate.it_intimation_status }}</td>

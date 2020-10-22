@@ -53,7 +53,43 @@ except ObjectDoesNotExist:
     Onboarding_SPOC = 'workmail052020@gmail.com'
 
 
-
+def resend_loi(request, cid):
+    selected_candidate = master_candidate.objects.get(pk=cid)
+    template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
+    our_email = EmailMessage(
+        'LOI',
+        template,
+        settings.EMAIL_HOST_USER,
+        [ selected_candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
+    ) 
+    our_email.fail_silently = False    
+    our_email.send()
+    try:
+        my_host = selected_candidate.fk_vendor_code.vendor_smtp
+        my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+        my_username = selected_candidate.fk_vendor_code.vendor_email_id
+        my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+        my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+        my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+        subject1 = 'LOI'
+        body1 = 'LOI'
+        from1 = my_username
+        with get_connection(
+        host=my_host, 
+        port=my_port, 
+        username=my_username, 
+        password=my_password, 
+        use_tls=my_use_tls,
+        use_ssl= my_use_ssl
+        ) as connection:
+            EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id, 'sadaf.shaikh@udaan.com'],
+            connection=connection).send()
+    except TimeoutError:
+        return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
+           
+    messages.success(request, "LOI Resent To Candidate")
+    return redirect("csp_app:candidate")
+    
 
 def custom_send_email(request):
     
@@ -453,7 +489,8 @@ def process_requests(request, cid):
             
             all_active_candidates = candidate_list = master_candidate.objects.filter(status=active_status)
             
-            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
+            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
+            # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
             count = len(pending_candidate_list)   
     try:
         selected_candidate_data = master_candidate.objects.filter(pk= cid)
@@ -961,7 +998,7 @@ def reject_candidate_vendor(request, cid):
         for eachgroup in request.user.groups.all():
             if str(eachgroup) == 'Admin':
                 selected_candidate.onboarding_status = reject_onboarding
-                selected_candidate.vendor_status = reject_vendor
+                
                 selected_candidate.loi_status = loi_status.objects.get(pk=3)
                 selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
                 selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
@@ -1081,7 +1118,8 @@ def pending_requests(request):
                 
                 all_active_candidates = candidate_list = master_candidate.objects.filter(status=active_status)
                 
-                pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
+                pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
+                # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
                 count = len(pending_candidate_list)
             
         return render(request, 'candidate/pendingrequests.html', {'count':count,'pending_candidate_list': pending_candidate_list, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
@@ -1126,7 +1164,8 @@ def candidate(request):
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
         else:
-            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
+            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
+            # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
             count = len(pending_candidate_list)
 
     return render(request, 'candidate/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
@@ -1189,7 +1228,8 @@ def edit_salary_structure_process(request, cid):
                 
                 all_active_candidates = candidate_list = master_candidate.objects.filter(status=active_status)
                 
-                pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
+                pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
+                # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
                 count = len(pending_candidate_list)
             if request.method == 'POST':
                 candidate_id = request.POST.get("cid")   
