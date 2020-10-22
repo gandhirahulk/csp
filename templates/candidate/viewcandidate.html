@@ -1,11 +1,19 @@
 {% extends 'csp_app/admindashboard.html' %}
 {% load static %}
-{% block titleblock %} Team {% endblock %}
+{% block titleblock %} View Candidate {% endblock %}
 
 {% block bodyblock %} 
 
     <div class="tabs">
-        <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>   
+        <a href="{% url 'csp_app:candidate' %}" class="tab-btns active-tab"> Candidates</a>  
+        {% if request.user.groups.all %}
+            {% for eachgroup in request.user.groups.all %}
+                {% if eachgroup.name == 'Vendor' %}
+                    <a href="{% url 'csp_app:document_upload' me.pk %}" class="tab-btns">Documents</a> 
+
+                {% endif %}
+            {% endfor %}
+        {% endif %} 
     </div>
 
 {% endblock %}
