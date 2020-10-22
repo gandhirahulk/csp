@@ -13,7 +13,7 @@ $(document).ready(function(){
         middlename = $('#c_middlename').val();
         lastname = $('#c_lastname').val();
         $.ajax({
-            url: '/csp_candidates/check_duplicacy_new/',
+            url: '/csp_candidates/check_duplicacy_edit/',
             data: {
                 'fathername': fathername,
                 'firstname': firstname,

@@ -447,7 +447,7 @@ def vendor_pending_candidates(usrname):
         s_vendor = master_vendor.objects.filter(spoc_email_id= usrname, status=active_status)
         a = []
         for e in s_vendor:
-            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk, vendor_status= pending_vendor,onboarding_status= approve_onboarding, status= active_status))
+            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk, vendor_status= pending_vendor,onboarding_status= approve_onboarding, status= active_status) | master_candidate.objects.filter(fk_vendor_code=e.pk, vendor_status= pending_vendor,onboarding_status= onboarding_status.objects.get(pk=4), status= active_status))
         vs_candidates = list(a)
         
         return vs_candidates
@@ -644,125 +644,13 @@ def process_requests(request, cid):
                 return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
                 selected_candidate = master_candidate.objects.get(pk= candidate_id)
-                changes_list = {}
-                if selected_candidate.First_Name != firstname:
-                    changes_list['First Name'] = [ selected_candidate.First_Name, firstname ]
-                selected_candidate.First_Name=firstname 
-                if selected_candidate.Middle_Name != middlename:
-                    changes_list['Middle Name'] = [ selected_candidate.Middle_Name, middlename ]
-                selected_candidate.Middle_Name=middlename 
-                if selected_candidate.Last_Name != lastname: 
-                    changes_list['Last Name'] = [ selected_candidate.Last_Name, lastname ]
-                selected_candidate.Last_Name= lastname
-                if selected_candidate.Date_of_Joining != doj:
-                    changes_list['Date Of Joining'] = [ selected_candidate.Date_of_Joining, doj ]
-                selected_candidate.Date_of_Joining = doj
-                if selected_candidate.Date_of_Birth != dob:
-                    changes_list['Date Of Birth'] = [ selected_candidate.Date_of_Birth, dob ]
-                selected_candidate.Date_of_Birth= dob
-                if selected_candidate.Father_Name != fathername:
-                    changes_list['Father Name'] = [ selected_candidate.Father_Name, fathername ]
-                selected_candidate.Father_Name= fathername
-                if selected_candidate.Mother_Name != mothername:
-                    changes_list['Mother Name'] = [ selected_candidate.Mother_Name, mothername ]
-                selected_candidate.Mother_Name= mothername
-                if selected_candidate.Aadhaar_Number != aadhaar:
-                    changes_list['Aadhaar Number'] = [ selected_candidate.Aadhaar_Number, aadhaar ]                    
-                selected_candidate.Aadhaar_Number= aadhaar
-                if selected_candidate.PAN_Number != Pan:
-                    changes_list['PAN Number'] = [ selected_candidate.PAN_Number, Pan ]
-                    
-                selected_candidate.PAN_Number= Pan
-                if selected_candidate.Contact_Number != contact_no:
-                    changes_list['Contact Number'] = [ selected_candidate.Contact_Number, contact_no ]
-                    
-                selected_candidate.Contact_Number= contact_no
-                if selected_candidate.Emergency_Contact_Number != emergency_no:
-                    changes_list['Emergency Contact Number'] = [ selected_candidate.Emergency_Contact_Number, emergency_no ]
-                selected_candidate.Emergency_Contact_Number= emergency_no
-                if selected_candidate.Type_of_Hiring != hiring_fk:
-                    changes_list['Type of Hiring'] = [ selected_candidate.Type_of_Hiring, hiring ]
-                    
-                selected_candidate.Type_of_Hiring= hiring_fk
-                if selected_candidate.Replacement != replacement:
-                    changes_list['Replacement'] = [ selected_candidate.Replacement, replacement ]                    
-                selected_candidate.Replacement= replacement
-                if selected_candidate.Personal_Email_Id != email:
-                    changes_list['Personal Email Id'] = [ selected_candidate.Personal_Email_Id, email ]  
-                selected_candidate.Personal_Email_Id= email
-                if selected_candidate.Sub_Source != subsource_fk:
-                    changes_list['Sub Source'] = [ selected_candidate.Sub_Source, subsource_fk ]
-                selected_candidate.Sub_Source= subsource_fk
-                if selected_candidate.Referral != referral:
-                    changes_list['Referral'] = [ selected_candidate.Referral, referral ]
-                selected_candidate.Referral= referral
-                if selected_candidate.fk_vendor_code != vendor_fk:
-                    changes_list['Vendor Code'] = [ selected_candidate.fk_vendor_code, vendor_fk ]
-                selected_candidate.fk_vendor_code= vendor_fk
-                if selected_candidate.fk_entity_code != entity_fk:
-                    changes_list['entity Code'] = [ selected_candidate.fk_entity_code, entity_fk ]
-                selected_candidate.fk_entity_code= entity_fk
-                if selected_candidate.fk_department_code != department_fk:
-                    changes_list['department Code'] = [ selected_candidate.fk_department_code, department_fk ]
-                selected_candidate.fk_department_code= department_fk
-                if selected_candidate.fk_function_code != function_fk:
-                    changes_list['function Code'] = [ selected_candidate.fk_function_code, function_fk ]
-                selected_candidate.fk_function_code= function_fk
-                if selected_candidate.fk_team_code != team_fk:
-                    changes_list['team Code'] = [ selected_candidate.fk_team_code, team_fk ]
-                selected_candidate.fk_team_code= team_fk
-                if selected_candidate.fk_subteam_code != sub_team_fk:
-                    changes_list['subteam Code'] = [ selected_candidate.fk_subteam_code, sub_team_fk ]
-                selected_candidate.fk_subteam_code= sub_team_fk
-                if selected_candidate.fk_designation_code != designation_fk:
-                    changes_list['designation Code'] = [ selected_candidate.fk_designation_code, designation_fk ]
-                selected_candidate.fk_designation_code= designation_fk
-                if selected_candidate.fk_region_code != region_fk:
-                    changes_list['region Code'] = [ selected_candidate.fk_region_code, region_fk ]
-                selected_candidate.fk_region_code= region_fk
-                if selected_candidate.fk_state_code != state_fk:
-                    changes_list['state Code'] = [ selected_candidate.fk_state_code, state_fk ]
-                selected_candidate.fk_state_code= state_fk
-                if selected_candidate.fk_city_code != city_fk:
-                    changes_list['City Code'] = [ selected_candidate.fk_city_code, city_fk ]
-                selected_candidate.fk_city_code= city_fk
-                if selected_candidate.fk_location_code != location_fk:
-                    changes_list['location Code'] = [ selected_candidate.fk_location_code, location_fk ]
-                selected_candidate.fk_location_code= location_fk
-                if selected_candidate.Reporting_Manager != reporting_manager:
-                    changes_list['Reporting Manager'] = [ selected_candidate.Reporting_Manager, reporting_manager ]
-                selected_candidate.Reporting_Manager= reporting_manager
-                if selected_candidate.Reporting_Manager_E_Mail_ID != reporting_manager_email:
-                    changes_list['Reporting Manager E Mail ID'] = [ selected_candidate.Reporting_Manager_E_Mail_ID, reporting_manager_email ]
-                selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
-                if selected_candidate.Gender != gender_fk:
-                    changes_list['Gender'] = [ selected_candidate.Gender, gender_fk ]
-                selected_candidate.Gender= gender_fk
-                if selected_candidate.E_Mail_ID_Creation != email_creation:
-                    changes_list['E Mail ID Creation'] = [ selected_candidate.E_Mail_ID_Creation, email_creation ]
-                selected_candidate.E_Mail_ID_Creation= email_creation
-                # if selected_candidate.TA_Spoc_Email_Id != ta_spoc:
-                #     changes_list['TA Spoc Email Id'] = [ selected_candidate.TA_Spoc_Email_Id, ta_spoc ]
-                #     selected_candidate.TA_Spoc_Email_Id= ta_spoc
-                if selected_candidate.Onboarding_Spoc_Email_Id != onboarding_spoc:
-                    changes_list['Onboarding Spoc Email Id'] = [ selected_candidate.Onboarding_Spoc_Email_Id, onboarding_spoc ]
-                selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
-                if selected_candidate.Laptop_Allocation != la_fk:
-                    changes_list['Laptop Allocation'] = [ selected_candidate.Laptop_Allocation, la_fk ]
-                selected_candidate.Laptop_Allocation= la_fk
-                if selected_candidate.Salary_Type != salarytype_fk:
-                    changes_list['Salary Type'] = [ selected_candidate.Salary_Type, salarytype ]
-                selected_candidate.Salary_Type= salarytype_fk
-                if selected_candidate.Gross_Salary_Amount != gross_salary:
-                    changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
-                selected_candidate.Gross_Salary_Amount= gross_salary
+                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary)
+                
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time= datetime.now()
 
                 for eachgroup in request.user.groups.all():
                     if str(eachgroup) == 'Admin':
-                        if selected_candidate.onboarding_status != approve_onboarding:
-                            changes_list['Onboarding Status'] = [ selected_candidate.onboarding_status, approve_onboarding ]
                         selected_candidate.onboarding_status = approve_onboarding
                         selected_candidate.vendor_status = pending_vendor
                         selected_candidate.loi_status = loi_status.objects.get(pk=0)
@@ -777,7 +665,8 @@ def process_requests(request, cid):
                         if selected_candidate.Laptop_Allocation_id == 1:
                             selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
                         selected_candidate.candidate_status = candidate_status.objects.get(pk=2)
-                        
+                        if len(changes_list) > 0:
+                            selected_candidate.onboarding_status = onboarding_status.objects.get(pk=4)
                         selected_candidate.save()
                     
                         
@@ -807,8 +696,6 @@ def process_requests(request, cid):
                     
 
                 if request.POST.get('o_status') != None:
-                    if selected_candidate.onboarding_status != approve_onboarding:
-                        changes_list['Onboarding Status'] = [ selected_candidate.onboarding_status, approve_onboarding ]
                     selected_candidate.onboarding_status = approve_onboarding
                     selected_candidate.vendor_status = pending_vendor
                     selected_candidate.loi_status = loi_status.objects.get(pk=0)
@@ -822,7 +709,8 @@ def process_requests(request, cid):
                         selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=0)
                     if selected_candidate.Laptop_Allocation_id == 1:
                         selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
-                    
+                    if len(changes_list) > 0:
+                        selected_candidate.onboarding_status = onboarding_status.objects.get(pk=4)
                     selected_candidate.save()
                     
                     limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
@@ -850,9 +738,6 @@ def process_requests(request, cid):
 
                 
                 if request.POST.get('ve_status') != None:
-                    if selected_candidate.vendor_status != approve_vendor:
-                        changes_list['Vendor Status'] = [ selected_candidate.vendor_status, approve_vendor ]
-                    
                     selected_candidate.vendor_status = approve_vendor
                     selected_candidate.loi_status = loi_status.objects.get(pk=0)
                     selected_candidate.documentation_status = documentation_status.objects.get(pk=2)
@@ -866,7 +751,19 @@ def process_requests(request, cid):
                     if selected_candidate.Laptop_Allocation_id == 1:
                         selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
-                    
+                    if len(changes_list) > 0:
+                        selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
+                        selected_candidate.onboarding_status = onboarding_status.objects.get(pk=2)
+                        #modified email
+                        alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
+                        our_email = EmailMessage(
+                            'Modified and approved',
+                            alltemplate,
+                            settings.EMAIL_HOST_USER,
+                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                        ) 
+                        our_email.fail_silently = False
+                        our_email.send()
                     selected_candidate.save()
                     
                     limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
@@ -949,6 +846,121 @@ def process_requests(request, cid):
         'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
+
+def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary):
+    changes_list = {}
+    if selected_candidate.First_Name != firstname:
+        changes_list['First Name'] = [ selected_candidate.First_Name, firstname ]
+    selected_candidate.First_Name=firstname 
+    if selected_candidate.Middle_Name != middlename:
+        changes_list['Middle Name'] = [ selected_candidate.Middle_Name, middlename ]
+    selected_candidate.Middle_Name=middlename 
+    if selected_candidate.Last_Name != lastname: 
+        changes_list['Last Name'] = [ selected_candidate.Last_Name, lastname ]
+    selected_candidate.Last_Name= lastname
+    if selected_candidate.Date_of_Joining != doj:
+        changes_list['Date Of Joining'] = [ selected_candidate.Date_of_Joining, doj ]
+    selected_candidate.Date_of_Joining = doj
+    if selected_candidate.Date_of_Birth != dob:
+        changes_list['Date Of Birth'] = [ selected_candidate.Date_of_Birth, dob ]
+    selected_candidate.Date_of_Birth= dob
+    if selected_candidate.Father_Name != fathername:
+        changes_list['Father Name'] = [ selected_candidate.Father_Name, fathername ]
+    selected_candidate.Father_Name= fathername
+    if selected_candidate.Mother_Name != mothername:
+        changes_list['Mother Name'] = [ selected_candidate.Mother_Name, mothername ]
+    selected_candidate.Mother_Name= mothername
+    if selected_candidate.Aadhaar_Number != aadhaar:
+        changes_list['Aadhaar Number'] = [ selected_candidate.Aadhaar_Number, aadhaar ]                    
+    selected_candidate.Aadhaar_Number= aadhaar
+    if selected_candidate.PAN_Number != Pan:
+        changes_list['PAN Number'] = [ selected_candidate.PAN_Number, Pan ]
+
+    selected_candidate.PAN_Number= Pan
+    if selected_candidate.Contact_Number != contact_no:
+        changes_list['Contact Number'] = [ selected_candidate.Contact_Number, contact_no ]
+
+    selected_candidate.Contact_Number= contact_no
+    if selected_candidate.Emergency_Contact_Number != emergency_no:
+        changes_list['Emergency Contact Number'] = [ selected_candidate.Emergency_Contact_Number, emergency_no ]
+    selected_candidate.Emergency_Contact_Number= emergency_no
+    if selected_candidate.Type_of_Hiring != hiring_fk:
+        changes_list['Type of Hiring'] = [ selected_candidate.Type_of_Hiring, hiring ]
+
+    selected_candidate.Type_of_Hiring= hiring_fk
+    if selected_candidate.Replacement != replacement:
+        changes_list['Replacement'] = [ selected_candidate.Replacement, replacement ]                    
+    selected_candidate.Replacement= replacement
+    if selected_candidate.Personal_Email_Id != email:
+        changes_list['Personal Email Id'] = [ selected_candidate.Personal_Email_Id, email ]  
+    selected_candidate.Personal_Email_Id= email
+    if selected_candidate.Sub_Source != subsource_fk:
+        changes_list['Sub Source'] = [ selected_candidate.Sub_Source, subsource_fk ]
+    selected_candidate.Sub_Source= subsource_fk
+    if selected_candidate.Referral != referral:
+        changes_list['Referral'] = [ selected_candidate.Referral, referral ]
+    selected_candidate.Referral= referral
+    if selected_candidate.fk_vendor_code != vendor_fk:
+        changes_list['Vendor Code'] = [ selected_candidate.fk_vendor_code, vendor_fk ]
+    selected_candidate.fk_vendor_code= vendor_fk
+    if selected_candidate.fk_entity_code != entity_fk:
+        changes_list['entity Code'] = [ selected_candidate.fk_entity_code, entity_fk ]
+    selected_candidate.fk_entity_code= entity_fk
+    if selected_candidate.fk_department_code != department_fk:
+        changes_list['department Code'] = [ selected_candidate.fk_department_code, department_fk ]
+    selected_candidate.fk_department_code= department_fk
+    if selected_candidate.fk_function_code != function_fk:
+        changes_list['function Code'] = [ selected_candidate.fk_function_code, function_fk ]
+    selected_candidate.fk_function_code= function_fk
+    if selected_candidate.fk_team_code != team_fk:
+        changes_list['team Code'] = [ selected_candidate.fk_team_code, team_fk ]
+    selected_candidate.fk_team_code= team_fk
+    if selected_candidate.fk_subteam_code != sub_team_fk:
+        changes_list['subteam Code'] = [ selected_candidate.fk_subteam_code, sub_team_fk ]
+    selected_candidate.fk_subteam_code= sub_team_fk
+    if selected_candidate.fk_designation_code != designation_fk:
+        changes_list['designation Code'] = [ selected_candidate.fk_designation_code, designation_fk ]
+    selected_candidate.fk_designation_code= designation_fk
+    if selected_candidate.fk_region_code != region_fk:
+        changes_list['region Code'] = [ selected_candidate.fk_region_code, region_fk ]
+    selected_candidate.fk_region_code= region_fk
+    if selected_candidate.fk_state_code != state_fk:
+        changes_list['state Code'] = [ selected_candidate.fk_state_code, state_fk ]
+    selected_candidate.fk_state_code= state_fk
+    if selected_candidate.fk_city_code != city_fk:
+        changes_list['City Code'] = [ selected_candidate.fk_city_code, city_fk ]
+    selected_candidate.fk_city_code= city_fk
+    if selected_candidate.fk_location_code != location_fk:
+        changes_list['location Code'] = [ selected_candidate.fk_location_code, location_fk ]
+    selected_candidate.fk_location_code= location_fk
+    if selected_candidate.Reporting_Manager != reporting_manager:
+        changes_list['Reporting Manager'] = [ selected_candidate.Reporting_Manager, reporting_manager ]
+    selected_candidate.Reporting_Manager= reporting_manager
+    if selected_candidate.Reporting_Manager_E_Mail_ID != reporting_manager_email:
+        changes_list['Reporting Manager E Mail ID'] = [ selected_candidate.Reporting_Manager_E_Mail_ID, reporting_manager_email ]
+    selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
+    if selected_candidate.Gender != gender_fk:
+        changes_list['Gender'] = [ selected_candidate.Gender, gender_fk ]
+    selected_candidate.Gender= gender_fk
+    if selected_candidate.E_Mail_ID_Creation != email_creation:
+        changes_list['E Mail ID Creation'] = [ selected_candidate.E_Mail_ID_Creation, email_creation ]
+    selected_candidate.E_Mail_ID_Creation= email_creation
+
+    if selected_candidate.Onboarding_Spoc_Email_Id != onboarding_spoc:
+        changes_list['Onboarding Spoc Email Id'] = [ selected_candidate.Onboarding_Spoc_Email_Id, onboarding_spoc ]
+    selected_candidate.Onboarding_Spoc_Email_Id= onboarding_spoc
+    if selected_candidate.Laptop_Allocation != la_fk:
+        changes_list['Laptop Allocation'] = [ selected_candidate.Laptop_Allocation, la_fk ]
+    selected_candidate.Laptop_Allocation= la_fk
+    if selected_candidate.Salary_Type != salarytype_fk:
+        changes_list['Salary Type'] = [ selected_candidate.Salary_Type, salarytype ]
+    selected_candidate.Salary_Type= salarytype_fk
+    
+    if selected_candidate.Gross_Salary_Amount != format(float(gross_salary), '.2f'):
+        changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
+    selected_candidate.Gross_Salary_Amount= gross_salary
+   
+    return changes_list
 
 
 
@@ -1820,7 +1832,7 @@ def edit_salary_structure(request):
         return HttpResponse("No Data To Display.")
 
 def update_selected_dummy(cid, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gs):
-    print(1)
+    
     selected_candidate = dummy_candidate.objects.get(pk = cid)
     selected_candidate.First_Name=firstname
     selected_candidate.Middle_Name=middlename
@@ -1860,8 +1872,8 @@ def update_selected_dummy(cid, firstname, middlename, lastname, doj, dob, father
     ss_gross_salary = gs
     if ss_gross_salary == None:
         ss_gross_salary = request.POST.get('gsv')
-    print(ss_gross_salary)
-    selected_candidate.Gross_Salary_Amount= ss_gross_salary
+    
+    selected_candidate.Gross_Salary_Amount= float(ss_gross_salary)
     
     selected_candidate.Personal_Email_Id = email
     selected_candidate.modified_by = str(request.user)
@@ -2040,7 +2052,7 @@ def create_dummy(firstname, middlename, lastname, doj, dob, fathername, motherna
     Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
     fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, Gross_Salary_Entered= loc_code,
     Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
-    Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= gross_salary, created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
+    Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= float(gross_salary), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now())
     new_dummy_candidate.save()
 
     save_new_code = dummy_candidate_code(candidate_code= new_code)
@@ -2101,8 +2113,7 @@ def edit_candidate(request):
             salarytype = request.POST.get("c_salary_type")
             gross_salary = request.POST.get("c_gross_salary")
             loc_code = request.POST.get("c_gross_salary")
-            print('$$$$')
-            print(loc_code)
+            
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
                 return redirect("csp_app:candidate")
@@ -2313,15 +2324,16 @@ def edit_candidate(request):
                 messages.error( request, "Same Candidate Exist with ID : " + dup_candidate_details.pk)
                 return redirect("csp_app:new_candidate")
             except ObjectDoesNotExist:
-                print('))))))')
-                print(loc_code)
+           
                 new_code = create_dummy(firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, ta_spoc, onboarding_spoc, la_fk, salarytype_fk, gross_salary, request)
                 dummy = dummy_candidate.objects.get(pk=new_code)
                 
                 loc_code = remove_specials(loc_code)
-                print('88888')
-                print(loc_code)
+              
                 selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, ss_gross_salary)
+                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary)
+                
+                
 
                 new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
                     special_allowance=INR_to_number(special_allowance), annual_special_allowance=INR_to_number(annualspecial_allowance),gross_salary=INR_to_number(ss_gross_salary), annual_gross_salary=INR_to_number(annualgross_salary), employee_pf= INR_to_number(employee_pf), annual_employee_pf= INR_to_number(annualemployee_pf),
