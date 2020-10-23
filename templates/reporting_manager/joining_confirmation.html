@@ -1,0 +1,128 @@
+{% extends 'reporting_manager/rm_dashboard.html' %}
+
+{% load static %}
+{% block titleblock %} Candidates {% endblock %}
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:rm_joined' %}" class="tab-btns ">Joined</a>   
+        <a href="{% url 'csp_app:rm_joining_confirmation' %}" class="tab-btns active-tab">Joining Confirmation Required</a> 
+        <a href="{% url 'csp_app:rm_drop_out' %}" class="tab-btns ">Drop Out</a>   
+        <a href="{% url 'csp_app:rm_future_joining' %}" class="tab-btns ">Future Joining</a>        
+
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="table-container">
+    <a href="{% url 'csp_app:export_candidate' %}" class="export-btn">Export <i class="fas fa-file-export"></i></a>
+
+            
+    <table id="request-candidate-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Candidate ID</th>
+                <th>Full Name</th>
+                <th>Phone Number</th>
+                <th>Email ID</th>
+                <th>Designation</th>
+                <th>Date Of Joining</th>
+                <th>Final Date Of Joining</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if request_candidates %}
+                {% for eachcandidate in request_candidates %}
+                <tr>
+                    <td>{{ eachcandidate.pk }}</td>
+                    <td>{{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</td>
+                    <td>{{ eachcandidate.Contact_Number }}</td>
+                    <td>{{ eachcandidate.Personal_Email_Id }}</td>
+                    <td>{{ eachcandidate.fk_designation_code }}</td>
+                    <td>{{ eachcandidate.Date_of_Joining }}</td>
+                    <td class="action-col"><a id="confirm-modal" style="color: blue;" onclick="showDelete('{{eachcandidate.pk}}','confirm-modal-form')">Confirm Joining | Not Joined</a></td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                {% for eachcandidate in drop_out_candidates %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+</div>
+<div id="confirm-modal-form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Update Joining Status?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div style="text-align: left;">
+                <ul class="joining_options_ul">
+                    <li id="calendar_li">
+                        <input type="radio" id="calendar" name="option" value="calendar">
+                        <label for="calendar">Calendar</label>
+                    </li>
+                    <li id="calendar_input" class="hide_me">
+                        <input type="date" autofocus="true" name="calendar_input" >
+                    </li>
+                    <li id="notjoined_li">
+                        <input type="radio" id="notjoined" name="option" value="notjoined">
+                        <label for="notjoined">Not Joined / Drop Out</label>
+                    </li>
+                    <li id="future_li">
+                        <input type="radio" id="future" name="option" value="future">
+                        <label for="future">Request For Future Date</label>
+                    </li>
+                    <li id="calendar_input_future" class="hide_me">
+                        <input type="date" autofocus="true" name="calendar_input">
+                    </li>
+                </ul>
+                
+                <input type="hidden" name="choosed_option" value="" id="choice">
+                
+            </div>
+          
+            <div>
+                <button type="submit" formaction="{% url 'csp_app:rm_joining_confirmation' %}" value="" id="delete_me" name="cid" class="forms-delete-btn">Confirm</button>
+                <button id="close_delete" class="delete-forms-close-btn">Cancel</button> 
+            </div>                   
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#confirm-modal-form").css("display", "none");
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'confirm-modal-form') {
+            $("#confirm-modal-form").css("display", "none");
+            }   
+        });  
+
+        
+    });
+</script>
+<script>
+    function showDelete(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("delete_me").setAttribute("value", itemid);
+    }
+</script>
+{% endblock %}

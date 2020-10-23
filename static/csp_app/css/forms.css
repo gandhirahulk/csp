@@ -540,3 +540,42 @@ input:-webkit-autofill+label.move-out {
 .inline{
   display: block;
 }
+
+.joining_options_ul{
+  padding-left: 20px;
+  padding-bottom: 20px;
+}
+
+.joining_options_ul li input[type="date"]{
+  padding: 8px;
+  border: none;
+  outline: none;
+  border: 1px solid #f5f5fa;
+  transition: .4s ease;
+  font-size: 14px;
+  width: 90%;
+  margin-left: 15px;
+}
+
+/* .joining_options_ul li input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+  outline: none;
+} */
+
+
+.hide_me{
+  display: none;
+}
+
+.show_me{
+  display: block;
+}

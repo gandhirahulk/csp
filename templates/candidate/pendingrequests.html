@@ -7,8 +7,17 @@
     <div class="tabs">
         <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>   
         <a href="{% url 'csp_app:pending_request' %}" class="tab-btns active-tab">Pending Requests <button disabled id="request_count" >{{ count }}</button> </a>   
-
+        {% if request.user.groups.all %}
+        {% for eachgroup in request.user.groups.all %}
+           
+            {% if eachgroup.name == 'Admin' or eachgroup.name == 'Onboarding SPOC' %}
+                <a href="{% url 'csp_app:future_joining_request' %}" class="tab-btns">Future Joining Requests <button disabled id="request_count" >{{ dojcount }}</button> </a>   
+    
+            {% endif %}
+        {% endfor %}
+        {% endif %}
     </div>
+
 
 {% endblock %}
 

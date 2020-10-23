@@ -1,0 +1,116 @@
+{% extends 'csp_app/admindashboard.html' %}
+{% load static %}
+{% block titleblock %} Pending Requests {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>   
+        <a href="{% url 'csp_app:pending_request' %}" class="tab-btns">Pending Requests <button disabled id="request_count" >{{ count }}</button> </a>   
+        <a href="{% url 'csp_app:future_joining_request' %}" class="tab-btns  active-tab">Future Joining Requests <button disabled id="request_count" >{{ dojcount }}</button> </a>   
+
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="table-container">
+    <a href="{% url 'csp_app:export_candidate' %}" class="export-btn">Export <i class="fas fa-file-export"></i></a>
+
+    
+    {% if candidate_list %}
+        
+        <table id="candidate-table" class="dataTable">
+            <thead>
+                <tr>
+                    <th>Candidate ID</th>
+                    <th>Name</th>
+                    <th>E Mail ID</th>
+                    <th>Mobile Number</th>                    
+                    <th>Designation</th>  
+                    <th>Expected Date Of Joining</th>
+                    <th>Requested Date Of Joining</th>               
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for eachcandidate in candidate_list %}
+                                        
+                                    
+                    <tr>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form> 
+                        </td>
+                        <td >
+                        
+                            {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}
+                                    
+                        </td>
+                        <td>{{ eachcandidate.Personal_Email_Id }}</td>
+                        <td>{{ eachcandidate.Contact_Number }}</td>
+                        <td>{{ eachcandidate.fk_designation_code }}</td> 
+                        <td>{{ eachcandidate.Date_Of_Joining }}</td>
+                        <td>{{ eachcandidate.delay_date }}</td>
+                        <td><a href="http://">Approve</a> | <a href="http://">Reject</a></td>
+                    </tr>
+
+                 {% endfor %}
+            </tbody>   
+        </table>
+        
+    {% else %}
+        
+        <table id="nocandidate-table" class="dataTable">
+            <thead>
+                <tr>
+                    <th>Candidate ID</th>
+                    <th>Name</th>
+                    <th>E Mail ID</th>
+                    <th>Mobile Number</th>
+                    <th>Department</th>
+                    <th>Function</th>
+                    <th>Designation</th>  
+                    <th>Reporting Manager</th>                            
+                    <th>State</th>                            
+
+                    
+                    <th>Onboarding Status</th>
+                    <th>Vendor</th>
+                    <th>Vendor Status</th>
+                    <th>LOI</th>
+                    <th>Documentation</th>
+                    <th>Offer Letter</th>
+                    <th>IT Intimation E Mail</th>
+                    <th>Joining Status</th>
+                    <th>E Code Generation</th>
+                    <th>E Mail ID Creation Request</th>
+                    <th>Laptop Request</th>
+                    <th>Final Status</th>
+                
+                
+                
+                </tr>
+            </thead>
+            <tbody>
+                {% for eachcandidate in candidate_list %}
+                <tr>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    {% endif %}
+
+        
+</div>
+
+        
+
+
+<script>
+$(document).ready(function(){
+    showMe('Candidate', 'can-expand');
+}); 
+</script>
+{% endblock %}

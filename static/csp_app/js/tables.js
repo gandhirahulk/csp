@@ -107,6 +107,13 @@
             fixedColumns: true
         } );
         $('#pending-candidate-table').DataTable();
+        $('#joined-candidate-table').DataTable();
+        $('#future-candidate-table').DataTable();
+        $('#dropout-candidate-table').DataTable();
+        $('#request-candidate-table').DataTable();
+
+
+
     
         $('#document-table').DataTable();
         $('#nocandidate-table').DataTable();

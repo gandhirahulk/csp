@@ -1,0 +1,62 @@
+{% extends 'reporting_manager/rm_dashboard.html' %}
+{% load static %}
+{% block titleblock %} Candidates {% endblock %}
+
+{% block bodyblock %} 
+
+    <div class="tabs">
+        <a href="{% url 'csp_app:rm_joined' %}" class="tab-btns active-tab">Joined</a>   
+        <a href="{% url 'csp_app:rm_joining_confirmation' %}" class="tab-btns">Joining Confirmation Required</a> 
+        <a href="{% url 'csp_app:rm_drop_out' %}" class="tab-btns">Drop Out</a>   
+        <a href="{% url 'csp_app:rm_future_joining' %}" class="tab-btns">Future Joining</a>        
+
+    </div>
+
+{% endblock %}
+
+{% block tabcontentblock %}
+<div class="table-container">
+    <a href="{% url 'csp_app:export_candidate' %}" class="export-btn">Export <i class="fas fa-file-export"></i></a>
+
+            
+    <table id="joined-candidate-table" class="dataTable">
+        <thead>
+            <tr>
+                <th>Candidate ID</th>
+                <th>Full Name</th>
+                <th>Phone Number</th>
+                <th>Email ID</th>
+                <th>Designation</th>
+                <th>Date Of Joining</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if joined_candidates %}
+                {% for eachcandidate in joined_candidates %}
+                <tr>
+                    <td>{{ eachcandidate.pk }}</td>
+                    <td>{{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</td>
+                    <td>{{ eachcandidate.Contact_Number }}</td>
+                    <td>{{ eachcandidate.Personal_Email_Id }}</td>
+                    <td>{{ eachcandidate.fk_designation_code }}</td>
+                    <td>{{ eachcandidate.Date_of_Joining }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                {% for eachcandidate in joined_candidates %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

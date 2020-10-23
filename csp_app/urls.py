@@ -2,12 +2,20 @@ from django.urls import path
 from csp_app import views
 from csp_app import execute
 from csp_app import exports
+from csp_app import reporting_manager
 from django.conf import settings
 from django.conf.urls.static import static
 
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    path('reporting_manager/joined/', reporting_manager.joined, name='rm_joined'),
+    path('reporting_manager/joining_confirmation/', reporting_manager.joining_confirmation, name='rm_joining_confirmation'),
+    path('reporting_manager/drop_out/', reporting_manager.drop_out, name='rm_drop_out'),
+    path('reporting_manager/future_joining/', reporting_manager.future_joining, name='rm_future_joining'),
+
+
+
     path('resend_loi/<str:cid>/', views.resend_loi, name="resend_loi"),
 
     path('send/', views.custom_send_email, name="send"),
@@ -80,6 +88,8 @@ urlpatterns = [
     # path('csp_candidates/document_upload/delete_document/', views.candidate_delete_document, name= 'candidate_delete_document'),
 
     path('csp_candidates/pending_requests/', views.pending_requests, name= 'pending_request'),
+    path('csp_candidates/future_joining_requests/', views.future_joining_requests, name= 'future_joining_request'),
+
     path('csp_candidates/process_requests/<str:cid>/', views.process_requests, name= 'process_request'),
     path('csp_candidates/process_requests/reject_request/<str:cid>/', views.reject_candidate_vendor, name= 'reject_candidate_vendor'),
 

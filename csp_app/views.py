@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
 ###
 from django.core.mail import get_connection, send_mail
 from django.core.mail.message import EmailMessage
@@ -93,29 +95,38 @@ def resend_loi(request, cid):
     
 
 def custom_send_email(request):
-    
+    subject, from_email, to = 'sdf', 'workmail052020@gmail.com', 'sadaf.shaikh@udaan.com'
+   
+    html_content = render_to_string('emailtemplates/sdf.html') # render with dynamic value
+    text_content = strip_tags(html_content) # Strip the html tag. So people can see the pure text at least.
+
+    # create the email, and attach the HTML version as well.
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
     # EMAIL_USE_SSL = False
-    try:
-        my_host = 'send.one.com'
-        my_port = 587
-        my_username = 'sadaf.asgarali@aspire-nxt.com'
-        my_password = 'sadaf@1234'
-        my_use_tls = True
-        subject1 = 'LOI'
-        body1 = 'LOI'
-        from1 = my_username
-        with get_connection(
-        host=my_host, 
-        port=my_port, 
-        username=my_username, 
-        password=my_password, 
-        use_tls=my_use_tls,
-        use_ssl= False
-        ) as connection:
-            EmailMessage(subject1, body1, from1, ['sdfworkk@gmail.com'],
-                        connection=connection).send()
-    except TimeoutError:
-        return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
+    # try:
+    #     my_host = 'send.one.com'
+    #     my_port = 587
+    #     my_username = 'sadaf.asgarali@aspire-nxt.com'
+    #     my_password = 'sadaf@1234'
+    #     my_use_tls = True
+    #     subject1 = 'LOI'
+    #     body1 = 'LOI'
+    #     from1 = my_username
+    #     with get_connection(
+    #     host=my_host, 
+    #     port=my_port, 
+    #     username=my_username, 
+    #     password=my_password, 
+    #     use_tls=my_use_tls,
+    #     use_ssl= False
+    #     ) as connection:
+    #         EmailMessage(subject1, body1, from1, ['sdfworkk@gmail.com'],
+    #                     connection=connection).send()
+    # except TimeoutError:
+    #     return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
                     
     
     
@@ -540,9 +551,7 @@ def process_requests(request, cid):
             salarytype = request.POST.get("c_salary_type")
             gross_salary = request.POST.get("c_gross_salary")
             loc_code = request.POST.get("c_gross_salary")
-            print('---------')
-            print(loc_code)
-            print('---------')
+            
             if hiring == None or hiring == '':
                 messages.warning(request, "Choose Hiring Type And Try Again")
                 return redirect("csp_app:process_request", cid = cid)
@@ -832,6 +841,33 @@ def process_requests(request, cid):
                         #     user.is_staff = False
                         assign_group.user_set.add(user)
                         user.save()
+                        try:
+                            u = User.objects.get(username= selected_candidate.Reporting_Manager_E_Mail_ID)
+                            # new_reporting_manager_candidate_approve
+                            subject, from_email, to = 'Candidate Approved', 'workmail052020@gmail.com', selected_candidate.Reporting_Manager_E_Mail_ID
+   
+                            html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code})
+                            text_content = strip_tags(html_content)
+                            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
+                        except ObjectDoesNotExist:
+                            user = User.objects.create_user(selected_candidate.Reporting_Manager_E_Mail_ID)
+                            password = User.objects.make_random_password()
+                            user.password = password
+                            user.set_password(user.password)
+                            user.first_name = selected_candidate.Reporting_Manager
+                            user.email = selected_candidate.Reporting_Manager_E_Mail_ID
+                           
+                            user.save()
+                            subject, from_email, to = 'Candidate Approved', 'workmail052020@gmail.com', selected_candidate.Reporting_Manager_E_Mail_ID
+   
+                            html_content = render_to_string('emailtemplates/new_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code, 'username': selected_candidate.Reporting_Manager_E_Mail_ID,'pwd': password})
+                            text_content = strip_tags(html_content)
+                            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
+                        
                         template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
                         our_email = EmailMessage(
                             'LOI',
@@ -871,8 +907,9 @@ def process_requests(request, cid):
                         messages.success(request, "Candidate approved LOI sent to candidate.")
                         return redirect("csp_app:pending_request")
 
-
-        return render(request, 'candidate/processrequests.html', {'selected_candidate': selected_candidate_data, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+        dojcount = len(delay_joiners)
+        return render(request, 'candidate/processrequests.html', {'selected_candidate': selected_candidate_data, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -1157,11 +1194,15 @@ def pending_requests(request):
                 all_active_candidates = vendor_candidates(request.user)
                 pending_candidate_list = vendor_pending_candidates(request.user)
                 count = len(pending_candidate_list)
+                delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+                dojcount = len(delay_joiners)
             elif str(eachgroup) == 'Onboarding SPOC':
                 candidate_list = onboarding_candidates(request.user)
                 all_active_candidates = onboarding_candidates(request.user)
                 pending_candidate_list = onboarding_pending_candidates(request.user)
                 count = len(pending_candidate_list)
+                delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+                dojcount = len(delay_joiners)
             else:
                 
                 all_active_candidates = candidate_list = master_candidate.objects.filter(status=active_status)
@@ -1169,8 +1210,10 @@ def pending_requests(request):
                 pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
                 # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
                 count = len(pending_candidate_list)
+                delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+                dojcount = len(delay_joiners)
             
-        return render(request, 'candidate/pendingrequests.html', {'count':count,'pending_candidate_list': pending_candidate_list, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        return render(request, 'candidate/pendingrequests.html', {'dojcount':dojcount, 'count': count,'pending_candidate_list': pending_candidate_list, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -1178,28 +1221,14 @@ def pending_requests(request):
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
-
-
-
 @login_required(login_url='/notlogin/')
-def candidate(request):
-    
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Onboarding SPOC').exists())
+def future_joining_requests(request):
     count = 0
+    dojcount = 0
     all_active_candidates = master_candidate.objects.filter(status=active_status)
     candidate_list = master_candidate.objects.filter(status=active_status)
-
-    entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
-    c_status_list = candidate_status.objects.all()
-    v_status_list = vendor_status.objects.all()
-    # try:
-    #     specific_vendor = master_vendor.objects.filter(vendor_email_id= request.user, status=active_status)
-    #     vendor_specific_candidate = []
-    #     for e in specific_vendor:
-    #         vendor_specific_candidate.append(master_candidate.objects.filter(fk_vendor_code=e.pk, onboarding_status= approve_onboarding))
-     
-    # except ObjectDoesNotExist:
-    #     specific_vendor = ''
-    #     vendor_specific_candidate = []
+  
     for eachgroup in request.user.groups.all():
         if str(eachgroup) == 'Vendor':
             candidate_list = vendor_candidates(request.user)
@@ -1211,12 +1240,51 @@ def candidate(request):
             all_active_candidates = onboarding_candidates(request.user)
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
+            delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+            dojcount = len(delay_joiners)
         else:
+            delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+            dojcount = len(delay_joiners)
             pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
             # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
             count = len(pending_candidate_list)
 
-    return render(request, 'candidate/candidates.html', {'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+    return render(request, 'candidate/futurejoiningrequest.html', {'dojcount': dojcount, 'future_requests': delay_joiners,'count': count})
+
+
+@login_required(login_url='/notlogin/')
+def candidate(request):
+    
+    count = 0
+    dojcount = 0
+    all_active_candidates = master_candidate.objects.filter(status=active_status)
+    candidate_list = master_candidate.objects.filter(status=active_status)
+
+    entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
+    c_status_list = candidate_status.objects.all()
+    v_status_list = vendor_status.objects.all()
+   
+    for eachgroup in request.user.groups.all():
+        if str(eachgroup) == 'Vendor':
+            candidate_list = vendor_candidates(request.user)
+            all_active_candidates = vendor_candidates(request.user)
+            pending_candidate_list = vendor_pending_candidates(request.user)
+            count = len(pending_candidate_list)
+        elif str(eachgroup) == 'Onboarding SPOC':
+            candidate_list = onboarding_candidates(request.user)
+            all_active_candidates = onboarding_candidates(request.user)
+            pending_candidate_list = onboarding_pending_candidates(request.user)
+            count = len(pending_candidate_list)
+            delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+            dojcount = len(delay_joiners)
+        else:
+            delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+            dojcount = len(delay_joiners)
+            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
+            # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
+            count = len(pending_candidate_list)
+
+    return render(request, 'candidate/candidates.html', {'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 'c_status_list': c_status_list,
@@ -1447,8 +1515,9 @@ def edit_salary_structure_process(request, cid):
                     gsa_value = dummy.Gross_Salary_Amount
                     basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2, fs, annual_fs = salary_structure_calculation(gsa, wage, state_name, salary_pk)
                     selected_candidate, ss_gross_salary = update_selected_dummy(dummy.pk_candidate_code, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gross_salary)
-
-                    return render(request, 'candidate/processeditsalarystructure.html', {'count':count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
+                    delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+                    dojcount = len(delay_joiners)
+                    return render(request, 'candidate/processeditsalarystructure.html', {'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                     'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
                     'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),
                     'annualerpf': convert_to_INR(annual_eprf), 'annualerpf_admin': convert_to_INR(annual_pfadmin), 'annualersic': convert_to_INR(annual_ersic), 'annualgpa': convert_to_INR(annual_gpa), 'annualgmi': convert_to_INR(annual_gmi), 'tec': convert_to_INR(tec), 'annual_tec': convert_to_INR(annual_tec), 'ctc': convert_to_INR(ctc), 'annual_ctc': convert_to_INR(annual_ctc),
@@ -5160,29 +5229,27 @@ def csp_login(request):
             user = authenticate(request, username=usrname, password=pwd)
             if user is not None and user.is_active:
                 login(request, user)
-                User.objects.filter(pk=request.user.pk).update(last_login= datetime.now())
-                group = request.user.groups.all()
-                for groupname in group:
-                    group_name = groupname
-                # print(group_name)
-                # print(usrname)
-                # print(request.user.groups.all()[0].name)
-                # print(request.session.session_key)
-                # print(type(group_name))
-                # print(str(group_name))
-                # print(str(group_name) == 'Admin')
-                if str(group_name) == 'Admin':
+                try:
+                    User.objects.filter(pk=request.user.pk).update(last_login= datetime.now())
+                    group = request.user.groups.all()
+
+                    for groupname in group:
+                        group_name = groupname
+                    if str(group_name) == 'Admin':
+                        messages.success(request, "Login Successfull")
+                        return redirect('csp_app:entity')
+                    elif str(group_name) == 'Vendor':
+                        messages.success(request, "Login Successfull")
+                        return redirect('csp_app:candidate')
+                    elif str(group_name) == 'Candidate':
+                        messages.success(request, "Login Successfull")
+                        return redirect('csp_app:candidate_profile')   
+                    else:
+                        messages.success(request, "Login Successfull")
+                        return redirect('csp_app:candidate')
+                except UnboundLocalError:
                     messages.success(request, "Login Successfull")
-                    return redirect('csp_app:entity')
-                elif str(group_name) == 'Vendor':
-                    messages.success(request, "Login Successfull")
-                    return redirect('csp_app:candidate')
-                elif str(group_name) == 'Candidate':
-                    messages.success(request, "Login Successfull")
-                    return redirect('csp_app:candidate_profile')   
-                else:
-                    messages.success(request, "Login Successfull")
-                    return redirect('csp_app:candidate')
+                    return redirect('csp_app:rm_joined')
             else:
                 messages.add_message(request, messages.ERROR, "Invalid Credentials")
                 return redirect('csp_app:login')
