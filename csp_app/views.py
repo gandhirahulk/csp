@@ -86,7 +86,8 @@ def resend_loi(request, cid):
             connection=connection).send()
     except TimeoutError:
         return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
-           
+    # except SMTPAuthenticationError:
+    #     return HttpResponse("Username and Password not accepted. Bad Credentials")
     messages.success(request, "LOI Resent To Candidate")
     return redirect("csp_app:candidate")
     
@@ -131,7 +132,7 @@ def candidate_profile(request):
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Recruiter').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Vendor').exists())
 def view_ss(request,cid):    
     try:
         salaryst = salary_structure.objects.filter(candidate_code=cid)
@@ -739,6 +740,7 @@ def process_requests(request, cid):
                 
                 if request.POST.get('ve_status') != None:                   
                     print(changes_list)
+                    print(len(changes_list))
                     if len(changes_list) > 0:
                         selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=2)
@@ -795,10 +797,24 @@ def process_requests(request, cid):
                         
                         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                         our_email = EmailMessage(
-                            'Candidate account edited by vendor.',
+                            'Candidate approved by vendor.',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
                             [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                        ) 
+                        our_email.fail_silently = False
+                        our_email.send()
+                        try:
+                            IT_email = IT_Email_ID.objects.get(pk=1)
+                            IT_email_id = IT_email.email_id
+                        except ObjectDoesNotExist:
+                            IT_email_id = 'rahul.gandhi@udaan.com'
+                        alltemplate = render_to_string('emailtemplates/it_intimation.html')
+                        our_email = EmailMessage(
+                            'IT Intimation',
+                            alltemplate,
+                            settings.EMAIL_HOST_USER,
+                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', IT_email_id],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -972,8 +988,11 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     if selected_candidate.Salary_Type != salarytype_fk:
         changes_list['Salary Type'] = [ selected_candidate.Salary_Type, salarytype ]
     selected_candidate.Salary_Type= salarytype_fk
-    
-    if selected_candidate.Gross_Salary_Amount != format(float(gross_salary), '.2f'):
+  
+    x = format(float(gross_salary), '.1f')
+    y = format(float(selected_candidate.Gross_Salary_Amount), '.1f')
+       
+    if x != y:
         changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
     selected_candidate.Gross_Salary_Amount= gross_salary
    
@@ -3070,7 +3089,14 @@ def change_candidate_status(request):
 @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Candidate').exists())
 def candidate_document_upload(request, candidate_id):
     try:
-        
+        try:
+            is_valid_candidate = User.objects.get(username= request.user, groups__name='Candidate')
+            print(is_valid_candidate)
+            
+            if candidate_id != str(request.user):
+                return HttpResponse("No Data To Display....")
+        except ObjectDoesNotExist:
+            pass
         
         document_id = request.POST.get("delete_id")
         if document_id == None:
@@ -5014,13 +5040,15 @@ def  create_user(request):
         lastname = request.POST.get('lastname').capitalize()
         email = request.POST.get('email')
         group = request.POST.get('usergroup')
-        try:
-            try:
-                Onboarding_SPOC_email = User.objects.get(groups__name='Onboarding SPOC')
-                messages.error(request, "Only One Onboarding SPOC Can Be Created.")
-                return redirect('csp_app:user')
-            except ObjectDoesNotExist:
-                pass
+        try:               
+            assign_group = Group.objects.get(name=group) 
+            if assign_group.name == 'Onboarding SPOC':
+                try:
+                    a = User.objects.get(groups__name='Onboarding SPOC', is_active=True)
+                    messages.error(request, "Only One Onboarding SPOC Can Be Created.")
+                    return redirect('csp_app:user')
+                except ObjectDoesNotExist:
+                    pass
             password = User.objects.make_random_password()
             assign_group = Group.objects.get(name=group) 
             
