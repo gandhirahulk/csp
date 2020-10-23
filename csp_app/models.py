@@ -626,4 +626,14 @@ class salary_structure(models.Model):
     fixed_salary = models.FloatField()
     annual_fixed_salary = models.FloatField()
 
-    
+class IT_Email_ID(models.Model):
+    pk_email_code = models.AutoField(primary_key=True)
+    email_id = models.EmailField(max_length=100)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(blank=True, null=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.email_id
