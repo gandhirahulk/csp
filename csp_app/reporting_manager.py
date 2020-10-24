@@ -105,7 +105,8 @@ def joining_confirmation(request):
             #     print(2)
             if remark != None or remark != '':
                 selected_candidate.remarks = remark
-                subject, from_email = 'Candidate Joined Early', 'workmail052020@gmail.com'   
+                selected_candidate.save()
+                subject, from_email = 'Candidate Wants To Join Early', 'workmail052020@gmail.com'   
                 html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
                 text_content = strip_tags(html_content) 
                 msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ])
