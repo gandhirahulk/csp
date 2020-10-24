@@ -30,10 +30,10 @@ $(document).ready(function(){
         if(d < 10)
             d = '0' + d.toString();          
         var max_date= y + '-' + m + '-' + d; 
-        $('#calendar_input').attr('max', minDate);
-        $('#calendar_input').attr('min', admin_date);
-        $('#calendar_input_future').attr('min', minDate);
-        $('#calendar_input_future').attr('max', max_date);
+        $('#calendar_inp').attr('max', minDate);
+        $('#calendar_inp').attr('min', admin_date);
+        $('#calendar_inp_future').attr('min', minDate);
+        $('#calendar_inp_future').attr('max', max_date);
         
     });
    
@@ -45,7 +45,9 @@ $(document).ready(function(){
         $('#calendar_input_future').removeClass("show_me");
         $('#future').attr("checked", false);
         $('#notjoined').attr("checked", false);
-
+       
+  
+       
     }); 
    
     $('#notjoined_li').click(function(){
@@ -65,4 +67,6 @@ $(document).ready(function(){
         $('#notjoined').attr("checked", false);
 
     });
+
+
 });
