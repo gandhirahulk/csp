@@ -414,7 +414,12 @@
                 if(e.keyCode == 190 && (val[end - 1] == "." || val[end] == ".")) {
                     e.preventDefault();
                     return false;
-                }      
+                } 
+                
+                if (e.key == '@' || e.key == '^' || e.key == ':' || e.key == ';' || e.key == '[' || e.key == '=' || e.key == ']' || e.key == '<' || e.key == '>' || e.key == '/' || e.key == '?' || e.keyCode == 220 ){
+                    e.preventDefault();
+                    return false;
+                }     
             });
       
        
