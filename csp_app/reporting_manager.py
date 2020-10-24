@@ -52,23 +52,23 @@ def joined(request):
 def joining_confirmation(request):
     today = date.today()
     last_ten_days = today - timedelta(days = 10)
- 
-    request_candidates = master_candidate.objects.filter( candidate_status=approve_candidate, Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__lt= last_ten_days, onboarding_status=approve_onboarding, vendor_status= approve_vendor, status=active_status)
+   
+    request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0)).exclude(Date_of_Joining__gt=today)
+
     if request.method == 'POST' and request.POST.get('cid') != None:
         cid = request.POST.get('cid')
         
         selected_candidate = master_candidate.objects.get(pk=cid)
         choice = request.POST.get('choosed_option')
+        print(choice)
         future_date = request.POST.get('calendar_input')
-        
+        joining_date = request.POST.get("calendar_input")
 
         if choice == None or choice == '':
             messages.warning(request, "Please select an option to continue.")
             return redirect("csp_app:rm_joining_confirmation")
-        if choice == 6 and future_date == None or future_date == '':
-            messages.warning(request, "Please provide a future date")
-            return redirect("csp_app:rm_joining_confirmation")
-        if choice == 6:
+     
+        if choice == '6':
             selected_candidate.candidate_status = candidate_status.objects.get(pk=6)
             subject, from_email = 'Candidate Dropped Out', 'workmail052020@gmail.com'
    
@@ -80,9 +80,12 @@ def joining_confirmation(request):
             selected_candidate.save()
             messages.success(request, "Candidate Status Updated")
             return redirect("csp_app:rm_joining_confirmation")
-        elif choice == 5:
-            selected_candidate.candidate_status = candidate_status.objects.get(pk=5)
-            selected_candidate.joining_status = joining_status.objects.get(pk=1)
+        if choice == '5':
+            # print(1)
+            # expected = selected_candidate.Date_of_Joining
+            # rm_input = joining_date
+            # if rm_input <= expected:
+            #     print(2)
             subject, from_email = 'Candidate Joined', 'workmail052020@gmail.com'   
             html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
             text_content = strip_tags(html_content) 
@@ -100,11 +103,19 @@ def joining_confirmation(request):
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ IT_email_id ])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+            selected_candidate.candidate_status = candidate_status.objects.get(pk=5)
+            selected_candidate.joining_status = joining_status.objects.get(pk=1)
             selected_candidate.save()
 
             messages.success(request, "Candidate Status Updated")
             return redirect("csp_app:rm_joining_confirmation")
-        else:
+            # else:
+            #     messages.error(request, "Invalid Joining Date")
+            #     return redirect("csp_app:rm_joining_confirmation")
+        if choice == '7':
+            if future_date == None or future_date == '':
+                messages.warning(request, "Please provide a future date")
+                return redirect("csp_app:rm_joining_confirmation")
             selected_candidate.candidate_status = candidate_status.objects.get(pk=7)
             selected_candidate.delay_date = future_date
             selected_candidate.joining_status = joining_status.objects.get(pk=4)
@@ -132,8 +143,7 @@ def drop_out(request):
 
 def future_joining(request):
     today = date.today()
-    last_ten_days = today - timedelta(days = 10)
  
-    future_candidates = master_candidate.objects.filter( candidate_status=approve_candidate, Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days, onboarding_status=approve_onboarding, vendor_status= approve_vendor, status=active_status)
-   
+    future_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= today,status=active_status, joining_status=joining_status.objects.get(pk=0), vendor_status= approve_vendor)
+    print(future_candidates)
     return render(request, 'reporting_manager/future_joining.html',{'future_candidates': future_candidates})
