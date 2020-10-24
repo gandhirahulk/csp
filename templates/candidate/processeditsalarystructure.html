@@ -292,8 +292,8 @@
                         <label for="">Date Of Joining</label>    
                     </div>
                     <div>
-                        <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" required="true" >
-                          
+                        <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+   
                     </div>
                     <div>
                         <input type="date" tabindex="17" value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
