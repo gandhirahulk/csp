@@ -48,7 +48,20 @@ $(document).ready(function(){
        
   
        
-    }); 
+    });
+    
+    $("#nor").on("click", function () {
+        if (this.checked) {
+            $("#calendar_inp").val("");
+            $('#remark').addClass("show_me");
+            $('#remark').attr("disabled", false);
+        } else {
+            $('#remark').removeClass("show_me");
+            $('#remark').attr("disabled", true);
+
+        }
+    });
+
    
     $('#notjoined_li').click(function(){
         $('#notjoined').attr("checked", true);

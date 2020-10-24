@@ -66,7 +66,7 @@ def joined(request):
     return render(request, 'reporting_manager/joined.html',{ 'joined_candidates': joined_candidates})
 
 def joining_confirmation(request):
-    today = date.today()
+    today = date.today() 
     last_ten_days = today - timedelta(days = 10)
    
     request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0), candidate_status=candidate_status.objects.get(pk=1)).exclude(Date_of_Joining__gt=today)
@@ -79,7 +79,7 @@ def joining_confirmation(request):
         print(choice)
         future_date = request.POST.get('calendar_input_future')
         joining_date = request.POST.get("calendar_input")
-
+        remark = request.POST.get("remark")
         if choice == None or choice == '':
             messages.warning(request, "Please select an option to continue.")
             return redirect("csp_app:rm_joining_confirmation")
@@ -103,6 +103,16 @@ def joining_confirmation(request):
             # rm_input = joining_date
             # if rm_input <= expected:
             #     print(2)
+            if remark != None or remark != '':
+                selected_candidate.remarks = remark
+                subject, from_email = 'Candidate Joined Early', 'workmail052020@gmail.com'   
+                html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
+                text_content = strip_tags(html_content) 
+                msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ])
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+                messages.success(request, "Details Mailed To Concerned Team.")
+                return redirect("csp_app:rm_joining_confirmation")
             subject, from_email = 'Candidate Joined', 'workmail052020@gmail.com'   
             html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
             text_content = strip_tags(html_content) 

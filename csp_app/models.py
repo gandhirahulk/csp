@@ -462,7 +462,7 @@ class master_candidate(models.Model):
     modified_date_time = models.DateTimeField(null=True,blank=True)
     status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
     delay_date = models.DateField(default='2020-01-01')
-
+    remarks = models.CharField(max_length=300, default=" ")
     def __str__(self):
         return self.pk_candidate_code
 

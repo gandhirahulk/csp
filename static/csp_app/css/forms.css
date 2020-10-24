@@ -557,6 +557,18 @@ input:-webkit-autofill+label.move-out {
   margin-left: 15px;
 }
 
+.inp{
+  padding: 8px;
+  border: none;
+  outline: none;
+  border: 1px solid #f5f5fa;
+  transition: .4s ease;
+  font-size: 14px;
+  width: 90%;
+  margin-left: 15px;
+  background-color: #fff;
+}
+
 /* .joining_options_ul li input[type="date"]::-webkit-calendar-picker-indicator {
   background: transparent;
   bottom: 0;
