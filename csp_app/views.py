@@ -928,7 +928,15 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     if selected_candidate.Last_Name != lastname: 
         changes_list['Last Name'] = [ selected_candidate.Last_Name, lastname ]
     selected_candidate.Last_Name= lastname
-    if selected_candidate.Date_of_Joining != doj:
+    print(selected_candidate.Date_of_Joining)
+    print(doj)
+    print(type(str(selected_candidate.Date_of_Joining)))
+    print(type(doj))
+    m = str(selected_candidate.Date_of_Joining)
+    n = doj
+    if m == n:
+        print("same")
+    if m != n:
         changes_list['Date Of Joining'] = [ selected_candidate.Date_of_Joining, doj ]
     selected_candidate.Date_of_Joining = doj
     if selected_candidate.Date_of_Birth != dob:
@@ -1384,6 +1392,9 @@ def edit_salary_structure_process(request, cid):
             if request.method == 'POST':
                 candidate_id = request.POST.get("cid")   
                 selected_candidate = master_candidate.objects.filter(pk=candidate_id)
+                selected_c = master_candidate.objects.get(pk=candidate_id)
+
+                print(type(selected_c.Date_of_Joining))
                 entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
                 candidate_list = master_candidate.objects.filter(pk=candidate_id)
                 cid = request.POST.get('cid')
@@ -1976,6 +1987,7 @@ def update_selected_dummy(cid, firstname, middlename, lastname, doj, dob, father
     selected_candidate.First_Name=firstname
     selected_candidate.Middle_Name=middlename
     selected_candidate.Last_Name= lastname
+
     selected_candidate.Date_of_Joining= doj
     selected_candidate.Date_of_Birth= dob
     selected_candidate.Father_Name= fathername
