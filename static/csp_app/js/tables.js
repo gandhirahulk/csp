@@ -7,8 +7,8 @@
         //     $(".wrapper").toggleClass("collapse");
         // });
         $('#entity-table').DataTable({
-            "order": [[ 2, "desc" ]], //or asc 
-            "columnDefs" : [{"targets":2, "type":"date-eu"}],
+            "order": [[ 2, "desc" ],[ 3, "desc" ]], //or asc 
+            "columnDefs" : [{"targets":2, "type":"date-eu"},{"targets":3, "type":"date-eu"}],
             "pagingType": "full_numbers",
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
@@ -20,7 +20,7 @@
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
         });
-        console.log('1');
+        
         $('#department-table').DataTable({
             
             "order": [[ 1, "desc" ]], 

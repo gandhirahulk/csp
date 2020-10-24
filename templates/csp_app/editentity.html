@@ -37,6 +37,8 @@
              <tr>
                  <th>Company Name</th>
                  <th class="sort-latest" >time</th>
+                 <th class="sort-latest" >modifiedtime</th>
+              
                  <th>Action</th>
              </tr>
          </thead>
@@ -44,8 +46,10 @@
              {% if e_list %}
                  {% for eachentity in e_list %}                    
                      <tr>
-                         <td>{{ eachentity.entity_name }}</td>
-                         <td class="sort-latest" >{{ eachentity.created_date_time }}</td>
+                        <td>{{ eachentity.entity_name }}</td>
+                        <td class="sort-latest" >{{ eachentity.created_date_time }}</td>
+                        <td class="sort-latest" >{{ eachentity.modified_date_time }}</td>
+
                          <td class="action-col">
                              <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachentity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_entity' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_entity' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachentity.pk }}', 'delete_entity_form')"> </form>
                          </td>
