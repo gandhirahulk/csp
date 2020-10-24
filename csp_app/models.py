@@ -482,7 +482,7 @@ class dummy_candidate(models.Model):
     Aadhaar_Number = models.CharField(max_length=12)
     PAN_Number = models.CharField(max_length=10)
     Type_of_Hiring = models.ForeignKey( hiring_type, on_delete=models.CASCADE)
-    Date_of_Joining = models.CharField(max_length=20)
+    Date_of_Joining = models.DateField(max_length=20)
     Replacement = models.CharField(max_length=20, null=True, blank=True) #should come from employees table ?
     Referral = models.CharField(max_length=20, null=True, blank=True) #should come from employees table ?
     Sub_Source = models.ForeignKey(sub_source, on_delete=models.CASCADE)
