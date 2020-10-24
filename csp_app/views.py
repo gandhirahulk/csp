@@ -1248,7 +1248,41 @@ def future_joining_requests(request):
             pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
             # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
             count = len(pending_candidate_list)
+    if request.method == 'POST':
+        reject = request.POST.get('reject_cid')
+        confirm = request.POST.get('confirm_cid')
+        if reject == None or reject == '' and confirm != None:
+            selected_candidate = master_candidate.objects.get(pk = confirm)
+            selected_candidate.candidate_status = candidate_status.objects.get(pk=7)
+            selected_candidate.joining_status = joining_status.objects.get(pk = 0)
+            selected_candidate.save()
+            subject, from_email = 'Future Joining Date Request Accepted', 'workmail052020@gmail.com'
+    
+            html_content = render_to_string('emailtemplates/sdf.html') 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, 'sadaf.shaikh@udaan.com' ])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+            subject, from_email = 'Revised details of joining', 'workmail052020@gmail.com'
+    
+            html_content = render_to_string('emailtemplates/sdf.html')
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.Personal_Email_Id ])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+        if confirm == None or confirm == '' and reject != None:
+            selected_candidate = master_candidate.objects.get(pk = reject)
+            selected_candidate.candidate_status = candidate_status.objects.get(pk=7)
+            selected_candidate.joining_status = joining_status.objects.get(pk = 5)
+            selected_candidate.save()
+            subject, from_email = 'Future Joining Date Request Rejected', 'workmail052020@gmail.com'
+    
+            html_content = render_to_string('emailtemplates/sdf.html')
+            text_content = strip_tags(html_content) 
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, 'sadaf.shaikh@udaan.com' ])
 
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
     return render(request, 'candidate/futurejoiningrequest.html', {'dojcount': dojcount, 'future_requests': delay_joiners,'count': count})
 
 

@@ -14,14 +14,20 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 
-
 # 4	"Hold"
 # 5	"Joined"
 # 6	"Dropout"
-# 7	"Delay In Joining"
 # 2	"Pending"
 # 0	"Rejected"
 # 1	"Approved"
+# 7	"Delay In Joining"
+# 8	"Delay Request"
+
+# 1	"Joined"
+# 2	"Sent - Pending With Manager"
+# 0	"Not Joined"
+# 3	"N/A"
+# 4	"Delay Request"
 
 deactive_status = status.objects.get(pk=0)
 active_status = status.objects.get(pk=1)
@@ -53,8 +59,14 @@ def joining_confirmation(request):
         
         selected_candidate = master_candidate.objects.get(pk=cid)
         choice = request.POST.get('choosed_option')
+        future_date = request.POST.get('calendar_input')
+        
+
         if choice == None or choice == '':
             messages.warning(request, "Please select an option to continue.")
+            return redirect("csp_app:rm_joining_confirmation")
+        if choice == 6 and future_date == None or future_date == '':
+            messages.warning(request, "Please provide a future date")
             return redirect("csp_app:rm_joining_confirmation")
         if choice == 6:
             selected_candidate.candidate_status = candidate_status.objects.get(pk=6)
@@ -65,11 +77,13 @@ def joining_confirmation(request):
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id ])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+            selected_candidate.save()
             messages.success(request, "Candidate Status Updated")
             return redirect("csp_app:rm_joining_confirmation")
         elif choice == 5:
-            selected_candidate.candidate_status = candidate_status.objects.get(pk=7)
-            subject, from_email = 'Request For Future Date of joining', 'workmail052020@gmail.com'   
+            selected_candidate.candidate_status = candidate_status.objects.get(pk=5)
+            selected_candidate.joining_status = joining_status.objects.get(pk=1)
+            subject, from_email = 'Candidate Joined', 'workmail052020@gmail.com'   
             html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
             text_content = strip_tags(html_content) 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ])
@@ -86,16 +100,23 @@ def joining_confirmation(request):
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ IT_email_id ])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+            selected_candidate.save()
+
             messages.success(request, "Candidate Status Updated")
             return redirect("csp_app:rm_joining_confirmation")
         else:
             selected_candidate.candidate_status = candidate_status.objects.get(pk=7)
+            selected_candidate.delay_date = future_date
+            selected_candidate.joining_status = joining_status.objects.get(pk=4)
+
             subject, from_email = 'Request for future date of joining', 'workmail052020@gmail.com'   
             html_content = render_to_string('emailtemplates/request_for_future.html',{'cid': selected_candidate.pk})
             text_content = strip_tags(html_content) 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id ])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+            selected_candidate.save()
+
             messages.success(request, "Request Sent To Onboarding SPOC")
             return redirect("csp_app:rm_joining_confirmation")
         

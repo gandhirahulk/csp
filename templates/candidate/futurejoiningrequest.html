@@ -51,7 +51,7 @@
                         <td>{{ eachcandidate.fk_designation_code }}</td> 
                         <td>{{ eachcandidate.Date_Of_Joining }}</td>
                         <td>{{ eachcandidate.delay_date }}</td>
-                        <td><a href="http://">Approve</a> | <a href="http://">Reject</a></td>
+                        <td><a style="color: blue;" onclick="showConfirm('{{eachcandidate.pk}}','confirm_form')">Approve</a> | <a style="color: blue;" onclick="showReject('{{eachcandidate.pk}}','reject_form')">Reject</a></td>
                     </tr>
 
                  {% endfor %}
@@ -105,12 +105,50 @@
         
 </div>
 
-        
+<div id="confirm_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Confirm New Joining Date?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_entity' %}" value="" id="confirm_me" name="confirm_cid" class="forms-delete-btn">Confirm</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
 
+<div id="reject_form" class="form_modal" style="padding-top: 15%;">
+    <div class="delete_form_header">
+        <div class="forms-heading">
+            <h2>Reject New Joining Date?</h2>
+        </div>     
+    </div>
+    <div class="delete_form_footer">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" formaction="{% url 'csp_app:delete_entity' %}" value="" id="reject_me" name="reject_cid" class="forms-delete-btn">Confirm</button>
+            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+        </form>
+    </div>
+</div>
 
 <script>
 $(document).ready(function(){
     showMe('Candidate', 'can-expand');
 }); 
+</script>
+<script>
+    function showConfirm(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("confirm_me").setAttribute("value", itemid);
+    }
+    function showReject(itemid, formid){
+        document.getElementById(formid).style.display = "block";
+        document.getElementById("reject_me").setAttribute("value", itemid);
+    }
+    
 </script>
 {% endblock %}
