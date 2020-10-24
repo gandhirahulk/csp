@@ -447,7 +447,7 @@ def vendor_candidates(usrname):
         a = []
         s_vendor = master_vendor.objects.filter(spoc_email_id= usrname, status=active_status)
         for e in s_vendor:
-            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= approve_onboarding, status= active_status))
+            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= approve_onboarding, status= active_status) | master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= onboarding_status.objects.get(pk=4), status= active_status))
         
         vs_candidates = list(a)
         return vs_candidates
@@ -928,14 +928,10 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     if selected_candidate.Last_Name != lastname: 
         changes_list['Last Name'] = [ selected_candidate.Last_Name, lastname ]
     selected_candidate.Last_Name= lastname
-    print(selected_candidate.Date_of_Joining)
-    print(doj)
-    print(type(str(selected_candidate.Date_of_Joining)))
-    print(type(doj))
+    
     m = str(selected_candidate.Date_of_Joining)
     n = doj
-    if m == n:
-        print("same")
+    
     if m != n:
         changes_list['Date Of Joining'] = [ selected_candidate.Date_of_Joining, doj ]
     selected_candidate.Date_of_Joining = doj
