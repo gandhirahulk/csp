@@ -303,6 +303,38 @@
 
                 
 
+                {% if request.user.groups.all %}
+                {% for eachgroup in request.user.groups.all %}
+                    {% if eachgroup.name == 'Vendor' %}
+           
+
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Company</label>    
+                    </div>
+                    <div>
+                        <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                          
+                    </div>
+                    <div>
+                        <select readonly name="c_entity" id="c_entity" required="true" tabindex="18">
+                            <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
+                            {% if entity_list %}
+                                {% for eachentity in entity_list %}
+                                    {% if eachentity.pk != eachcandidate.fk_entity_code_id %}
+                                        <option style="display: none;" value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                                    {% endif %}                                
+                                {% endfor %}                
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+
+
+
+                {% else %}
+
+                
                 <div class="request-forms-input-holder">
                     <div>
                         <label for="">Company</label>    
@@ -324,6 +356,9 @@
                         </select>
                     </div>
                 </div>
+                {% endif %}
+                {% endfor %}
+            {% endif %}
 
                 <div class="request-forms-input-holder">
                     <div>

@@ -3756,6 +3756,14 @@ def create_vendor(request):
                 print(5)
             except ObjectDoesNotExist:   
                 print('here') 
+            try:
+                duplicate_vendor_phone = master_vendor.objects.filter( vendor_phone_number= vendor_phone , fk_entity_code= entity_fk, status = active_status)
+                if duplicate_vendor_entity:                
+                    messages.error(request, "Vendor Phone Number Already Exist")
+                    return redirect('csp_app:vendor')
+                print(6)
+            except ObjectDoesNotExist:   
+                print('here')
             try:      
                 
                 assign_group = Group.objects.get(name='Vendor')         
