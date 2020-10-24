@@ -45,9 +45,9 @@ def joined(request):
 
 def joining_confirmation(request):
     today = date.today()
-    ten_days_before = today - timedelta(days = 10)
+    last_ten_days = today - timedelta(days = 10)
  
-    request_candidates = master_candidate.objects.filter( candidate_status=approve_candidate, Reporting_Manager_E_Mail_ID= str(request.user), onboarding_status=approve_onboarding, vendor_status= approve_vendor, status=active_status)
+    request_candidates = master_candidate.objects.filter( candidate_status=approve_candidate, Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__lt= last_ten_days, onboarding_status=approve_onboarding, vendor_status= approve_vendor, status=active_status)
     if request.method == 'POST' and request.POST.get('cid') != None:
         cid = request.POST.get('cid')
         
@@ -110,6 +110,9 @@ def drop_out(request):
     return render(request, 'reporting_manager/drop_out.html',{ 'drop_out_candidates': drop_out_candidates})
 
 def future_joining(request):
-    future_candidates = master_candidate.objects.filter( candidate_status=approve_candidate, Reporting_Manager_E_Mail_ID= str(request.user), onboarding_status=approve_onboarding, vendor_status= approve_vendor, status=active_status)
-    
+    today = date.today()
+    last_ten_days = today - timedelta(days = 10)
+ 
+    future_candidates = master_candidate.objects.filter( candidate_status=approve_candidate, Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days, onboarding_status=approve_onboarding, vendor_status= approve_vendor, status=active_status)
+   
     return render(request, 'reporting_manager/future_joining.html',{'future_candidates': future_candidates})
