@@ -52,7 +52,7 @@ $(document).ready(function(){
     $('#c_salary').keyup(function(){
         var state = $('#c_state').val();
         var type = $('#c_desg').val();
-        var amt = $(this).val();
+        var amt = $('#c_salary').val();
         var min = $('#name').val();
         if (amt > min){
             $('#wage_result').text('');
@@ -67,10 +67,9 @@ $(document).ready(function(){
             success: function(data){
                 if (data['amount'] != -1){
                     var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
-                    $('#calculate').attr("disabled", false);
+                    $('#calculate').attr("disabled", true);
                     $('#new-candidate').attr('onsubmit','return true;');
                     $('#calculate').attr('title', 'Calculate Salary Structure');
-                    $('#detailsmsg').html('').css('color','red');
                     $('#c_salary').attr("min", data['amount']);
                     $('#name').attr('val',data['amount'] )
                     $('#c_salary').attr("title", wages);
@@ -78,6 +77,7 @@ $(document).ready(function(){
                     if (amt >= data['amount']){
                         $('#calculate').attr("disabled", false);
                         $('#wage_result').text('');
+                        $('#detailsmsg').html('').css('color','red');
                     }
                 } else {
                     var wages = 'Minimum wage not defined for selected state and designation.'
@@ -85,7 +85,6 @@ $(document).ready(function(){
                     
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
-                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
                     $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
                     $('#c_salary').attr("title", wages);
                     $('#wage_result').text(wages);
@@ -215,7 +214,7 @@ $(document).ready(function(){
         }
         var state = $('#c_state').val();
         var type = $('#c_desg').val();
-        var amt = $(this).val();
+        var amt = $('#c_salary').val();
         var min = $('#name').val();
         if (amt > min){
             $('#wage_result').text('');
@@ -232,7 +231,7 @@ $(document).ready(function(){
                 if (data['amount'] != -1){
                    
                     var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
-                    $('#calculate').attr("disabled", false);
+                    $('#calculate').attr("disabled", true);
                     $('#new-candidate').attr('onsubmit','return true;');
                     $('#calculate').attr('title', 'Calculate Salary Structure');
                     $('#detailsmsg').html('').css('color','red');
@@ -243,6 +242,7 @@ $(document).ready(function(){
                     if (amt >= data['amount'] && amt != 0){
                         $('#calculate').attr("disabled", false);
                         $('#wage_result').text('');
+                        $('#detailsmsg').html('').css('color','red');
                     }
                 } else {
 
@@ -367,7 +367,7 @@ $(document).ready(function(){
     $('#c_desg').change(function(){
         var state = $('#c_state').val();
         var type = $('#c_desg').val();
-        var amt = $(this).val();
+        var amt = $('#c_salary').val();
         var min = $('#name').val();
         if (amt > min){
             $('#wage_result').text('');
@@ -382,7 +382,7 @@ $(document).ready(function(){
             success: function(data){
                 if (data['amount'] != -1){
                     var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
-                    $('#calculate').attr("disabled", false);
+                    $('#calculate').attr("disabled", true);
                     $('#new-candidate').attr('onsubmit','return true;');
                     $('#calculate').attr('title', 'Calculate Salary Structure');
                     $('#detailsmsg').html('').css('color','red');
@@ -393,6 +393,7 @@ $(document).ready(function(){
                     if (amt >= data['amount']){
                         $('#calculate').attr("disabled", false);
                         $('#wage_result').text('');
+                        $('#detailsmsg').html('').css('color','red');
                     }
                 } else {
                     var wages = 'Minimum wage not defined for selected state and designation.'
@@ -400,7 +401,6 @@ $(document).ready(function(){
                     
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
-                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
                     $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
                     $('#c_salary').attr("title", wages);
                     $('#wage_result').text(wages);
