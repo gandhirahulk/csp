@@ -154,7 +154,7 @@
                 
                  <div >
                     <label for="" >Date of Joining</label>
-                    <input type="date" value="{{ dummy.Date_of_Joining }}" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+                    <input type="date" value="{{ dummy.Date_of_Joining.Date_of_Joining|date:'Y-m-d' }}" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
                
                 </div>
                 <div class="margin-left">
