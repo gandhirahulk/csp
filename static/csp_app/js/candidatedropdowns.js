@@ -78,6 +78,8 @@ $(document).ready(function(){
                         $('#calculate').attr("disabled", false);
                         $('#wage_result').text('');
                         $('#detailsmsg').html('').css('color','red');
+                    }else{
+                        $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
                     }
                 } else {
                     var wages = 'Minimum wage not defined for selected state and designation.'
@@ -239,10 +241,12 @@ $(document).ready(function(){
                     $('#name').attr('val',data['amount'] )
                     $('#c_salary').attr("title", wages);
                     $('#wage_result').text(wages);
-                    if (amt >= data['amount'] && amt != 0){
+                    if (amt >= data['amount']){
                         $('#calculate').attr("disabled", false);
                         $('#wage_result').text('');
                         $('#detailsmsg').html('').css('color','red');
+                    }else{
+                        $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
                     }
                 } else {
 
@@ -394,6 +398,8 @@ $(document).ready(function(){
                         $('#calculate').attr("disabled", false);
                         $('#wage_result').text('');
                         $('#detailsmsg').html('').css('color','red');
+                    }else{
+                        $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
                     }
                 } else {
                     var wages = 'Minimum wage not defined for selected state and designation.'
