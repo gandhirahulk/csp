@@ -440,7 +440,7 @@ $(document).ready(function(){
         }
     });
 
-    showMe('Candidate', 'can-expand');
+  
 });
 
 
