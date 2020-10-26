@@ -67,19 +67,30 @@ $(document).ready(function(){
             success: function(data){
                 if (data['amount'] != -1){
                     var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
-                
-                      
+                    $('#calculate').attr("disabled", false);
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
+                    $('#detailsmsg').html('').css('color','red');
+                    $('#c_salary').attr("min", data['amount']);
+                    $('#name').attr('val',data['amount'] )
+                    $('#c_salary').attr("title", wages);
+                    $('#wage_result').text(wages);
+                    if (amt >= data['amount']){
+                        $('#calculate').attr("disabled", false);
+                        $('#wage_result').text('');
+                    }
                 } else {
                     var wages = 'Minimum wage not defined for selected state and designation.'
+                    $('#calculate').attr("disabled", true);
+                    
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+                    $('#c_salary').attr("title", wages);
+                    $('#wage_result').text(wages);
                 }
-                $('#c_salary').attr("min", data['amount']);
-                $('#name').attr('val',data['amount'] )
-                $('#c_salary').attr("title", wages);
-                $('#wage_result').text(wages);
-                if (amt >= data['amount']){
-                    $('#calculate').attr("disabled", false);
-                    $('#wage_result').text('');
-                }
+               
                 if (data['state_name'] == 'ASSAM'){
                     $('#c_aadhaar').attr("required", false);
                     
@@ -217,23 +228,33 @@ $(document).ready(function(){
             },
             dataType: 'Json',
             success: function(data){
-                
-                if (amt >= data['amount']){
-                    $('#calculate').attr("disabled", false);
-                    $('#wage_result').text('');
-                }
+                console.log(data['amount']);
                 if (data['amount'] != -1){
-                    var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];                    
+                   
+                    var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
+                    $('#calculate').attr("disabled", false);
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
+                    $('#detailsmsg').html('').css('color','red');
+                    $('#c_salary').attr("min", data['amount']);
+                    $('#name').attr('val',data['amount'] )
+                    $('#c_salary').attr("title", wages);
                     $('#wage_result').text(wages);
-                    
+                    if (amt >= data['amount'] && amt != 0){
+                        $('#calculate').attr("disabled", false);
+                        $('#wage_result').text('');
+                    }
                 } else {
+
                     var wages = 'Minimum wage not defined for selected state and designation.'
+                    $('#calculate').attr("disabled", true);
+                    
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+                    $('#c_salary').attr("title", wages);
                     $('#wage_result').text(wages);
                 }
-                $('#c_salary').attr("min", data['amount']);
-                $('#name').attr('val',data['amount'] )
-                $('#c_salary').attr("title", wages);
-                
                 
                 if (data['state_name'] == 'ASSAM'){
                     $('#c_aadhaar').attr("required", false);
@@ -361,30 +382,38 @@ $(document).ready(function(){
             success: function(data){
                 if (data['amount'] != -1){
                     var wages = 'Minimum wage for '+ data['desg_type'] + ' Position for '+ data['state_name'] + ' is ' + data['amount'];
-                
-                      
+                    $('#calculate').attr("disabled", false);
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
+                    $('#detailsmsg').html('').css('color','red');
+                    $('#c_salary').attr("min", data['amount']);
+                    $('#name').attr('val',data['amount'] )
+                    $('#c_salary').attr("title", wages);
+                    $('#wage_result').text(wages);
+                    if (amt >= data['amount']){
+                        $('#calculate').attr("disabled", false);
+                        $('#wage_result').text('');
+                    }
                 } else {
                     var wages = 'Minimum wage not defined for selected state and designation.'
+                    $('#calculate').attr("disabled", true);
+                    
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+                    $('#c_salary').attr("title", wages);
+                    $('#wage_result').text(wages);
                 }
-                $('#c_salary').attr("min", data['amount']);
-                $('#name').attr('val',data['amount'] )
-                $('#c_salary').attr("title", wages);
-                $('#wage_result').text(wages);
-                if (amt >= data['amount']){
-                   
-                    $('#calculate').attr("disabled", false);
-                    $('#wage_result').text('');
-                    console.log('no');
-                }
+                
                 if (data['state_name'] == 'ASSAM'){
                     $('#c_aadhaar').attr("required", false);
                     
-                }   
-                        
+                }             
 
             }
         });
-    })
+    });
 
     $('#c_subteam').change(function() {
         var filter = $(this).val();

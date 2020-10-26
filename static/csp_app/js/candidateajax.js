@@ -60,7 +60,6 @@ $(document).ready(function(){
                 'dob':dob,     
                 'middlename' : middlename,
                 'lastname' : lastname,
-                'candidate_id': candidate_id,
                 'contact_no': contact,    
                 'aadhaar': aadhaar, 
                 'pan':pan,
