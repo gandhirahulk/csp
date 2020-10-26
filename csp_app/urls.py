@@ -97,6 +97,8 @@ urlpatterns = [
     path('csp_candidates/process_requests/salary_structure/<str:cid>/', views.edit_salary_structure_process, name= 'edit_salary_structure_process'),
     #ajax
     path('csp_minimum_wage_list/', views.minimum_wage_list, name="csp_minimum_wage_list"),
+    path('csp_candidates/check_rm_email/', views.check_rm_email, name="csp_rm_email_check"),
+
 
 
 

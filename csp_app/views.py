@@ -97,13 +97,19 @@ def resend_loi(request, cid):
 def custom_send_email(request):
     subject, from_email, to = 'sdf', 'workmail052020@gmail.com', 'sadaf.shaikh@udaan.com'
    
-    html_content = render_to_string('emailtemplates/sdf.html') # render with dynamic value
-    text_content = strip_tags(html_content) # Strip the html tag. So people can see the pure text at least.
-
-    # create the email, and attach the HTML version as well.
+    html_content = render_to_string('emailtemplates/sdf.html') 
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
+
+def send_email(subject, from_email, to, template):
+    html_content = template
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+    return 1
+
+
 
     # EMAIL_USE_SSL = False
     # try:
@@ -234,6 +240,17 @@ def check_duplicate_candidate_new(request):
         result['email'] = ''
         result['invalid_domain'] = ''
     return JsonResponse(result)
+
+def check_rm_email(request):
+    email = request.GET.get('email')
+    valid = {}   
+    if email.endswith('udaan.com'):            
+        valid['result'] = ''
+        return JsonResponse(valid)
+    else:
+        valid['result'] = 'Invalid Email ID'
+        return JsonResponse(valid)
+
 
 def check_duplicate_candidate_edit(request):
     aadhaar = request.GET.get('aadhaar')
@@ -868,17 +885,7 @@ def process_requests(request, cid):
                             msg.attach_alternative(html_content, "text/html")
                             msg.send()
                         
-                        template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
-                        our_email = EmailMessage(
-                            'LOI',
-                            template,
-                            settings.EMAIL_HOST_USER,
-                            [ selected_candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
-                        ) 
-                        our_email.fail_silently = False
-                        selected_candidate.loi_status = loi_status.objects.get(pk=1)
-                        selected_candidate.save()
-                        our_email.send()
+                        
                         
                         try:
                             my_host = selected_candidate.fk_vendor_code.vendor_smtp
@@ -901,6 +908,17 @@ def process_requests(request, cid):
                                 EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id, 'sadaf.shaikh@udaan.com'],
                                             connection=connection).send()
                         except TimeoutError:
+                            template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
+                            our_email = EmailMessage(
+                                'LOI',
+                                template,
+                                settings.EMAIL_HOST_USER,
+                                [ selected_candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
+                            ) 
+                            our_email.fail_silently = False
+                            selected_candidate.loi_status = loi_status.objects.get(pk=1)
+                            selected_candidate.save()
+                            our_email.send()
                             return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
                         # send_mail(subject, message, from_email= vendoremail, [selected_candidate.Personal_Email_Id], fail_silently=False, auth_user=vendoremail, auth_password=password)
     
@@ -1941,38 +1959,6 @@ def edit_salary_structure(request):
                 'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
                 'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': convert_to_INR(var), 'annual_var': convert_to_INR(annual_var), 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': convert_to_INR(diff), 'gpac': convert_to_INR(gpi_2), 'fs': convert_to_INR(fs), 'annual_fs': convert_to_INR(annual_fs)})
 
-                    # selected_candidate = ''
-                    # selected_candidate, ss_gross_salary = update_selected_candidate(cid, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email)
-                    # candidate_id = selected_candidate.pk
-                    # candidate_id = ''
-                    # new_salary_structure = salary_structure(candidate_code= candidate_id, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(hra), annual_house_rent_allowance= INR_to_number(annual_hra), statutory_bonus=INR_to_number(sb), annual_statutory_bonus= INR_to_number(annual_sb),
-                    #     special_allowance=INR_to_number(sa), annual_special_allowance=INR_to_number(annual_sa),gross_salary=INR_to_number(grossalary), annual_gross_salary=INR_to_number(annual_gs), employee_pf= INR_to_number(epf), annual_employee_pf= INR_to_number(annual_epf),
-                    #     employee_esic= INR_to_number(employee_esic), annual_employee_esic= INR_to_number(annualemployer_esic), employee_total_contribution= INR_to_number(employee_total_contribution), annual_employee_total_contribution= INR_to_number(annualemployee_total_contribution), employer_pf= INR_to_number(employer_pf), annual_employer_pf= INR_to_number(annualemployer_pf),
-                    #     employer_pf_admin=INR_to_number(employer_pf_admin), annual_employer_pf_admin= INR_to_number(annualemployer_pf_admin), employer_esic= INR_to_number(employer_esic), annual_employer_esic= INR_to_number(annualemployer_esic), group_personal_accident= INR_to_number(group_personal_accident), annual_group_personal_accident= INR_to_number(annualgroup_personal_accident),
-                    #     group_mediclaim_insurance= INR_to_number(group_mediclaim_insurance), annual_group_mediclaim_insurance = INR_to_number(annualgroup_mediclaim_insurance), employer_total_contribution= INR_to_number(employer_total_contribution), annual_employer_total_contribution= INR_to_number(annualemployer_total_contribution), cost_to_company=INR_to_number(cost_to_company),
-                    #     annual_cost_to_company= INR_to_number(annualcost_to_company), take_home_salary= INR_to_number(take_home_salary), annual_take_home_salary= INR_to_number(annualtake_home_salary))
-                    # new_salary_structure.save()
-                    # alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
-                    # our_email = EmailMessage(
-                    #     'Candidate Account Updated.',
-                    #     alltemplate,
-                    #     settings.EMAIL_HOST_USER,
-                    #     [ selected_candidate.TA_Spoc_Email_Id, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
-                    # ) 
-                    # our_email.fail_silently = False
-                    # our_email.send()
-                    # limtemplate = render_to_string('emailtemplates/candidate_edited_et_limited.html', {'candidate_code':cid ,'user': request.user})
-                    # our_email = EmailMessage(
-                    #     'Candidate Account Updated.',
-                    #     limtemplate,
-                    #     settings.EMAIL_HOST_USER,
-                    #     [ reporting_manager_email, 'sadaf.shaikh@udaan.com'],
-                    # ) 
-                    # our_email.fail_silently = False
-                    # our_email.send()
-                    
-                    # messages.success(request, "Candidate Updated Successfully")
-                    # return redirect("csp_app:candidate")
     
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
@@ -2707,6 +2693,8 @@ def create_candidate(request):
                 gsa_value = dummy.Gross_Salary_Amount
                 basic, hra, sb, sa, grossalary, annual_basic, annual_hra, annual_sb, annual_sa, annual_gs, annual_epf, annual_esic, annual_td, annual_ths, epf, esic, td, ths, erpf, erpf_admin, ersic, gpa, gmi, annual_eprf, annual_pfadmin, annual_ersic, annual_gpa, annual_gmi, tec, annual_tec, ctc, annual_ctc, var, annual_var, diff, gpi_2, fs , annual_fs= salary_structure_calculation(gsa, wage, state_name, salary_pk)
                 # print(diff)
+                print(dummy.Date_of_Joining)
+                print(type(dummy.Date_of_Joining))
                 return render(request, 'candidate/salary_structure.html', {'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value),'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                 'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
                 'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),
@@ -3104,6 +3092,10 @@ def save_new_candidate(request):
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
+                subject = "Candidate Selection & Offer Request: " + str(firstname) + str(middlename) + str(lastname) + ' | ' + str(new_code)
+                template = render_to_string('email_templates/new_candidate_onboarding_notification.html',{'onboarding_spoc_name': onboarding_spoc})
+                # sent = send_email(subject, 'workmail052020@gmail.com', to = Onboarding_SPOC, template)
+                
                 alltemplate = render_to_string('emailtemplates/candidate_saved_et_all.html', {'candidate_code':new_code ,'user': request.user})
                 our_email = EmailMessage(
                     'Candidate account created action required.',

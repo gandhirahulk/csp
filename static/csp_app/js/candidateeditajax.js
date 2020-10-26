@@ -353,4 +353,36 @@ $(document).ready(function(){
     });
 
 
+    $('#reporting_manager_email').keyup(function(){
+        email = $('#reporting_manager_email').val();
+        $.ajax({
+            url: '/csp_candidates/check_rm_email/',
+            data: {
+                'email': email,     
+                          
+            },
+            dataType: 'Json',
+            success: function(data){
+                // print(data['result'] );
+                if (data['result'] != ''){
+                    $('#rmemailmsg').html(data['result']).css('color','red');
+                    $('#new-candidate').attr('onsubmit','return false;');
+                    $('#calculate').attr('title', 'Please Recheck Entered Data');
+                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+                    $('#calculate').attr('disabled',true);
+
+
+                } else {
+                    $('#rmemailmsg').html('');
+                    $('#new-candidate').attr('onsubmit','return true;');
+                    $('#calculate').attr('title', 'Calculate Salary Structure');
+                    $('#detailsmsg').html('').css('color','red');
+                    $('#calculate').attr('disabled',false);
+
+                }
+                
+            }
+        });
+    });
+    
 });
