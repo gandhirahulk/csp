@@ -3719,7 +3719,7 @@ def save_edit_vendor(request):
                 port_fk = port_list.objects.get(pk = port)
                 try:
                     a = master_vendor.objects.get(vendor_name= vendor_name, vendor_email_id= vendor_email, fk_entity_code= entity_fk, status= active_status,
-                    vendor_email_port=port_fk, spoc_name=vendor_spoc, spoc_email_id=spoc_email_id)                    
+                    vendor_email_port=port_fk, spoc_name=vendor_spoc, spoc_email_id=vendor_spoc_email)                    
                     messages.error(request, "Vendor Already Exist")
                     return redirect('csp_app:vendor')
                 except ObjectDoesNotExist:
