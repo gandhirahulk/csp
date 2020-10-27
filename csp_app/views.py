@@ -464,19 +464,28 @@ def vendor_candidates(usrname):
         a = []
         s_vendor = master_vendor.objects.filter(spoc_email_id= usrname, status=active_status)
         for e in s_vendor:
+        
             a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= approve_onboarding, status= active_status) | master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= onboarding_status.objects.get(pk=4), status= active_status))
+            break
         
         vs_candidates = list(a)
+       
         return vs_candidates
     except ObjectDoesNotExist:
         pass
 
 def vendor_pending_candidates(usrname):
     try:
+
         s_vendor = master_vendor.objects.filter(spoc_email_id= usrname, status=active_status)
+  
         a = []
         for e in s_vendor:
+           
             a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk, vendor_status= pending_vendor,onboarding_status= approve_onboarding, status= active_status) | master_candidate.objects.filter(fk_vendor_code=e.pk, vendor_status= pending_vendor,onboarding_status_id= 4, status= active_status))
+      
+            break
+ 
         vs_candidates = list(a)
         
         return vs_candidates
