@@ -97,14 +97,14 @@
         });
         
         $('#candidate-table').DataTable( {
-            scrollY:        "300px",
+            // scrollY:        "300px",
             scrollX:        true,
-            scrollCollapse: true,
+            // scrollCollapse: true,
             
-            columnDefs: [
-                { width: '100%', targets: 0 }
-            ],
-            fixedColumns: true
+            // columnDefs: [
+            //     { width: '100%', targets: 0 }
+            // ],
+            // fixedColumns: true
         } );
         $('#pending-candidate-table').DataTable();
         $('#joined-candidate-table').DataTable();
