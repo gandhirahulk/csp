@@ -820,6 +820,7 @@ def process_requests(request, cid):
                         if selected_candidate.Laptop_Allocation_id == 1:
                             selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
                         selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
+                        selected_candidate.save()
                         limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
                         our_email = EmailMessage(
                             'Candidate Edited By Vendor.',
@@ -917,6 +918,10 @@ def process_requests(request, cid):
                             ) as connection:
                                 EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id, 'sadaf.shaikh@udaan.com'],
                                             connection=connection).send()
+                            selected_candidate.loi_status = loi_status.objects.get(pk=1)
+                            selected_candidate.save()
+                            messages.success(request, "Candidate approved LOI sent to candidate.")
+                            return redirect("csp_app:pending_request")
                         except TimeoutError:
                             template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
                             our_email = EmailMessage(
@@ -1323,8 +1328,8 @@ def candidate(request):
     
     count = 0
     dojcount = 0
-    all_active_candidates = master_candidate.objects.filter(status=active_status)
-    candidate_list = master_candidate.objects.filter(status=active_status)
+    all_active_candidates = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id= str(request.user))
+    candidate_list = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id= str(request.user))
 
     entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
     c_status_list = candidate_status.objects.all()
