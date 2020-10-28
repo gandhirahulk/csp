@@ -445,7 +445,9 @@ input:-webkit-autofill+label.move-out {
 
   #c_firstname,
   #c_middlename,
-  #c_lastname{
+  #c_lastname,
+  #c_mothername,
+  #c_fathername{
     text-transform: capitalize;
   }
 
