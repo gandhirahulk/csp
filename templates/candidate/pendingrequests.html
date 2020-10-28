@@ -31,13 +31,12 @@
             <tr>
                 <th>Candidate ID</th>
                 <th>Candidate Name</th>
-                <th>Contact Details</th>
+                <th>Phone Number</th>
+                <th>Email ID</th>
                 <th>Designation</th>
                 <th>Vendor</th>
-                <!-- <th>Documents</th> -->
                 <th>Onboarding Status</th>
-                <th>Status</th>
-                <!-- <th>Action</th> -->
+                <th>Vendor Status</th>
             </tr>
         </thead>
         <tbody>
@@ -51,21 +50,12 @@
                                     <td class="action-col" style="text-align: left;">
                                         {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
                                     </td>
-                                    <td style="text-align: center;">
-                                        <div>{{ eachcandidate.Personal_Email_Id }}</div>
-                                        <div>{{ eachcandidate.Contact_Number }}</div>
-                                    </td>
+                                    <td style="text-align: center;">{{ eachcandidate.Personal_Email_Id }}</td>
+                                    <td style="text-align: center;">{{ eachcandidate.Contact_Number }}</td>
                                     <td>{{ eachcandidate.fk_designation_code }}</td>
                                     <td>{{ eachcandidate.fk_vendor_code }}</td>
                                     <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
-
-                                    <!-- <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td> -->
-                                <td class="action-col">
-                                    {{ eachcandidate.status }}
-                                </td>
-                                    <!-- <td class="action-col">
-                                        <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
-                                    </td> -->
+                                    <td class="action-col">{{ eachcandidate.vendor_status }}</td>
                                 </tr>
 
                             {% endfor %} 
@@ -84,27 +74,18 @@
                         {% if pending_candidate_list %}
                             {% for eachcandidate in pending_candidate_list %}        
                                     
-                                    <tr>
-                                        <td class="action-col"><a href="{% url 'csp_app:process_request' eachcandidate.pk %}">{{ eachcandidate.pk }}</a></td>
-                                        <td class="action-col" style="text-align: left;">
-                                            {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <div>{{ eachcandidate.Personal_Email_Id }}</div>
-                                            <div>{{ eachcandidate.Contact_Number }}</div>
-                                        </td>
-                                        <td>{{ eachcandidate.fk_designation_code }}</td>
-                                        <td>{{ eachcandidate.fk_vendor_code }}</td>
-                                        <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
-            
-                                        <!-- <td><a href="http://" target="_blank" rel="noopener noreferrer">View</a></td> -->
-                                    <td class="action-col">
-                                        {{ eachcandidate.status }}
+                                <tr>
+                                    <td class="action-col"><a href="{% url 'csp_app:process_request' eachcandidate.pk %}">{{ eachcandidate.pk }}</a></td>
+                                    <td class="action-col" style="text-align: left;">
+                                        {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}    
                                     </td>
-                                        <!-- <td class="action-col">
-                                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:view_candidate' %}"> | <input type="submit" value="delete" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>
-                                        </td> -->
-                                    </tr>
+                                    <td style="text-align: center;">{{ eachcandidate.Personal_Email_Id }}</td>
+                                    <td style="text-align: center;">{{ eachcandidate.Contact_Number }}</td>
+                                    <td>{{ eachcandidate.fk_designation_code }}</td>
+                                    <td>{{ eachcandidate.fk_vendor_code }}</td>
+                                    <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
+                                    <td class="action-col">{{ eachcandidate.vendor_status }}</td>
+                                </tr>
                            
                             {% endfor %} 
                         {% else %}
