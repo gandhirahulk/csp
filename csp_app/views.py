@@ -854,19 +854,20 @@ def process_requests(request, cid):
                         our_email.fail_silently = False
                         our_email.send()
                         
-
-                        assign_group = Group.objects.get(name='Candidate')                     
-                        user = User.objects.create_user(selected_candidate.pk)
-                        password = User.objects.make_random_password()
-                        user.password = password
-                        user.set_password(user.password)
-                        user.first_name = selected_candidate.First_Name
-                        user.last_name = selected_candidate.Last_Name
-                        user.email = selected_candidate.Personal_Email_Id
-                        # if group == 'Candidate':
-                        #     user.is_staff = False
-                        assign_group.user_set.add(user)
-                        user.save()
+                        try:
+                            assign_group = Group.objects.get(name='Candidate')                     
+                            user = User.objects.create_user(selected_candidate.pk)
+                            password = User.objects.make_random_password()
+                            user.password = password
+                            user.set_password(user.password)
+                            user.first_name = selected_candidate.First_Name
+                            user.last_name = selected_candidate.Last_Name
+                            user.email = selected_candidate.Personal_Email_Id
+                        
+                            assign_group.user_set.add(user)
+                            user.save()
+                        except IntegrityError:
+                            pass
                         try:
                             u = User.objects.get(username= selected_candidate.Reporting_Manager_E_Mail_ID)
                             # new_reporting_manager_candidate_approve
