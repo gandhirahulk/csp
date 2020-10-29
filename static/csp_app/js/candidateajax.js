@@ -41,52 +41,52 @@ $(document).ready(function(){
         });
     });
     
-    $('#calculate').mouseenter(function(){
-        aadhaar = $('#c_aadhaar').val()
-        pan = $('#c_pan').val();
-        contact = $('#c_contact').val()
-        fathername = $('#c_fathername').val();
-        firstname = $('#c_firstname').val();
-        dob = $('#c_dob').val();
-        email = $('#email').val();
+    // $('#calculate').mouseenter(function(){
+    //     aadhaar = $('#c_aadhaar').val()
+    //     pan = $('#c_pan').val();
+    //     contact = $('#c_contact').val()
+    //     fathername = $('#c_fathername').val();
+    //     firstname = $('#c_firstname').val();
+    //     dob = $('#c_dob').val();
+    //     email = $('#email').val();
         
-        middlename = $('#c_middlename').val();
-        lastname = $('#c_lastname').val();
-        $.ajax({
-            url: '/csp_candidates/check_duplicacy_new/',
-            data: {
-                'fathername': fathername,
-                'firstname': firstname,
-                'dob':dob,     
-                'middlename' : middlename,
-                'lastname' : lastname,
-                'contact_no': contact,    
-                'aadhaar': aadhaar, 
-                'pan':pan,
-                'email': email,       
-            },
-            dataType: 'Json',
-            success: function(data){
+    //     middlename = $('#c_middlename').val();
+    //     lastname = $('#c_lastname').val();
+    //     $.ajax({
+    //         url: '/csp_candidates/check_duplicacy_new/',
+    //         data: {
+    //             'fathername': fathername,
+    //             'firstname': firstname,
+    //             'dob':dob,     
+    //             'middlename' : middlename,
+    //             'lastname' : lastname,
+    //             'contact_no': contact,    
+    //             'aadhaar': aadhaar, 
+    //             'pan':pan,
+    //             'email': email,       
+    //         },
+    //         dataType: 'Json',
+    //         success: function(data){
             
-                if (data['adhaar'] != '' || data['contact'] != '' || data['pan'] != '' || data['email'] != '' || data['details'] != '' || data['invalid_domain'] != ''){
+    //             if (data['adhaar'] != '' || data['contact'] != '' || data['pan'] != '' || data['email'] != '' || data['details'] != '' || data['invalid_domain'] != ''){
                   
-                    $('#new-candidate').attr('onsubmit','return false;');
-                    $('#calculate').attr('title', 'Please Recheck Entered Data');
-                    $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+    //                 $('#new-candidate').attr('onsubmit','return false;');
+    //                 $('#calculate').attr('title', 'Please Recheck Entered Data');
+    //                 $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
 
                     
-                } 
-                if (data['adhaar'] == '' && data['contact'] == '' && data['pan'] == '' && data['email'] == '' && data['details'] == '' && data['invalid_domain'] == ''){
+    //             } 
+    //             if (data['adhaar'] == '' && data['contact'] == '' && data['pan'] == '' && data['email'] == '' && data['details'] == '' && data['invalid_domain'] == ''){
 
                    
-                    $('#new-candidate').attr('onsubmit','return true;');
-                    $('#calculate').attr('title', 'Calculate Salary Structure');
-                    $('#detailsmsg').html('').css('color','red');
+    //                 $('#new-candidate').attr('onsubmit','return true;');
+    //                 $('#calculate').attr('title', 'Calculate Salary Structure');
+    //                 $('#detailsmsg').html('').css('color','red');
 
-                }
-            }
-        });
-    });
+    //             }
+    //         }
+    //     });
+    // });
     
 
     $('#c_contact').keyup(function(){
