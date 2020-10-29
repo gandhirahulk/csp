@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import send_mail, EmailMessage, BadHeaderError
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 ###
@@ -24,7 +24,7 @@ from django.contrib.auth.tokens import default_token_generator
 import xlwt
 from csp_app import exports
 from django.contrib.auth.hashers import make_password
-
+from smtplib import SMTPAuthenticationError
 a = default_token_generator
 
 
@@ -102,26 +102,33 @@ def custom_send_email(request):
     # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     # msg.attach_alternative(html_content, "text/html")
     # msg.send()
-    my_host = 'smtp.gmail.com'
-    my_port = 465
-    my_username = 'gandhirahulk@gmail.com'
-    my_password = 'nshshrevvrluviez'
-    my_use_tls = False
-    my_use_ssl = True
-    subject1 = 'LOI'
-    body1 = 'LOI'
-    from1 = my_username
-    with get_connection(
-    host=my_host, 
-    port=my_port, 
-    username=my_username, 
-    password=my_password, 
-    use_tls=my_use_tls,
-    use_ssl= my_use_ssl
-    ) as connection:
-        EmailMessage(subject1, body1, from1, ['sadaf.shaikh@udaan.com'],
-        connection=connection).send()
-    return HttpResponse("mail sent")
+    try:
+        my_host = 'smtp.gmail.com'
+        my_port = 465
+        my_username = 'gandhirahulk@gmail.com'
+        my_password = 'nshshrevvrluviez'
+        # my_password = 'nshshr'
+
+        my_use_tls = False
+        my_use_ssl = True
+        subject1 = 'LOI'
+        body1 = 'LOI'
+        from1 = my_username
+        with get_connection(
+        host=my_host, 
+        port=my_port, 
+        username=my_username, 
+        password=my_password, 
+        use_tls=my_use_tls,
+        use_ssl= my_use_ssl
+        ) as connection:
+            EmailMessage(subject1, body1, from1, ['sadaf.shaikh@udaan.com'],
+            connection=connection).send(fail_silently=False)
+        return HttpResponse("mail sent")
+    except TimeoutError:
+        return HttpResponse("Timeout")
+    except SMTPAuthenticationError:
+        return HttpResponse("Error")
 
 
 def send_email(subject, from_email, to, template):
@@ -3656,6 +3663,34 @@ def create_vendor(request):
                 print(6)
             except ObjectDoesNotExist:   
                 print('here')
+            try:
+                my_host = smtp
+                my_port = port_fk.port
+                my_username = vendor_email
+                my_password = vendor_email_pwd
+
+                my_use_tls = port_fk.tls
+                my_use_ssl = port_fk.ssl
+                subject1 = 'Test Mail'
+                body1 = 'Test Mail Vendor'
+                from1 = my_username
+                with get_connection(
+                host=my_host, 
+                port=my_port, 
+                username=my_username, 
+                password=my_password, 
+                use_tls=my_use_tls,
+                use_ssl= my_use_ssl
+                ) as connection:
+                    EmailMessage(subject1, body1, from1, ['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
+                    connection=connection).send(fail_silently=False)
+                
+            except TimeoutError:
+                messages.error(request, "Provide Accurate Email Details")
+                return redirect('csp_app:vendor')
+            except SMTPAuthenticationError:
+                messages.error(request, "Provide Accurate Email Details")
+                return redirect('csp_app:vendor')
             try:      
                 
                 assign_group = Group.objects.get(name='Vendor')         
