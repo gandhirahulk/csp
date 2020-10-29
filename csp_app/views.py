@@ -1614,8 +1614,7 @@ def edit_salary_structure_process(request, cid):
                     delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
                     dojcount = len(delay_joiners)
                     selected_candidate = master_candidate.objects.get(pk=cid)
-                    print(selected_candidate.Middle_Name)
-                    print(dummy.Middle_Name)
+                
                     return render(request, 'candidate/processeditsalarystructure.html', {'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                     'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
                     'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),
@@ -1853,7 +1852,7 @@ def update_selected_dummy(cid, firstname, middlename, lastname, doj, dob, father
     selected_candidate.fk_city_code= city_fk
     selected_candidate.fk_location_code= location_fk
     
-    selected_candidate.Gross_Salary_Entered= loc_code
+    # selected_candidate.Gross_Salary_Entered= loc_code
     selected_candidate.Reporting_Manager= reporting_manager
     selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
     selected_candidate.Gender= gender_fk 
@@ -1904,7 +1903,7 @@ def update_selected_candidate(cid, firstname, middlename, lastname, doj, dob, fa
     selected_candidate.fk_city_code= city_fk
     selected_candidate.fk_location_code= location_fk
     
-    selected_candidate.Gross_Salary_Entered= loc_code
+    # selected_candidate.Gross_Salary_Entered= loc_code
     selected_candidate.Reporting_Manager= reporting_manager
     selected_candidate.Reporting_Manager_E_Mail_ID= reporting_manager_email
     selected_candidate.Gender= gender_fk 
