@@ -95,12 +95,34 @@ def resend_loi(request, cid):
     
 
 def custom_send_email(request):
-    subject, from_email, to = 'sdf', 'workmail052020@gmail.com', 'sadaf.shaikh@udaan.com'
+    # subject, from_email, to = 'sdf', 'workmail052020@gmail.com', 'sadaf.shaikh@udaan.com'
    
-    html_content = render_to_string('emailtemplates/sdf.html') 
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    # html_content = render_to_string('emailtemplates/sdf.html') 
+    # text_content = 'sdf'
+    # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    # msg.attach_alternative(html_content, "text/html")
+    # msg.send()
+    my_host = 'smtp.gmail.com'
+    my_port = 465
+    my_username = 'gandhirahulk@gmail.com'
+    my_password = 'nshshrevvrluviez'
+    my_use_tls = False
+    my_use_ssl = True
+    subject1 = 'LOI'
+    body1 = 'LOI'
+    from1 = my_username
+    with get_connection(
+    host=my_host, 
+    port=my_port, 
+    username=my_username, 
+    password=my_password, 
+    use_tls=my_use_tls,
+    use_ssl= my_use_ssl
+    ) as connection:
+        EmailMessage(subject1, body1, from1, ['sadaf.shaikh@udaan.com'],
+        connection=connection).send()
+    return HttpResponse("mail sent")
+
 
 def send_email(subject, from_email, to, template):
     html_content = template
@@ -1591,6 +1613,9 @@ def edit_salary_structure_process(request, cid):
                     selected_candidate, ss_gross_salary = update_selected_dummy(dummy.pk_candidate_code, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, gross_salary)
                     delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
                     dojcount = len(delay_joiners)
+                    selected_candidate = master_candidate.objects.get(pk=cid)
+                    print(selected_candidate.Middle_Name)
+                    print(dummy.Middle_Name)
                     return render(request, 'candidate/processeditsalarystructure.html', {'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                     'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
                     'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),

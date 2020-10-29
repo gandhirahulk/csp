@@ -68,7 +68,7 @@
                         <input disabled value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name"  required="true"   >
                     </div>
                     <div>
-                        <input value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
+                        <input value="{{ dummy.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -79,7 +79,7 @@
                         <input type="text" value="{{ eachcandidate.Middle_Name }}" disabled maxlength="30" placeholder="Middle Name" >
                     </div>
                     <div>
-                        <input type="text" value="{{ eachcandidate.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename"  tabindex="2">
+                        <input type="text" value="{{ dummy.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename"  tabindex="2">
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -90,7 +90,7 @@
                         <input type="text" value="{{ eachcandidate.Last_Name }}" disabled maxlength="30" placeholder="Last Name"  >
                     </div>
                     <div>
-                        <input type="text" value="{{ eachcandidate.Last_Name }}" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname" tabindex="3">
+                        <input type="text" value="{{ dummy.Last_Name }}" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname" tabindex="3">
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -101,7 +101,7 @@
                         <input type="date" disabled value='{{ eachcandidate.Date_of_Birth }}'  placeholder="Date Of Birth" required="true" >
                     </div>
                     <div>
-                        <input type="date" tabindex="4" value="{{ eachcandidate.Date_of_Birth }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" >
+                        <input type="date" tabindex="4" value="{{ dummy.Date_of_Birth }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" >
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -113,7 +113,7 @@
                           
                     </div>
                     <div>
-                        <input type="text" value="{{ eachcandidate.Contact_Number }}" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
+                        <input type="text" value="{{ dummy.Contact_Number }}" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
                         <small id="contactmsg"></small>    
                     </div>
                 </div>
@@ -127,7 +127,7 @@
                           
                     </div>
                     <div>
-                        <input type="text" value="{{ eachcandidate.Emergency_Contact_Number }}" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                        <input type="text" value="{{ dummy.Emergency_Contact_Number }}" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
                         <span id='message'></span>
                     </div>
                 </div>
@@ -141,7 +141,7 @@
                           
                     </div>
                     <div>
-                        <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" tabindex="7" value="{{ eachcandidate.Personal_Email_Id }}" name="c_email" id="email" placeholder="Email Id">
+                        <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" tabindex="7" value="{{ dummy.Personal_Email_Id }}" name="c_email" id="email" placeholder="Email Id">
                         <small id="emailmsg"></small>    
                     </div>
                 </div>
@@ -156,10 +156,10 @@
                     </div>
                     <div>
                         <select name="c_gender" id="c_gender" required="true" tabindex="8">
-                            <option value="{{ eachcandidate.Gender_id }}" selected>{{ eachcandidate.Gender }}</option>
+                            <option value="{{ dummy.Gender_id }}" selected>{{ dummy.Gender }}</option>
                             {% if gender_list %}
                                 {% for eachgender in gender_list %}
-                                    {% if eachcandidate.Gender_id != eachgender.pk  %}
+                                    {% if dummy.Gender_id != eachgender.pk  %}
                                         <option value="{{ eachgender.pk }}" label="{{ eachgender.gender_name }}">{{ eachgender.gender_name }}</option>
                                     {% endif %}                                
                                 {% endfor %}                
@@ -176,7 +176,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Father_Name }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="9" value="{{ eachcandidate.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true">
+                        <input type="text" tabindex="9" value="{{ dummy.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true">
                     </div>
                 </div>
 
@@ -188,7 +188,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Mother_Name }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="10" value="{{ eachcandidate.Mother_Name }}" placeholder="Mother Name" name="c_mothername" id="c_mothername" required="true" >
+                        <input type="text" tabindex="10" value="{{ dummy.Mother_Name }}" placeholder="Mother Name" name="c_mothername" id="c_mothername" required="true" >
                     </div>
                 </div>
 
@@ -200,7 +200,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Aadhaar_Number }}" required="true" >           
                     </div>
                     <div>
-                         <input type="text" tabindex="11" value="{{ eachcandidate.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+                         <input type="text" tabindex="11" value="{{ dummy.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
                          <small id="adhaarmsg"></small>    
                     </div>
                 </div>
@@ -213,7 +213,7 @@
                         <input type="text" disabled value="{{ eachcandidate.PAN_Number }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="12" value="{{ eachcandidate.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{3}[P]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+                        <input type="text" tabindex="12" value="{{ dummy.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{3}[P]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
                         <small id="panmsg"></small>    
                     </div>
                 </div>
@@ -227,10 +227,10 @@
                     </div>
                     <div>
                         <select name="c_hiring_type" id="hiring" tabindex="13" >
-                            <option value="{{ eachcandidate.Type_of_Hiring_id }}" selected>{{ eachcandidate.Type_of_Hiring }}</option>
+                            <option value="{{ dummy.Type_of_Hiring_id }}" selected>{{ dummy.Type_of_Hiring }}</option>
                             {% if hiring_type_list %}
                                 {% for eachhiring_type in hiring_type_list %}
-                                    {% if eachhiring_type.pk != eachcandidate.Type_of_Hiring_id %}
+                                    {% if eachhiring_type.pk != dummy.Type_of_Hiring_id %}
                                         <option value="{{ eachhiring_type.pk }}" label="{{ eachhiring_type.hiring_type_name }}">{{ eachhiring_type.hiring_type_name }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -249,7 +249,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="14" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                        <input type="text" tabindex="14" value="{{ dummy.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -262,10 +262,10 @@
                     </div>
                     <div>
                         <select name="c_sub_source" id="referral" tabindex="15" >
-                            <option value="{{ eachcandidate.Sub_Source_id }}" selected>{{ eachcandidate.Sub_Source }}</option>
+                            <option value="{{ dummy.Sub_Source_id }}" selected>{{ dummy.Sub_Source }}</option>
                             {% if sub_source_list %}
                                 {% for eachsub_source in sub_source_list %}
-                                    {% if eachcandidate.Sub_Source_id != eachsub_source.pk  %}
+                                    {% if dummy.Sub_Source_id != eachsub_source.pk  %}
                                         <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -283,7 +283,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Referral }}">           
                     </div>
                     <div>
-                        <input type="text" value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
+                        <input type="text" value="{{ dummy.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
                     </div>
                 </div>
 
@@ -292,12 +292,12 @@
                         <label for="">Date Of Joining</label>    
                     </div>
                     <div>
-                        <input type="date" disabled value="{{ eachcandidate.Date_of_Joining }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+                        <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
    
                     </div>
 
                     <div>
-                        <input type="date" tabindex="17" value="{{ eachcandidate.Date_of_Joining }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+                        <input type="date" tabindex="17" value="{{ dummy.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
 
                     </div>
                 </div>
@@ -319,10 +319,10 @@
                     </div>
                     <div>
                         <select readonly name="c_entity" id="c_entity" required="true" tabindex="18">
-                            <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
+                            <option value="{{ dummy.fk_entity_code_id }}" selected>{{ dummy.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
-                                    {% if eachentity.pk != eachcandidate.fk_entity_code_id %}
+                                    {% if eachentity.pk != dummy.fk_entity_code_id %}
                                         <option style="display: none;" value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
                                     {% endif %}                                
                                 {% endfor %}                
@@ -346,10 +346,10 @@
                     </div>
                     <div>
                         <select name="c_entity" id="c_entity" required="true" tabindex="18">
-                            <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
+                            <option value="{{ dummy.fk_entity_code_id }}" selected>{{ dummy.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
-                                    {% if eachentity.pk != eachcandidate.fk_entity_code_id %}
+                                    {% if eachentity.pk != dummy.fk_entity_code_id %}
                                         <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
                                     {% endif %}                                
                                 {% endfor %}                
@@ -371,12 +371,12 @@
                     </div>
                     <div>
                         <select name="c_vendor" id="c_vendor" required="true" tabindex="19">
-                            <option value="{{ eachcandidate.fk_vendor_code_id }}" selected  label="{{ eachcandidate.fk_vendor_code }}">{{ eachcandidate.fk_vendor_code.fk_entity_code_id }}</option>
+                            <option value="{{ dummy.fk_vendor_code_id }}" selected  label="{{ dummy.fk_vendor_code }}">{{ dummy.fk_vendor_code.fk_entity_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select vendor</option>
     
                             {% if vendor_list %}
                                 {% for eachvendor in vendor_list %}
-                                    {% if eachvendor.pk != eachcandidate.fk_vendor_code_id %}
+                                    {% if eachvendor.pk != dummy.fk_vendor_code_id %}
                                     <option style="display: none;" value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -395,12 +395,12 @@
                     </div>
                     <div>
                         <select name="c_dept" id="c_dept" required="true" tabindex="20">
-                            <option value="{{ eachcandidate.fk_department_code_id }}" selected  label="{{ eachcandidate.fk_department_code }}">{{ eachcandidate.fk_department_code.fk_entity_code_id }}</option>
+                            <option value="{{ dummy.fk_department_code_id }}" selected  label="{{ dummy.fk_department_code }}">{{ dummy.fk_department_code.fk_entity_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Department</option>
 
                             {% if department_list %}
                                 {% for eachdepartment in department_list %}
-                                    {% if eachdepartment.pk != eachcandidate.fk_department_code_id %}
+                                    {% if eachdepartment.pk != dummy.fk_department_code_id %}
                                     <option style="display: none;" value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
                                     {% endif %}
                                     
@@ -421,12 +421,12 @@
                     <div>
                         <select name="c_function" id="c_function" required="true" tabindex="21">
 
-                            <option value="{{ eachcandidate.fk_function_code_id }}" selected  label="{{ eachcandidate.fk_function_code }}">{{ eachcandidate.fk_function_code.fk_department_code_id }}</option>
+                            <option value="{{ dummy.fk_function_code_id }}" selected  label="{{ dummy.fk_function_code }}">{{ dummy.fk_function_code.fk_department_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Function</option>
 
                             {% if function_list %}
                                 {% for eachfunction in function_list %}
-                                    {% if eachfunction.pk != eachcandidate.fk_function_code_id %}
+                                    {% if eachfunction.pk != dummy.fk_function_code_id %}
                                     <option style="display: none;" value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
                                     {% endif %}
                         
@@ -446,12 +446,12 @@
                     </div>
                     <div>
                         <select name="c_team" id="c_team" required="true" tabindex="22">
-                            <option value="{{ eachcandidate.fk_team_code_id }}" selected  label="{{ eachcandidate.fk_team_code }}">{{ eachcandidate.fk_team_code.fk_function_code_id }}</option>
+                            <option value="{{ dummy.fk_team_code_id }}" selected  label="{{ dummy.fk_team_code }}">{{ dummy.fk_team_code.fk_function_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Team</option>
 
                             {% if team_list %}
                                 {% for eachteam in team_list %}
-                                    {% if eachteam.pk != eachcandidate.fk_team_code_id %}
+                                    {% if eachteam.pk != dummy.fk_team_code_id %}
                                     <option style="display: none;" value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
                                     {% endif %}
                                     
@@ -472,12 +472,12 @@
                     <div>
                         <select name="c_subteam" id="c_subteam" required="true" tabindex="23">
 
-                            <option value="{{ eachcandidate.fk_subteam_code_id }}" selected  label="{{ eachcandidate.fk_subteam_code }}">{{ eachcandidate.fk_subteam_code.fk_team_code_id }}</option>
+                            <option value="{{ dummy.fk_subteam_code_id }}" selected  label="{{ dummy.fk_subteam_code }}">{{ dummy.fk_subteam_code.fk_team_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Sub Team</option>
 
                             {% if sub_team_list %}
                                 {% for eachsubteam in sub_team_list %}
-                                    {% if eachsubteam.pk != eachcandidate.fk_subteam_code_id %}
+                                    {% if eachsubteam.pk != dummy.fk_subteam_code_id %}
                                     <option style="display: none;" value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -497,12 +497,12 @@
                     <div>
                         <select name="c_desg" id="c_desg" required="true" tabindex="24">
 
-                            <option value="{{ eachcandidate.fk_designation_code_id }}" selected  label="{{ eachcandidate.fk_designation_code }}">{{ eachcandidate.fk_designation_code.fk_sub_team_code_id }}</option>
+                            <option value="{{ dummy.fk_designation_code_id }}" selected  label="{{ dummy.fk_designation_code }}">{{ dummy.fk_designation_code.fk_sub_team_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Designation</option>
 
                             {% if designation_list %}
                                 {% for eachdesignation in designation_list %}
-                                    {% if eachdesignation.pk != eachcandidate.fk_designation_code_id %}
+                                    {% if eachdesignation.pk != dummy.fk_designation_code_id %}
                                     <option style="display: none;" value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -522,12 +522,12 @@
                     <div>
                         <select name="c_region" id="c_region" required="true" tabindex="25">
 
-                            <option value="{{ eachcandidate.fk_region_code_id }}" selected  label="{{ eachcandidate.fk_region_code }}">{{ eachcandidate.fk_region_code.fk_entity_code_id }}</option>
+                            <option value="{{ dummy.fk_region_code_id }}" selected  label="{{ dummy.fk_region_code }}">{{ dummy.fk_region_code.fk_entity_code_id }}</option>
                             <option value="" disabled label=" " class="empty" >Select Region</option>
 
                             {% if region_list %}
                                 {% for eachregion in region_list %}
-                                    {% if eachregion.pk != eachcandidate.fk_region_code_id %}
+                                    {% if eachregion.pk != dummy.fk_region_code_id %}
                                     <option style="display: none;" value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -546,12 +546,12 @@
                     </div>
                     <div>
                         <select name="c_state" id="c_state" required="true" tabindex="26">
-                            <option value="{{ eachcandidate.fk_state_code_id }}" selected  label="{{ eachcandidate.fk_state_code }}">{{ eachcandidate.fk_state_code.fk_region_code_id }}</option>
+                            <option value="{{ dummy.fk_state_code_id }}" selected  label="{{ dummy.fk_state_code }}">{{ dummy.fk_state_code.fk_region_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select State</option>
 
                             {% if state_list %}
                                 {% for eachstate in state_list %}
-                                    {% if eachestate.pk != eachcandidate.fk_state_code_id %}
+                                    {% if eachestate.pk != dummy.fk_state_code_id %}
                                     <option style="display: none;" value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -570,12 +570,12 @@
                     </div>
                     <div>
                         <select name="c_city" id="c_city" required="true" tabindex="27">
-                            <option value="{{ eachcandidate.fk_city_code_id }}" selected  label="{{ eachcandidate.fk_city_code }}">{{ eachcandidate.fk_city_code.fk_state_code_id }}</option>
+                            <option value="{{ dummy.fk_city_code_id }}" selected  label="{{ dummy.fk_city_code }}">{{ dummy.fk_city_code.fk_state_code_id }}</option>
                             <option value="" disabled label="" class="empty">Select City</option>
 
                             {% if city_list %}
                                 {% for eachcity in city_list %}
-                                    {% if eachcity.pk != eachcandidate.fk_city_code_id %}
+                                    {% if eachcity.pk != dummy.fk_city_code_id %}
                                     <option style="display: none;" value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -594,12 +594,12 @@
                     </div>
                     <div>
                         <select name="c_location" id="c_location" required="true" tabindex="19">
-                            <option value="{{ eachcandidate.fk_location_code_id }}" selected  label="{{ eachcandidate.fk_location_code }}">{{ eachcandidate.fk_location_code.fk_city_code_id }}</option>
+                            <option value="{{ dummy.fk_location_code_id }}" selected  label="{{ dummy.fk_location_code }}">{{ dummy.fk_location_code.fk_city_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Location</option>
     
                             {% if location_list %}
                                 {% for eachlocation in location_list %}
-                                    {% if eachlocation.pk != eachcandidate.fk_location_code_id %}
+                                    {% if eachlocation.pk != dummy.fk_location_code_id %}
                                     <option style="display: none;" value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -616,7 +616,7 @@
                         <input type="text" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" readonly value="{{ eachcandidate.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" tabindex="29">
+                        <input type="text" readonly value="{{ dummy.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" tabindex="29">
                     </div>
                 </div>
 
@@ -628,7 +628,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" readonly tabindex="60" value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
+                        <input type="text" readonly tabindex="60" value="{{ dummy.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
                     </div>
                 </div>
 
@@ -640,7 +640,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="31" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                        <input type="text" tabindex="31" value="{{ dummy.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
                     </div>
                 </div>
 
@@ -652,7 +652,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                        <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ dummy.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                         <small id="rmemailmsg"></small>
                     
                     </div>
@@ -668,7 +668,7 @@
                     </div>
                     <div>
                         <select name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
-                            <option value="{{ eachcandidate.E_Mail_ID_Creation }}" selected  label="{{ eachcandidate.E_Mail_ID_Creation }}">{{ eachcandidate.E_Mail_ID_Creation }}</option>
+                            <option value="{{ dummy.E_Mail_ID_Creation }}" selected  label="{{ dummy.E_Mail_ID_Creation }}">{{ dummy.E_Mail_ID_Creation }}</option>
                             <option value="Yes" >Yes</option>
                             <option value="No" >No</option>    
                         </select>
@@ -685,11 +685,11 @@
                     </div>
                     <div>
                         <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
-                            <option value="{{ eachcandidate.Laptop_Allocation_id }}" selected  label="{{ eachcandidate.Laptop_Allocation }}">{{ eachcandidate.Laptop_Allocation }}</option>
+                            <option value="{{ dummy.Laptop_Allocation_id }}" selected  label="{{ dummy.Laptop_Allocation }}">{{ dummy.Laptop_Allocation }}</option>
     
                             {% if laptop_allocation_list %}
                                 {% for eachlaptop_allocation in laptop_allocation_list %}
-                                    {% if eachlaptop_allocation.pk != eachcandidate.Laptop_Allocation_id %}
+                                    {% if eachlaptop_allocation.pk != dummy.Laptop_Allocation_id %}
                                     <option value="{{ eachlaptop_allocation.pk }}" label="{{ eachlaptop_allocation.option_name }}">{{ eachlaptop_allocation.option_name }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -708,10 +708,10 @@
                     </div>
                     <div>
                         <select name="c_salary_type" id="c_salary_type" required="true" tabindex="35">
-                            <option value="{{ eachcandidate.Salary_Type_id }}" selected  label="{{ eachcandidate.Salary_Type }}">{{ eachcandidate.Salary_Type }}</option>
+                            <option value="{{ dummy.Salary_Type_id }}" selected  label="{{ dummy.Salary_Type }}">{{ dummy.Salary_Type }}</option>
                             {% if salary_type_list %}
                                 {% for eachsalary_type in salary_type_list %}
-                                    {% if eachsalary_type.pk != eachcandidate.Salary_Type_id %}
+                                    {% if eachsalary_type.pk != dummy.Salary_Type_id %}
                                     <option value="{{ eachsalary_type.pk }}" label="{{ eachsalary_type.salary_type_name }}">{{ eachsalary_type.salary_type_name }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
@@ -728,7 +728,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Entered }}" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="36" readonly value="{{ eachcandidate.Gross_Salary_Entered }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
+                        <input type="text" tabindex="36" readonly value="{{ dummy.Gross_Salary_Entered }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
                     </div>
                 </div>
 
@@ -740,7 +740,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >           
                     </div>
                     <div>
-                        <input type="number" tabindex="36" value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
+                        <input type="number" tabindex="36" value="{{ dummy.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
                         <span id="wage_result" style="color: #bf0711;"></span>
                     </div>
                 </div>
