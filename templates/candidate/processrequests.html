@@ -26,7 +26,7 @@
 
 {% if selected_candidate %}
     {% for eachcandidate in selected_candidate %}
-    <div class="crumbs" style="z-index: 1;"><span><a href="{% url 'csp_app:candidate' %}">Pending Requests</a></span>
+    <div class="crumbs" style="z-index: 1;"><span><a href="{% url 'csp_app:pending_request' %}">Pending Requests</a></span>
         <span><i class="fas fa-chevron-right"></i></span>
         <span>Process Request</span>
         <span><i class="fas fa-chevron-right"></i></span>
@@ -49,7 +49,7 @@
                     PARTICULARS
                 </div>
                 <div style="font-weight: bold;">
-                    VALUES SUBMITTED BY RECRUITMENT SPOC
+                    SUBMITTED VALUES
                 </div style="font-weight: bold;">
                 <div style="font-weight: bold;">
                     REVISED VALUES
@@ -225,6 +225,105 @@
                     </div>
                 </div>
 
+                {% if request.user.groups.all %}
+                {% for eachgroup in request.user.groups.all %}
+                    {% if eachgroup.name == 'Vendor' %}
+           
+
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Hiring Type</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                        </div>
+                        <div>
+                            <select name="c_hiring_type" id="hiring" tabindex="13" readonly="true">
+                                <option value="{{ eachcandidate.Type_of_Hiring_id }}" selected>{{ eachcandidate.Type_of_Hiring }}</option>
+                               
+                            </select>
+                        </div>
+                    </div>
+     
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Replacement UID</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                        </div>
+                        <div>
+                            <input type="text" readonly tabindex="14" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                        </div>
+                    </div>
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Sub Source</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select name="c_sub_source" id="referral" tabindex="15" readonly="true" >
+                                <option value="{{ eachcandidate.Sub_Source_id }}" selected>{{ eachcandidate.Sub_Source }}</option>
+                                
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Referral UID</label>    
+                        </div>
+                        <div>
+    
+                            <input type="text" disabled value="{{ eachcandidate.Referral }}">           
+                        </div>
+                        <div>
+                            <input type="text" readonly value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Date Of Joining</label>    
+                        </div>
+                        <div>
+                            <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+       
+                        </div>
+    
+                        <div>
+                            <input type="date" readonly tabindex="17" value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+    
+                        </div>
+                    </div>
+    
+                    
+    
+    
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Company</label>    
+                    </div>
+                    <div>
+                        <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                          
+                    </div>
+                    <div>
+                        <select readonly name="c_entity" id="c_entity" required="true" tabindex="18">
+                            <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
+                            
+                        </select>
+                    </div>
+                </div>
+
+
+
+                {% else %}
+
                 <div class="request-forms-input-holder">
                     <div>
                         <label for="">Hiring Type</label>    
@@ -307,36 +406,8 @@
 
                     </div>
                 </div>
-                {% if request.user.groups.all %}
-                {% for eachgroup in request.user.groups.all %}
-                    {% if eachgroup.name == 'Vendor' %}
-           
+                
 
-                <div class="request-forms-input-holder">
-                    <div>
-                        <label for="">Company</label>    
-                    </div>
-                    <div>
-                        <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
-                          
-                    </div>
-                    <div>
-                        <select readonly name="c_entity" id="c_entity" required="true" tabindex="18">
-                            <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
-                            {% if entity_list %}
-                                {% for eachentity in entity_list %}
-                                    {% if eachentity.pk != eachcandidate.fk_entity_code_id %}
-                                        <option style="display: none;" value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
-                                    {% endif %}                                
-                                {% endfor %}                
-                            {% endif %}
-                        </select>
-                    </div>
-                </div>
-
-
-
-                {% else %}
 
                 
                 <div class="request-forms-input-holder">
@@ -349,10 +420,10 @@
                     </div>
                     <div>
                         <select name="c_entity" id="c_entity" required="true" tabindex="18">
-                            <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
+                            <option value="{{ dummy.fk_entity_code_id }}" selected>{{ dummy.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
-                                    {% if eachentity.pk != eachcandidate.fk_entity_code_id %}
+                                    {% if eachentity.pk != dummy.fk_entity_code_id %}
                                         <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
                                     {% endif %}                                
                                 {% endfor %}                
@@ -363,7 +434,6 @@
                 {% endif %}
                 {% endfor %}
             {% endif %}
-
                 <div class="request-forms-input-holder">
                     <div>
                         <label for="">Vendor</label>    
@@ -636,6 +706,68 @@
                     </div>
                 </div>
 
+                {% if request.user.groups.all %}
+                {% for eachgroup in request.user.groups.all %}
+                    {% if eachgroup.name == 'Vendor' %}
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Reporting / Hiring Manager Name</label>    
+                    </div>
+                    <div>
+                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                    </div>
+                    <div>
+                        <input readonly type="text" tabindex="31" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                    </div>
+                </div>
+
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Reporting / Hiring Manager Email ID</label>    
+                    </div>
+                    <div>
+                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                    </div>
+                    <div>
+                        <input readonly type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                        <small id="rmemailmsg"></small>
+                        
+                    </div>
+                </div>
+
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Email ID Creation</label>    
+                    </div>
+                    <div>
+                        <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
+                          
+                    </div>
+                    <div>
+                        <select readonly name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
+                            <option value="{{ eachcandidate.E_Mail_ID_Creation }}" selected  label="{{ eachcandidate.E_Mail_ID_Creation }}">{{ eachcandidate.E_Mail_ID_Creation }}</option>
+                             
+                        </select>
+                    </div>
+                </div>
+
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Laptop Allocation</label>    
+                    </div>
+                    <div>
+                        <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
+                          
+                    </div>
+                    <div>
+                        <select readonly name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
+                            <option value="{{ eachcandidate.Laptop_Allocation_id }}" selected  label="{{ eachcandidate.Laptop_Allocation }}">{{ eachcandidate.Laptop_Allocation }}</option>
+    
+                           
+                        </select>
+                    </div>
+                </div>
+                {% else %}
                 <div class="request-forms-input-holder">
                     <div>
                         <label for="">Reporting / Hiring Manager Name</label>    
@@ -701,6 +833,10 @@
                         </select>
                     </div>
                 </div>
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
 
                 <div class="request-forms-input-holder">
                     <div>
