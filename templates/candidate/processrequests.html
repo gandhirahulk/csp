@@ -420,10 +420,10 @@
                     </div>
                     <div>
                         <select name="c_entity" id="c_entity" required="true" tabindex="18">
-                            <option value="{{ dummy.fk_entity_code_id }}" selected>{{ dummy.fk_entity_code }}</option>
+                            <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
-                                    {% if eachentity.pk != dummy.fk_entity_code_id %}
+                                    {% if eachentity.pk != eachcandidate.fk_entity_code_id %}
                                         <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
                                     {% endif %}                                
                                 {% endfor %}                
