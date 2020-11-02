@@ -3633,7 +3633,7 @@ def create_vendor(request):
             messages.warning(request, "Choose Port And Try Again")
             return redirect('csp_app:vendor')
         port_fk = port_list.objects.get(pk=port)
-        last_group_id_row = group_ids.objects.latest('candidate_code')                
+        last_group_id_row = group_ids.objects.latest('group_id')                
         last_group_id = last_group_id_row.pk
         next_group_id = int(last_group_id) + 1        
         for i in entity:
