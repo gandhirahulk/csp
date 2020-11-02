@@ -94,8 +94,23 @@
                                         <td>{{ eachcandidate.fk_designation_code }}</td>
                                         <td>{{ eachcandidate.Reporting_Manager }}</td>
                                         <td>{{ eachcandidate.fk_state_code }}</td>                                        
+                                        <td {% if eachcandidate.onboarding_status_id == 1 %}
                                         
-                                        <td class="'col'+ {{ eachcandidate.onboarding_status_id }}'" >{{ eachcandidate.onboarding_status }}</td>
+                                        class ="approve-col"
+
+                                        {% elif eachcandidate.onboarding_status_id == 4 %}
+
+                                        class = "approve-col"
+
+                                        {% elif eachcandidate.onboarding_status_id == 3 %}
+
+                                        class = "na-col"
+
+                                        {% else %}
+
+                                        class = "pending-col"
+
+                                        {% endif %}>{{ eachcandidate.onboarding_status }}</td>
                                         <td>{{ eachcandidate.fk_vendor_code }}</td>
                                         <td {% if eachcandidate.vendor_status_id == 1 %}
                                         
@@ -117,7 +132,23 @@
                                         <td class="action-col"><a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">{{ eachcandidate.Gross_Salary_Amount }} </a>
                                         </td>
                                     
-                                        <td class="action-col">{{ eachcandidate.loi_status }}
+                                        <td {% if eachcandidate.loi_status_id == 1 %}
+                                        
+                                        class ="approve-col"
+
+                                        {% elif eachcandidate.loi_status_id == 4 %}
+
+                                        class = "approve-col"
+
+                                        {% elif eachcandidate.loi_status_id == 3 %}
+
+                                        class = "na-col"
+
+                                        {% else %}
+
+                                        class = "pending-col"
+
+                                        {% endif %}>{{ eachcandidate.loi_status }}
                                             {% if eachcandidate.documentation_status_id == 1 %}
                                                 | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
 

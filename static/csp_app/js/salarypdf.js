@@ -1,13 +1,19 @@
 function getPDF(){
 
-    var HTML_Width = $(".canvas_div_pdf").width();
-    var HTML_Height = $(".canvas_div_pdf").height();
-    var top_left_margin = 15;
+    var HTML_Width = 600;
+    var HTML_Height = 600;
+    var top_left_margin = 80 ;
     var PDF_Width = HTML_Width+(top_left_margin*2);
+    // var PDF_Width = HTML_Width+(top_left_margin*2);
+
     var PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
-    var canvas_image_width = HTML_Width;
+    // var PDF_Height = (PDF_Width)+(top_left_margin*2);
+
+    var canvas_image_width = 600 ;
     var canvas_image_height = HTML_Height;
-    
+
+
+
     var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
     
     

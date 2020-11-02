@@ -127,7 +127,7 @@
         </div>
         <!-- <label for="">Vendor Email ID</label> -->
         <div class="forms-input-holder">
-            <label for="vendor_email">Email ID</label>
+            <label for="vendor_email">Email ID For LOI</label>
             <input type="text" placeholder="Vendor Email ID" id="email" name="vendor_email" required="true" maxlength="60" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})">
         </div>
         
@@ -252,20 +252,17 @@
     }
     function filterCompany(inputid, ulid) {
         var input, filter, ul, li, a, i, txtValue;
-        console.log("filter");
+   
         input = document.getElementById(inputid);
-        console.log(input);
+       
         filter = input.value.toUpperCase();
         ul = document.getElementById(ulid);
         li = ul.getElementsByTagName("div");
         for (i = 0; i < li.length; i++) {
             a = li[i].getElementsByTagName("span")[0];
-            
-            console.log(a);
-            console.log(a.innerText);
-            console.log(a.textContent);
+     
             txtValue = a.textContent || a.innerText;
-            console.log(txtValue);
+        
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 li[i].style.display = "";
             } else {
