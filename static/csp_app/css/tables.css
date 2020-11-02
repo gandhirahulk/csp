@@ -13,6 +13,24 @@
   text-align: center;
 }
 
+
+.approve-col{
+  text-align: center;
+  color: rgba(0, 128, 0, 0.8);
+}
+
+
+.pending-col{
+  text-align: center;
+  color: rgba(255, 0, 0, 0.8);
+}
+
+
+.na-col{
+  text-align: center;
+  color: rgba(128, 128, 128, 0.8);
+}
+
 .action-col input{
   border:none;
   outline: none;
