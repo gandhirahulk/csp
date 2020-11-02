@@ -443,8 +443,9 @@
                     </div>
                     <div>
                         <select name="c_vendor" id="c_vendor" required="true" tabindex="19">
-                            <option value="{{ dummy.fk_vendor_code_id }}" selected  label="{{ dummy.fk_vendor_code }}">{{ dummy.fk_vendor_code.fk_entity_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select vendor</option>
+
+                            <option value="{{ dummy.fk_vendor_code_id }}" selected  label="{{ dummy.fk_vendor_code }}">{{ dummy.fk_vendor_code.fk_entity_code_id }}</option>
     
                             {% if vendor_list %}
                                 {% for eachvendor in vendor_list %}
@@ -467,8 +468,9 @@
                     </div>
                     <div>
                         <select name="c_dept" id="c_dept" required="true" tabindex="20">
-                            <option value="{{ dummy.fk_department_code_id }}" selected  label="{{ dummy.fk_department_code }}">{{ dummy.fk_department_code.fk_entity_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Department</option>
+
+                            <option value="{{ dummy.fk_department_code_id }}" selected  label="{{ dummy.fk_department_code }}">{{ dummy.fk_department_code.fk_entity_code_id }}</option>
 
                             {% if department_list %}
                                 {% for eachdepartment in department_list %}
@@ -492,9 +494,9 @@
                     </div>
                     <div>
                         <select name="c_function" id="c_function" required="true" tabindex="21">
+                            <option value="" disabled label=" " class="empty">Select Function</option>
 
                             <option value="{{ dummy.fk_function_code_id }}" selected  label="{{ dummy.fk_function_code }}">{{ dummy.fk_function_code.fk_department_code_id }}</option>
-                            <option value="" disabled label=" " class="empty">Select Function</option>
 
                             {% if function_list %}
                                 {% for eachfunction in function_list %}
@@ -518,8 +520,9 @@
                     </div>
                     <div>
                         <select name="c_team" id="c_team" required="true" tabindex="22">
-                            <option value="{{ dummy.fk_team_code_id }}" selected  label="{{ dummy.fk_team_code }}">{{ dummy.fk_team_code.fk_function_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Team</option>
+
+                            <option value="{{ dummy.fk_team_code_id }}" selected  label="{{ dummy.fk_team_code }}">{{ dummy.fk_team_code.fk_function_code_id }}</option>
 
                             {% if team_list %}
                                 {% for eachteam in team_list %}
@@ -543,9 +546,9 @@
                     </div>
                     <div>
                         <select name="c_subteam" id="c_subteam" required="true" tabindex="23">
+                            <option value="" disabled label=" " class="empty">Select Sub Team</option>
 
                             <option value="{{ dummy.fk_subteam_code_id }}" selected  label="{{ dummy.fk_subteam_code }}">{{ dummy.fk_subteam_code.fk_team_code_id }}</option>
-                            <option value="" disabled label=" " class="empty">Select Sub Team</option>
 
                             {% if sub_team_list %}
                                 {% for eachsubteam in sub_team_list %}
@@ -568,9 +571,9 @@
                     </div>
                     <div>
                         <select name="c_desg" id="c_desg" required="true" tabindex="24">
+                            <option value="" disabled label=" " class="empty">Select Designation</option>
 
                             <option value="{{ dummy.fk_designation_code_id }}" selected  label="{{ dummy.fk_designation_code }}">{{ dummy.fk_designation_code.fk_sub_team_code_id }}</option>
-                            <option value="" disabled label=" " class="empty">Select Designation</option>
 
                             {% if designation_list %}
                                 {% for eachdesignation in designation_list %}
@@ -593,9 +596,9 @@
                     </div>
                     <div>
                         <select name="c_region" id="c_region" required="true" tabindex="25">
+                            <option value="" disabled label=" " class="empty" >Select Region</option>
 
                             <option value="{{ dummy.fk_region_code_id }}" selected  label="{{ dummy.fk_region_code }}">{{ dummy.fk_region_code.fk_entity_code_id }}</option>
-                            <option value="" disabled label=" " class="empty" >Select Region</option>
 
                             {% if region_list %}
                                 {% for eachregion in region_list %}
@@ -618,8 +621,9 @@
                     </div>
                     <div>
                         <select name="c_state" id="c_state" required="true" tabindex="26">
-                            <option value="{{ dummy.fk_state_code_id }}" selected  label="{{ dummy.fk_state_code }}">{{ dummy.fk_state_code.fk_region_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select State</option>
+
+                            <option value="{{ dummy.fk_state_code_id }}" selected  label="{{ dummy.fk_state_code }}">{{ dummy.fk_state_code.fk_region_code_id }}</option>
 
                             {% if state_list %}
                                 {% for eachstate in state_list %}
@@ -642,8 +646,9 @@
                     </div>
                     <div>
                         <select name="c_city" id="c_city" required="true" tabindex="27">
-                            <option value="{{ dummy.fk_city_code_id }}" selected  label="{{ dummy.fk_city_code }}">{{ dummy.fk_city_code.fk_state_code_id }}</option>
                             <option value="" disabled label="" class="empty">Select City</option>
+
+                            <option value="{{ dummy.fk_city_code_id }}" selected  label="{{ dummy.fk_city_code }}">{{ dummy.fk_city_code.fk_state_code_id }}</option>
 
                             {% if city_list %}
                                 {% for eachcity in city_list %}
@@ -666,8 +671,9 @@
                     </div>
                     <div>
                         <select name="c_location" id="c_location" required="true" tabindex="19">
-                            <option value="{{ dummy.fk_location_code_id }}" selected  label="{{ dummy.fk_location_code }}">{{ dummy.fk_location_code.fk_city_code_id }}</option>
                             <option value="" disabled label=" " class="empty">Select Location</option>
+
+                            <option value="{{ dummy.fk_location_code_id }}" selected  label="{{ dummy.fk_location_code }}">{{ dummy.fk_location_code.fk_city_code_id }}</option>
     
                             {% if location_list %}
                                 {% for eachlocation in location_list %}
