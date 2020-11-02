@@ -599,7 +599,7 @@ def process_requests(request, cid):
             location = request.POST.get("c_location")
             # ta_spoc = request.user.email #check
             onboarding_spoc = Onboarding_SPOC #check
-            reporting_manager = request.POST.get("c_reporting_manager")
+            reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")
@@ -1489,7 +1489,7 @@ def edit_salary_structure_process(request, cid):
 
                 ta_spoc = request.POST.get("c_ta_spoc") #check
                 onboarding_spoc = Onboarding_SPOC #check
-                reporting_manager = request.POST.get("c_reporting_manager")
+                reporting_manager = request.POST.get("c_reporting_manager").title()
                 reporting_manager_email = request.POST.get("c_reporting_manager_email")
                 email_creation = request.POST.get("c_email_creation")
                 laptopallocation = request.POST.get("c_laptop_allocation")
@@ -1684,7 +1684,7 @@ def edit_salary_structure(request):
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
             onboarding_spoc = Onboarding_SPOC #check
-            reporting_manager = request.POST.get("c_reporting_manager")
+            reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")
@@ -2104,7 +2104,7 @@ def edit_candidate(request):
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
             onboarding_spoc = Onboarding_SPOC #check
-            reporting_manager = request.POST.get("c_reporting_manager")
+            reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")
@@ -2430,7 +2430,7 @@ def create_candidate(request):
 
             ta_spoc = request.user.email #check
             onboarding_spoc = Onboarding_SPOC #check
-            reporting_manager = request.POST.get("c_reporting_manager")
+            reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")
@@ -2709,7 +2709,7 @@ def save_new_candidate(request):
 
             ta_spoc = request.user.email #check
             onboarding_spoc = Onboarding_SPOC #check
-            reporting_manager = request.POST.get("c_reporting_manager")
+            reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")

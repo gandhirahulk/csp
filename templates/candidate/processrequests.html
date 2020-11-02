@@ -717,7 +717,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
                     </div>
                     <div>
-                        <input readonly type="text" tabindex="31" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                        <input readonly type="text" tabindex="31" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="50">
                     </div>
                 </div>
 
@@ -776,7 +776,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="31" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" pattern="[U]{1}[0-9]{,5}" maxlength="6" autocapitalize="on">
+                        <input type="text" tabindex="31" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="6" autocapitalize="on">
                     </div>
                 </div>
 
@@ -913,7 +913,7 @@
                 {% endfor %}
             {% endif %}
         <div>
-            <a href="{% url 'csp_app:candidate' %}">Cancel</a>
+            <a href="{% url 'csp_app:pending_request' %}">Cancel</a>
 
         </div>
         <div>
