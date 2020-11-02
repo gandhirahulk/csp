@@ -52,9 +52,7 @@
                         <th>Function</th>
                         <th>Designation</th>  
                         <th>Reporting Manager</th>                            
-                        <th>State</th>                            
-
-                        
+                        <th>State</th> 
                         <th>Onboarding Status</th>
                         <th>Vendor</th>
                         <th>Vendor Status</th>
@@ -68,8 +66,8 @@
                         <th>E Mail ID Creation Request</th>
                         <th>Laptop Request</th>
                         <th>Final Status</th>
-                    
-                    
+                        <th>ctime</th>
+                        <th>mtime</th>
                     
                     </tr>
                 </thead>
@@ -289,6 +287,12 @@
                                         {% endif %}>
                                             {{ eachcandidate.candidate_status }}
                                         </td>
+                                        <td class="sort-latest" >{{ eachcandidate.created_date_time }}</td>
+                                        <td class="sort-latest" >{% if eachcandidate.modified_date_time == None %}
+                                            {{ eachcandidate.created_date_time }}
+                                        {% else %}
+                                            {{ eachcandidate.modified_date_time }}
+                                        {% endif %}</td>
                                     </tr>
 
                                 {% else %}                          
@@ -517,7 +521,12 @@
                                         {% endif %}>
                                             {{ eachcandidate.candidate_status }}
                                         </td>
-                                        
+                                        <td class="sort-latest" >{{ eachcandidate.created_date_time }}</td>
+                                        <td class="sort-latest" >{% if eachcandidate.modified_date_time == None %}
+                                            {{ eachcandidate.created_date_time }}
+                                        {% else %}
+                                            {{ eachcandidate.modified_date_time }}
+                                        {% endif %}</td>
                                         
                                     </tr>
 

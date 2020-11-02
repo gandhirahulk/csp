@@ -3646,10 +3646,10 @@ def create_vendor(request):
         port_fk = port_list.objects.get(pk=port)
         last_group_id_row = group_ids.objects.latest('group_id')                
         last_group_id = last_group_id_row.pk
-        next_group_id = int(last_group_id) + 1        
+        next_group_id = int(last_group_id) + 1     
         for i in entity:
             entity_fk = master_entity.objects.get(pk=i)
-        
+            
             try:
                 duplicate_vendor_entity_spoc = master_vendor.objects.filter(vendor_email_id= vendor_email , fk_entity_code= entity_fk, spoc_email_id=vendor_spoc_email, status = active_status)
                 if duplicate_vendor_entity_spoc:
@@ -3681,7 +3681,9 @@ def create_vendor(request):
                     return redirect('csp_app:vendor')
                 print(6)
             except ObjectDoesNotExist:   
-                print('here')
+                print('here')   
+        for i in entity:
+            
             try:
                 my_host = smtp
                 my_port = port_fk.port
