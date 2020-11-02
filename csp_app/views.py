@@ -49,10 +49,13 @@ all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
 try:
+   
     Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
     Onboarding_SPOC = Onboarding_SPOC_list.email
+ 
 except ObjectDoesNotExist:
     Onboarding_SPOC = 'workmail052020@gmail.com'
+
 
 
 def resend_loi(request, cid):
@@ -1357,8 +1360,8 @@ def candidate(request):
     
     count = 0
     dojcount = 0
-    all_active_candidates = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id= str(request.user))
-    candidate_list = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id= str(request.user))
+    all_active_candidates = master_candidate.objects.filter(status=active_status)
+    candidate_list = master_candidate.objects.filter(status=active_status)
 
     entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
     c_status_list = candidate_status.objects.all()
@@ -1377,6 +1380,10 @@ def candidate(request):
             count = len(pending_candidate_list)
             delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
             dojcount = len(delay_joiners)
+        elif str(eachgroup) == 'Recruiter':
+            all_active_candidates = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id= str(request.user))
+            candidate_list = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id= str(request.user))
+
         else:
             delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
             dojcount = len(delay_joiners)
@@ -2935,7 +2942,7 @@ def save_new_candidate(request):
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
                 fk_team_code= team_fk, fk_subteam_code= sub_team_fk, fk_designation_code= designation_fk, fk_region_code= region_fk, fk_state_code= state_fk, fk_city_code= city_fk, fk_location_code= location_fk, Gross_Salary_Entered= loc_code,
-                Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= onboarding_spoc,
+                Reporting_Manager= reporting_manager , Reporting_Manager_E_Mail_ID= reporting_manager_email, Gender= gender_fk, E_Mail_ID_Creation= email_creation, TA_Spoc_Email_Id= ta_spoc, Onboarding_Spoc_Email_Id= Onboarding_SPOC,
                 Laptop_Allocation= la_fk, Salary_Type= salarytype_fk, Gross_Salary_Amount= INR_to_number(ss_gross_salary), created_by = str(request.user), candidate_status=pending_status, created_date_time= datetime.now(), laptop_status= laptop_request, email_creation_status= email_request)
                 new_candidate.save()
                 

@@ -173,12 +173,18 @@
         
       
         <div class="entity-holder" id="entity-ul">
-            <div><input type="checkbox" name="" id="selectall" value="Select All"> Select All</div>       
-
             {% if entity_list %}
+                
                 {% for eachentity in entity_list %}
+                    
                         <div style="flex-grow: 1;
                         width: 100%;">    
+                        {% if forloop.first %}
+                        <span> 
+                            <input type="checkbox" name="" id="selectall" value="Select All"> Select All      
+                        </span> 
+                        <br>
+                        {% endif %}
                         <span>
 
                             <input type="checkbox" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
@@ -246,13 +252,20 @@
     }
     function filterCompany(inputid, ulid) {
         var input, filter, ul, li, a, i, txtValue;
+        console.log("filter");
         input = document.getElementById(inputid);
+        console.log(input);
         filter = input.value.toUpperCase();
         ul = document.getElementById(ulid);
         li = ul.getElementsByTagName("div");
         for (i = 0; i < li.length; i++) {
             a = li[i].getElementsByTagName("span")[0];
+            
+            console.log(a);
+            console.log(a.innerText);
+            console.log(a.textContent);
             txtValue = a.textContent || a.innerText;
+            console.log(txtValue);
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 li[i].style.display = "";
             } else {
