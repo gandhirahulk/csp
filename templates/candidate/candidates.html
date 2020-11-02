@@ -222,7 +222,19 @@
                                         class = "pending-col"
 
                                         {% endif %}>{{ eachcandidate.joining_status }}</td>
-                                        <td>{{ eachcandidate.ecode_status }}</td>
+                                        <td {% if eachcandidate.ecode_status == 'N/A' %}
+                                        
+                                        class = "na-col"
+
+                                        {% elif eachcandidate.ecode_status == 'Not Generated' %}
+
+                                        class = "pending-col"
+
+                                        {% else %}
+
+                                        class = "approve-col"
+
+                                        {% endif %}>{{ eachcandidate.ecode_status }}</td>
                                         <td {% if eachcandidate.email_creation_status_id == 1 %}
                                         
                                         class ="approve-col"
@@ -258,7 +270,23 @@
 
                                         {% endif %}>{{ eachcandidate.laptop_status }}</td>
 
-                                        <td class="action-col">
+                                        <td  {% if eachcandidate.candidate_status_id == 1 %}
+                                        
+                                        class ="approve-col"
+
+                                        {% elif eachcandidate.candidate_status_id == 4 %}
+
+                                        class = "approve-col"
+
+                                        {% elif eachcandidate.candidate_status_id == 3 %}
+
+                                        class = "na-col"
+
+                                        {% else %}
+
+                                        class = "pending-col"
+
+                                        {% endif %}>
                                             {{ eachcandidate.candidate_status }}
                                         </td>
                                     </tr>
@@ -332,7 +360,23 @@
                                         {% endif %}>{{ eachcandidate.vendor_status }}</td>
                                         <td class="action-col"><a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">{{ eachcandidate.Gross_Salary_Amount }} </a>
                                         </td>
-                                        <td>{{ eachcandidate.loi_status }}
+                                        <td  {% if eachcandidate.loi_status_id == 1 %}
+                                        
+                                        class ="approve-col"
+
+                                        {% elif eachcandidate.loi_status_id == 4 %}
+
+                                        class = "approve-col"
+
+                                        {% elif eachcandidate.loi_status_id == 3 %}
+
+                                        class = "na-col"
+
+                                        {% else %}
+
+                                        class = "pending-col"
+
+                                        {% endif %}>{{ eachcandidate.loi_status }}
                                             {% if eachcandidate.documentation_status_id == 1 %}
                                                 | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
                                             {% endif %}
@@ -405,7 +449,19 @@
                                         class = "pending-col"
 
                                         {% endif %}>{{ eachcandidate.joining_status }}</td>
-                                        <td>{{ eachcandidate.ecode_status }}</td>
+                                        <td  {% if eachcandidate.ecode_status == 'N/A' %}
+                                        
+                                        class = "na-col"
+
+                                        {% elif eachcandidate.ecode_status == 'Not Generated' %}
+
+                                        class = "pending-col"
+
+                                        {% else %}
+
+                                        class = "approve-col"
+
+                                        {% endif %}>{{ eachcandidate.ecode_status }}</td>
                                         <td {% if eachcandidate.email_creation_status_id == 1 %}
                                         
                                         class ="approve-col"
@@ -442,7 +498,23 @@
                                         {% endif %}>{{ eachcandidate.laptop_status }}</td>
 
 
-                                        <td class="action-col">
+                                        <td  {% if eachcandidate.candidate_status_id == 1 %}
+                                        
+                                        class ="approve-col"
+
+                                        {% elif eachcandidate.candidate_status_id == 4 %}
+
+                                        class = "approve-col"
+
+                                        {% elif eachcandidate.candidate_status_id == 3 %}
+
+                                        class = "na-col"
+
+                                        {% else %}
+
+                                        class = "pending-col"
+
+                                        {% endif %}>
                                             {{ eachcandidate.candidate_status }}
                                         </td>
                                         
