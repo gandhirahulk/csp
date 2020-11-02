@@ -58,6 +58,7 @@
                         <th>Onboarding Status</th>
                         <th>Vendor</th>
                         <th>Vendor Status</th>
+                        <th>Gross Salary Considered</th>
                         <th>LOI</th>
                         <th>Documentation</th>
                         <th>Offer Letter</th>
@@ -97,7 +98,10 @@
                                     <td class="action-col">{{ eachcandidate.onboarding_status }}</td>
                                     <td>{{ eachcandidate.fk_vendor_code }}</td>
                                     <td class="action-col">{{ eachcandidate.vendor_status }}</td>
-                                    <td>{{ eachcandidate.loi_status }}
+                                    <td class="action-col"><a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">{{ eachcandidate.Gross_Salary_Amount }} </a>
+                                    </td>
+                                   
+                                    <td class="action-col">{{ eachcandidate.loi_status }}
                                         {% if eachcandidate.documentation_status_id == 1 %}
                                             | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
 
@@ -151,6 +155,8 @@
                                     <td>{{ eachcandidate.fk_vendor_code }}</td>
 
                                     <td class="action-col">{{ eachcandidate.vendor_status }}</td>
+                                    <td class="action-col"><a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">{{ eachcandidate.Gross_Salary_Amount }} </a>
+                                    </td>
                                     <td>{{ eachcandidate.loi_status }}
                                         {% if eachcandidate.documentation_status_id == 1 %}
                                             | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
@@ -198,6 +204,7 @@
                         <th>Onboarding Status</th>
                         <th>Vendor</th>
                         <th>Vendor Status</th>
+                        <th>Gross Salary Considered</th>
                         <th>LOI</th>
                         <th>Documentation</th>
                         <th>Offer Letter</th>
