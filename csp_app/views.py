@@ -185,6 +185,10 @@ def candidate_profile(request):
 def view_ss(request,cid):    
     try:
         salaryst = salary_structure.objects.filter(candidate_code=cid)
+        # formated_salary_structure = []
+        for each in salaryst.values():
+
+            print(each.values())
         candidate = master_candidate.objects.get(pk=cid)
         return render(request, 'candidate/viewsalarystructure.html', {'salaryst':salaryst, 'candidate':candidate})
     except UnboundLocalError:
@@ -2340,12 +2344,12 @@ def edit_candidate(request):
                 
                 
 
-                new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
-                    special_allowance=INR_to_number(special_allowance), annual_special_allowance=INR_to_number(annualspecial_allowance),gross_salary=INR_to_number(ss_gross_salary), annual_gross_salary=INR_to_number(annualgross_salary), employee_pf= INR_to_number(employee_pf), annual_employee_pf= INR_to_number(annualemployee_pf),
-                    employee_esic= INR_to_number(employee_esic), annual_employee_esic= INR_to_number(annualemployer_esic), employee_total_contribution= INR_to_number(employee_total_contribution), annual_employee_total_contribution= INR_to_number(annualemployee_total_contribution), employer_pf= INR_to_number(employer_pf), annual_employer_pf= INR_to_number(annualemployer_pf),
-                    employer_pf_admin=INR_to_number(employer_pf_admin), annual_employer_pf_admin= INR_to_number(annualemployer_pf_admin), employer_esic= INR_to_number(employer_esic), annual_employer_esic= INR_to_number(annualemployer_esic), group_personal_accident= INR_to_number(group_personal_accident), annual_group_personal_accident= INR_to_number(annualgroup_personal_accident),
-                    group_mediclaim_insurance= INR_to_number(group_mediclaim_insurance), annual_group_mediclaim_insurance = INR_to_number(annualgroup_mediclaim_insurance), employer_total_contribution= INR_to_number(employer_total_contribution), annual_employer_total_contribution= INR_to_number(annualemployer_total_contribution), cost_to_company=INR_to_number(cost_to_company),
-                    annual_cost_to_company= INR_to_number(annualcost_to_company), take_home_salary= INR_to_number(take_home_salary), annual_take_home_salary= INR_to_number(annualtake_home_salary), variable= INR_to_number(variable), annual_var= INR_to_number(annualvariable), fixed_salary= INR_to_number(fixedsalary), annual_fixed_salary= INR_to_number(annualfixedsalary))
+                new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= basic, annual_basic= annualbasic, house_rent_allowance= house_rent_allowance, annual_house_rent_allowance= annualhouse_rent_allowance, statutory_bonus=statutory_bonus, annual_statutory_bonus= annualstatutory_bonus,
+                    special_allowance=special_allowance, annual_special_allowance=annualspecial_allowance,gross_salary=ss_gross_salary, annual_gross_salary=annualgross_salary, employee_pf= employee_pf, annual_employee_pf= annualemployee_pf,
+                    employee_esic= employee_esic, annual_employee_esic= annualemployer_esic, employee_total_contribution= employee_total_contribution, annual_employee_total_contribution= annualemployee_total_contribution, employer_pf= employer_pf, annual_employer_pf= annualemployer_pf,
+                    employer_pf_admin=employer_pf_admin, annual_employer_pf_admin= annualemployer_pf_admin, employer_esic= employer_esic, annual_employer_esic= annualemployer_esic, group_personal_accident= group_personal_accident, annual_group_personal_accident= annualgroup_personal_accident,
+                    group_mediclaim_insurance= group_mediclaim_insurance, annual_group_mediclaim_insurance = annualgroup_mediclaim_insurance, employer_total_contribution= employer_total_contribution, annual_employer_total_contribution= annualemployer_total_contribution, cost_to_company=cost_to_company,
+                    annual_cost_to_company= annualcost_to_company, take_home_salary= take_home_salary, annual_take_home_salary= annualtake_home_salary, variable= variable, annual_var= annualvariable, fixed_salary= fixedsalary, annual_fixed_salary= annualfixedsalary)
                 new_salary_structure.save()
                 alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
                 our_email = EmailMessage(
@@ -2948,12 +2952,12 @@ def save_new_candidate(request):
                 
                 save_new_code = csp_candidate_code(candidate_code= new_code)
                 save_new_code.save()
-                new_salary_structure = salary_structure(candidate_code= new_code, basic= INR_to_number(basic), annual_basic= INR_to_number(annualbasic), house_rent_allowance= INR_to_number(house_rent_allowance), annual_house_rent_allowance= INR_to_number(annualhouse_rent_allowance), statutory_bonus=INR_to_number(statutory_bonus), annual_statutory_bonus= INR_to_number(annualstatutory_bonus),
-                special_allowance=INR_to_number(special_allowance), annual_special_allowance=INR_to_number(annualspecial_allowance),gross_salary=INR_to_number(ss_gross_salary), annual_gross_salary=INR_to_number(annualgross_salary), employee_pf= INR_to_number(employee_pf), annual_employee_pf= INR_to_number(annualemployee_pf),
-                employee_esic= INR_to_number(employee_esic), annual_employee_esic= INR_to_number(annualemployer_esic), employee_total_contribution= INR_to_number(employee_total_contribution), annual_employee_total_contribution= INR_to_number(annualemployee_total_contribution), employer_pf= INR_to_number(employer_pf), annual_employer_pf= INR_to_number(annualemployer_pf),
-                employer_pf_admin=INR_to_number(employer_pf_admin), annual_employer_pf_admin= INR_to_number(annualemployer_pf_admin), employer_esic= INR_to_number(employer_esic), annual_employer_esic= INR_to_number(annualemployer_esic), group_personal_accident= INR_to_number(group_personal_accident), annual_group_personal_accident= INR_to_number(annualgroup_personal_accident),
-                group_mediclaim_insurance= INR_to_number(group_mediclaim_insurance), annual_group_mediclaim_insurance = INR_to_number(annualgroup_mediclaim_insurance), employer_total_contribution= INR_to_number(employer_total_contribution), annual_employer_total_contribution= INR_to_number(annualemployer_total_contribution), cost_to_company=INR_to_number(cost_to_company),
-                annual_cost_to_company= INR_to_number(annualcost_to_company), take_home_salary= INR_to_number(take_home_salary), annual_take_home_salary= INR_to_number(annualtake_home_salary), variable= INR_to_number(variable), annual_var= INR_to_number(annualvariable), fixed_salary= INR_to_number(fixedsalary), annual_fixed_salary= INR_to_number(annualfixedsalary))
+                new_salary_structure = salary_structure(candidate_code= new_code, basic= basic, annual_basic= annualbasic, house_rent_allowance= house_rent_allowance, annual_house_rent_allowance= annualhouse_rent_allowance, statutory_bonus=statutory_bonus, annual_statutory_bonus= annualstatutory_bonus,
+                special_allowance=special_allowance, annual_special_allowance=annualspecial_allowance,gross_salary=ss_gross_salary, annual_gross_salary=annualgross_salary, employee_pf= employee_pf, annual_employee_pf= annualemployee_pf,
+                employee_esic= employee_esic, annual_employee_esic= annualemployer_esic, employee_total_contribution= employee_total_contribution, annual_employee_total_contribution= annualemployee_total_contribution, employer_pf= employer_pf, annual_employer_pf= annualemployer_pf,
+                employer_pf_admin=employer_pf_admin, annual_employer_pf_admin= annualemployer_pf_admin, employer_esic= employer_esic, annual_employer_esic= annualemployer_esic, group_personal_accident= group_personal_accident, annual_group_personal_accident= annualgroup_personal_accident,
+                group_mediclaim_insurance= group_mediclaim_insurance, annual_group_mediclaim_insurance = annualgroup_mediclaim_insurance, employer_total_contribution= employer_total_contribution, annual_employer_total_contribution= annualemployer_total_contribution, cost_to_company=cost_to_company,
+                annual_cost_to_company= annualcost_to_company, take_home_salary= take_home_salary, annual_take_home_salary= annualtake_home_salary, variable= variable, annual_var= annualvariable, fixed_salary= fixedsalary, annual_fixed_salary= annualfixedsalary)
                 new_salary_structure.save()
                 limtemplate = render_to_string('emailtemplates/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
                 our_email = EmailMessage(
