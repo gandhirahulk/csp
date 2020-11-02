@@ -116,7 +116,9 @@
 
     
         $('#document-table').DataTable();
-        $('#nocandidate-table').DataTable();
+        $('#nocandidate-table').DataTable({
+            scrollX: true,
+        });
         $('#wages-table').DataTable({
             "order": [[ 1, "desc" ]], //or asc 
             "columnDefs" : [{"targets":1, "type":"date-eu"}],

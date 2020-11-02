@@ -1,17 +1,169 @@
-{% extends 'csp_app/admindashboard.html' %}
+<!DOCTYPE html>
 {% load static %}
-{% block titleblock %} Admin {% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block bodyblock %} 
-sadaf
-{% endblock %}
+    <title>
+        
+            Dashboard
+       
+    </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/admin_dashboard.css' %}">
+     <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/dashboard.css' %}">
+   
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/alertmsgcss.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/media.css' %}">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- datatable -->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/tables.css' %}">  
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <!-- <script src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js" type="text/javascript"></script> -->
+    <!-- datatable end -->
+
+    
+</head>
+<body>
+    <div class="wrapper collapse">
+        <div class="top_navbar">
+          <div class="top_menu">
+            <div class="logo">
+                
+                <a href="{% url 'csp_app:entity' %}"><img src="{% static 'csp_app/images/udaanredlogo.png' %}" alt="Company Logo" style="width: 55px;" title="Dashboard"></a>
+               
+            </div>
+
+            <div class="user-div">
+                <ul>
+           
+                    <li title="Logout"><a href="{% url 'csp_app:csp_logout' %}"><i class="fas fa-sign-out-alt"></i></a></li>
+                </ul>
+            </div>
+          </div>
+        </div>
+
+       
 
 
+        <div class="main_container" style="margin-left: 0px;width:calc(100% - 20px);">
+             
+            <div class="item item_header">
+                {% block bodyblock %} 
+             
+                {% endblock %}
+            </div>
+            <div class="item item_contents">
 
-{% block tabcontentblock %}
+                {% block tabcontentblock %}
+    
+    
+    
+                {% endblock %}  
+                <div style="padding: 100px; width: inherit;">
+                    
+                </div>
+                {% if messages %}
+                {% for msg in messages %}
+                    {% if msg.tags == 'success' %}
+                        <div id="alerts" class="alert alert-success alert-dismissible sucess-msg-alert animate__animated animate__slideInRight animate__fast" >
+                            <table id="success-tbl">
+                            <tr>
+                                <td rowspan="2"><i class="fas fa-check-circle" style="padding: 15px; padding-left: 0px !important;"></i></td>
+                                <td style="font-size: 16px; font-weight: bold;">Success</td>
+                            </tr>
+                            <tr>
+                                <td>{{ msg }}</td>
 
-Admin Home
+                            </tr>
+                            </table>
+                            <button type="button" class="close" data-dismiss="alert" style="outline: none !important;"> &times;</button>
 
+                        </div>
+                    {% endif %}
+                    {% if msg.tags == 'error' %}
+                        <div id="alerts" class="alert alert-danger alert-dismissible error-msg-alert animate__animated animate__slideInRight animate__fast" >
+                            <table id="failure-tbl">
+                            <tr>
+                                <td rowspan="2" style="border-bottom: none;"><i class="fas fa-times" style="padding: 15px; padding-left: 0px !important; font-family: 'Font Awesome 5 Free' !important;"></i></td>
+                                <td style="font-size: 16px; font-weight: bold;border-bottom: none;">Error</td>
 
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: none;">{{ msg }}</td>
+                            </tr>
+                            </table>
+                            <button type="button" class="close" data-dismiss="alert" style="outline: none !important;">&times;</button>
 
-{% endblock %}
+                        </div>
+                    {% endif %}
+                    {% if msg.tags == 'warning' %}
+                        <div id="alerts" class="alert alert-warning alert-dismissible warning-msg-alert animate__animated animate__slideInRight animate__fast" >
+                            <table id="warning-tbl">
+                            <tr>
+                                <td rowspan="2" style="border-bottom: none;"><i class="fas fa-times" style="padding: 15px; padding-left: 0px !important; font-family: 'Font Awesome 5 Free' !important;"></i></td>
+                                <td style="font-size: 16px; font-weight: bold;border-bottom: none;">Warning</td>
+
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: none;">{{ msg }}</td>
+                            </tr>
+                            </table>
+                            <button type="button" class="close" data-dismiss="alert" style="outline: none !important;">&times;</button>
+
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            {% endif %}
+
+            
+            
+            
+            </div>
+            
+        </div>
+    </div>
+    <script type="text/javascript">
+    function hidediv(stay){
+            console.log(stay);
+            if(stay != 0){
+                console.log('in');
+                $( '#alerts' ).removeClass( 'animate__animated animate__slideOutRight animate__fast' ).show().addClass( 'animate__animated animate__slideInRight animate__fast' );
+    
+                $( '#alerts' ).removeClass( 'animate__animated animate__slideInRight animate__fast' ).addClass( 'animate__animated animate__slideOutRight animate__fast' );
+
+            } else {
+                console.log('Dont Go');
+            }
+            
+    }
+    
+
+        $("#alerts").hover(function () {
+            setTimeout("hidediv(0)", 2000);
+        },
+        function () {
+            setTimeout("hidediv(1)", 2000);
+        }
+        );
+        setTimeout("hidediv(1)", 2000);
+
+        function donthide(){
+            console.log('okay');
+        }           
+   
+
+                
+        
+    </script>
+    
+</body>
+</html>
