@@ -26,8 +26,8 @@ from csp_app import exports
 from django.contrib.auth.hashers import make_password
 from smtplib import SMTPAuthenticationError
 a = default_token_generator
-
-
+from django.db.models import Count
+from django.db.models.query import QuerySet
 # 0 - reject
 # 1 - approve
 # 2 - pending
@@ -3311,7 +3311,6 @@ def change_candidate_status_vendor(request):
 def entity(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('modified_date_time')
     
-    
     return render(request, 'csp_app/entity.html', {'e_list': created_by_entities(),'allcandidates': all_active_candidates,'entity_list': entity_list})
 
 @login_required(login_url='/notlogin/')
@@ -3370,7 +3369,9 @@ def created_by_entities():
     return e_list
 
 def created_by_vendors():
-    v_list = master_vendor.objects.filter(status = active_status).order_by('-created_date_time')
+    v_list = master_vendor.objects.filter(status = active_status).distinct('group_id')
+    for i in v_list:
+        print(i.pk)
     return v_list
 
 def created_by_departments():
@@ -3473,14 +3474,15 @@ def vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name').order_by('entity_name')
     vendor_list = master_vendor.objects.filter(status = active_status).order_by('-created_date_time')
     ports = port_list.objects.all()
-    return render(request, 'csp_app/vendor.html', {'v_list': created_by_vendors(), 'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
+    
+    return render(request, 'csp_app/vendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list, 'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
 
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def new_vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name').order_by('entity_name')
     vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
     ports = port_list.objects.all()
-    return render(request, 'csp_app/new_vendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
+    return render(request, 'csp_app/new_vendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
 
 
 
@@ -3492,14 +3494,15 @@ def view_vendor(request):
     try:
         if request.method == 'POST':
             vendor_id = request.POST.get("view_id")
-            view_vendor_list = master_vendor.objects.filter(pk = vendor_id)
-        return render(request, 'csp_app/viewvendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,'view_vendor_list': view_vendor_list, 'vendor_list': vendor_list})
+            view_vendor_list = master_vendor.objects.filter(group_id = vendor_id)
+        return render(request, 'csp_app/viewvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': view_vendor_list, 'vendor_list': vendor_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def delete_vendor(request):
+
     try:
         if request.method == 'POST':
             vendor_id = request.POST.get("delete_id")
@@ -3508,10 +3511,10 @@ def delete_vendor(request):
                 messages.error(request, "Vendor Refrenced By Other Module Cannot Delete")
                 return redirect('csp_app:vendor')
             else:
-                selected_vendor = master_vendor.objects.get(pk = vendor_id)
-                # try:
+                selected_vendor = master_vendor.objects.get(group_id = vendor_id)
+              
                 a = str(selected_vendor.vendor_email_id)
-                print(a)
+              
                 selected_user = User.objects.get(email= a)
                 selected_user.is_active = False
                 selected_user.save()
@@ -3519,9 +3522,7 @@ def delete_vendor(request):
                 selected_vendor.modified_date_time = datetime.now()
                 selected_vendor.status = deactive_status
                 selected_vendor.save()
-                # except ObjectDoesNotExist:
-                #     messages.error(request, "Vendor Account Not Found")
-                #     return redirect('csp_app:vendor')
+                
                 msg = 'Vendor account disabled for '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' by ' + str(request.user) + ' .'
                 send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com' ,[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
       
@@ -3537,12 +3538,13 @@ def view_edit_vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
 
     vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
+
     try:
         if request.method == 'POST':
             vendor_id = request.POST.get("view_id")
-            selected_vendor = master_vendor.objects.filter(pk = vendor_id)         
-           
-        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,'view_vendor_list': selected_vendor,'entity_list':entity_list, 'vendor_list': vendor_list})
+            selected_vendor = master_vendor.objects.filter(group_id = vendor_id)         
+                   
+        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': selected_vendor,'entity_list':entity_list, 'vendor_list': vendor_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -3551,10 +3553,12 @@ def view_edit_vendor(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_vendor(request):
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
+    vendor_list = master_vendor.objects.filter(status=active_status)  
+
     try:
         if request.method == 'POST':
            if request.POST.get("e_id") != '':
-                vendor = master_vendor.objects.get(pk = request.POST.get("e_id"))
+                vendor = master_vendor.objects.get(group_id = request.POST.get("e_id"))
                 vendor_name = request.POST.get("e_vendor_name")
                 vendor_spoc = request.POST.get("e_vendor_spoc")
                 vendor_spoc_email = request.POST.get("e_vendor_spoc_email")
@@ -3603,14 +3607,15 @@ def save_edit_vendor(request):
                     return redirect('csp_app:vendor')
                
            
-        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,'view_vendor_list': vendor, 'entity_list': entity_list})
+        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': vendor, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
-def create_vendor(request):    
+def create_vendor(request):  
+    vendor_list = master_vendor.objects.filter(status=active_status)  
     if request.method == 'POST':
         vendor_name = request.POST.get("vendor_name")
         vendor_spoc = request.POST.get("vendor_spoc")
@@ -3628,6 +3633,9 @@ def create_vendor(request):
             messages.warning(request, "Choose Port And Try Again")
             return redirect('csp_app:vendor')
         port_fk = port_list.objects.get(pk=port)
+        last_group_id_row = group_ids.objects.latest('candidate_code')                
+        last_group_id = last_group_id_row.pk
+        next_group_id = int(last_group_id) + 1        
         for i in entity:
             entity_fk = master_entity.objects.get(pk=i)
         
@@ -3721,7 +3729,7 @@ def create_vendor(request):
                 ) 
                 our_email.fail_silently = False
                 our_email.send()  
-            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user), created_date_time= datetime.now())
+            new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user), created_date_time= datetime.now(), group_id=next_group_id)
             new_vendor.save()
         
             newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'entity': entity_fk, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
@@ -3749,7 +3757,7 @@ def create_vendor(request):
                 
                 
         
-    return render(request, 'csp_app/vendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates})
+    return render(request, 'csp_app/vendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates})
 
 
 @login_required(login_url='/notlogin/')

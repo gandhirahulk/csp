@@ -60,9 +60,23 @@
                         </td>
                         <td>{{ eachvendor.spoc_name }}</td>
                         <td>{{ eachvendor.spoc_email_id }}</td>
-                        <td>{{ eachvendor.fk_entity_code }}</td>
+                        <td>
+                        {% if v_entity_list %}
+                            {% for entity in v_entity_list %}
+                                {% if entity.vendor_name == eachvendor.vendor_name %}
+                                    {{ entity.fk_entity_code }} 
+                                    {% if forloop.last %}
+                                        &nbsp;
+                                    {% else %}
+                                        ,
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.group_id }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> 
+                                <!-- | <input value="delete" readonly onclick="showDelete('{{ eachvendor.group_id }}', 'delete_vendor_form')">  -->
+                            </form>
                         </td>
                     </tr>
 
@@ -97,10 +111,11 @@
     </div>
     {% if view_vendor_list %}
         {% for eachvendor in view_vendor_list %}
+            {% if forloop.first %}
             <div class="form_content" style="height: 72vh;">
                 <form method="POST" action="">
                     {% csrf_token %}
-                    <input type="hidden" name="e_id" value="{{ eachvendor.pk}}">
+                    <input type="hidden" name="e_id" value="{{ eachvendor.group_id}}">
                     <div class="forms-input-holder">
                         <label for="">Company</label>
                 
@@ -161,9 +176,39 @@
             
                         <input type="text" placeholder="SPOC Email ID" value="{{ eachvendor.spoc_email_id }}" name="e_vendor_spoc_email" required="true" id="spocemail" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})">
                     </div>
+                    <div class="forms-input-holder">
+                        <label for="">Company</label>
+                        <input type="search" class="search-entity" name="" id="search-entity" placeholder="Search By Company Name" onkeyup="filterCompany('search-entity','entity-ul')">
+                       
+                    
+                    </div>
+                    
+                    
+                {% endif %}
+                <div class="entity-holder" id="entity-ul">
+                    <div><input type="checkbox" name="" id="selectall" value="Select All"> Select All</div>       
+        
+                    {% if entity_list %}
+                        {% for eachentity in entity_list %}
+                            
+                                <div style="flex-grow: 1;
+                                width: 100%;">    
+                                <span>
+        
+                                    <input type="checkbox" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
+                                </span>
+        
+                                </div>  
+                        {% endfor %}                
+                    {% endif %} 
+                    <p></p>
+                </div>
+            {% endfor %}
+        {% endif %} 
             </div>
-        {% endfor %}
-    {% endif %} 
+                  
+                    
+            
     <div class="form_footer">
             <button type="submit" class="edit-forms-save-btn" formaction="{% url 'csp_app:save_edit_vendor' %}">Save Changes</button>
         </form>
