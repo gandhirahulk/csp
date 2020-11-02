@@ -72,6 +72,9 @@ class port_list(models.Model):
     ssl = models.BooleanField()
     tls = models.BooleanField()
 
+class group_ids(models.Model):
+    group_id = models.IntegerField(primary_key=True)
+
 class master_vendor(models.Model):
     pk_vendor_code = models.AutoField(primary_key=True)
     vendor_name = models.CharField(max_length=100)
@@ -88,7 +91,7 @@ class master_vendor(models.Model):
     modified_by = models.CharField(max_length=100, null=True,blank=True)
     modified_date_time = models.DateTimeField(null=True,blank=True)
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
-
+    group_id = models.IntegerField()
     def __str__(self):
         return self.vendor_name
 

@@ -60,9 +60,23 @@
                         </td>
                         <td>{{ eachvendor.spoc_name }}</td>
                         <td>{{ eachvendor.spoc_email_id }}</td>
-                        <td>{{ eachvendor.fk_entity_code }}</td>
+                        <td>
+                        {% if v_entity_list %}
+                            {% for entity in v_entity_list %}
+                                {% if entity.vendor_name == eachvendor.vendor_name %}
+                                    {{ entity.fk_entity_code }} 
+                                    {% if forloop.last %}
+                                        &nbsp;
+                                    {% else %}
+                                        ,
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}</td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> 
+                                <!-- | <input value="delete" readonly onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')">  -->
+                            </form>
                         </td>
                     </tr>
 
@@ -85,7 +99,7 @@
   
 </div>
 
-<div  class="form_modal" style="display: block;">
+<div  class="form_modal" style="display: block;padding-top: 1%;">
 
     <div class="view_form_header">
         <div class="forms-heading">
@@ -95,6 +109,7 @@
     </div>
     {% if view_vendor_list %}
         {% for eachvendor in view_vendor_list %}
+        {% if forloop.first %}
             <div class="view_form_content">
                 <fieldset class="fds">
                     <legend>Basic Details</legend>
@@ -102,9 +117,7 @@
                         <tr>
                             <td><label for="">Vendor Name : </label> {{ eachvendor.vendor_name }}</td>
                         </tr>
-                        <tr>
-                            <td><label for="">Company : </label> {{ eachvendor.fk_entity_code }}</td>
-                        </tr>
+                       
                         <tr>
                             <td><label for="">Vendor Email ID : </label> {{ eachvendor.vendor_email_id }}</td>
                         </tr>
@@ -120,25 +133,43 @@
                     </table>                    
                 </fieldset>
                 <fieldset class="fds">
+                    <legend>Linked Companies</legend>
+                    {% if v_entity_list %}
+                    {% for entity in v_entity_list %}
+                        {% if entity.vendor_name == eachvendor.vendor_name %}
+                            <table>
+                                <tr>
+                                    <td><label for="">Company : </label> {{ entity.fk_entity_code }}</td>
+                                </tr>                                
+                                <tr>
+                                    <td><label for="">Linked By : </label> {{ eachvendor.modified_by }}</td>
+                                </tr>
+                                <tr>
+                                    <td><label for="">Date Time : </label> {{ eachvendor.modified_date_time }}</td>
+                                </tr>
+                               
+                            </table>  
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                                     
+                </fieldset>
+                <fieldset class="fds">
                     <legend>Other Details</legend>
                     <table>
                         <tr>
-                            <td><label for="">Created By : </label> {{ eachvendor.created_by }}</td>
+                            <td><label for="">Vendor Created By : </label> {{ eachvendor.created_by }}</td>
                         </tr>
                         <tr>
-                            <td><label for="">Created Date Time : </label> {{ eachvendor.created_date_time }}</td>
+                            <td><label for="">Vendor Created Date Time : </label> {{ eachvendor.created_date_time }}</td>
                         </tr>
-                        <tr>
-                            <td><label for="">Modified By : </label> {{ eachvendor.modified_by }}</td>
-                        </tr>
-                        <tr>
-                            <td><label for="">Modified Date Time : </label> {{ eachvendor.modified_date_time }}</td>
-                        </tr>
+                        
                        
                     </table>                    
                 </fieldset>
                          
             </div>
+           {% endif %}
         {% endfor %}
     {% endif %} 
     <div class="view_form_footer">

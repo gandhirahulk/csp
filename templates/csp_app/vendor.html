@@ -61,9 +61,24 @@
                         </td>
                         <td>{{ eachvendor.spoc_name }}</td>
                         <td>{{ eachvendor.spoc_email_id }}</td>
-                        <td>{{ eachvendor.fk_entity_code }}</td>
+                        <td>
+                            {% if v_entity_list %}
+                                {% for entity in v_entity_list %}
+                                    {% if entity.vendor_name == eachvendor.vendor_name %}
+                                        {{ entity.fk_entity_code }} 
+                                        {% if forloop.last %}
+                                            &nbsp;
+                                        {% else %}
+                                            ,
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachvendor.pk }}', 'delete_vendor_form')"> </form>
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.group_id }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> 
+                                <!-- | <input value="delete" readonly onclick="showDelete('{{ eachvendor.group_id }}', 'delete_vendor_form')"> -->
+                             </form>
                         </td>
                     </tr>
 
@@ -115,16 +130,7 @@
             <label for="vendor_email">Email ID</label>
             <input type="text" placeholder="Vendor Email ID" id="email" name="vendor_email" required="true" maxlength="60" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})">
         </div>
-        <!-- <div class="forms-input-holder">
-            <label for="">Email ID Password</label>
-    
-                <input type="password" placeholder="Email Password" name="vendor_email_pwd" required="true" maxlength="20" minlength="6">
-        </div>
-        <div class="forms-input-holder">
-            <label for="">Email ID Password</label>
-    
-                <input type="password" placeholder="Email Password" name="vendor_email_pwd" required="true" maxlength="20" minlength="6">
-        </div> -->
+        
 
         <div class="forms-input-holder">
         <label for="">Email ID Password</label>
