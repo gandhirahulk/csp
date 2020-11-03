@@ -69,7 +69,7 @@
                                         {% if forloop.last %}
                                             &nbsp;
                                         {% else %}
-                                            ,
+                                            <br>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
@@ -156,7 +156,7 @@
         <div class="forms-input-holder">
         <label for="">SPOC Name</label>
 
-            <input type="text" placeholder="SPOC Name" id="spoc" name="vendor_spoc" pattern="[A-Za-z\s]{2,}" title="Numbers are not allowed" required="true">
+            <input type="text" placeholder="SPOC Name" id="spoc" name="vendor_spoc" pattern="[A-Za-z\s]{2,50}" title="Numbers are not allowed" required="true">
         </div>
         <div class="forms-input-holder">
         <label for="">SPOC Email ID</label>

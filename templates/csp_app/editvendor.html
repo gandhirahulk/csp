@@ -68,7 +68,7 @@
                                     {% if forloop.last %}
                                         &nbsp;
                                     {% else %}
-                                        ,
+                                        <br>
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
@@ -116,20 +116,7 @@
                 <form method="POST" action="">
                     {% csrf_token %}
                     <input type="hidden" name="e_id" value="{{ eachvendor.group_id}}">
-                    <div class="forms-input-holder">
-                        <label for="">Company</label>
-                
-                            <select name="e_vendor_entity" required="true">
-                                <option value="{{ eachvendor.fk_entity_code_id }}" selected>{{ eachvendor.fk_entity_code }}</option>
-                                {% if entity_list %}
-                                    {% for eachentity in entity_list %}
-                                        {% if eachentity.pk != eachvendor.fk_entity_code_id %}                                        
-                                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
-                                        {% endif %}                                    
-                                    {% endfor %}                
-                                {% endif %}
-                            </select>
-                        </div>
+              
                     <div class="forms-input-holder">
                         <label for="vendor_phone">Vendor Name</label>
                         <input type="text" value="{{ eachvendor.vendor_name }}" id="name" placeholder="Vendor Name" name="e_vendor_name" title="Enity Name" required="true" maxlength="50" id="name">
@@ -176,33 +163,51 @@
             
                         <input type="text" placeholder="SPOC Email ID" value="{{ eachvendor.spoc_email_id }}" name="e_vendor_spoc_email" required="true" id="spocemail" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})">
                     </div>
+                 
+                    
                     <div class="forms-input-holder">
-                        <label for="">Company</label>
+                        <label for="">Add/Remove Company</label>
                         <input type="search" class="search-entity" name="" id="search-entity" placeholder="Search By Company Name" onkeyup="filterCompany('search-entity','entity-ul')">
                        
                     
                     </div>
                     
-                    
-                {% endif %}
-                <div class="entity-holder" id="entity-ul">
-                    <div><input type="checkbox" name="" id="selectall" value="Select All"> Select All</div>       
-        
-                    {% if entity_list %}
-                        {% for eachentity in entity_list %}
+                  
+                    <div class="entity-holder" id="entity-ul">
+                        {% if entity_list %}
                             
-                                <div style="flex-grow: 1;
-                                width: 100%;">    
-                                <span>
-        
-                                    <input type="checkbox" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
-                                </span>
-        
-                                </div>  
-                        {% endfor %}                
-                    {% endif %} 
-                    <p></p>
-                </div>
+                            {% for eachentity in entity_list %}
+                                
+                                    <div style="flex-grow: 1;
+                                    width: 100%;">    
+                                    {% if forloop.first %}
+                                    <span> 
+                                        <input type="checkbox" name="" id="selectall" value="Select All"> Select All      
+                                    </span> 
+                                    <br>
+                                    {% endif %}
+                                    {% for entities in existing %}
+                                        <span>
+                
+                                            <input type="checkbox" checked="true" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
+                                        </span>                                 
+
+                                    {% endfor %}
+                                    {% for entities in new %}
+                                    <span>
+            
+                                        <input type="checkbox" checked="true" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
+                                    </span>                                 
+
+                                    {% endfor %}
+                                    
+                                    </div>  
+                            {% endfor %}                
+                        {% endif %} 
+                        <p></p>
+                    </div>
+                {% endif %}
+               
             {% endfor %}
         {% endif %} 
             </div>
@@ -231,13 +236,17 @@
     }
     function filterCompany(inputid, ulid) {
         var input, filter, ul, li, a, i, txtValue;
+   
         input = document.getElementById(inputid);
+       
         filter = input.value.toUpperCase();
         ul = document.getElementById(ulid);
         li = ul.getElementsByTagName("div");
         for (i = 0; i < li.length; i++) {
             a = li[i].getElementsByTagName("span")[0];
+     
             txtValue = a.textContent || a.innerText;
+        
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 li[i].style.display = "";
             } else {
@@ -245,7 +254,7 @@
             }
         }
     }
-    document.addEventListener('DOMContentLoaded', function() {        
+     document.addEventListener('DOMContentLoaded', function() {        
         var input = document.getElementById('email');
         input.addEventListener('keydown', function(e){      
             var input = e.target;
@@ -287,6 +296,41 @@
             } 
         });
        
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#selectall").on("click", function () {
+        if (this.checked) {
+            empcheckboxes = document.getElementsByName('vendor_entity');
+            for (var i = 0, n = empcheckboxes.length; i < n; i++) {
+                empcheckboxes[i].checked = true;
+            }
+        } else {
+            empcheckboxes = document.getElementsByName('vendor_entity');
+            for (var i = 0, n = empcheckboxes.length; i < n; i++) {
+                empcheckboxes[i].checked = false;
+            }
+        }
+    });
+    $(".entities").on("click", function () {
+        allcheckboxes = document.getElementsByName('vendor_entity');
+        if (this.checked) {
+            var checked = 0;
+            for (var i = 0, n = allcheckboxes.length; i < n; i++) {
+                if (allcheckboxes[i].checked == true) {
+                    checked += 1;
+                }
+            }
+            if (checked === n) {
+                selectallcheckbox = document.getElementById('selectall');
+                selectallcheckbox.checked = true;
+            }
+        } else {
+            selectallcheckbox = document.getElementById('selectall');
+            selectallcheckbox.checked = false;
+        }
+    });
     });
 </script>
 {% endblock %}

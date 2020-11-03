@@ -3495,7 +3495,9 @@ def new_vendor(request):
     ports = port_list.objects.all()
     return render(request, 'csp_app/new_vendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'entity_list': entity_list, 'vendor_list': vendor_list, 'port_list': ports})
 
-
+def diff(li1, li2):
+    li_dif = [i for i in li1 + li2 if i not in li1 or i not in li2]
+    return li_dif
 
 
 @login_required(login_url='/notlogin/')
@@ -3506,7 +3508,23 @@ def view_vendor(request):
         if request.method == 'POST':
             vendor_id = request.POST.get("view_id")
             view_vendor_list = master_vendor.objects.filter(group_id = vendor_id)
-        return render(request, 'csp_app/viewvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': view_vendor_list, 'vendor_list': vendor_list})
+            entity_list = master_entity.objects.filter(status= active_status).order_by('entity_name')
+
+            existing_entities_list = []
+            new_entities_list = []
+            for i in view_vendor_list:
+                existing_entities_list.append(i.fk_entity_code_id)
+            for i in entity_list:
+                new_entities_list.append(i.pk)
+            for i in existing_entities_list:
+                l_e = chain(master_entity.objects.filter(pk = i))       
+            linked_entities = list(l_e)
+            new_e = diff(existing_entities_list, new_entities_list)
+            for i in new_e:
+                n_e = chain(master_entity.objects.filter(pk = i))       
+            new_entities = list(n_e)
+
+        return render(request, 'csp_app/viewvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': view_vendor_list, 'vendor_list': vendor_list, 'existing': linked_entities, 'new': new_entities})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -3546,6 +3564,7 @@ def delete_vendor(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_vendor(request):
+    
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
 
     vendor_list = master_vendor.objects.filter(status = active_status).order_by('vendor_name')
@@ -3553,10 +3572,28 @@ def view_edit_vendor(request):
     try:
         if request.method == 'POST':
             vendor_id = request.POST.get("view_id")
-            selected_vendor = master_vendor.objects.filter(group_id = vendor_id)         
-                   
-        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': selected_vendor,'entity_list':entity_list, 'vendor_list': vendor_list})
-    except UnboundLocalError:
+            selected_vendor = master_vendor.objects.filter(group_id = vendor_id) 
+            view_vendor_list = master_vendor.objects.filter(group_id = vendor_id)
+            entity_list = master_entity.objects.filter(status= active_status).order_by('entity_name')
+
+            existing_entities_list = []
+            new_entities_list = []
+            for i in view_vendor_list:
+                existing_entities_list.append(i.fk_entity_code_id)
+            for i in entity_list:
+                new_entities_list.append(i.pk)
+            for i in existing_entities_list:
+                l_e = chain(master_entity.objects.filter(pk = i))       
+            linked_entities = list(l_e)
+            new_e = diff(existing_entities_list, new_entities_list)
+            if len(new_e) > 0:
+                for i in new_e:
+                    n_e = chain(master_entity.objects.filter(pk = i))       
+                new_entities = list(n_e)
+            else:
+                new_entities = []
+        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': selected_vendor,'entity_list':entity_list, 'vendor_list': vendor_list, 'existing': linked_entities, 'new': new_entities})
+    except ObjectDoesNotExist:
         return HttpResponse("No Data To Display.")
 
 
@@ -3570,6 +3607,8 @@ def save_edit_vendor(request):
         if request.method == 'POST':
            if request.POST.get("e_id") != '':
                 vendor = master_vendor.objects.get(group_id = request.POST.get("e_id"))
+                selected_vendors = master_vendor.objects.filter(group_id = request.POST.get("e_id"))  
+
                 vendor_name = request.POST.get("e_vendor_name")
                 vendor_spoc = request.POST.get("e_vendor_spoc")
                 vendor_spoc_email = request.POST.get("e_vendor_spoc_email")
@@ -3579,7 +3618,7 @@ def save_edit_vendor(request):
                 port = request.POST.get("mail_port")
 
                 vendor_email_pwd = request.POST.get("e_vendor_email_pwd")
-                entity = request.POST.get("e_vendor_entity")
+                entity = request.POST.getlist("vendor_entity")
                 if entity == None or entity == '':
                     messages.warning(request, "Choose Company and Try Again")
                     return redirect('csp_app:vendor')
@@ -3618,7 +3657,7 @@ def save_edit_vendor(request):
                     return redirect('csp_app:vendor')
                
            
-        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': vendor, 'entity_list': entity_list})
+        return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'v_entity_list': selected_vendors,'allcandidates': all_active_candidates,'view_vendor_list': vendor, 'entity_list': entity_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -3661,7 +3700,7 @@ def create_vendor(request):
             try:
                 duplicate_vendor_email = master_vendor.objects.filter( vendor_email_id= vendor_email, fk_entity_code= entity_fk, status = active_status)
                 if duplicate_vendor_email:
-                    messages.error(request, "Vendor Email ID Already Exist")
+                    messages.error(request, "Vendor Email ID Already Exist" )
                     return redirect('csp_app:vendor')
                 print(3)
             except ObjectDoesNotExist:
@@ -3669,7 +3708,7 @@ def create_vendor(request):
             try:
                 duplicate_vendor_entity = master_vendor.objects.filter( vendor_name=vendor_name , fk_entity_code= entity_fk, status = active_status)
                 if duplicate_vendor_entity:                
-                    messages.error(request, "Vendor Already Exist")
+                    messages.error(request, "Vendor Already Exist for " + entity_fk.entity_name)
                     return redirect('csp_app:vendor')
                 print(5)
             except ObjectDoesNotExist:   
@@ -3682,87 +3721,88 @@ def create_vendor(request):
                 print(6)
             except ObjectDoesNotExist:   
                 print('here')   
-        for i in entity:
-            
-            try:
-                my_host = smtp
-                my_port = port_fk.port
-                my_username = vendor_email
-                my_password = vendor_email_pwd
+                   
+        try:
+            my_host = smtp
+            my_port = port_fk.port
+            my_username = vendor_email
+            my_password = vendor_email_pwd
 
-                my_use_tls = port_fk.tls
-                my_use_ssl = port_fk.ssl
-                subject1 = 'Test Mail'
-                body1 = 'Test Mail Vendor'
-                from1 = my_username
-                with get_connection(
-                host=my_host, 
-                port=my_port, 
-                username=my_username, 
-                password=my_password, 
-                use_tls=my_use_tls,
-                use_ssl= my_use_ssl
-                ) as connection:
-                    EmailMessage(subject1, body1, from1, ['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-                    connection=connection).send(fail_silently=False)
-                
-            except TimeoutError:
-                messages.error(request, "Provide Accurate Email Details")
-                return redirect('csp_app:vendor')
-            except SMTPAuthenticationError:
-                messages.error(request, "Provide Accurate Email Details")
-                return redirect('csp_app:vendor')
-            try:      
-                
-                assign_group = Group.objects.get(name='Vendor')         
-                user = User.objects.create_user(vendor_spoc_email)
-                password = User.objects.make_random_password()
-                user.password = password
-                user.set_password(user.password)
-                user.first_name = vendor_name 
-                user.email = vendor_spoc_email
-                assign_group.user_set.add(user)     
-                user.save()
-                newtemplate = render_to_string('emailtemplates/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': password})
-                our_email = EmailMessage(
-                    'CSP_APP: New vendor account created.',
-                    newtemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com'],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-            except IntegrityError:
-                template = render_to_string('emailtemplates/use_old_password_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk, 'mail': vendor_spoc_email})
-                our_email = EmailMessage(
-                    'CSP_APP',
-                    template,
-                    settings.EMAIL_HOST_USER,
-                    [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com'],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()  
+            my_use_tls = port_fk.tls
+            my_use_ssl = port_fk.ssl
+            subject1 = 'Test Mail'
+            body1 = 'Test Mail Vendor'
+            from1 = my_username
+            with get_connection(
+            host=my_host, 
+            port=my_port, 
+            username=my_username, 
+            password=my_password, 
+            use_tls=my_use_tls,
+            use_ssl= my_use_ssl
+            ) as connection:
+                EmailMessage(subject1, body1, from1, ['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
+                connection=connection).send(fail_silently=False)
+            
+        except TimeoutError:
+            messages.error(request, "Provide Accurate Email Details")
+            return redirect('csp_app:vendor')
+        except SMTPAuthenticationError:
+            messages.error(request, "Provide Accurate Email Details")
+            return redirect('csp_app:vendor')
+        try:      
+            
+            assign_group = Group.objects.get(name='Vendor')         
+            user = User.objects.create_user(vendor_spoc_email)
+            password = User.objects.make_random_password()
+            user.password = password
+            user.set_password(user.password)
+            user.first_name = vendor_name 
+            user.email = vendor_spoc_email
+            assign_group.user_set.add(user)     
+            user.save()
+            newtemplate = render_to_string('emailtemplates/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': password})
+            our_email = EmailMessage(
+                'CSP_APP: New vendor account created.',
+                newtemplate,
+                settings.EMAIL_HOST_USER,
+                [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com'],
+            ) 
+            our_email.fail_silently = False
+            our_email.send()
+        except IntegrityError:
+            template = render_to_string('emailtemplates/use_old_password_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk, 'mail': vendor_spoc_email})
+            our_email = EmailMessage(
+                'CSP_APP',
+                template,
+                settings.EMAIL_HOST_USER,
+                [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com'],
+            ) 
+            our_email.fail_silently = False
+            our_email.send()  
+        for i in entity:
+            entity_fk = master_entity.objects.get(pk=i)
             new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user), created_date_time= datetime.now(), group_id=next_group_id)
             new_vendor.save()
         
-            newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'entity': entity_fk, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
-            our_email = EmailMessage(
-                'CSP_APP: New vendor account created.',
-                newadmintemplate,
-                settings.EMAIL_HOST_USER,
-                [ request.user.email, 'sadaf.shaikh@udaan.com' ],
-            ) 
-            our_email.fail_silently = False
-            our_email.send() 
-            newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk.entity_name , 'user': str(request.user)})
-            our_email = EmailMessage(
-                'CSP_APP: New vendor account created.',
-                newadmintemplate,
-                settings.EMAIL_HOST_USER,
-                [ request.user.email, 'sadaf.shaikh@udaan.com' ],
-            ) 
-            our_email.fail_silently = False
-            our_email.send() 
+        newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'entity': entity_fk, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
+        our_email = EmailMessage(
+            'CSP_APP: New vendor account created.',
+            newadmintemplate,
+            settings.EMAIL_HOST_USER,
+            [ request.user.email, 'sadaf.shaikh@udaan.com' ],
+        ) 
+        our_email.fail_silently = False
+        our_email.send() 
+        newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk.entity_name , 'user': str(request.user)})
+        our_email = EmailMessage(
+            'CSP_APP: New vendor account created.',
+            newadmintemplate,
+            settings.EMAIL_HOST_USER,
+            [ request.user.email, 'sadaf.shaikh@udaan.com' ],
+        ) 
+        our_email.fail_silently = False
+        our_email.send() 
             
             
         messages.success(request, "Vendor Account Created. Check Mail For Credentials")            
