@@ -66,8 +66,8 @@
                         <th>E Mail ID Creation Request</th>
                         <th>Laptop Request</th>
                         <th>Final Status</th>
-                        <th>ctime</th>
-                        <th>mtime</th>
+                        <th class="sort-latest">ctime</th>
+                        <th class="sort-latest">mtime</th>
                     
                     </tr>
                 </thead>
@@ -522,11 +522,12 @@
                                             {{ eachcandidate.candidate_status }}
                                         </td>
                                         <td class="sort-latest" >{{ eachcandidate.created_date_time }}</td>
-                                        <td class="sort-latest" >{% if eachcandidate.modified_date_time == None %}
+                                        <td class="sort-latest" >
+                                            {% if eachcandidate.modified_date_time == None %}
                                             {{ eachcandidate.created_date_time }}
                                         {% else %}
                                             {{ eachcandidate.modified_date_time }}
-                                        {% endif %}</td>
+                                        {% endif %} </td>
                                         
                                     </tr>
 

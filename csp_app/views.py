@@ -3804,7 +3804,7 @@ def create_vendor(request):
         port_fk = port_list.objects.get(pk=port)
         last_group_id_row = group_ids.objects.latest('group_id')                
         last_group_id = last_group_id_row.pk
-        next_group_id = int(last_group_id) + 1     
+        next_group_id = int(last_group_id) + 2  
         for i in entity:
             entity_fk = master_entity.objects.get(pk=i)
             

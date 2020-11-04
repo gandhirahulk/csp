@@ -97,12 +97,12 @@
         });
         
         $('#candidate-table').DataTable({
-            
-            "order": [[ 22, "desc" ],[ 23, "desc" ]], 
-            "columnDefs" : [{"targets":23, "type":"date-eu"},{"targets":24, "type":"date-eu"}],
-            "pagingType": "full_numbers",
-            "paging": true,
-            "lengthMenu": [10, 25, 50, 75, 100],
+            scrollX : "true",
+            // "order": [[ 22, "desc" ],[ 23, "desc" ]], 
+            // "columnDefs" : [{"targets":23, "type":"date-eu"},{"targets":24, "type":"date-eu"}],
+            // "pagingType": "full_numbers",
+            // "paging": true,
+            // "lengthMenu": [10, 25, 50, 75, 100],
         } );
         $('#pending-candidate-table').DataTable();
         $('#joined-candidate-table').DataTable();
