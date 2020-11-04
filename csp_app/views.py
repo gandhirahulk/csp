@@ -3071,13 +3071,14 @@ def candidate_document_upload(request, candidate_id):
         try:
             is_valid_candidate = User.objects.get(username= request.user, groups__name='Candidate')
             print(is_valid_candidate)
-            for eachgroup in request.user.groups.all():               
 
-                if candidate_id != str(request.user):
-                    if str(eachgroup) == 'Vendor':
-                        print(1)
-                    else:
-                        return HttpResponse("No Data To Display....")
+            # for eachgroup in request.user.groups.all():               
+
+            #     if candidate_id != str(request.user):
+            #         if str(eachgroup) == 'Vendor':
+            #             print(1)
+            #         else:
+            #             return HttpResponse("No Data To Display....")
         except ObjectDoesNotExist:
             pass
         
