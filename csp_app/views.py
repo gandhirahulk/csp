@@ -3072,8 +3072,8 @@ def candidate_document_upload(request, candidate_id):
             is_valid_candidate = User.objects.get(username= request.user, groups__name='Candidate')
             print(is_valid_candidate)
             
-            if candidate_id != str(request.user):
-                return HttpResponse("No Data To Display....")
+            # if candidate_id != str(request.user):
+            #     return HttpResponse("No Data To Display....")
         except ObjectDoesNotExist:
             pass
         
