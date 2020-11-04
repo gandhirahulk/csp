@@ -82,10 +82,10 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cspdb',
+        'NAME': 'obtooldb',
         'USER': 'postgres',
-        'PASSWORD': 'udaan2020',
-        'HOST': '34.126.117.215',
+        'PASSWORD': 'associate',
+        'HOST': '172.31.20.44',
         'PORT': 5432,
     }
 }
