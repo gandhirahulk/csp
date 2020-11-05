@@ -255,14 +255,14 @@ def check_duplicate_candidate_new(request):
     except ObjectDoesNotExist:
         result['details'] = ''
     try:
-        if email.endswith('gmail.com') or email.endswith('yahoo.com') or email.endswith('hotmail.com') or email.endswith('outlook.com'):
+        if email.endswith('gmail.com') or email.endswith('yahoo.com') or email.endswith('hotmail.com') or email.endswith('outlook.com') or email.endswith('yahoo.co.in') or email.endswith('rediffmail.com'):
 
             dup_candidate_email = master_candidate.objects.get(Personal_Email_Id=email, status= active_status)
             result['email'] = dup_candidate_email.pk_candidate_code
             result['invalid_domain'] = ''
             return JsonResponse(result)
         else:
-            result['invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com'
+            result['invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com, yahoo.co.in, rediffmail.com'
             return JsonResponse(result)
     except ObjectDoesNotExist:
         result['email'] = ''
@@ -323,14 +323,14 @@ def check_duplicate_candidate_edit(request):
     except ObjectDoesNotExist:
         result['details'] = ''
     try:
-        if email.endswith('gmail.com') or email.endswith('yahoo.com') or email.endswith('hotmail.com') or email.endswith('outlook.com'):
+        if email.endswith('gmail.com') or email.endswith('yahoo.com') or email.endswith('hotmail.com') or email.endswith('outlook.com') or email.endswith('yahoo.co.in') or email.endswith('rediffmail.com'):
 
             dup_candidate_email = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Personal_Email_Id=email, status= active_status)
             result['email'] = dup_candidate_email.pk_candidate_code
             result['invalid_domain'] = ''
             return JsonResponse(result)
         else:
-            result['invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com'
+            result['invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com, yahoo.co.in, rediffmail.com'
             return JsonResponse(result)
     except ObjectDoesNotExist:
         result['email'] = ''
