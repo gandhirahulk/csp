@@ -147,7 +147,7 @@
                                         class = "pending-col"
 
                                         {% endif %}>{{ eachcandidate.loi_status }}
-                                            {% if eachcandidate.documentation_status_id == 1 %}
+                                            {% if eachcandidate.loi_status_id == 1 %}
                                                 | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
 
                                             {% endif %}
@@ -381,7 +381,7 @@
                                         class = "pending-col"
 
                                         {% endif %}>{{ eachcandidate.loi_status }}
-                                            {% if eachcandidate.documentation_status_id == 1 %}
+                                            {% if eachcandidate.loi_status_id == 1 %}
                                                 | <a href="{% url 'csp_app:resend_loi' eachcandidate.pk  %}">Resend</a>
                                             {% endif %}
                                         </td>
