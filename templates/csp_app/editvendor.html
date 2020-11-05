@@ -174,36 +174,34 @@
                     
                   
                     <div class="entity-holder" id="entity-ul">
-                        {% if entity_list %}
-                            
-                            {% for eachentity in entity_list %}
-                                
-                                    <div style="flex-grow: 1;
-                                    width: 100%;">    
-                                    {% if forloop.first %}
-                                    <span> 
-                                        <input type="checkbox" name="" id="selectall" value="Select All"> Select All      
-                                    </span> 
-                                    <br>
-                                    {% endif %}
-                                    {% for entities in existing %}
-                                        <span>
-                
-                                            <input type="checkbox" checked="true" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
-                                        </span>                                 
+                          
+                        <div style="flex-grow: 1;
+                        width: 100%;">    
+                        {% if forloop.first %}
+                        <span> 
+                            <input type="checkbox" name="" id="selectall" value="Select All"> Select All      
+                        </span> 
+                        <br>
+                        {% endif %}
+                        {% for entities in existing %}
+                            {% for i in entities %}
+                                <span>
+        
+                                    <input type="checkbox" checked="true" name="vendor_entity" value="{{ i.pk }}" id="" class="entities"> {{ i.entity_name }}  
+                                </span>                                 
+                                <br>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for entities in new %}
+                        <span>
 
-                                    {% endfor %}
-                                    {% for entities in new %}
-                                    <span>
-            
-                                        <input type="checkbox" checked="true" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
-                                    </span>                                 
-
-                                    {% endfor %}
-                                    
-                                    </div>  
-                            {% endfor %}                
-                        {% endif %} 
+                            <input type="checkbox" name="vendor_entity" value="{{ entities.pk }}" id="" class="entities"> {{ entities.entity_name }}  
+                        </span>                                 
+                        <br>
+                        {% endfor %}
+                        
+                        </div>  
+                     
                         <p></p>
                     </div>
                 {% endif %}
