@@ -26,57 +26,10 @@
 <div class="tab-container">
     <button id="new_sub_team" class="add-new-btn">New Sub Team</button>
 </div>
-<div class="table-container">
-    <a href="{% url 'csp_app:export_subteam' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
-    <table id="subteam-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Company</th>
-                <th class="sort-latest">time</th>
-                <th>Department</th>
-                
-                <th>Function</th>
 
-                <th>Team</th>
+<!--Table -->
+{% include 'organization_tables/sub_team_table.html' %}
 
-                <th>Sub Team Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if t_list %}
-                {% for eachsubteam in t_list %}
-
-                    <tr>
-                        <td>{{ eachsubteam.fk_team_code.fk_function_code.fk_department_code.fk_entity_code }}</td>
-                        <td class="sort-latest" >{{ eachsubteam.created_date_time }}</td>
-                        <td>{{ eachsubteam.fk_team_code.fk_function_code.fk_department_code }}</td>
-
-                        <td>{{ eachsubteam.fk_team_code.fk_function_code }}</td>
-
-                        <td>{{ eachsubteam.fk_team_code }}</td>
-
-                        <td>{{ eachsubteam.sub_team_name }}</td>
-                        <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachsubteam.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_subteam' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_subteam' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachsubteam.pk }}', 'delete_subteam_form')"> </form>
-                        </td>
-                    </tr>
-
-                {% endfor %}                
-
-            {% else %}
-                {% for eachsubteam in t_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
 <input type="hidden" name="" id="email">
 <input type="hidden" name="" id="phone_no">
 <input type="hidden" name="" id="spocemail">

@@ -30,75 +30,8 @@
 </div>
 
 
-<div class="table-container">
-    <a href="{% url 'csp_app:export_vendor' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
-    
-    <table id="vendor-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Vendor Name</th>
-                <th class="sort-latest" >time</th>
-                <th>Contact Details</th>
-                <th>SPOC</th>
-                <th>SPOC Email</th>
-                <th>Company</th>
-                
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if v_list %}
-                {% for eachvendor in v_list %}
-
-                    <tr>
-                        <td>{{ eachvendor.vendor_name }}</td>
-                        <td class="sort-latest" >{{ eachvendor.created_date_time }}</td>
-
-                        <td>
-                            <div>{{ eachvendor.vendor_email_id }}</div>
-                            <div>{{ eachvendor.vendor_phone_number }}</div>
-                        </td>
-                        <td>{{ eachvendor.spoc_name }}</td>
-                        <td>{{ eachvendor.spoc_email_id }}</td>
-                        <td>
-                        {% if v_entity_list %}
-                            {% for entity in v_entity_list %}
-                                {% if entity.vendor_name == eachvendor.vendor_name %}
-                                    {{ entity.fk_entity_code }} 
-                                    {% if forloop.last %}
-                                        &nbsp;
-                                    {% else %}
-                                        <br>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}</td>
-                        <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachvendor.group_id }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_vendor' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_vendor' %}"> 
-                                <!-- | <input value="delete" readonly onclick="showDelete('{{ eachvendor.group_id }}', 'delete_vendor_form')">  -->
-                            </form>
-                        </td>
-                    </tr>
-
-                {% endfor %}                
-
-            {% else %}
-                {% for eachvendor in v_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
-
+<!--Table -->
+{% include 'organization_tables/vendor_table.html' %}
 
 
   <div id="view_entity_form" class="form_modal" style="padding-top: 2%;display: block;">

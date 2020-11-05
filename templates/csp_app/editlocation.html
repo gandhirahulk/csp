@@ -29,54 +29,8 @@
 <input type="hidden" name="" id="email">
 <input type="hidden" name="" id="phone_no">
 <input type="hidden" name="" id="spocemail">
-<div class="table-container">
-    <a href="{% url 'csp_app:export_location' %}" class="export-btn">Export <i class="fas fa-file-export"></i> </a>
-    <table id="location-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Company</th>
-                <td class="sort-latest" >time</td>
-                <th>Region</th>
-                <th>State</th>
-                <th>City</th>
-                <th>Location Name</th>
-                <th>Location Code</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if l_list %}
-                {% for eachlocation in l_list %}
-
-                    <tr>
-                        <td>{{ eachlocation.fk_city_code.fk_state_code.fk_region_code.fk_entity_code }}</td>
-                        <td class="sort-latest" >{{ eachlocation.created_date_time }}</td>
-                        <td>{{ eachlocation.fk_city_code.fk_state_code.fk_region_code }}</td>
-                        <td>{{ eachlocation.fk_city_code.fk_state_code }}</td>
-                        <td>{{ eachlocation.fk_city_code }}</td>
-                        <td>{{ eachlocation.location_name }}</td>
-                        <td>{{ eachlocation.location_code }}</td>
-
-                        
-                        <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachlocation.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_location' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_location' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachlocation.pk }}', 'delete_location_form')"> </form>
-                        </td>
-                    </tr>
-
-                {% endfor %}                
-
-            {% else %}
-                {% for eachlocation in l_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
+<!--Table -->
+{% include 'organization_tables/location_table.html' %}
 <div id="view_entity_form" class="form_modal" style="display: block;padding-top: 5%;">
 
     <div class="form_header">

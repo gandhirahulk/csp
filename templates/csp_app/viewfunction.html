@@ -27,49 +27,8 @@
     <button id="new_function" class="add-new-btn">New Function</button> 
 </div>
 
-<div class="table-container">
-    <a href="{% url 'csp_app:export_function' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
-    <table id="function-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Company</th>
-                <th class="sort-latest" >time</th>
-                
-                <th>Department</th>
-                <th>Function Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if f_list %}
-                {% for eachfunction in f_list %}
-
-                    <tr>
-                        <td>{{ eachfunction.fk_department_code.fk_entity_code }}</td>
-                        <td class="sort-latest" >{{ eachfunction.created_date_time }}</td>
-                        <td>{{ eachfunction.fk_department_code }}</td>
-
-                        <td>{{ eachfunction.function_name }}</td>
-                        <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachfunction.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_function' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_function' %}"> | <input readonly value="delete" onclick="showDelete('{{ eachfunction.pk }}', 'delete_function_form')"> </form>
-                        </td>
-                    </tr>
-
-                {% endfor %}                
-
-            {% else %}
-                {% for eachfunction in f_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
+<!--Table -->
+{% include 'organization_tables/function_table.html' %}
 
 <div  class="form_modal" style="padding-top: 10%;display: block;">
 

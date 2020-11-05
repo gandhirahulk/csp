@@ -28,50 +28,8 @@
 </div>
 
 
-<div class="table-container">
-    <a href="{% url 'csp_app:export_city' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
-    <table id="city-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Company</th>
-
-                <th>Region</th>
-                <th class="sort-latest" >time</th>
-                <th>State</th>
-
-                <th>City Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if c_list %}
-                {% for eachcity in c_list %}
-
-                    <tr>
-                        <td>{{ eachcity.fk_state_code.fk_region_code.fk_entity_code }}</td>
-                        <td class="sort-latest" >{{ eachcity.created_date_time }}</td>
-                        <td>{{ eachcity.fk_state_code.fk_region_code }}</td>
-                        <td>{{ eachcity.fk_state_code }}</td>
-                        <td>{{ eachcity.city_name }}</td>
-                        <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcity.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_city' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_city' %}"> | <input value="delete" readonly  onclick="showDelete('{{ eachcity.pk }}', 'delete_city_form')"> </form>
-                        </td>
-                    </tr>
-
-                {% endfor %}                
-
-            {% else %}
-                {% for eachcity in c_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
+<!--Table -->
+{% include 'organization_tables/city_table.html' %}
 <div id="view_entity_form" class="form_modal" style="display: block;padding-top:10%">
 
     <div class="form_header">

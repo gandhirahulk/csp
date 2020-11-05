@@ -27,44 +27,8 @@
     <button id="new_region" class="add-new-btn">New Region</button> 
 </div>
 
-<div class="table-container">
-    <a href="{% url 'csp_app:export_region' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
-    <table id="region-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Company</th>
-                <th class="sort-latest" >time</th>
-                <th>Region Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if r_list %}
-                {% for eachregion in r_list %}
-
-                    <tr>
-                        <td>{{ eachregion.fk_entity_code }}</td>
-                        <td class="sort-latest" >{{ eachregion.created_date_time }}</td>
-                        <td>{{ eachregion.region_name }}</td>
-                        <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachregion.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_region' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_region' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachregion.pk }}', 'delete_region_form')"> </form>
-                        </td>
-                    </tr>
-
-                {% endfor %}                
-
-            {% else %}
-                {% for eachregion in r_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
+<!--Table -->
+{% include 'organization_tables/region_table.html' %}
 
 <div id="region_form" class="form_modal" style="padding-top: 13%;">
     <div class="form_header">
