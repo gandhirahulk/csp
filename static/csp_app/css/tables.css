@@ -44,6 +44,11 @@
   font-size: 14px;
 }
 
+.dataTables_scrollBody thead tr[role="row"]{
+  visibility: collapse !important;
+  margin-bottom: 0px !important;
+}
+
 table.dataTable {
     width: 100%;
     margin: 0 auto;

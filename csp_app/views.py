@@ -3907,6 +3907,15 @@ def save_edit_vendor(request):
                     each_vendor.spoc_name = vendor_spoc
                     each_vendor.save()
                 for i in remove_entities:
+                    if len(vendor_entities) == len(remove_entities):
+                        selected_vendor = master_vendor.objects.get(group_id = vendor_group_id, fk_entity_code= entity_fk, status=active_status)
+
+                        a = str(selected_vendor.vendor_email_id)
+                
+                        selected_user = User.objects.get(email= a)
+                        selected_user.is_active = False
+                        selected_user.save()
+                       
                     entity_fk = master_entity.objects.get(pk=i)
                     selected_vendor = master_vendor.objects.get(group_id = vendor_group_id, fk_entity_code= entity_fk, status=active_status)
                     try:
@@ -3914,9 +3923,12 @@ def save_edit_vendor(request):
                         messages.error(request, "Vendor Referenced By other Modules Cannot Delete")
                         return redirect('csp_app:save_edit_vendor')
                     except ObjectDoesNotExist:
-                        
+                        selected_vendor.modified_by = str(request.user)
+                        selected_vendor.modified_date_time = datetime.now()
                         selected_vendor.status = deactive_status
                         selected_vendor.save()
+                
+
                 messages.success(request, "Vendor Account Edited Successfully")            
                 return redirect('csp_app:vendor')       
     
