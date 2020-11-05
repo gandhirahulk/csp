@@ -1,0 +1,49 @@
+<div class="table-container">
+    <a href="{% url 'csp_app:export_state' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
+    <table id="state-table" class="dataTable">
+        <thead>
+            <tr>
+                <th class="sort-latest" >time</th>
+                <th class="sort-latest" >modifiedtime</th>
+                <th>Company</th>
+                <th>Region</th>
+
+                <th>State Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if state_list %}
+                {% for eachstate in state_list %}
+
+                    <tr>
+                        <td class="sort-latest" >{{ eachstate.created_date_time }}</td>
+                        <td class="sort-latest" > {% if eachstate.modified_date_time == None %}
+                                {{ eachstate.created_date_time }}
+                            {% else %}
+                                {{ eachstate.modified_date_time }}
+                            {% endif %}
+                        </td>
+                        <td>{{ eachstate.fk_region_code.fk_entity_code }}</td>
+                        <td>{{ eachstate.fk_region_code }}</td>
+
+                        <td>{{ eachstate.state_name }}</td>
+                        <td class="action-col">
+                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachstate.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_state' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_state' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachstate.pk }}', 'delete_state_form')"> </form>
+                        </td>
+                    </tr>
+
+                {% endfor %}                
+
+            {% else %}
+                {% for eachstate in state_list %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>   
+    </table>
+  
+</div>

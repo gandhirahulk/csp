@@ -26,51 +26,8 @@
     <button id="new_wage" class="add-new-btn" style="width: auto;">New Minimum Wages</button>
 </div>
 
-<div class="table-container">
-    <a href="{% url 'csp_app:export_minimumwages' %}"class="export-btn">Export <i class="fas fa-file-export"></i></a>
-  
-    <table id="wages-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>State</th>
-                <th class="sort-latest" >time</th>
-
-                <th>Skill Type</th>
-                <th>Minimum Wage</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if w_list %}
-                {% for eachwage in w_list %}
-
-                    <tr>
-                        <td>{{ eachwage.fk_state_code }}</td>
-                        <td class="sort-latest" >{{ eachwage.created_date_time }}</td>
-
-                        <td>{{ eachwage.fk_skill_code }}</td>
-                        <td>{{ eachwage.wages }}</td>
-
-                        <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachwage.pk }}" name="view_id" id="selected_id"><input type="submit" value="view" id="view" formaction="{% url 'csp_app:view_minimumwages' %}"> | <input type="submit" value="edit" formaction="{% url 'csp_app:edit_minimumwages' %}"> | <input value="delete" readonly onclick="showDelete('{{ eachwage.pk }}', 'delete_wage_form')"> </form>
-                        </td>
-                    
-                    </tr>
-
-                {% endfor %}                
-
-            {% else %}
-                {% for eachwage in w_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
+<!--Table -->
+{% include 'organization_tables/minimum_wage_table.html' %}
 
 <div id="view_entity_form" class="form_modal" style="display: block;padding-top: 10%;">
 
