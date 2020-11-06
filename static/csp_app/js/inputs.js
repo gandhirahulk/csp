@@ -9,7 +9,7 @@ function onlyAlphabets(event) {
 
 function alphaNumeric(event) {
     var value = String.fromCharCode(event.which);
-    console.log(value);
+    
     var pattern = new RegExp(/[a-z0-9. /-]/i);
     return pattern.test(value);    
 }
