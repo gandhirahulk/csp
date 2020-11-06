@@ -3646,12 +3646,15 @@ def view_vendor(request):
                 l_e = chain(master_entity.objects.filter(pk = i))       
             linked_entities = list(l_e)
             new_e = diff(existing_entities_list, new_entities_list)
-            for i in new_e:
-                n_e = chain(master_entity.objects.filter(pk = i))       
+            if len(new_e) > 0:
+                for i in new_e:
+                    n_e = chain(master_entity.objects.filter(pk = i))   
+            else:
+                n_e = ''    
             new_entities = list(n_e)
 
         return render(request, 'csp_app/viewvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': view_vendor_list, 'vendor_list': vendor_list, 'existing': linked_entities, 'new': new_entities})
-    except UnboundLocalError:
+    except ObjectDoesNotExist:
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
@@ -3668,11 +3671,11 @@ def delete_vendor(request):
             else:
                 selected_vendor = master_vendor.objects.get(group_id = vendor_id)
               
-                a = str(selected_vendor.vendor_email_id)
+                # a = str(selected_vendor.spoc_email_id)
               
-                selected_user = User.objects.get(email= a)
-                selected_user.is_active = False
-                selected_user.save()
+                # selected_user = User.objects.get(email= a)
+                # selected_user.is_active = False
+                # selected_user.save()
                 selected_vendor.modified_by = str(request.user)
                 selected_vendor.modified_date_time = datetime.now()
                 selected_vendor.status = deactive_status
@@ -3730,8 +3733,8 @@ def view_edit_vendor(request):
                 new_entities = []
          
         return render(request, 'csp_app/editvendor.html', {'v_list': created_by_vendors(),'v_entity_list': vendor_list,'allcandidates': all_active_candidates,'view_vendor_list': selected_vendor,'entity_list':entity_list, 'vendor_list': vendor_list, 'existing': linked_entities, 'new': new_entities})
-    except ObjectDoesNotExist:
-        return HttpResponse("No Data To Display.")
+    except UnboundLocalError:
+        return HttpResponse("No Data To Display.ji")
 
 
 @login_required(login_url='/notlogin/')
@@ -3924,14 +3927,7 @@ def save_edit_vendor(request):
                     each_vendor.spoc_name = vendor_spoc
                     each_vendor.save()
                 for i in remove_entities:
-                    if len(vendor_entities) == len(remove_entities):
-                        selected_vendor = master_vendor.objects.get(group_id = vendor_group_id, fk_entity_code= entity_fk, status=active_status)
-
-                        a = str(selected_vendor.vendor_email_id)
-                
-                        selected_user = User.objects.get(email= a)
-                        selected_user.is_active = False
-                        selected_user.save()
+                    
                        
                     entity_fk = master_entity.objects.get(pk=i)
                     selected_vendor = master_vendor.objects.get(group_id = vendor_group_id, fk_entity_code= entity_fk, status=active_status)
@@ -3940,6 +3936,19 @@ def save_edit_vendor(request):
                         messages.error(request, "Vendor Referenced By other Modules Cannot Delete")
                         return redirect('csp_app:save_edit_vendor')
                     except ObjectDoesNotExist:
+                        if len(vendor_entities) == len(remove_entities):
+                            selected_vendor = master_vendor.objects.get(group_id = vendor_group_id, fk_entity_code= entity_fk, status=active_status)
+
+                            a = str(selected_vendor.spoc_email_id)
+                    
+                            selected_user = User.objects.get(email= a)
+                            selected_user.delete()
+                            selected_vendor.modified_by = str(request.user)
+                            selected_vendor.modified_date_time = datetime.now()
+                            selected_vendor.status = deactive_status
+                            selected_vendor.save()
+                            messages.success(request, "Vendor Account Edited Successfully")            
+                            return redirect('csp_app:vendor') 
                         selected_vendor.modified_by = str(request.user)
                         selected_vendor.modified_date_time = datetime.now()
                         selected_vendor.status = deactive_status
