@@ -4054,7 +4054,7 @@ def create_vendor(request):
             user.email = vendor_spoc_email
             assign_group.user_set.add(user)     
             user.save()
-            newtemplate = render_to_string('emailtemplates/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': password})
+            newtemplate = render_to_string('emailtemplates/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_spoc_email, 'password': password})
             our_email = EmailMessage(
                 'CSP_APP: New vendor account created.',
                 newtemplate,
