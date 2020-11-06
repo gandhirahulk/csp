@@ -640,3 +640,13 @@ class IT_Email_ID(models.Model):
 
     def __str__(self):
         return self.email_id
+
+class gross_salary_history(models.Model):
+    pk_history_code = models.AutoField(primary_key=True)
+    fk_candidate_code = models.ForeignKey(master_candidate, on_delete=models.CASCADE)
+    gross_salary_entered = models.FloatField()
+    gross_salary_calculated = models.FloatField()
+    salary_type_selected = models.ForeignKey(salary_type, on_delete=models.CASCADE)
+    enetered_by = models.CharField(max_length=100)
+
+    

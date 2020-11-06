@@ -31,16 +31,28 @@ insert into "csp_app_states" (pk_state_code,zone,state_name) values(30,'WEST','G
 insert into "csp_app_states" (pk_state_code,zone,state_name) values(32,'WEST','MADHYA PRADESH');
 insert into "csp_app_states" (pk_state_code,zone,state_name) values(31,'WEST','MAHARASHTRA');
 
-
-delete from "csp_app_master_candidate"
-delete from "csp_app_master_location"
-delete from "csp_app_master_city"
-delete from "csp_app_master_state"
-delete from "csp_app_master_region"
-delete from "csp_app_master_designation"
-delete from "csp_app_master_sub_team"
-delete from "csp_app_master_team"
-delete from "csp_app_master_function"
-delete from "csp_app_master_department"
-delete from "csp_app_master_entity"
-delete from "csp_app_minimum_wages"
+delete from "csp_app_gross_salary_history";
+delete from "csp_app_candidate_document";
+delete from "csp_app_salary_structure";
+delete from "csp_app_master_candidate";
+delete from "csp_app_dummy_candidate";
+delete from "csp_app_master_location";
+delete from "csp_app_master_city";
+delete from "csp_app_master_state";
+delete from "csp_app_master_region";
+delete from "csp_app_master_designation";
+delete from "csp_app_master_sub_team";
+delete from "csp_app_master_team";
+delete from "csp_app_master_function";
+delete from "csp_app_master_department";
+delete from "csp_app_master_vendor";
+delete from "csp_app_master_entity";
+delete from "csp_app_master_minimum_wages";
+delete from "csp_app_csp_candidate_code";
+delete from "csp_app_dummy_candidate_code";
+insert into "csp_app_csp_candidate_code" values(0, 'C000000000');
+insert into "csp_app_dummy_candidate_code" values(0, 'D000000000');
+delete from "csp_app_group_ids";
+insert into "csp_app_group_ids" values(0);
+delete from "auth_user" where not id = 1 and not id = 23 and not id = 24;
+delete from "auth_user_groups" where not user_id = 1 and not user_id = 23 and not user_id = 24;

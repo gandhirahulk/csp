@@ -15,3 +15,9 @@ function showMe(id, caretid){
 
     // alert("yep");
 }
+
+$(function() {
+    $('input,select').on('keypress', function(e) {
+        e.which !== 13 || $('[tabIndex=' + (+this.tabIndex + 1) + ']')[0].focus();
+    });
+});

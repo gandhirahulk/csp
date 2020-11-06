@@ -28,6 +28,8 @@ from smtplib import SMTPAuthenticationError
 a = default_token_generator
 from django.db.models import Count
 from django.db.models.query import QuerySet
+from num2words import num2words
+print(num2words(100000, lang = 'en_IN'))
 # 0 - reject
 # 1 - approve
 # 2 - pending
@@ -60,7 +62,7 @@ except ObjectDoesNotExist:
 
 def resend_loi(request, cid):
     selected_candidate = master_candidate.objects.get(pk=cid)
- 
+    
     try:
         my_host = selected_candidate.fk_vendor_code.vendor_smtp
         my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
@@ -68,8 +70,12 @@ def resend_loi(request, cid):
         my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
         my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
         my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
-        subject1 = 'LOI'
-        body1 = 'LOI'
+        candidate_salary_structure = salary_structure.objects.get(candidate_code= selected_candidate.pk)
+        ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
+        ctc_word = num2words(ctc_number, lang = 'en_IN')
+        subject1 = 'Letter Of Intent'
+        html_content = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'company_name': selected_candidate.fk_entity_code,'state': selected_candidate.fk_state_code, 'city': selected_candidate.fk_city_code, 'doj': selected_candidate.Date_of_Joining,'ctc_number': ctc_number ,'ctc_words': ctc_word})
+        body1 = strip_tags(html_content)
         from1 = my_username
         with get_connection(
         host=my_host, 
@@ -79,8 +85,9 @@ def resend_loi(request, cid):
         use_tls=my_use_tls,
         use_ssl= my_use_ssl
         ) as connection:
-            EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id, 'sadaf.shaikh@udaan.com'],
-            connection=connection).send()
+            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
     except TimeoutError:
         return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
     # except SMTPAuthenticationError:
@@ -816,7 +823,7 @@ def process_requests(request, cid):
                 return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
                 selected_candidate = master_candidate.objects.get(pk= candidate_id)
-                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary)
+                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary)
                 
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time= datetime.now()
@@ -1036,14 +1043,19 @@ def process_requests(request, cid):
                         
                         
                         try:
+                            
                             my_host = selected_candidate.fk_vendor_code.vendor_smtp
                             my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
                             my_username = selected_candidate.fk_vendor_code.vendor_email_id
                             my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
                             my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
                             my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
-                            subject1 = 'LOI'
-                            body1 = 'LOI'
+                            candidate_salary_structure = salary_structure.objects.get(candidate_code= selected_candidate.pk)
+                            ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
+                            ctc_word = num2words(ctc_number, lang = 'en_IN')
+                            subject1 = 'Letter Of Intent'
+                            html_content = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'company_name': selected_candidate.fk_entity_code,'state': selected_candidate.fk_state_code, 'city': selected_candidate.fk_city_code, 'doj': selected_candidate.Date_of_Joining,'ctc_number': ctc_number ,'ctc_words': ctc_word})
+                            body1 = strip_tags(html_content)
                             from1 = my_username
                             with get_connection(
                             host=my_host, 
@@ -1053,24 +1065,12 @@ def process_requests(request, cid):
                             use_tls=my_use_tls,
                             use_ssl= my_use_ssl
                             ) as connection:
-                                EmailMessage(subject1, body1, from1, [selected_candidate.Personal_Email_Id, 'sadaf.shaikh@udaan.com'],
-                                            connection=connection).send()
-                            selected_candidate.loi_status = loi_status.objects.get(pk=1)
-                            selected_candidate.save()
+                                msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
+                                msg.attach_alternative(html_content, "text/html")
+                                msg.send()
                             messages.success(request, "Candidate approved LOI sent to candidate.")
                             return redirect("csp_app:pending_request")
-                        except TimeoutError:
-                            template = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'id':selected_candidate.pk ,'pwd': password,'status': 'Approved' })
-                            our_email = EmailMessage(
-                                'LOI',
-                                template,
-                                settings.EMAIL_HOST_USER,
-                                [ selected_candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
-                            ) 
-                            our_email.fail_silently = False
-                            selected_candidate.loi_status = loi_status.objects.get(pk=1)
-                            selected_candidate.save()
-                            our_email.send()
+                        except TimeoutError:                            
                             return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
                         # send_mail(subject, message, from_email= vendoremail, [selected_candidate.Personal_Email_Id], fail_silently=False, auth_user=vendoremail, auth_password=password)
     
@@ -1087,7 +1087,7 @@ def process_requests(request, cid):
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
-def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary):
+def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary):
     changes_list = {}
     if selected_candidate.First_Name != firstname:
         changes_list['First Name'] = [ selected_candidate.First_Name, firstname ]
@@ -1196,8 +1196,11 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     if selected_candidate.Laptop_Allocation != la_fk:
         changes_list['Laptop Allocation'] = [ selected_candidate.Laptop_Allocation, la_fk ]
     selected_candidate.Laptop_Allocation= la_fk
+    s_type = 0
+    s_amount = 0
     if selected_candidate.Salary_Type != salarytype_fk:
         changes_list['Salary Type'] = [ selected_candidate.Salary_Type, salarytype ]
+        s_type = 1
     selected_candidate.Salary_Type= salarytype_fk
   
     x = format(float(gross_salary), '.1f')
@@ -1205,8 +1208,11 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
        
     if x != y:
         changes_list['Gross Salary Amount'] = [ selected_candidate.Gross_Salary_Amount, gross_salary ]
+        s_amount = 1
     selected_candidate.Gross_Salary_Amount= gross_salary
-   
+    if s_type > 0 or s_amount > 0:
+        new_gross_salary = gross_salary_history(fk_candidate_code= selected_candidate, gross_salary_entered= gross_salary, gross_salary_calculated= ss_gross_salary, salary_type_selected= salarytype_fk, enetered_by= str(request.user))
+        new_gross_salary.save()    
     return changes_list
 
 
@@ -2441,7 +2447,7 @@ def edit_candidate(request):
                 loc_code = remove_specials(loc_code)
               
                 selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, ss_gross_salary)
-                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary)
+                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary)
                 
                 
 
@@ -2477,13 +2483,24 @@ def edit_candidate(request):
         return HttpResponse("No Data To Display.")
 
 def create_salary_structure(selected_candidate, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, ss_gross_salary, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary, variable, annualvariable, fixedsalary, annualfixedsalary):
-    new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= basic, annual_basic= annualbasic, house_rent_allowance= house_rent_allowance, annual_house_rent_allowance= annualhouse_rent_allowance, statutory_bonus=statutory_bonus, annual_statutory_bonus= annualstatutory_bonus,
-        special_allowance=special_allowance, annual_special_allowance=annualspecial_allowance,gross_salary=ss_gross_salary, annual_gross_salary=annualgross_salary, employee_pf= employee_pf, annual_employee_pf= annualemployee_pf,
-        employee_esic= employee_esic, annual_employee_esic= annualemployer_esic, employee_total_contribution= employee_total_contribution, annual_employee_total_contribution= annualemployee_total_contribution, employer_pf= employer_pf, annual_employer_pf= annualemployer_pf,
-        employer_pf_admin=employer_pf_admin, annual_employer_pf_admin= annualemployer_pf_admin, employer_esic= employer_esic, annual_employer_esic= annualemployer_esic, group_personal_accident= group_personal_accident, annual_group_personal_accident= annualgroup_personal_accident,
-        group_mediclaim_insurance= group_mediclaim_insurance, annual_group_mediclaim_insurance = annualgroup_mediclaim_insurance, employer_total_contribution= employer_total_contribution, annual_employer_total_contribution= annualemployer_total_contribution, cost_to_company=cost_to_company,
-        annual_cost_to_company= annualcost_to_company, take_home_salary= take_home_salary, annual_take_home_salary= annualtake_home_salary, variable= variable, annual_var= annualvariable, fixed_salary= fixedsalary, annual_fixed_salary= annualfixedsalary)
-    new_salary_structure.save()
+    try:
+        existing_structure = salary_structure.objects.get(candidate_code=selected_candidate.pk)
+        existing_structure.delete()
+        new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= basic, annual_basic= annualbasic, house_rent_allowance= house_rent_allowance, annual_house_rent_allowance= annualhouse_rent_allowance, statutory_bonus=statutory_bonus, annual_statutory_bonus= annualstatutory_bonus,
+            special_allowance=special_allowance, annual_special_allowance=annualspecial_allowance,gross_salary=ss_gross_salary, annual_gross_salary=annualgross_salary, employee_pf= employee_pf, annual_employee_pf= annualemployee_pf,
+            employee_esic= employee_esic, annual_employee_esic= annualemployer_esic, employee_total_contribution= employee_total_contribution, annual_employee_total_contribution= annualemployee_total_contribution, employer_pf= employer_pf, annual_employer_pf= annualemployer_pf,
+            employer_pf_admin=employer_pf_admin, annual_employer_pf_admin= annualemployer_pf_admin, employer_esic= employer_esic, annual_employer_esic= annualemployer_esic, group_personal_accident= group_personal_accident, annual_group_personal_accident= annualgroup_personal_accident,
+            group_mediclaim_insurance= group_mediclaim_insurance, annual_group_mediclaim_insurance = annualgroup_mediclaim_insurance, employer_total_contribution= employer_total_contribution, annual_employer_total_contribution= annualemployer_total_contribution, cost_to_company=cost_to_company,
+            annual_cost_to_company= annualcost_to_company, take_home_salary= take_home_salary, annual_take_home_salary= annualtake_home_salary, variable= variable, annual_var= annualvariable, fixed_salary= fixedsalary, annual_fixed_salary= annualfixedsalary)
+        new_salary_structure.save()
+    except ObjectDoesNotExist:
+        new_salary_structure = salary_structure(candidate_code= selected_candidate.pk, basic= basic, annual_basic= annualbasic, house_rent_allowance= house_rent_allowance, annual_house_rent_allowance= annualhouse_rent_allowance, statutory_bonus=statutory_bonus, annual_statutory_bonus= annualstatutory_bonus,
+            special_allowance=special_allowance, annual_special_allowance=annualspecial_allowance,gross_salary=ss_gross_salary, annual_gross_salary=annualgross_salary, employee_pf= employee_pf, annual_employee_pf= annualemployee_pf,
+            employee_esic= employee_esic, annual_employee_esic= annualemployer_esic, employee_total_contribution= employee_total_contribution, annual_employee_total_contribution= annualemployee_total_contribution, employer_pf= employer_pf, annual_employer_pf= annualemployer_pf,
+            employer_pf_admin=employer_pf_admin, annual_employer_pf_admin= annualemployer_pf_admin, employer_esic= employer_esic, annual_employer_esic= annualemployer_esic, group_personal_accident= group_personal_accident, annual_group_personal_accident= annualgroup_personal_accident,
+            group_mediclaim_insurance= group_mediclaim_insurance, annual_group_mediclaim_insurance = annualgroup_mediclaim_insurance, employer_total_contribution= employer_total_contribution, annual_employer_total_contribution= annualemployer_total_contribution, cost_to_company=cost_to_company,
+            annual_cost_to_company= annualcost_to_company, take_home_salary= take_home_salary, annual_take_home_salary= annualtake_home_salary, variable= variable, annual_var= annualvariable, fixed_salary= fixedsalary, annual_fixed_salary= annualfixedsalary)
+        new_salary_structure.save()
 
 def candidate_form_lists():
     entity_list = master_entity.objects.filter(status = active_status).order_by('entity_name')
