@@ -187,6 +187,11 @@ class master_state(models.Model):
     def __str__(self):
         return self.state_name.state_name
 
+class cities(models.Model):
+    city_name = models.CharField(max_length=100)
+    pk_city_code = models.CharField(primary_key=True, max_length=10)    
+    fk_state_code = models.ForeignKey(states, on_delete=models.CASCADE)
+
 class master_city(models.Model):
     pk_city_code = models.AutoField(primary_key=True)
     city_name = models.CharField(max_length=100)
@@ -649,4 +654,3 @@ class gross_salary_history(models.Model):
     salary_type_selected = models.ForeignKey(salary_type, on_delete=models.CASCADE)
     enetered_by = models.CharField(max_length=100)
 
-    
