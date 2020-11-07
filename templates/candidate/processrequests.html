@@ -881,6 +881,22 @@
                         <span id="wage_result" style="color: #bf0711;"></span>
                     </div>
                 </div>
+                <div class="request-forms-input-holder">
+                    <div>
+                        <label for="">Salary Type</label>    
+                    </div>
+                    <div>
+                        <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
+                          
+                    </div>
+                    <div>
+                        <select name="challenged"  required="true" tabindex="37">
+                            <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
                 <a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">View Current Salary Structure</a>
                 
 
