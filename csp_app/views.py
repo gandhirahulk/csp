@@ -5108,7 +5108,8 @@ def  city(request):
     region_list = master_region.objects.filter(status = active_status).order_by('region_name')
     state_list = master_state.objects.filter(status = active_status).order_by('state_name')
     city_list = master_city.objects.filter(status= active_status).order_by('city_name')
-    return render(request, 'csp_app/city.html', {'c_list': created_by_city(),'allcandidates': all_active_candidates,'entity_list': entity_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list})
+    all_city_list = cities.objects.all()
+    return render(request, 'csp_app/city.html', {'c_list': created_by_city(),'allcandidates': all_active_candidates,'entity_list': entity_list, 'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'all_city_list': all_city_list})
 
 
 @login_required(login_url='/notlogin/')
@@ -5118,12 +5119,12 @@ def view_city(request):
     region_list = master_region.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     city_list = master_city.objects.filter(status=active_status)
-
+    all_city_list = cities.objects.all()
     try:
         if request.method == 'POST':
             city_id = request.POST.get("view_id")
             view_city_list = master_city.objects.filter(pk = city_id)
-        return render(request, 'csp_app/viewcity.html', {'c_list': created_by_city(),'allcandidates': all_active_candidates,'view_city_list': view_city_list,'city_list': city_list, 'function_list': function_list,'region_list': region_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/viewcity.html', {'c_list': created_by_city(),'allcandidates': all_active_candidates,'view_city_list': view_city_list,'city_list': city_list, 'function_list': function_list,'region_list': region_list, 'entity_list': entity_list, 'all_city_list': all_city_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -5134,12 +5135,12 @@ def view_edit_city(request):
     region_list = master_region.objects.filter(status= active_status)
     function_list = master_function.objects.filter(status=active_status)
     city_list = master_city.objects.filter(status=active_status)
-
+    all_city_list = cities.objects.all()
     try:
         if request.method == 'POST':
             city_id = request.POST.get("view_id")
             selected = master_city.objects.filter(pk = city_id)        
-        return render(request, 'csp_app/editcity.html', {'c_list': created_by_city(),'allcandidates': all_active_candidates,'view_city_list': selected,'city_list': city_list, 'function_list': function_list,'region_list': region_list, 'entity_list': entity_list})
+        return render(request, 'csp_app/editcity.html', {'c_list': created_by_city(),'allcandidates': all_active_candidates,'view_city_list': selected,'city_list': city_list, 'function_list': function_list,'region_list': region_list, 'entity_list': entity_list, 'all_city_list': all_city_list})
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -5155,14 +5156,21 @@ def save_edit_city(request):
            if request.POST.get("e_id") != '':
                 selected = master_city.objects.get(pk = request.POST.get("e_id"))
                 if request.POST.get("e_city_name") != None:
-                    name = request.POST.get("e_city_name")
+                    city_id = request.POST.get("e_city_name")
                     function = request.POST.get("e_city_state")
-                    # entity = request.POST.get("e_function_entity")
-                    # print(region)
+                    region = request.POST.get("e_city_region")
+                    region_fk = master_region.objects.get(pk = region)
                     if function == None or function == '':
                         messages.warning(request, "Choose State and Try Again")
                         return redirect('csp_app:city')
-                    state_fk = master_state.objects.get(pk = function)
+                    state_name = states.objects.get(state_name= function)
+                    state_fk = master_state.objects.get(state_name = state_name.pk, fk_region_code=region_fk )
+                   
+                    if city_id == None or city_id == '':
+                        messages.warning(request, "City Cannot Be Blank")
+                        return redirect('csp_app:city')
+                    city_fk = cities.objects.get(pk = city_id)
+                    name =city_fk.city_name
                     try:
                         if selected.city_name == name  and selected.fk_state_code == state_fk:
                             messages.warning(request, "No Changes Detected")
@@ -5216,15 +5224,20 @@ def delete_city(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_city(request):
     if request.method == 'POST':
-        city_name = request.POST.get("city_name")
+        city_id = request.POST.get("city_name")
         state = request.POST.get("city_state")
+        region = request.POST.get("city_region")
         if state == None or state == '':
             messages.warning(request, "Choose State And Try Again")
             return redirect('csp_app:city')
-        if city_name == None or city_name == '':
+        if city_id == None or city_id == '':
             messages.warning(request, "City Cannot Be Blank")
             return redirect('csp_app:city')
-        state_fk = master_state.objects.get(pk=state)
+        city_fk = cities.objects.get(pk = city_id)
+        region_fk = master_region.objects.get(pk = region)
+        city_name =city_fk.city_name
+        state_name = states.objects.get(state_name= state)
+        state_fk = master_state.objects.get(state_name = state_name.pk, fk_region_code=region_fk )
         try:
             dup_city = master_city.objects.get( city_name= city_name , fk_state_code =state_fk,status = active_status)
 
