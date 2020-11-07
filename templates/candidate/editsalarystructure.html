@@ -466,6 +466,20 @@
         </div>
         <div class="candidate-forms-input-holder">
             <div>
+                <label for="">Physically Challenged</label>
+                <select name="challenged" id="" required="true" tabindex="36">
+                    <option value="" disabled></option>
+                    <option value="{{ eachc.physically_challenged }}" selected>{{ eachc.physically_challenged }}</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="margin-left">
+
+            </div>
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >Onboarding Status</label>
                 <input tabindex="37" type="text" value="{{ eachc.onboarding_status }}" placeholder="Onboarding Status" disabled="true">
             </div>

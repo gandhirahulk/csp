@@ -471,6 +471,7 @@ class master_candidate(models.Model):
     status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
     delay_date = models.DateField(default='2020-01-01')
     remarks = models.CharField(max_length=300, default=" ")
+    physically_challenged = models.CharField(max_length=10)
     def __str__(self):
         return self.pk_candidate_code
 
@@ -523,6 +524,7 @@ class dummy_candidate(models.Model):
     modified_by = models.CharField(max_length=100, null=True,blank=True)
     modified_date_time = models.DateTimeField(null=True,blank=True)
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+    physically_challenged = models.CharField(max_length=10)
 
 
     def __str__(self):
