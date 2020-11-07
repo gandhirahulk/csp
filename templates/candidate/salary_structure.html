@@ -952,5 +952,17 @@
         });
     </script>
     
+    <script>
+        $(document).ready(function(){
+            $('#referral').change(function() {
+            var selectedvalue = $(this).val();
+        
+            if (selectedvalue == '3'){
+                $('#c_vendor').attr("disabled", true);
+                $('#c_vendor').prop("required", false);
     
+            }
+        });
+        })
+    </script>
 {% endblock %}

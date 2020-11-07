@@ -30,6 +30,7 @@ $(document).ready(function(){
             $('#c_replacement').prop("value", '');                
             $('#c_replacement').attr("disabled", true);
         }
+        
     });
     $('#referral').change(function() {
         var selectedvalue = $(this).val();
@@ -39,6 +40,7 @@ $(document).ready(function(){
             $('#c_referral').prop("value", '');
             $('#c_referral').attr("disabled", true);
         }
+      
     });
   
     $('#c_contact, #c_emergency').on('change', function () {
