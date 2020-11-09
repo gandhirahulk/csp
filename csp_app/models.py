@@ -471,10 +471,25 @@ class master_candidate(models.Model):
     status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
     delay_date = models.DateField(default='2020-01-01')
     remarks = models.CharField(max_length=300, default=" ")
-    physically_challenged = models.CharField(max_length=10)
+    physically_challenged = models.CharField(max_length=10, default='No')
+    
     def __str__(self):
         return self.pk_candidate_code
 
+class reject_reason(models.Model):
+    pk_reason_code = models.AutoField(primary_key=True)
+    fk_candidate_code = models.ForeignKey(master_candidate, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=300)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(  blank=True)
+    modified_by = models.CharField(max_length=100, null=True,blank=True)
+    modified_date_time = models.DateTimeField(null=True,blank=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.reason
+    
+    
 
 class dummy_candidate(models.Model):
     pk_candidate_code = models.CharField(primary_key=True, max_length=10)
@@ -524,7 +539,7 @@ class dummy_candidate(models.Model):
     modified_by = models.CharField(max_length=100, null=True,blank=True)
     modified_date_time = models.DateTimeField(null=True,blank=True)
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
-    physically_challenged = models.CharField(max_length=10)
+    physically_challenged = models.CharField(max_length=10, default='No')
 
 
     def __str__(self):

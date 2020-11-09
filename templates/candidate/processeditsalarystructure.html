@@ -916,7 +916,7 @@
 
         <div class="candidate_form_footer">
 
-            <button class="delete-forms-close-btn" id="reject" formaction="{% url 'csp_app:reject_candidate_vendor' cid %}" type="submit" style="width: auto;padding: 9px;">Reject Candidate</button>                 
+            <button class="delete-forms-close-btn" id="reject" formaction=""  style="width: auto;padding: 9px;" onclick="showDelete('reject_reason_form')">Reject Candidate</button>                 
 
             {% if request.user.groups.all %}
                 {% for eachgroup in request.user.groups.all %}
@@ -945,7 +945,19 @@
             
              </div> 
         </div>
-   
+        <div id="reject_reason_form" class="form_modal" style="padding-top: 15%;">
+            <div class="delete_form_header">
+                <div class="forms-heading">
+                    <h2>Reject Candidate?</h2>
+                </div>     
+            </div>
+            <div class="delete_form_footer">
+                <textarea name="reason" id="" cols="10" rows="3" placeholder="Reason For Rejection"></textarea>
+                <button type="submit" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" class="forms-delete-btn">Reject Candidate</button>
+                <button id="close_delete" class="delete-forms-close-btn">Cancel</button>     
+              
+            </div>
+        </div> 
 
         <input type="hidden" id="name">
         <input type="hidden" id="phone_no">
@@ -1422,7 +1434,6 @@
 <script>
     function showDelete(formid){
         document.getElementById(formid).style.display = "block";
-        console.log(document.getElementById('crumbs').style.zIndex = 0);
     }
 </script>
 <script>

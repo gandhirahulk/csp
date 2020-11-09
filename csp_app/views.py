@@ -1263,106 +1263,115 @@ def reject_candidate_onboarding(request, cid):
 def reject_candidate_vendor(request, cid):
     try:
         selected_candidate = master_candidate.objects.get(pk = cid)
-        for eachgroup in request.user.groups.all():
-            if str(eachgroup) == 'Admin':
-                selected_candidate.onboarding_status = reject_onboarding
-                
-                selected_candidate.loi_status = loi_status.objects.get(pk=3)
-                selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
-                selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
-                selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
-                selected_candidate.joining_status = joining_status.objects.get(pk=3)
-                e = ecode_generation_status.objects.get(pk=3)
-                selected_candidate.ecode_status = e.status_name
-                
-                selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
-                selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
-                selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
-                selected_candidate.save()
-                alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
-                our_email = EmailMessage(
-                    'Candidate Rejected By Admin.',
-                    alltemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                template = render_to_string('emailtemplates/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
-                our_email = EmailMessage(
-                    'Candidate Rejected By Admin.',
-                    template,
-                    settings.EMAIL_HOST_USER,
-                    [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                
-                messages.success(request, "Candidate Rejected .") 
-                return redirect("csp_app:pending_request")
-            elif str(eachgroup) == 'Onboarding SPOC':
-                selected_candidate.onboarding_status = reject_onboarding
-                selected_candidate.vendor_status = vendor_status.objects.get(pk=3)
-                selected_candidate.loi_status = loi_status.objects.get(pk=3)
-                selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
-                selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
-                selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
-                selected_candidate.joining_status = joining_status.objects.get(pk=3)
-                e = ecode_generation_status.objects.get(pk=3)
-                selected_candidate.ecode_status = e.status_name
-                selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
-                selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
-                selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
-                selected_candidate.save()
-                alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
-                our_email = EmailMessage(
-                    'Candidate Rejected.',
-                    alltemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                messages.success(request, "Candidate Rejected Mail Sent To Admin.")
-                return redirect("csp_app:pending_request")
-            else:       
-                
-                selected_candidate.vendor_status = reject_vendor
-                selected_candidate.loi_status = loi_status.objects.get(pk=3)
-                selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
-                selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
-                selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
-                selected_candidate.joining_status = joining_status.objects.get(pk=3)
-                e = ecode_generation_status.objects.get(pk=3)
-                selected_candidate.ecode_status = e.status_name
-                selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
-                selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
-                selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
-                selected_candidate.save()
-                alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
-                our_email = EmailMessage(
-                    'Candidate Rejected.',
-                    alltemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                template = render_to_string('emailtemplates/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
-                our_email = EmailMessage(
-                    'Candidate Rejected.',
-                    template,
-                    settings.EMAIL_HOST_USER,
-                    [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                
-                messages.success(request, "Candidate Rejected Mail Sent To Admin.")
-                return redirect("csp_app:pending_request")
+        if request.method == 'POST':
+            reason = request.POST.get('reason')
+            for eachgroup in request.user.groups.all():
+                if str(eachgroup) == 'Admin':
+                    selected_candidate.onboarding_status = reject_onboarding
+                    
+                    selected_candidate.loi_status = loi_status.objects.get(pk=3)
+                    selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
+                    selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
+                    selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
+                    selected_candidate.joining_status = joining_status.objects.get(pk=3)
+                    e = ecode_generation_status.objects.get(pk=3)
+                    selected_candidate.ecode_status = e.status_name
+                    
+                    selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
+                    selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
+                    selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
+                    selected_candidate.save()
+                    save_rejected_reason(selected_candidate, request, reason)
+                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
+                    our_email = EmailMessage(
+                        'Candidate Rejected By Admin.',
+                        alltemplate,
+                        settings.EMAIL_HOST_USER,
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    template = render_to_string('emailtemplates/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
+                    our_email = EmailMessage(
+                        'Candidate Rejected By Admin.',
+                        template,
+                        settings.EMAIL_HOST_USER,
+                        [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    
+                    messages.success(request, "Candidate Rejected .") 
+                    return redirect("csp_app:pending_request")
+                elif str(eachgroup) == 'Onboarding SPOC':
+                    selected_candidate.onboarding_status = reject_onboarding
+                    selected_candidate.vendor_status = vendor_status.objects.get(pk=3)
+                    selected_candidate.loi_status = loi_status.objects.get(pk=3)
+                    selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
+                    selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
+                    selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
+                    selected_candidate.joining_status = joining_status.objects.get(pk=3)
+                    e = ecode_generation_status.objects.get(pk=3)
+                    selected_candidate.ecode_status = e.status_name
+                    selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
+                    selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
+                    selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
+                    selected_candidate.save()
+                    save_rejected_reason(selected_candidate, request, reason)
+                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
+                    our_email = EmailMessage(
+                        'Candidate Rejected.',
+                        alltemplate,
+                        settings.EMAIL_HOST_USER,
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    messages.success(request, "Candidate Rejected Mail Sent To Admin.")
+                    return redirect("csp_app:pending_request")
+                else:       
+                    
+                    selected_candidate.vendor_status = reject_vendor
+                    selected_candidate.loi_status = loi_status.objects.get(pk=3)
+                    selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
+                    selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
+                    selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
+                    selected_candidate.joining_status = joining_status.objects.get(pk=3)
+                    e = ecode_generation_status.objects.get(pk=3)
+                    selected_candidate.ecode_status = e.status_name
+                    selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
+                    selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
+                    selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
+                    selected_candidate.save()
+                    save_rejected_reason(selected_candidate, request, reason)
+                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
+                    our_email = EmailMessage(
+                        'Candidate Rejected.',
+                        alltemplate,
+                        settings.EMAIL_HOST_USER,
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    template = render_to_string('emailtemplates/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
+                    our_email = EmailMessage(
+                        'Candidate Rejected.',
+                        template,
+                        settings.EMAIL_HOST_USER,
+                        [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id],
+                    ) 
+                    our_email.fail_silently = False
+                    our_email.send()
+                    
+                    messages.success(request, "Candidate Rejected Mail Sent To Admin.")
+                    return redirect("csp_app:pending_request")
 
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
+
+def save_rejected_reason(selected_candidate, request, reason):
+    rejected_reason = reject_reason(fk_candidate_code=selected_candidate.pk, created_by=str(request.user), created_date_time= datetime.now(), reason= reason)
+    rejected_reason.save()
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Onboarding SPOC').exists())
