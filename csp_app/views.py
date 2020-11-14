@@ -169,6 +169,14 @@ def send_email(subject, from_email, to, template):
     
     return HttpResponse("Mail Sent")
 
+
+@login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Onboarding SPOC').exists())
+def approved_candidates(request):
+    candidate_list = master_candidate.objects.filter(status=active_status,candidate_status=approved_candidates)
+    return render(request, 'candidate/approvedcandidates.html',{'candidate_list':candidate_list})
+
+
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
 def candidate_profile(request):
@@ -605,6 +613,7 @@ def process_requests(request, cid):
             location = request.POST.get("c_location")
             # ta_spoc = request.user.email #check
             onboarding_spoc = Onboarding_SPOC #check
+            physically_challenged = request.POST.get("challenged")
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email")
             email_creation = request.POST.get("c_email_creation")
@@ -2855,7 +2864,7 @@ def save_new_candidate(request):
             state = request.POST.get("c_state")
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
-
+            physically_challenged = request.POST.get("challenged")
             ta_spoc = request.user.email #check
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
