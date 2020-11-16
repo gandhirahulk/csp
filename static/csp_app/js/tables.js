@@ -112,6 +112,7 @@
             "pagingType": "full_numbers",
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
+            "autoWidth": true
         } );
         $('#pending-candidate-table').DataTable();
         $('#joined-candidate-table').DataTable();

@@ -177,23 +177,37 @@
 
                 </div>
                 <div class="margin-left">
-                <label for="" >Company</label>
-
-                <select tabindex="18" name="c_entity" id="c_entity" required="true">
-                    <option value="{{ eachc.fk_entity_code_id }}" label="{{ eachc.fk_entity_code }}" selected>{{eachc.fk_entity_code}}</option>
-                    {% if entity_list %}
-                        {% for eachentity in entity_list %}
-                            {% if eachentity.pk != eachc.fk_entity_code_id %}
-                                <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
-                            {% endif %}                        
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
+                    <label for="">Physically Challenged</label>
+                    <select name="challenged" id="" required="true" tabindex="36">
+                        <option value="" disabled></option>
+                        <option value="{{ eachc.physically_challenged }}" selected>{{ eachc.physically_challenged }}</option>
+                        {% if eachc.physically_challenged != 'No' %}
+                            <option value="No">No</option>
+                        {% else %}
+                            <option value="Yes">Yes</option>
+                        {% endif %}
+                
+                    </select>
+                </div>
+                
         </div>
 
             <div class="candidate-forms-input-holder">
                 <div>
+                    <label for="" >Company</label>
+    
+                    <select tabindex="18" name="c_entity" id="c_entity" required="true">
+                        <option value="{{ eachc.fk_entity_code_id }}" label="{{ eachc.fk_entity_code }}" selected>{{eachc.fk_entity_code}}</option>
+                        {% if entity_list %}
+                            {% for eachentity in entity_list %}
+                                {% if eachentity.pk != eachc.fk_entity_code_id %}
+                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                                {% endif %}                        
+                            {% endfor %}                
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="margin-left">
                     <label for="">Vendor</label>
 
                     <select tabindex="19" name="c_vendor" id="c_vendor" required="true">
@@ -212,7 +226,10 @@
                         {% endif %}
                     </select>
                  </div>
-                <div class="margin-left">
+                
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >Department</label>
 
                 <select tabindex="20" name="c_dept" id="c_dept" required="true">
@@ -231,10 +248,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
-                <div>
-            <label for="">Function</label>
+            <div class="margin-left">
+                <label for="">Function</label>
 
                 <select tabindex="21" name="c_function" id="c_function" required="true">
                     <option value="{{ eachc.fk_function_code_id }}" label="{{ eachc.fk_function_code }}" selected>{{ eachc.fk_function_code.fk_department_code_id }}</option>
@@ -250,8 +265,11 @@
                             {% endfor %}                
                     {% endif %}
                 </select>
-                 </div>
-                <div class="margin-left">
+            </div>
+         
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >Team</label>
 
                 <select tabindex="22" name="c_team" id="c_team" required="true">
@@ -269,10 +287,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
-                <div>
-            <label for="">Sub Team</label>
+            <div class="margin-left">
+                <label for="">Sub Team</label>
 
                 <select tabindex="23" name="c_subteam" id="c_subteam" required="true">
                     <option value="{{ eachc.fk_subteam_code_id }}" label="{{ eachc.fk_subteam_code }}" selected>{{ eachc.fk_subteam_code.fk_team_code_id }}</option>
@@ -288,8 +304,11 @@
                             {% endfor %}                
                     {% endif %}
                 </select>
-                 </div>
-                <div class="margin-left">
+            </div>
+           
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >Designation</label>
 
                 <select tabindex="24" name="c_desg" id="c_desg" required="true">
@@ -307,10 +326,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
-                <div>
-            <label for="">Region</label>
+            <div class="margin-left">
+                <label for="">Region</label>
 
                 <select tabindex="25" name="c_region" id="c_region" required="true">
                     <option value="{{ eachc.fk_region_code_id }}" label="{{ eachc.fk_region_code }}" selected>{{ eachc.fk_region_code.fk_entity_code_id }}</option>
@@ -327,8 +344,11 @@
                             {% endfor %}                
                     {% endif %}
                 </select>
-                 </div>
-                <div class="margin-left">
+            </div>
+           
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >State</label>
 
                 <select tabindex="26" name="c_state" id="c_state" required="true">
@@ -347,10 +367,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
-                <div>
-            <label for="">City</label>
+            <div class="margin-left">
+                <label for="">City</label>
 
                 <select tabindex="27" name="c_city" id="c_city" required="true">
                     <option value="{{ eachc.fk_city_code_id }}" label="{{ eachc.fk_city_code }}" selected>{{ eachc.fk_city_code.fk_state_code_id }}</option>
@@ -367,8 +385,21 @@
                             {% endfor %}                
                     {% endif %}
                 </select>
-                 </div>
-                <div class="margin-left">
+            </div>
+           
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
+                <label for="" >TA SPOC Email ID</label>
+                <input tabindex="29" type="email" readonly value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
+            </div>
+            <div class="margin-left">
+                <label for="" >Onboarding SPOC Email ID</label>
+                <input tabindex="30" type="email" readonly value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
+            </div>
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div >
                 <label for="" >Location</label>
 
                 <select tabindex="28" name="c_location" id="c_location" required="true">
@@ -387,16 +418,18 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-        <div class="candidate-forms-input-holder">
-            <div>
-                <label for="" >TA SPOC Email ID</label>
-                <input tabindex="29" type="email" readonly value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
-            </div>
             <div class="margin-left">
-                <label for="" >Onboarding SPOC Email ID</label>
-                <input tabindex="30" type="email" readonly value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
-            </div>
+                <label for="">Email ID Creation</label>
+    
+                    <select tabindex="33" name="c_email_creation" id="c_email_creation" required="true">
+                        <option value="{{ eachc.E_Mail_ID_Creation }}" label="{{ eachc.E_Mail_ID_Creation }}" selected>{{ eachc.E_Mail_ID_Creation }}</option>
+                        {% if eachc.E_Mail_ID_Creation != 'No' %}
+                            <option value="No">No</option>
+                        {% else %}
+                            <option value="Yes">Yes</option>
+                        {% endif %}            
+                    </select>
+                     </div>
         </div>
         <div class="candidate-forms-input-holder">
             <div>
@@ -412,17 +445,9 @@
             </div>
         </div>
             
-               <div class="candidate-forms-input-holder">
-                <div>
-            <label for="">Email ID Creation</label>
-
-                <select tabindex="33" name="c_email_creation" id="c_email_creation" required="true">
-                    <option value="{{ eachc.E_Mail_ID_Creation }}" label="{{ eachc.E_Mail_ID_Creation }}" selected>{{ eachc.E_Mail_ID_Creation }}</option>
-                    <option value="Yes" >Yes</option>
-                    <option value="No" >No</option>                    
-                </select>
-                 </div>
-                <div class="margin-left">
+             
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >Laptop Allocation</label>
 
                 <select tabindex="34" name="c_laptop_allocation" id="c_laptop_allocation" required="true">
@@ -438,8 +463,6 @@
                     {% endif %}                    
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
                 <div>
             <label for="">Salary Type</label>
 
@@ -457,22 +480,14 @@
                     {% endif %}                   
                 </select>
                  </div>
-                <div class="margin-left">
-                <label for="" >Gross Salary</label>
-                <input tabindex="36" type="number" value="{{ eachc.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1" max="100000">
-                <span id="wage_result" style="color: #bf0711;"></span>
-            </div>
+                
 
         </div>
         <div class="candidate-forms-input-holder">
             <div>
-                <label for="">Physically Challenged</label>
-                <select name="challenged" id="" required="true" tabindex="36">
-                    <option value="" disabled></option>
-                    <option value="{{ eachc.physically_challenged }}" selected>{{ eachc.physically_challenged }}</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
+                <label for="" >Gross Salary</label>
+                <input tabindex="36" type="number" value="{{ eachc.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1" max="100000">
+                <span id="wage_result" style="color: #bf0711;"></span>
             </div>
             <div class="margin-left">
 
