@@ -150,21 +150,30 @@
                
                 </div>
                 <div class="margin-left">
-                <label for="" >Company</label>
-
-                <select name="c_entity" id="c_entity" required="true" tabindex="18">
-                    <option value="" disabled selected>Select Company</option>
-                    {% if entity_list %}
-                        {% for eachentity in entity_list %}
-                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
+                    <label for="">Physically Challenged</label>
+                    <select name="challenged" id="" required="true" tabindex="36">
+                        <option value="" disabled selected></option>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+              
         </div>
 
             <div class="candidate-forms-input-holder">
                 <div>
+                    <label for="" >Company</label>
+
+                    <select name="c_entity" id="c_entity" required="true" tabindex="18">
+                        <option value="" disabled selected>Select Company</option>
+                        {% if entity_list %}
+                            {% for eachentity in entity_list %}
+                                <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                            {% endfor %}                
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="margin-left">
                     <label for="">Vendor</label>
 
                     <select name="c_vendor" id="c_vendor" required="true" disabled="true" tabindex="19">
@@ -177,7 +186,10 @@
                         {% endif %}
                     </select>
                  </div>
-                <div class="margin-left">
+               
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div >
                 <label for="" >Department</label>
 
                 <select name="c_dept" id="c_dept" required="true" disabled="true" tabindex="20">
@@ -190,10 +202,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
-                <div>
-            <label for="">Function</label>
+            <div class="margin-left">
+                <label for="">Function</label>
 
                 <select name="c_function" id="c_function" required="true" disabled="true" tabindex="21">
                     <option value="" disabled selected label=" " class="empty">Select Function</option>
@@ -204,8 +214,11 @@
                         {% endfor %}                
                     {% endif %}
                 </select>
-                 </div>
-                <div class="margin-left">
+            </div>
+               
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >Team</label>
 
                 <select name="c_team" id="c_team" required="true"  disabled="true" tabindex="22">
@@ -218,9 +231,7 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
-                <div>
+            <div  class="margin-left">
             <label for="">Sub Team</label>
 
                 <select name="c_subteam" id="c_subteam" required="true" disabled="true" tabindex="23">
@@ -233,7 +244,10 @@
                     {% endif %}
                 </select>
                  </div>
-                <div class="margin-left">
+                
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >Designation</label>
 
                 <select name="c_desg" id="c_desg" required="true" disabled="true" tabindex="24">
@@ -247,9 +261,7 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
-                <div>
+            <div class="margin-left">
             <label for="">Region</label>
 
                 <select name="c_region" id="c_region" required="true" disabled="true" tabindex="25">
@@ -261,8 +273,11 @@
                         {% endfor %}                
                     {% endif %}
                 </select>
-                 </div>
-                <div class="margin-left">
+            </div>
+                
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >State</label>
 
                 <select name="c_state" id="c_state" required="true" disabled="true" tabindex="26">
@@ -275,10 +290,8 @@
                     {% endif %}
                 </select>
             </div>
-        </div>
-               <div class="candidate-forms-input-holder">
-                <div>
-            <label for="">City</label>
+            <div class="margin-left">
+                <label for="">City</label>
 
                 <select name="c_city" id="c_city" required="true" disabled="true" tabindex="27">
                     <option value="" disabled selected label=" " class="empty">Select City</option>
@@ -289,20 +302,8 @@
                         {% endfor %}                
                     {% endif %}
                 </select>
-                 </div>
-                <div class="margin-left">
-                <label for="" >Location</label>
-
-                <select name="c_location" id="c_location" required="true" disabled="true" tabindex="28">
-                    <option value="" disabled selected label=" " class="empty">Select Location</option>
-
-                    {% if location_list %}
-                        {% for eachlocation in location_list %}
-                            <option value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
-                        {% endfor %}                
-                    {% endif %}
-                </select>
             </div>
+           
         </div>
         <!-- <div class="candidate-forms-input-holder">
             <div>
@@ -316,28 +317,47 @@
         </div> -->
         <div class="candidate-forms-input-holder">
             <div>
-                <label for="">Reporting / Hiring Manager Name</label>
-                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50">
-                 </div>
-                <div class="margin-left">
-                <label for="" >Reporting / Hiring Manager Email ID</label>
+                <label for="" >Location</label>
 
-                <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
-                <small id="rmemailmsg"></small>
+                <select name="c_location" id="c_location" required="true" disabled="true" tabindex="28">
+                    <option value="" disabled selected label=" " class="empty">Select Location</option>
+
+                    {% if location_list %}
+                        {% for eachlocation in location_list %}
+                            <option value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
             </div>
-        </div>
-            
-               <div class="candidate-forms-input-holder">
-                <div>
-            <label for="">Email ID Creation</label>
+            <div class="margin-left">
+                <label for="">Email ID Creation</label>
 
                 <select name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
                     <option value="" disabled selected>Email ID Creation</option>
                     <option value="Yes" >Yes</option>
                     <option value="No" >No</option>                    
                 </select>
-                 </div>
-                <div class="margin-left">
+            </div>
+           
+          
+        </div>
+
+            
+        <div class="candidate-forms-input-holder">
+            <div>
+                <label for="" >Reporting / Hiring Manager Email ID</label>
+
+                <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                <small id="rmemailmsg"></small>
+            </div>
+            <div class="margin-left">
+                <label for="">Reporting / Hiring Manager Name</label>
+                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50">
+            </div>
+        
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="" >Laptop Allocation</label>
 
                 <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
@@ -349,34 +369,25 @@
                     {% endif %}                    
                 </select>
             </div>
-        </div>
-            <div class="candidate-forms-input-holder">
-                <div>
-                    <label for="">Salary Type</label>
-                    <select name="c_salary_type" id="c_salary_type" required="true" tabindex="35">
-                        <option value="" disabled selected>Select Salary Type</option>
-                        {% if salary_type_list %}
-                            {% for eachsalary_type in salary_type_list %}
-                                <option value="{{ eachsalary_type.pk }}" label="{{ eachsalary_type.salary_type_name }}">{{ eachsalary_type.salary_type_name }}</option>
-                            {% endfor %}                
-                        {% endif %}                   
-                    </select>
-                </div>
-                <div class="margin-left">
-                <label for="" >Monthly Gross Salary (Fixed Salary + Variable [If Any])</label>
-                <input type="number" title="" tabindex="36" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
-                <span id="wage_result" style="color: #bf0711;"></span>
+            <div class="margin-left">
+                <label for="">Salary Type</label>
+                <select name="c_salary_type" id="c_salary_type" required="true" tabindex="35">
+                    <option value="" disabled selected>Select Salary Type</option>
+                    {% if salary_type_list %}
+                        {% for eachsalary_type in salary_type_list %}
+                            <option value="{{ eachsalary_type.pk }}" label="{{ eachsalary_type.salary_type_name }}">{{ eachsalary_type.salary_type_name }}</option>
+                        {% endfor %}                
+                    {% endif %}                   
+                </select>
             </div>
+            
           
         </div>
         <div class="candidate-forms-input-holder">
             <div>
-                <label for="">Physically Challenged</label>
-                <select name="challenged" id="" required="true" tabindex="36">
-                    <option value="" disabled selected></option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
+                <label for="" >Monthly Gross Salary (Fixed Salary + Variable [If Any])</label>
+                <input type="number" title="" tabindex="36" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
+                <span id="wage_result" style="color: #bf0711;"></span>
             </div>
             <div class="margin-left">
 

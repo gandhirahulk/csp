@@ -172,23 +172,36 @@
                
                 </div>
                 <div class="margin-left">
-                <label for="" >Company</label>
-
-                <select tabindex="18" name="c_entity" id="c_entity" required="true">
-                    <option value="{{ eachc.fk_entity_code_id }}" label="{{ eachc.fk_entity_code }}" selected>{{eachc.fk_entity_code}}</option>
-                    {% if entity_list %}
-                        {% for eachentity in entity_list %}
-                            {% if eachentity.pk != eachc.fk_entity_code_id %}
-                                <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
-                            {% endif %}                        
-                        {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
+                    <label for="">Physically Challenged</label>
+                    <select name="challenged" id="" required="true" tabindex="36">
+                        <option value="" disabled></option>
+                        <option value="{{ eachc.physically_challenged }}" selected>{{ eachc.physically_challenged }}</option>
+                        {% if eachc.physically_challenged != 'No' %}
+                            <option value="No">No</option>
+                        {% else %}
+                            <option value="Yes">Yes</option>
+                        {% endif %} 
+                    </select>
+                </div>
+               
             </div>
 
             <div class="candidate-forms-input-holder">
                 <div>
+                    <label for="" >Company</label>
+    
+                    <select tabindex="18" name="c_entity" id="c_entity" required="true">
+                        <option value="{{ eachc.fk_entity_code_id }}" label="{{ eachc.fk_entity_code }}" selected>{{eachc.fk_entity_code}}</option>
+                        {% if entity_list %}
+                            {% for eachentity in entity_list %}
+                                {% if eachentity.pk != eachc.fk_entity_code_id %}
+                                    <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                                {% endif %}                        
+                            {% endfor %}                
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="margin-left">
                     <label for="">Vendor</label>
 
                     <select tabindex="19" name="c_vendor" id="c_vendor" required="true">
@@ -207,67 +220,69 @@
                         {% endif %}
                     </select>
                  </div>
-                <div class="margin-left">
-                <label for="" >Department</label>
-
-                <select tabindex="20" name="c_dept" id="c_dept" required="true">
-                    <option value="{{ eachc.fk_department_code_id }}" label="{{ eachc.fk_department_code }}" selected>{{eachc.fk_department_code}}</option>
-
-                    <option value="" label="" class="empty">Select Department</option>
-
-                    {% if department_list %}
-                        {% for eachdepartment in department_list %}
-                        {% if eachdepartment.pk != eachc.fk_department_code_id %}
-
-                            <option style="display: none;" value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
-                            {% endif %}                
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
+               
             </div>
             <div class="candidate-forms-input-holder">
                 <div>
-            <label for="">Function</label>
+                    <label for="" >Department</label>
+    
+                    <select tabindex="20" name="c_dept" id="c_dept" required="true">
+                        <option value="{{ eachc.fk_department_code_id }}" label="{{ eachc.fk_department_code }}" selected>{{eachc.fk_department_code}}</option>
+    
+                        <option value="" label="" class="empty">Select Department</option>
+    
+                        {% if department_list %}
+                            {% for eachdepartment in department_list %}
+                            {% if eachdepartment.pk != eachc.fk_department_code_id %}
+    
+                                <option style="display: none;" value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                                {% endif %}                
+                            
+                                {% endfor %}                
+                        {% endif %}
+                    </select>
+                    </div>
+                <div  class="margin-left">
+                    <label for="">Function</label>
 
-                <select tabindex="21" name="c_function" id="c_function" required="true">
-                    <option value="{{ eachc.fk_function_code_id }}" label="{{ eachc.fk_function_code }}" selected>{{ eachc.fk_function_code.fk_department_code_id }}</option>
-                    <option value="" label="" class="empty">Select Function</option>
+                    <select tabindex="21" name="c_function" id="c_function" required="true">
+                        <option value="{{ eachc.fk_function_code_id }}" label="{{ eachc.fk_function_code }}" selected>{{ eachc.fk_function_code.fk_department_code_id }}</option>
+                        <option value="" label="" class="empty">Select Function</option>
 
-                    {% if function_list %}
-                        {% for eachfunction in function_list %}
-                        {% if eachfunction.pk != eachc.fk_function_code_id %}
+                        {% if function_list %}
+                            {% for eachfunction in function_list %}
+                            {% if eachfunction.pk != eachc.fk_function_code_id %}
 
-                            <option style="display: none;" value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
-                    {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
+                                <option style="display: none;" value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
+                        {% endif %}
+                            
+                                {% endfor %}                
+                        {% endif %}
+                    </select>
                  </div>
-                <div class="margin-left">
-                <label for="" >Team</label>
-
-                <select tabindex="22" name="c_team" id="c_team" required="true">
-                    <option value="{{ eachc.fk_team_code_id }}" label="{{ eachc.fk_team_code }}" selected>{{ eachc.fk_team_code.fk_function_code_id }}</option>
-                    <option value="" label="" class="empty">Select Team</option>
-
-                    {% if team_list %}
-                        {% for eachteam in team_list %}
-                        {% if eachteam.pk != eachc.fk_team_code_id %}
-
-                            <option style="display: none;" value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
-                    {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
+               
             </div>
             <div class="candidate-forms-input-holder">
                 <div>
-            <label for="">Sub Team</label>
+                    <label for="" >Team</label>
+
+                    <select tabindex="22" name="c_team" id="c_team" required="true">
+                        <option value="{{ eachc.fk_team_code_id }}" label="{{ eachc.fk_team_code }}" selected>{{ eachc.fk_team_code.fk_function_code_id }}</option>
+                        <option value="" label="" class="empty">Select Team</option>
+
+                        {% if team_list %}
+                            {% for eachteam in team_list %}
+                            {% if eachteam.pk != eachc.fk_team_code_id %}
+
+                                <option style="display: none;" value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
+                        {% endif %}
+                            
+                                {% endfor %}                
+                        {% endif %}
+                    </select>
+                </div>
+                <div  class="margin-left">
+                <label for="">Sub Team</label>
 
                 <select tabindex="23" name="c_subteam" id="c_subteam" required="true">
                     <option value="{{ eachc.fk_subteam_code_id }}" label="{{ eachc.fk_subteam_code }}" selected>{{ eachc.fk_subteam_code.fk_team_code_id }}</option>
@@ -284,105 +299,123 @@
                     {% endif %}
                 </select>
                  </div>
+              
+            </div>
+            <div class="candidate-forms-input-holder">
+                <div>
+                    <label for="" >Designation</label>
+
+                    <select tabindex="24" name="c_desg" id="c_desg" required="true">
+                        <option value="{{ eachc.fk_designation_code_id }}" label="{{ eachc.fk_designation_code }}" selected>{{ eachc.fk_designation_code.fk_sub_team_code_id }}</option>
+                        <option value="" label="" class="empty">Select Designation</option>
+
+                        {% if designation_list %}
+                            {% for eachdesignation in designation_list %}
+                            {% if eachdesignation.pk != eachc.fk_designation_code_id %}
+
+                            <option style="display: none;" value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                            {% endif %}
+                            
+                                {% endfor %}                
+                        {% endif %}
+                    </select>
+                </div>
                 <div class="margin-left">
-                <label for="" >Designation</label>
+                    <label for="">Region</label>
 
-                <select tabindex="24" name="c_desg" id="c_desg" required="true">
-                    <option value="{{ eachc.fk_designation_code_id }}" label="{{ eachc.fk_designation_code }}" selected>{{ eachc.fk_designation_code.fk_sub_team_code_id }}</option>
-                    <option value="" label="" class="empty">Select Designation</option>
+                    <select tabindex="25" name="c_region" id="c_region" required="true">
+                        <option value="{{ eachc.fk_region_code_id }}" label="{{ eachc.fk_region_code }}" selected>{{ eachc.fk_region_code.fk_entity_code_id }}</option>
 
-                    {% if designation_list %}
-                        {% for eachdesignation in designation_list %}
-                        {% if eachdesignation.pk != eachc.fk_designation_code_id %}
+                        <option value="" label="" class="empty">Select Region</option>
 
-                        <option style="display: none;" value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                        {% if region_list %}
+                            {% for eachregion in region_list %}
+                            {% if eachregion.pk != eachc.fk_region_code_id %}
+
+                                <option style="display: none;" value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
                         {% endif %}
                         
-                            {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
+                                {% endfor %}                
+                        {% endif %}
+                    </select>
+                 </div>
+          
             </div>
             <div class="candidate-forms-input-holder">
                 <div>
-            <label for="">Region</label>
+                    <label for="" >State</label>
 
-                <select tabindex="25" name="c_region" id="c_region" required="true">
-                    <option value="{{ eachc.fk_region_code_id }}" label="{{ eachc.fk_region_code }}" selected>{{ eachc.fk_region_code.fk_entity_code_id }}</option>
+                    <select tabindex="26" name="c_state" id="c_state" required="true">
+                        <option value="{{ eachc.fk_state_code_id }}" label="{{ eachc.fk_state_code }}" selected>{{ eachc.fk_state_code.fk_region_code_id }}</option>
 
-                    <option value="" label="" class="empty">Select Region</option>
+                        <option value="" label="" class="empty">Select State</option>
 
-                    {% if region_list %}
-                        {% for eachregion in region_list %}
-                        {% if eachregion.pk != eachc.fk_region_code_id %}
+                        {% if state_list %}
+                            {% for eachstate in state_list %}
+                            {% if eachstate.pk != eachc.fk_state_code_id %}
 
-                            <option style="display: none;" value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
-                    {% endif %}
-                       
-                            {% endfor %}                
-                    {% endif %}
-                </select>
+                                <option style="display: none;" value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
+                        {% endif %}
+                        
+                                {% endfor %}                
+                        {% endif %}
+                    </select>
+                </div>
+                <div  class="margin-left">
+                    <label for="">City</label>
+
+                    <select tabindex="27" name="c_city" id="c_city" required="true">
+                        <option value="{{ eachc.fk_city_code_id }}" label="{{ eachc.fk_city_code }}" selected>{{ eachc.fk_city_code.fk_state_code_id }}</option>
+
+                        <option value="" label="" class="empty">Select City</option>
+
+                        {% if city_list %}
+                            {% for eachcity in city_list %}
+                            {% if eachcity.pk != eachc.fk_city_code_id %}
+
+                                <option style="display: none;" value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
+                        {% endif %}
+                            
+                                {% endfor %}                
+                        {% endif %}
+                    </select>
                  </div>
-                <div class="margin-left">
-                <label for="" >State</label>
-
-                <select tabindex="26" name="c_state" id="c_state" required="true">
-                    <option value="{{ eachc.fk_state_code_id }}" label="{{ eachc.fk_state_code }}" selected>{{ eachc.fk_state_code.fk_region_code_id }}</option>
-
-                    <option value="" label="" class="empty">Select State</option>
-
-                    {% if state_list %}
-                        {% for eachstate in state_list %}
-                        {% if eachstate.pk != eachc.fk_state_code_id %}
-
-                            <option style="display: none;" value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
-                    {% endif %}
-                       
-                            {% endfor %}                
-                    {% endif %}
-                </select>
+            
             </div>
-            </div>
+            
             <div class="candidate-forms-input-holder">
+                <div class="margin-left">
+                    <label for="" >Location</label>
+
+                    <select tabindex="28" name="c_location" id="c_location" required="true">
+                        <option value="{{ eachc.fk_location_code_id }}" label="{{ eachc.fk_location_code }}" selected>{{ eachc.fk_location_code.fk_city_code_id }}</option>
+
+                        <option value="" label="" class="empty">Select Location</option>
+
+                        {% if location_list %}
+                            {% for eachlocation in location_list %}
+                            {% if eachlocation.pk != eachc.fk_location_code_id %}
+
+                                <option style="display: none;" value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
+                        {% endif %}
+                            
+                                {% endfor %}                
+                        {% endif %}
+                    </select>
+                </div>
                 <div>
-            <label for="">City</label>
+            <label for="">Email ID Creation</label>
 
-                <select tabindex="27" name="c_city" id="c_city" required="true">
-                    <option value="{{ eachc.fk_city_code_id }}" label="{{ eachc.fk_city_code }}" selected>{{ eachc.fk_city_code.fk_state_code_id }}</option>
-
-                    <option value="" label="" class="empty">Select City</option>
-
-                    {% if city_list %}
-                        {% for eachcity in city_list %}
-                        {% if eachcity.pk != eachc.fk_city_code_id %}
-
-                            <option style="display: none;" value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
-                    {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
+                <select tabindex="33" name="c_email_creation" id="c_email_creation" required="true">
+                    <option value="{{ eachc.E_Mail_ID_Creation }}" label="{{ eachc.E_Mail_ID_Creation }}" selected>{{ eachc.E_Mail_ID_Creation }}</option>
+                    {% if eachc.E_Mail_ID_Creation != 'No' %}
+                        <option value="No">No</option>
+                    {% else %}
+                        <option value="Yes">Yes</option>
+                    {% endif %}                     
                 </select>
                  </div>
-                <div class="margin-left">
-                <label for="" >Location</label>
-
-                <select tabindex="28" name="c_location" id="c_location" required="true">
-                    <option value="{{ eachc.fk_location_code_id }}" label="{{ eachc.fk_location_code }}" selected>{{ eachc.fk_location_code.fk_city_code_id }}</option>
-
-                    <option value="" label="" class="empty">Select Location</option>
-
-                    {% if location_list %}
-                        {% for eachlocation in location_list %}
-                        {% if eachlocation.pk != eachc.fk_location_code_id %}
-
-                            <option style="display: none;" value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
-                    {% endif %}
-                        
-                            {% endfor %}                
-                    {% endif %}
-                </select>
-            </div>
-            </div>
+                </div>
             <div class="candidate-forms-input-holder">
                 <div>
                     <label for="" >TA SPOC Email ID</label>
@@ -408,16 +441,8 @@
             </div>
             
             <div class="candidate-forms-input-holder">
+                
                 <div>
-            <label for="">Email ID Creation</label>
-
-                <select tabindex="33" name="c_email_creation" id="c_email_creation" required="true">
-                    <option value="{{ eachc.E_Mail_ID_Creation }}" label="{{ eachc.E_Mail_ID_Creation }}" selected>{{ eachc.E_Mail_ID_Creation }}</option>
-                    <option value="Yes" >Yes</option>
-                    <option value="No" >No</option>                    
-                </select>
-                 </div>
-                <div class="margin-left">
                 <label for="" >Laptop Allocation</label>
 
                 <select tabindex="34" name="c_laptop_allocation" id="c_laptop_allocation" required="true">
@@ -433,73 +458,60 @@
                     {% endif %}                    
                 </select>
             </div>
-            </div>
-            <div class="candidate-forms-input-holder">
-                <div>
-            <label for="">Salary Type</label>
-
-                <select tabindex="35" name="c_salary_type" id="c_salary_type" required="true">
-                    <option value="{{ eachc.Salary_Type_id }}" label="{{ eachc.Salary_Type }}" selected>{{ eachc.Salary_Type }}</option>
-
-                    {% if salary_type_list %}
-                        {% for eachsalary_type in salary_type_list %}
-                        {% if eachsalary_type.pk != eachc.Salary_Type_id %}
-
-                            <option value="{{ eachsalary_type.pk }}" label="{{ eachsalary_type.salary_type_name }}">{{ eachsalary_type.salary_type_name }}</option>
-                    {% endif %}                   
-                       
-                            {% endfor %}                
-                    {% endif %}                   
-                </select>
-                 </div>
-                <div class="margin-left">
-                <label for="" >Gross Salary</label>
-                <input class="info" tabindex="36" type="number" value="{{ eachc.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1" max="100000">
-                <span id="wage_info" class="">
-                    State : Chosen State
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Skill Type</th>
-                                <th>Minimum Wage</th>
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>skilled</td>
-                                <td>12000</td>
-                            </tr>
-                            <tr>
-                                <td>skilled</td>
-                                <td>12000</td>
-                            </tr>
-                            <tr>
-                                <td>skilled</td>
-                                <td>12000</td>
-                            </tr>
-                            <tr>
-                                <td>skilled</td>
-                                <td>12000</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </span>
-                <span id="wage_result" style="color: #bf0711;"></span>
-
-            </div>
-
-            </div>
-            <div class="candidate-forms-input-holder">
-                <div>
-                    <label for="">Physically Challenged</label>
-                    <select name="challenged" id="" required="true" tabindex="36">
-                        <option value="" disabled></option>
-                        <option value="{{ eachc.physically_challenged }}" selected>{{ eachc.physically_challenged }}</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
+            <div class="margin-left">
+                <label for="">Salary Type</label>
+    
+                    <select tabindex="35" name="c_salary_type" id="c_salary_type" required="true">
+                        <option value="{{ eachc.Salary_Type_id }}" label="{{ eachc.Salary_Type }}" selected>{{ eachc.Salary_Type }}</option>
+    
+                        {% if salary_type_list %}
+                            {% for eachsalary_type in salary_type_list %}
+                            {% if eachsalary_type.pk != eachc.Salary_Type_id %}
+    
+                                <option value="{{ eachsalary_type.pk }}" label="{{ eachsalary_type.salary_type_name }}">{{ eachsalary_type.salary_type_name }}</option>
+                        {% endif %}                   
+                           
+                                {% endfor %}                
+                        {% endif %}                   
                     </select>
-                </div>
+                     </div>
+            </div>
+         
+            <div class="candidate-forms-input-holder">
+                <div class="margin-left">
+                    <label for="" >Gross Salary</label>
+                    <input class="info" tabindex="36" type="number" value="{{ eachc.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1" max="100000">
+                    <span id="wage_info" class="">
+                        State : Chosen State
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Skill Type</th>
+                                    <th>Minimum Wage</th>
+                                </tr>
+    
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>skilled</td>
+                                    <td>12000</td>
+                                </tr>
+                                <tr>
+                                    <td>skilled</td>
+                                    <td>12000</td>
+                                </tr>
+                                <tr>
+                                    <td>skilled</td>
+                                    <td>12000</td>
+                                </tr>
+                                <tr>
+                                    <td>skilled</td>
+                                    <td>12000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </span>
+                    <span id="wage_result" style="color: #bf0711;"></span></div>
                 <div class="margin-left">
     
                 </div>

@@ -188,6 +188,7 @@ $(document).ready(function(){
             },
             dataType: 'Json',
             success: function(data){
+                console.log(data)
                 if (data['invalid_domain'] != ''){
                     $('#emailmsg').html(data['invalid_domain']).css('color','red');
                     $('#new-candidate').attr('onsubmit','return false;');

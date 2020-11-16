@@ -144,74 +144,94 @@
            
             </div>
             <div class="margin-left">
+                <label for="">Physically Challenged</label>
+                <input type="text" readonly disabled="true" value="{{ me.physically_challenged }}">
+                
+            </div>
+            
+    </div>
+
+    <div class="view-candidate-forms-input-holder">
+        <div>
             <label for="" >Company</label>
             <input readonly type="text" value="{{ me.fk_entity_code }}">
         
         </div>
-    </div>
-
-        <div class="view-candidate-forms-input-holder">
-            <div>
+        <div class="margin-left">
                 <label for="">Vendor</label>
                 <input readonly type="text" value="{{ me.fk_vendor_code }}">
 
-             </div>
-            <div class="margin-left">
+        </div>
+        
+    </div>
+    <div class="view-candidate-forms-input-holder">
+        <div>
             <label for="" >Department</label>
             <input readonly type="text" value="{{ me.fk_department_code }}">
 
      
         </div>
-    </div>
-           <div class="view-candidate-forms-input-holder">
-            <div>
-        <label for="">Function</label>
-        <input readonly type="text" value="{{ me.fk_function_code }}">
+        <div class="margin-left">
+            <label for="">Function</label>
+            <input readonly type="text" value="{{ me.fk_function_code }}">
 
-           
-             </div>
-            <div class="margin-left">
+            
+        </div>
+       
+    </div>
+    <div class="view-candidate-forms-input-holder">
+        <div>
             <label for="" >Team</label>
             <input readonly type="text" value="{{ me.fk_team_code }}">
 
         </div>
-    </div>
-           <div class="view-candidate-forms-input-holder">
-            <div>
-        <label for="">Sub Team</label>
-        <input readonly type="text" value="{{ me.fk_subteam_code }}">
+        <div class="margin-left">
+            <label for="">Sub Team</label>
+            <input readonly type="text" value="{{ me.fk_subteam_code }}">
 
-             </div>
-            <div class="margin-left">
+        </div>
+       
+    </div>
+    <div class="view-candidate-forms-input-holder">
+        <div>
             <label for="" >Designation</label>
             <input readonly type="text" value="{{ me.fk_designation_code }}">
 
         </div>
-    </div>
-           <div class="view-candidate-forms-input-holder">
-            <div>
-        <label for="">Region</label>
+        <div class="margin-left">
+            <label for="">Region</label>
 
-        <input readonly type="text" value="{{ me.fk_region_code }}">
-       
-             </div>
-            <div class="margin-left">
+            <input readonly type="text" value="{{ me.fk_region_code }}">
+        
+        </div>
+               
+    </div>
+    <div class="view-candidate-forms-input-holder">
+        <div>
+            <label for="">City</label>
+            <input readonly type="text" value="{{ me.fk_city_code }}">
+
+          
+        </div>
+        <div class="margin-left">
             <label for="" >State</label>
             <input readonly type="text" value="{{ me.fk_state_code }}">
 
-   
         </div>
     </div>
-           <div class="view-candidate-forms-input-holder">
-            <div>
-        <label for="">City</label>
-        <input readonly type="text" value="{{ me.fk_city_code }}">
-
-          
-             </div>
-            <div class="margin-left">
+    <div class="view-candidate-forms-input-holder">
+        <div>
             <label for="" >Location</label>
             <input readonly type="text" value="{{ me.fk_location_code }}">
+
+          
+        </div>
+        <div class="margin-left">
+             
+            <label for="">Email ID Creation</label>
+            <input readonly type="text" value="{{ me.E_Mail_ID_Creation }}" id="">
+                    
+                    
 
         </div>
     </div>
@@ -238,45 +258,31 @@
         </div>
     </div>
         
-           <div class="view-candidate-forms-input-holder">
-            <div>
-        <label for="">Email ID Creation</label>
-            <input readonly type="text" value="{{ me.E_Mail_ID_Creation }}" id="">
-            
-             </div>
-            <div class="margin-left">
+    <div class="view-candidate-forms-input-holder">
+           
+        <div>
             <label for="" >Laptop Allocation</label>
             <input readonly type="text" value="{{ me.Laptop_Allocation }}" id="">
            
         </div>
+        <div class="margin-left">
+            <label for="">Salary Type</label>
+            <input readonly type="text" value="{{ me.Salary_Type }}" id="">
+                
+        </div>
     </div>
-           <div class="view-candidate-forms-input-holder">
-            <div>
-        <label for="">Salary Type</label>
-        <input readonly type="text" value="{{ me.Salary_Type }}" id="">
-            
-             </div>
-            <div class="margin-left">
+    <div class="view-candidate-forms-input-holder">
+        <div>
             <label for="" >Gross Salary</label>
             <input readonly tabindex="36" type="text" value="{{ me.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1">
             <span id="wage_result" style="color: #bf0711;"></span>
         </div>
-
-    </div>
-    <div class="candidate-forms-input-holder">
-        <div>
-            <label for="">Physically Challenged</label>
-            <select name="challenged" id="" required="true" tabindex="36">
-                <option value="" disabled></option>
-                <option value="{{ me.physically_challenged }}" selected>{{ me.physically_challenged }}</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-        </div>
         <div class="margin-left">
-
+           
         </div>
+
     </div>
+  
     <div class="view-candidate-forms-input-holder">
         <div>
             <label for="" >Onboarding Status</label>

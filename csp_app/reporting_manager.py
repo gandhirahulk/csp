@@ -149,7 +149,7 @@ def joining_confirmation(request):
             selected_candidate.joining_status = joining_status.objects.get(pk=4)
 
             subject, from_email = 'Request for future date of joining', 'workmail052020@gmail.com'   
-            html_content = render_to_string('emailtemplates/request_for_future.html',{'cid': selected_candidate.pk})
+            html_content = render_to_string('emailtemplates/request_for_future_doj.html',{'cid': selected_candidate.pk})
             text_content = strip_tags(html_content) 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id ])
             msg.attach_alternative(html_content, "text/html")

@@ -20,6 +20,17 @@ input:-webkit-autofill+label.move-out {
   margin-top: 10px;
 } */
 
+input:read-only{
+  background:#f5f5fa;
+  color: gray;
+
+}
+
+input:read-only:focus{
+  
+  box-shadow: none;
+  
+}
 
 .modal-msg{
   font-size: 10px;

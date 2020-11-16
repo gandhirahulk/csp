@@ -282,6 +282,12 @@ def check_duplicate_candidate_new(request):
     except ObjectDoesNotExist:
         result['email'] = ''
         result['invalid_domain'] = ''
+    if len(aadhaar) != 12:
+        result['adhaar_size'] = 'Please provide 12 digit Aadhaar number.'
+        return JsonResponse(result)
+    if len(pan) != 0:
+        result['pan_size'] = 'Please provide 10 digit PAN number.'
+        return JsonResponse(result)
     return JsonResponse(result)
 
 def check_rm_email(request):
@@ -350,6 +356,7 @@ def check_duplicate_candidate_edit(request):
     except ObjectDoesNotExist:
         result['email'] = ''
         result['invalid_domain'] = ''
+    
     return JsonResponse(result)
 
 
@@ -615,7 +622,7 @@ def process_requests(request, cid):
             onboarding_spoc = Onboarding_SPOC #check
             physically_challenged = request.POST.get("challenged")
             reporting_manager = request.POST.get("c_reporting_manager").title()
-            reporting_manager_email = request.POST.get("c_reporting_manager_email")
+            reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
@@ -832,7 +839,7 @@ def process_requests(request, cid):
                 return redirect("csp_app:candidate")
             except ObjectDoesNotExist:
                 selected_candidate = master_candidate.objects.get(pk= candidate_id)
-                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged)
+                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged, request)
                 
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time= datetime.now()
@@ -864,7 +871,7 @@ def process_requests(request, cid):
                             'Candidate Edited By Admin.',
                             limtemplate,
                             settings.EMAIL_HOST_USER,
-                            [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com'],
+                            [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -874,7 +881,7 @@ def process_requests(request, cid):
                             'Candidate account edited by admin.',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC ],
+                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com' ],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -907,7 +914,7 @@ def process_requests(request, cid):
                         'Candidate Edited .',
                         limtemplate,
                         settings.EMAIL_HOST_USER,
-                        [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com'],
+                        [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -917,7 +924,7 @@ def process_requests(request, cid):
                         'Candidate account edited.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -951,7 +958,7 @@ def process_requests(request, cid):
                             'Modified and approved',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -979,7 +986,7 @@ def process_requests(request, cid):
                             'Candidate Edited By Vendor.',
                             limtemplate,
                             settings.EMAIL_HOST_USER,
-                            [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com'],
+                            [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -989,7 +996,7 @@ def process_requests(request, cid):
                             'Candidate approved by vendor.',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -1003,14 +1010,14 @@ def process_requests(request, cid):
                             'IT Intimation',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', IT_email_id],
+                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', IT_email_id, 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
                         
                         try:
                             assign_group = Group.objects.get(name='Candidate')                     
-                            user = User.objects.create_user(selected_candidate.pk)
+                            user = User.objects.create_user(selected_candidate.Personal_Email_Id)
                             password = User.objects.make_random_password()
                             user.password = password
                             user.set_password(user.password)
@@ -1077,6 +1084,21 @@ def process_requests(request, cid):
                                 msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
                                 msg.attach_alternative(html_content, "text/html")
                                 msg.send()
+                            subject1 = 'Credentials'
+                            html_content = render_to_string('emailtemplates/candidate_credentials.html', {'candidate_name': selected_candidate.First_Name, 'username': selected_candidate.Personal_Email_Id, 'password': password})
+                            body1 = strip_tags(html_content)
+                            from1 = my_username
+                            with get_connection(
+                            host=my_host, 
+                            port=my_port, 
+                            username=my_username, 
+                            password=my_password, 
+                            use_tls=my_use_tls,
+                            use_ssl= my_use_ssl
+                            ) as connection:
+                                msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
+                                msg.attach_alternative(html_content, "text/html")
+                                msg.send()
                             messages.success(request, "Candidate approved LOI sent to candidate.")
                             return redirect("csp_app:pending_request")
                         except TimeoutError:                            
@@ -1096,7 +1118,7 @@ def process_requests(request, cid):
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
-def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary,physically_challenged):
+def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary,physically_challenged, request):
     changes_list = {}
     if selected_candidate.First_Name != firstname:
         changes_list['First Name'] = [ selected_candidate.First_Name, firstname ]
@@ -1223,7 +1245,7 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
         s_amount = 1
     selected_candidate.Gross_Salary_Amount= gross_salary
     if s_type > 0 or s_amount > 0:
-        new_gross_salary = gross_salary_history(fk_candidate_code= selected_candidate, gross_salary_entered= gross_salary, gross_salary_calculated= ss_gross_salary, salary_type_selected= salarytype_fk, enetered_by= str(request.user))
+        new_gross_salary = gross_salary_history(fk_candidate_code= selected_candidate, gross_salary_entered= gross_salary, gross_salary_calculated= INR_to_number(ss_gross_salary), salary_type_selected= salarytype_fk, enetered_by= str(request.user))
         new_gross_salary.save()    
     return changes_list
 
@@ -1255,7 +1277,7 @@ def reject_candidate_onboarding(request, cid):
             'Candidate Rejected.',
             alltemplate,
             settings.EMAIL_HOST_USER,
-            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
         ) 
         our_email.fail_silently = False
         our_email.send()
@@ -1296,7 +1318,7 @@ def reject_candidate_vendor(request, cid):
                         'Candidate Rejected By Admin.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -1305,7 +1327,7 @@ def reject_candidate_vendor(request, cid):
                         'Candidate Rejected By Admin.',
                         template,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id],
+                        [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -1332,7 +1354,7 @@ def reject_candidate_vendor(request, cid):
                         'Candidate Rejected.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -1358,7 +1380,7 @@ def reject_candidate_vendor(request, cid):
                         'Candidate Rejected.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC],
+                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -1367,7 +1389,7 @@ def reject_candidate_vendor(request, cid):
                         'Candidate Rejected.',
                         template,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id],
+                        [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -1461,7 +1483,7 @@ def future_joining_requests(request):
     
             html_content = render_to_string('emailtemplates/sdf.html') 
             text_content = strip_tags(html_content)
-            msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, 'sadaf.shaikh@udaan.com' ])
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
             subject, from_email = 'Revised details of joining', 'workmail052020@gmail.com'
@@ -1480,7 +1502,7 @@ def future_joining_requests(request):
     
             html_content = render_to_string('emailtemplates/sdf.html')
             text_content = strip_tags(html_content) 
-            msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, 'sadaf.shaikh@udaan.com' ])
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ])
 
             msg.attach_alternative(html_content, "text/html")
             msg.send()
@@ -1629,7 +1651,7 @@ def edit_salary_structure_process(request, cid):
                 ta_spoc = request.POST.get("c_ta_spoc") #check
                 onboarding_spoc = Onboarding_SPOC #check
                 reporting_manager = request.POST.get("c_reporting_manager").title()
-                reporting_manager_email = request.POST.get("c_reporting_manager_email")
+                reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
                 email_creation = request.POST.get("c_email_creation")
                 laptopallocation = request.POST.get("c_laptop_allocation")
                 salarytype = request.POST.get("c_salary_type")
@@ -1825,7 +1847,7 @@ def edit_salary_structure(request):
             ta_spoc = request.POST.get("c_ta_spoc") #check
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
-            reporting_manager_email = request.POST.get("c_reporting_manager_email")
+            reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
@@ -2248,7 +2270,7 @@ def edit_candidate(request):
             ta_spoc = request.POST.get("c_ta_spoc") #check
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
-            reporting_manager_email = request.POST.get("c_reporting_manager_email")
+            reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
@@ -2471,7 +2493,7 @@ def edit_candidate(request):
                 loc_code = remove_specials(loc_code)
               
                 selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, ss_gross_salary, physically_challenged)
-                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged)
+                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged, request)
                 
                 
 
@@ -2481,7 +2503,7 @@ def edit_candidate(request):
                     'Candidate Account Updated.',
                     alltemplate,
                     settings.EMAIL_HOST_USER,
-                    [ selected_candidate.TA_Spoc_Email_Id, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
+                    [ selected_candidate.TA_Spoc_Email_Id, onboarding_spoc, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
@@ -2490,7 +2512,7 @@ def edit_candidate(request):
                     'Candidate Account Updated.',
                     limtemplate,
                     settings.EMAIL_HOST_USER,
-                    [ reporting_manager_email, 'sadaf.shaikh@udaan.com'],
+                    [ reporting_manager_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
@@ -2587,7 +2609,7 @@ def create_candidate(request):
             ta_spoc = request.user.email #check
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
-            reporting_manager_email = request.POST.get("c_reporting_manager_email")
+            reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
@@ -2868,7 +2890,7 @@ def save_new_candidate(request):
             ta_spoc = request.user.email #check
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
-            reporting_manager_email = request.POST.get("c_reporting_manager_email")
+            reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
             email_creation = request.POST.get("c_email_creation")
             laptopallocation = request.POST.get("c_laptop_allocation")
             salarytype = request.POST.get("c_salary_type")
@@ -3111,7 +3133,7 @@ def save_new_candidate(request):
                     'Candidate account created action required.',
                     limtemplate,
                     settings.EMAIL_HOST_USER,
-                    [ reporting_manager_email, 'sadaf.shaikh@udaan.com'],
+                    [ reporting_manager_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
@@ -3124,7 +3146,7 @@ def save_new_candidate(request):
                     'Candidate account created action required.',
                     alltemplate,
                     settings.EMAIL_HOST_USER,
-                    [ ta_spoc, onboarding_spoc, 'sadaf.shaikh@udaan.com'],
+                    [ ta_spoc, onboarding_spoc, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                 ) 
                 our_email.fail_silently = False
                 our_email.send()
@@ -3188,7 +3210,7 @@ def change_candidate_status(request):
                     'Candidate Status Updated',
                     template,
                     settings.EMAIL_HOST_USER,
-                    [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],
+                    [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                 ) 
                 our_email.fail_silently = False
                 our_email.send()            
@@ -3201,7 +3223,7 @@ def change_candidate_status(request):
                 'Candidate Status Updated',
                 template,
                 settings.EMAIL_HOST_USER,
-                [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],
+                [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
             ) 
             our_email.fail_silently = False
             our_email.send()            
@@ -3382,7 +3404,7 @@ def change_candidate_status_vendor(request):
                 'Candidate Status Updated By Vendor',
                 template,
                 settings.EMAIL_HOST_USER,
-                [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],
+                [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
             ) 
             our_email.fail_silently = False
             our_email.send()
@@ -3392,7 +3414,7 @@ def change_candidate_status_vendor(request):
                     'LOI',
                     template,
                     settings.EMAIL_HOST_USER,
-                    [ candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
+                    [ candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                 ) 
                 our_email.fail_silently = False
                 candidate.loi_status = loi_status.objects.get(pk=1)
@@ -3440,7 +3462,7 @@ def change_candidate_status_vendor(request):
                 'Candidate Status Updated By Vendor',
                 template,
                 settings.EMAIL_HOST_USER,
-                [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com'],
+                [ candidate_vendor_mailid, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
             ) 
             our_email.fail_silently = False
             our_email.send()
@@ -3452,7 +3474,7 @@ def change_candidate_status_vendor(request):
                     'LOI',
                     template,
                     settings.EMAIL_HOST_USER,
-                    [ candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com'],
+                    [ candidate.Personal_Email_Id , 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                 ) 
                 our_email.fail_silently = False
                 candidate.loi_status = loi_status.objects.get(pk=1)
@@ -3708,7 +3730,7 @@ def delete_vendor(request):
                 selected_vendor.save()
                 
                 msg = 'Vendor account disabled for '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' by ' + str(request.user) + ' .'
-                send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com' ,[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com'],fail_silently=False)
+                send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com' ,[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
       
                 messages.success(request, "Vendor Deleted Successfully")
                 return redirect('csp_app:vendor')
@@ -3889,7 +3911,7 @@ def save_edit_vendor(request):
                             'CSP_APP: Vendor Edited.',
                             newtemplate,
                             settings.EMAIL_HOST_USER,
-                            [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com'],
+                            [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -3899,7 +3921,7 @@ def save_edit_vendor(request):
                             'CSP_APP',
                             template,
                             settings.EMAIL_HOST_USER,
-                            [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com'],
+                            [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()  
@@ -4094,7 +4116,7 @@ def create_vendor(request):
                 'CSP_APP: New vendor account created.',
                 newtemplate,
                 settings.EMAIL_HOST_USER,
-                [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com'],
+                [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
             ) 
             our_email.fail_silently = False
             our_email.send()
@@ -4104,7 +4126,7 @@ def create_vendor(request):
                 'CSP_APP',
                 template,
                 settings.EMAIL_HOST_USER,
-                [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com'],
+                [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
             ) 
             our_email.fail_silently = False
             our_email.send()  
@@ -4120,7 +4142,7 @@ def create_vendor(request):
             'CSP_APP: New vendor account created.',
             newadmintemplate,
             settings.EMAIL_HOST_USER,
-            [ request.user.email, 'sadaf.shaikh@udaan.com' ],
+            [ request.user.email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ],
         ) 
         our_email.fail_silently = False
         our_email.send() 
@@ -4129,7 +4151,7 @@ def create_vendor(request):
             'CSP_APP: New vendor account created.',
             newadmintemplate,
             settings.EMAIL_HOST_USER,
-            [ request.user.email, 'sadaf.shaikh@udaan.com' ],
+            [ request.user.email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ],
         ) 
         our_email.fail_silently = False
         our_email.send() 
@@ -5478,7 +5500,7 @@ def  create_user(request):
                 'Account Created with UDAAN CSP_APP.',
                 template,
                 settings.EMAIL_HOST_USER,
-                [ email, 'sadaf.shaikh@udaan.com'],
+                [ email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
             ) 
             our_email.fail_silently = False
             our_email.send()
@@ -5487,7 +5509,7 @@ def  create_user(request):
                 'Account Created with UDAAN CSP_APP.',
                 admintemplate,
                 settings.EMAIL_HOST_USER,
-                [ request.user.email , 'sadaf.shaikh@udaan.com'],
+                [ request.user.email , 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
             ) 
             our_email.fail_silently = False
             our_email.send()
