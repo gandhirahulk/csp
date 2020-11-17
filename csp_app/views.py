@@ -3245,33 +3245,30 @@ def candidate_document_upload(request, candidate_id):
        
         try:
             is_candidate = User.objects.get(username= request.user, groups__name='Candidate')
-         
+            candidate = master_candidate.objects.filter(pk = candidate_id)
             logged_in_candidate = master_candidate.objects.get(Personal_Email_Id=str(request.user))
-        
+            candidate_fk = master_candidate.objects.get(pk = candidate_id)
             if logged_in_candidate.pk != candidate_id:
                 return HttpResponse("No Data To Display....")
-            candidate_fk = master_candidate.objects.get(pk = candidate_id)
             flag, document_count = check_for_mandatory_documents_upload(candidate_id)
-            if flag == 1:
-                mandatory_list = mandatory_documents.objects.all().exclude(pk=1)
+            mandatory_list = mandatory_documents.objects.all().exclude(pk=1)
+            if flag == 1:                
                 document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
                 
             else:
-               
-                mandatory_list = mandatory_documents.objects.all().exclude(pk=1)
                 document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status).exclude(document_catagory_id=1)
-             
-                
+            # print(document_list)
+            # return render(request, 'candidate/candidatedocuments.html', {'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
 
         except ObjectDoesNotExist:
             pass
-        try:
-            is_vendor = User.objects.get(username= request.user, groups__name='Vendor')
+        # try:
+        #     is_vendor = User.objects.get(username= request.user, groups__name='Vendor')
          
           
 
-        except ObjectDoesNotExist:
-            pass
+        # except ObjectDoesNotExist:
+        #     pass
         
 
         document_id = request.POST.get("delete_id")
@@ -3298,7 +3295,7 @@ def candidate_document_upload(request, candidate_id):
                 else:
                     candidate_fk.documentation_status = documentation_status.objects.get(pk=2)
                     candidate_fk.save()
-                
+            
 
 
             
@@ -3325,6 +3322,28 @@ def candidate_document_upload(request, candidate_id):
         
         
         if request.method == 'POST':
+            candidate = master_candidate.objects.filter(pk = candidate_id)
+            candidate_fk = master_candidate.objects.get(pk = candidate_id)
+            flag, document_count = check_for_mandatory_documents_upload(candidate_id)
+            if flag == 1:
+                document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+                candidate_fk.documentation_status = documentation_status.objects.get(pk=1)
+                candidate_fk.save()
+            else:
+                is_vendor = User.objects.filter(username= request.user, groups__name='Vendor')
+                if len(is_vendor) > 0:
+                    mandatory_list = mandatory_documents.objects.all()
+                    document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+                else:
+                    mandatory_list = mandatory_documents.objects.all().exclude(pk=1)
+                    document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status).exclude(document_catagory_id=1)
+                if document_count > 0:
+                    candidate_fk.documentation_status = documentation_status.objects.get(pk=4)
+                    candidate_fk.save()
+                else:
+                    candidate_fk.documentation_status = documentation_status.objects.get(pk=2)
+                    candidate_fk.save()
+            print('1')
             candidate_fk = master_candidate.objects.get(pk = candidate_id)
 
             f_catogory = request.POST.get("c_catogory")
@@ -3348,6 +3367,7 @@ def candidate_document_upload(request, candidate_id):
             catogory_fk = mandatory_documents.objects.get(pk = f_catogory)
           
             try:
+                print(2)
                 if f_catogory != '0':
                     
                     duplicate_catogory = candidate_document.objects.get(document_catagory= catogory_fk, fk_candidate_code= candidate_id, status= active_status)
@@ -3358,6 +3378,7 @@ def candidate_document_upload(request, candidate_id):
                 return redirect('csp_app:document_upload', candidate_id = candidate_id )
                 
             except ObjectDoesNotExist:
+                print(3)
                 if file_name_entered == None or file_name_entered == '':
                     file_name_entered = file_name
                 new_document = candidate_document(fk_candidate_code= candidate_fk, document_catagory= catogory_fk , file_name= file_name_entered, file_upload = file_url, created_by= str(request.user), created_date_time= datetime.now())
@@ -3378,12 +3399,16 @@ def check_for_mandatory_documents_upload(candidate_id):
     selected_candidate = master_candidate.objects.get(pk_candidate_code=candidate_id, status=active_status)
     non_mandatory = [0, 1]
     mandatory_list = mandatory_documents.objects.all().exclude(pk__in = non_mandatory)
-    candidate_document_list = candidate_document.objects.filter(fk_candidate_code = selected_candidate).exclude(document_catagory_id=0)
+    print(mandatory_list)
+    candidate_document_list = candidate_document.objects.filter(fk_candidate_code = selected_candidate).exclude(document_catagory_id__in= non_mandatory)
     mandatory_document_len = len(mandatory_list)
     candidate_document_len = len(candidate_document_list)
+    print(len(candidate_document_list))
     if mandatory_document_len == candidate_document_len:
+     
         return 1, candidate_document_len
     else:
+        
         return -1, candidate_document_len
 
 
