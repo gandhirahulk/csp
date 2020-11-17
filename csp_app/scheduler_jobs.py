@@ -26,7 +26,7 @@ def RemindVendor():
 def DocumentReminder():
     vendor_approve = vendor_status.objects.get(pk=1)
     onboard_approve = onboarding_status.objects.get(pk=1)
-    all_candidates_list = master_candidate.objects.filter(status=active_status, vendor_status= vendor_approve, onboarding_status= onboard_approve)
+    all_candidates_list = master_candidate.objects.filter(status=active, vendor_status= vendor_approve, onboarding_status= onboard_approve)
     mandatory_list = mandatory_documents.objects.all().exclude(pk=0)
     mandatory_document_len = len(mandatory_list)
     for each_canidate in all_candidates_list:
