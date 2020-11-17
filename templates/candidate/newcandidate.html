@@ -15,6 +15,11 @@
     <span><i class="fas fa-chevron-right"></i></span>
     <span style="color: dimgray;">New Candidate</span>
 </div>
+{% if request.user.groups.all %}
+    {% for eachgroup in request.user.groups.all %}
+        <input type="hidden" name="" value="{{ eachgroup.name }}" id="user_group">
+    {% endfor %}
+{% endif %}
 <div class="candidate_form">
     <div class="candidate_form_header">
         <div class="forms-heading">
@@ -125,18 +130,18 @@
 
         <div class="candidate-forms-input-holder">
              
-                 <div>
-                    <label for="">Sub Source</label>
-                    <select name="c_sub_source" id="referral" tabindex="15" >
-                        <option value="" disabled selected>Select Sub Source</option>
-                        {% if sub_source_list %}
-                            {% for eachsub_source in sub_source_list %}
-                                <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
-                            {% endfor %}                
-                        {% endif %}
-                    </select>
-                     </div>
-                <div class="margin-left">
+            <div>
+                <label for="">Sub Source</label>
+                <select name="c_sub_source" id="referral" tabindex="15" >
+                    <option value="" disabled selected>Select Sub Source</option>
+                    {% if sub_source_list %}
+                        {% for eachsub_source in sub_source_list %}
+                            <option value="{{ eachsub_source.pk }}" label="{{ eachsub_source.sub_source_name }}">{{ eachsub_source.sub_source_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <div class="margin-left">
                 <label for="" >Referal UID</label>
                 <input type="text" tabindex="16" disabled placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
           
@@ -544,15 +549,15 @@
 </script>
 <script>
     $(document).ready(function(){
-        $('#referral').change(function() {
-        var selectedvalue = $(this).val();
-    
-        if (selectedvalue == '3'){
-            $('#c_vendor').attr("disabled", true);
-            $('#c_vendor').prop("required", false);
+        // $('#referral').change(function() {
+        //     var selectedvalue = $(this).val();
+        //     var usergroup = $('#user_group').val();
+        //     if (selectedvalue === '3' || usergroup != 'Vendor'){
+        //         $('#c_vendor').attr("disabled", true);
+        //         $('#c_vendor').prop("required", false);
 
-        }
-    });
+        //     }
+        // });
     })
 </script>
     

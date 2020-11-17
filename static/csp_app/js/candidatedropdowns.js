@@ -12,6 +12,19 @@ $(document).ready(function(){
             $('#c_referral').prop("value", '');
             $('#c_referral').attr("disabled", true);
     }
+    $('#referral').change(function() {
+        var selectedvalue = $(this).val();
+        var usergroup = $('#user_group').val();
+        if (selectedvalue == '3' && usergroup != 'Onboarding SPOC'){
+            $('#c_vendor').attr("disabled", true);
+            $('#c_vendor').prop("required", false);
+
+        } else {
+            $('#c_vendor').attr("disabled", false);
+            $('#c_vendor').prop("required", true);
+
+        }
+    });
  
 
     $(document).keyup(function(){
@@ -164,7 +177,17 @@ $(document).ready(function(){
             $('#c_region .empty').css("display", "");
             $('#c_region .empty').prop("selected", true);
         }
+        var selectedvalue = $('#referral').val();
+        var usergroup = $('#user_group').val();
+        if (selectedvalue == '3' && usergroup != 'Onboarding SPOC'){
+            $('#c_vendor').attr("disabled", true);
+            $('#c_vendor').prop("required", false);
 
+        } else {
+            $('#c_vendor').attr("disabled", false);
+            $('#c_vendor').prop("required", true);
+
+        }
     });
   
     $('#c_region').change(function() {
