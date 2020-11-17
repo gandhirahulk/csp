@@ -1,5 +1,5 @@
 function getPDF(){
-    alert("save me");
+    // alert("save me");
     var HTML_Width = 600;
     var HTML_Height = HTML_Width * 1.3;
     var top_left_margin = 40 ;
