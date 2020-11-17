@@ -5,6 +5,8 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 
+active = status.objects.get(pk=1)
+
 def RemindVendor():
     pending = vendor_status.objects.get(pk=2)
     approve = onboarding_status.objects.get(pk=1)
