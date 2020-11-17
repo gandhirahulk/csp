@@ -8,8 +8,20 @@
     border-collapse: collapse;
 }
 
+.ss-table thead tr th{
+    padding: 5px !important;
+}
+
 .ss-table tr{
     color: black;
+}
+
+.ss-table th{
+    text-align: right;
+}
+
+.ss-table th:first-child{
+    text-align: center;
 }
 
 .ss-table tbody tr td input{
@@ -21,17 +33,18 @@
 .ss-table tr td{
     color: black;
     text-align: right;
-    
+    padding: 5px !important;
 }
 
 .ss-table tr td:first-child{
     text-align: left;
+    padding: 5px !important;
 }
 
 .salary-heading-one,
 .salary-heading-two,
 .salary-heading-three{
-    padding: 5px;
+    padding: 5px !important;
     text-align: center;
 }
 
@@ -53,10 +66,12 @@
 
 .salary-heading-one{
     background: #D3E4E1;
+    padding: 5px;
 }
 
 .ss-table-heading-one{
     background: #DCF2E7;
+    padding: 5px;
 }
 
 .ss-table-total-one{
@@ -67,10 +82,12 @@
 
 .salary-heading-two{
     background: #F0E9D3;
+    padding: 5px;
 }
 
 .ss-table-heading-two{
     background: #F0F2D8;
+    padding: 5px;
 }
 
 .ss-table-total-two{
@@ -81,12 +98,17 @@
 
 .salary-heading-three{
     background: #D3E4E1;
+    padding: 5px;
 }
 
 .ss-table-heading-three{
     background: #DCF2E7;
+    padding: 5px;
 }
-
+.ss-table-heading-three th,
+.ss-table-heading-two th{
+    padding: 5px !important;
+}
 .ss-table-total-three1{
     background: #F0F2D8;
     font-weight: bold;
@@ -115,18 +137,21 @@
     background: #CECECA;
     /* background: #D3E4E1 ; */
     font-weight: bold;
+    padding: 5px;
 }
 
 .ssc-heading-three{
     background: #DADAD7;
     /* background: #DCF2E7; */
     font-weight: bold;
+    padding: 5px;
 }
 
 .ssc-heading-four{
     background: #E2E2DF;
     /* background: #E6F2E0; */
     font-weight: bold;
+    padding: 5px;
 }
 
 .ss-table-fixed-salary{

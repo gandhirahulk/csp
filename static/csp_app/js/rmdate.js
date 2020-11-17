@@ -54,10 +54,10 @@ $(document).ready(function(){
         if (this.checked) {
             $("#calendar_inp").val("");
             $('#remark').addClass("show_me");
-            $('#remark').attr("disabled", false);
+            $('#remark').attr("readonly", false);
         } else {
             $('#remark').removeClass("show_me");
-            $('#remark').attr("disabled", true);
+            $('#remark').attr("readonly", true);
 
         }
     });

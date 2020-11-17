@@ -178,7 +178,7 @@
                 </div>
                 <div class="margin-left">
                     <label for="">Physically Challenged</label>
-                    <select name="challenged" id="" required="true" tabindex="36">
+                    <select name="challenged" id="" required="true" tabindex="18">
                         <option value="" disabled></option>
                         <option value="{{ eachc.physically_challenged }}" selected>{{ eachc.physically_challenged }}</option>
                         {% if eachc.physically_challenged != 'No' %}
@@ -196,7 +196,7 @@
                 <div>
                     <label for="" >Company</label>
     
-                    <select tabindex="18" name="c_entity" id="c_entity" required="true">
+                    <select tabindex="19" name="c_entity" id="c_entity" required="true">
                         <option value="{{ eachc.fk_entity_code_id }}" label="{{ eachc.fk_entity_code }}" selected>{{eachc.fk_entity_code}}</option>
                         {% if entity_list %}
                             {% for eachentity in entity_list %}
@@ -210,7 +210,7 @@
                 <div class="margin-left">
                     <label for="">Vendor</label>
 
-                    <select tabindex="19" name="c_vendor" id="c_vendor" required="true">
+                    <select tabindex="20" name="c_vendor" id="c_vendor" required="true">
                         <option value="{{ eachc.fk_vendor_code_id }}" label="{{ eachc.fk_vendor_code }}" selected>{{eachc.fk_vendor_code}}</option>
 
                         <option value="" label="" class="empty">Select Vendor</option>
@@ -232,7 +232,7 @@
             <div>
                 <label for="" >Department</label>
 
-                <select tabindex="20" name="c_dept" id="c_dept" required="true">
+                <select tabindex="21" name="c_dept" id="c_dept" required="true">
                     <option value="{{ eachc.fk_department_code_id }}" label="{{ eachc.fk_department_code }}" selected>{{eachc.fk_department_code}}</option>
 
                     <option value="" label="" class="empty">Select Department</option>
@@ -251,7 +251,7 @@
             <div class="margin-left">
                 <label for="">Function</label>
 
-                <select tabindex="21" name="c_function" id="c_function" required="true">
+                <select tabindex="22" name="c_function" id="c_function" required="true">
                     <option value="{{ eachc.fk_function_code_id }}" label="{{ eachc.fk_function_code }}" selected>{{ eachc.fk_function_code.fk_department_code_id }}</option>
                     <option value="" label="" class="empty">Select Function</option>
 
@@ -272,7 +272,7 @@
             <div>
                 <label for="" >Team</label>
 
-                <select tabindex="22" name="c_team" id="c_team" required="true">
+                <select tabindex="23" name="c_team" id="c_team" required="true">
                     <option value="{{ eachc.fk_team_code_id }}" label="{{ eachc.fk_team_code }}" selected>{{ eachc.fk_team_code.fk_function_code_id }}</option>
                     <option value="" label="" class="empty">Select Team</option>
 
@@ -290,7 +290,7 @@
             <div class="margin-left">
                 <label for="">Sub Team</label>
 
-                <select tabindex="23" name="c_subteam" id="c_subteam" required="true">
+                <select tabindex="24" name="c_subteam" id="c_subteam" required="true">
                     <option value="{{ eachc.fk_subteam_code_id }}" label="{{ eachc.fk_subteam_code }}" selected>{{ eachc.fk_subteam_code.fk_team_code_id }}</option>
                     <option value="" label="" class="empty">Select Sub Team</option>
 
@@ -311,7 +311,7 @@
             <div>
                 <label for="" >Designation</label>
 
-                <select tabindex="24" name="c_desg" id="c_desg" required="true">
+                <select tabindex="25" name="c_desg" id="c_desg" required="true">
                     <option value="{{ eachc.fk_designation_code_id }}" label="{{ eachc.fk_designation_code }}" selected>{{ eachc.fk_designation_code.fk_sub_team_code_id }}</option>
                     <option value="" label="" class="empty">Select Designation</option>
 
@@ -329,7 +329,7 @@
             <div class="margin-left">
                 <label for="">Region</label>
 
-                <select tabindex="25" name="c_region" id="c_region" required="true">
+                <select tabindex="26" name="c_region" id="c_region" required="true">
                     <option value="{{ eachc.fk_region_code_id }}" label="{{ eachc.fk_region_code }}" selected>{{ eachc.fk_region_code.fk_entity_code_id }}</option>
 
                     <option value="" label="" class="empty">Select Region</option>
@@ -351,7 +351,7 @@
             <div>
                 <label for="" >State</label>
 
-                <select tabindex="26" name="c_state" id="c_state" required="true">
+                <select tabindex="27" name="c_state" id="c_state" required="true">
                     <option value="{{ eachc.fk_state_code_id }}" label="{{ eachc.fk_state_code }}" selected>{{ eachc.fk_state_code.fk_region_code_id }}</option>
 
                     <option value="" label="" class="empty">Select State</option>
@@ -370,7 +370,7 @@
             <div class="margin-left">
                 <label for="">City</label>
 
-                <select tabindex="27" name="c_city" id="c_city" required="true">
+                <select tabindex="28" name="c_city" id="c_city" required="true">
                     <option value="{{ eachc.fk_city_code_id }}" label="{{ eachc.fk_city_code }}" selected>{{ eachc.fk_city_code.fk_state_code_id }}</option>
 
                     <option value="" label="" class="empty">Select City</option>
@@ -391,18 +391,18 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >TA SPOC Email ID</label>
-                <input tabindex="29" type="email" readonly value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
+                <input  type="email" readonly value="{{ eachc.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" required="true">
             </div>
             <div class="margin-left">
                 <label for="" >Onboarding SPOC Email ID</label>
-                <input tabindex="30" type="email" readonly value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
+                <input  type="email" readonly value="{{ eachc.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" required="true">         
             </div>
         </div>
         <div class="candidate-forms-input-holder">
             <div >
                 <label for="" >Location</label>
 
-                <select tabindex="28" name="c_location" id="c_location" required="true">
+                <select tabindex="29" name="c_location" id="c_location" required="true">
                     <option value="{{ eachc.fk_location_code_id }}" label="{{ eachc.fk_location_code }}" selected>{{ eachc.fk_location_code.fk_city_code_id }}</option>
 
                     <option value="" label="" class="empty">Select Location</option>
@@ -421,7 +421,7 @@
             <div class="margin-left">
                 <label for="">Email ID Creation</label>
     
-                    <select tabindex="33" name="c_email_creation" id="c_email_creation" required="true">
+                    <select tabindex="30" name="c_email_creation" id="c_email_creation" required="true">
                         <option value="{{ eachc.E_Mail_ID_Creation }}" label="{{ eachc.E_Mail_ID_Creation }}" selected>{{ eachc.E_Mail_ID_Creation }}</option>
                         {% if eachc.E_Mail_ID_Creation != 'No' %}
                             <option value="No">No</option>
@@ -450,7 +450,7 @@
             <div>
                 <label for="" >Laptop Allocation</label>
 
-                <select tabindex="34" name="c_laptop_allocation" id="c_laptop_allocation" required="true">
+                <select tabindex="33" name="c_laptop_allocation" id="c_laptop_allocation" required="true">
                     <option value="{{ eachc.Laptop_Allocation_id }}" label="{{ eachc.Laptop_Allocation }}" selected>{{ eachc.Laptop_Allocation }}</option>
                     {% if laptop_allocation_list %}
                         {% for eachlaptop_allocation in laptop_allocation_list %}
@@ -466,7 +466,7 @@
                 <div>
             <label for="">Salary Type</label>
 
-                <select tabindex="35" name="c_salary_type" id="c_salary_type" required="true">
+                <select tabindex="34" name="c_salary_type" id="c_salary_type" required="true">
                     <option value="{{ eachc.Salary_Type_id }}" label="{{ eachc.Salary_Type }}" selected>{{ eachc.Salary_Type }}</option>
 
                     {% if salary_type_list %}
@@ -486,7 +486,7 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >Gross Salary</label>
-                <input tabindex="36" type="number" value="{{ eachc.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1" max="100000">
+                <input tabindex="35" type="number" value="{{ eachc.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1" max="100000">
                 <span id="wage_result" style="color: #bf0711;"></span>
             </div>
             <div class="margin-left">
@@ -496,11 +496,11 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >Onboarding Status</label>
-                <input tabindex="37" type="text" value="{{ eachc.onboarding_status }}" placeholder="Onboarding Status" disabled="true">
+                <input  type="text" value="{{ eachc.onboarding_status }}" placeholder="Onboarding Status" disabled="true">
             </div>
             <div class="margin-left">
                 <label for="" >Vendor Status</label>
-                <input tabindex="38" type="text" value="{{ eachc.vendor_status }}" placeholder="Vendor Status" disabled="true">
+                <input  type="text" value="{{ eachc.vendor_status }}" placeholder="Vendor Status" disabled="true">
             </div>
         </div>
               
@@ -859,9 +859,11 @@
 
 
         <div class="ssc">
-            <p>&nbsp;</p>
-            <br>
-            <p>&nbsp;</p>
+            <div>
+                <div style="font-size: 16px;"> <strong>&nbsp; </strong> </div> 
+                <div style="font-size: 16px;"><strong> &nbsp; </strong> </div> 
+                <div style="font-size: 16px;"><strong> &nbsp; </strong></div>
+            </div>
 
             <div class="ssc-heading-one">
                 <h3>Salary Structure Calculation : Consideration</h3>

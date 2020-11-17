@@ -1783,8 +1783,12 @@ def edit_salary_structure_process(request, cid):
                     delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
                     dojcount = len(delay_joiners)
                     selected_candidate = master_candidate.objects.get(pk=cid)
-                
-                    return render(request, 'candidate/processeditsalarystructure.html', {'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
+                    changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged, request)
+                    if len(changes_list) > 0:
+                        changed = 1
+                    else:
+                        changed = 0
+                    return render(request, 'candidate/processeditsalarystructure.html', {'changed':changed, 'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                     'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
                     'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),
                     'annualerpf': convert_to_INR(annual_eprf), 'annualerpf_admin': convert_to_INR(annual_pfadmin), 'annualersic': convert_to_INR(annual_ersic), 'annualgpa': convert_to_INR(annual_gpa), 'annualgmi': convert_to_INR(annual_gmi), 'tec': convert_to_INR(tec), 'annual_tec': convert_to_INR(annual_tec), 'ctc': convert_to_INR(ctc), 'annual_ctc': convert_to_INR(annual_ctc),
@@ -3237,21 +3241,41 @@ def change_candidate_status(request):
 @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Candidate').exists())
 def candidate_document_upload(request, candidate_id):
     try:
+        print(request.user)
+       
         try:
-            is_valid_candidate = User.objects.get(username= request.user, groups__name='Candidate')
-            print(is_valid_candidate)
+            is_candidate = User.objects.get(username= request.user, groups__name='Candidate')
+         
+            logged_in_candidate = master_candidate.objects.get(Personal_Email_Id=str(request.user))
+        
+            if logged_in_candidate.pk != candidate_id:
+                return HttpResponse("No Data To Display....")
+            candidate_fk = master_candidate.objects.get(pk = candidate_id)
+            flag, document_count = check_for_mandatory_documents_upload(candidate_id)
+            if flag == 1:
+                mandatory_list = mandatory_documents.objects.all().exclude(pk=1)
+                document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+                
+            else:
+               
+                mandatory_list = mandatory_documents.objects.all().exclude(pk=1)
+                document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status).exclude(document_catagory_id=1)
+             
+                
 
-            # for eachgroup in request.user.groups.all():               
+        except ObjectDoesNotExist:
+            pass
+        try:
+            is_vendor = User.objects.get(username= request.user, groups__name='Vendor')
+         
+          
 
-            #     if candidate_id != str(request.user):
-            #         if str(eachgroup) == 'Vendor':
-            #             print(1)
-            #         else:
-            #             return HttpResponse("No Data To Display....")
         except ObjectDoesNotExist:
             pass
         
+
         document_id = request.POST.get("delete_id")
+         
         if document_id == None:
             candidate = master_candidate.objects.filter(pk = candidate_id)
             candidate_fk = master_candidate.objects.get(pk = candidate_id)
@@ -3343,15 +3367,17 @@ def candidate_document_upload(request, candidate_id):
                     candidate_fk.save()
                 messages.success(request, "Document Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
+        
         all_active_candidates = vendor_candidates(request.user)
         return render(request, 'candidate/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
 
-    except UnboundLocalError:
+    except ObjectDoesNotExist:
         return HttpResponse("No Data To Display.")
 
 def check_for_mandatory_documents_upload(candidate_id):
     selected_candidate = master_candidate.objects.get(pk_candidate_code=candidate_id, status=active_status)
-    mandatory_list = mandatory_documents.objects.all().exclude(pk=0)
+    non_mandatory = [0, 1]
+    mandatory_list = mandatory_documents.objects.all().exclude(pk__in = non_mandatory)
     candidate_document_list = candidate_document.objects.filter(fk_candidate_code = selected_candidate).exclude(document_catagory_id=0)
     mandatory_document_len = len(mandatory_list)
     candidate_document_len = len(candidate_document_list)
@@ -5603,8 +5629,13 @@ def csp_login(request):
                         messages.success(request, "Login Successfull")
                         return redirect('csp_app:candidate')
                     elif str(group_name) == 'Candidate':
+                        try:
+                            selected_candidate = master_candidate.objects.get(Personal_Email_Id=str(request.user), status=active_status)     
+                        except ObjectDoesNotExist:
+                            messages.add_message(request, messages.ERROR, "Invalid Credentials")
+                            return redirect('csp_app:login')      
                         messages.success(request, "Login Successfull")
-                        return redirect('csp_app:candidate_profile')   
+                        return redirect('csp_app:document_upload', selected_candidate.pk_candidate_code)   
                     else:
                         messages.success(request, "Login Successfull")
                         return redirect('csp_app:candidate')

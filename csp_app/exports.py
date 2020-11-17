@@ -36,8 +36,21 @@ def export_candidate(request):
  
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
- 
-    rows = master_candidate.objects.filter(status=active_status)
+    all_groups = request.user.groups.all()
+
+    for eachgroup in all_groups:
+        group_name = eachgroup
+    if str(group_name) == 'Admin':
+        rows = master_candidate.objects.filter(status=active_status)
+    elif str(group_name) == 'Onboarding SPOC':
+        rows = master_candidate.objects.filter(status=active_status, Onboarding_Spoc_Email_Id=str(request.user))
+    elif str(group_name) == 'Vendor':
+        vendor = master_vendor.objects.get(spoc_email_id=str(request.user))
+        for eachvendor in vendor:
+            rows = master_candidate.objects.filter(status=active_status, fk_vendor_code_id = eachvendor.pk)
+            break
+    else:
+        rows = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id=str(request.user))
     for row in rows:
         row_num += 1
         ws.write(row_num, 0, row.pk_candidate_code, font_style)

@@ -309,7 +309,7 @@
                               
                         </div>
                         <div>
-                            <select name="challenged"  required="true" tabindex="37">
+                            <select name="challenged"  required="true" tabindex="18">
                                 <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
                                 {% if eachcandidate.physically_challenged != 'No' %}
                                     <option value="No">No</option>
@@ -330,7 +330,7 @@
                             
                         </div>
                         <div>
-                            <select readonly name="c_entity" id="c_entity" required="true" tabindex="18">
+                            <select readonly name="c_entity" id="c_entity" required="true" tabindex="19">
                                 <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
                                 
                             </select>
@@ -430,7 +430,7 @@
                               
                         </div>
                         <div>
-                            <select name="challenged"  required="true" tabindex="37">
+                            <select name="challenged"  required="true" tabindex="18">
                                 <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
                                 {% if eachcandidate.physically_challenged != 'No' %}
                                     <option value="No">No</option>
@@ -450,7 +450,7 @@
                             
                         </div>
                         <div>
-                            <select name="c_entity" id="c_entity" required="true" tabindex="18">
+                            <select name="c_entity" id="c_entity" required="true" tabindex="19">
                                 <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
                                 {% if entity_list %}
                                     {% for eachentity in entity_list %}
@@ -474,7 +474,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_vendor" id="c_vendor" required="true" tabindex="19">
+                        <select name="c_vendor" id="c_vendor" required="true" tabindex="20">
                             <option value="" disabled label=" " class="empty">Select vendor</option>
 
                             <option value="{{ eachcandidate.fk_vendor_code_id }}" selected  label="{{ eachcandidate.fk_vendor_code }}">{{ eachcandidate.fk_vendor_code.fk_entity_code_id }}</option>
@@ -499,7 +499,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_dept" id="c_dept" required="true" tabindex="20">
+                        <select name="c_dept" id="c_dept" required="true" tabindex="21">
                             <option value="" disabled label=" " class="empty">Select Department</option>
 
                             <option value="{{ eachcandidate.fk_department_code_id }}" selected  label="{{ eachcandidate.fk_department_code }}">{{ eachcandidate.fk_department_code.fk_entity_code_id }}</option>
@@ -525,7 +525,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_function" id="c_function" required="true" tabindex="21">
+                        <select name="c_function" id="c_function" required="true" tabindex="22">
                             <option value="" disabled label=" " class="empty">Select Function</option>
 
                             <option value="{{ eachcandidate.fk_function_code_id }}" selected  label="{{ eachcandidate.fk_function_code }}">{{ eachcandidate.fk_function_code.fk_department_code_id }}</option>
@@ -551,7 +551,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_team" id="c_team" required="true" tabindex="22">
+                        <select name="c_team" id="c_team" required="true" tabindex="23">
                             <option value="" disabled label=" " class="empty">Select Team</option>
 
                             <option value="{{ eachcandidate.fk_team_code_id }}" selected  label="{{ eachcandidate.fk_team_code }}">{{ eachcandidate.fk_team_code.fk_function_code_id }}</option>
@@ -577,7 +577,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_subteam" id="c_subteam" required="true" tabindex="23">
+                        <select name="c_subteam" id="c_subteam" required="true" tabindex="24">
                             <option value="" disabled label=" " class="empty">Select Sub Team</option>
 
                             <option value="{{ eachcandidate.fk_subteam_code_id }}" selected  label="{{ eachcandidate.fk_subteam_code }}">{{ eachcandidate.fk_subteam_code.fk_team_code_id }}</option>
@@ -602,7 +602,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_desg" id="c_desg" required="true" tabindex="24">
+                        <select name="c_desg" id="c_desg" required="true" tabindex="25">
                             <option value="" disabled label=" " class="empty">Select Designation</option>
 
                             <option value="{{ eachcandidate.fk_designation_code_id }}" selected  label="{{ eachcandidate.fk_designation_code }}">{{ eachcandidate.fk_designation_code.fk_sub_team_code_id }}</option>
@@ -627,7 +627,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_region" id="c_region" required="true" tabindex="25">
+                        <select name="c_region" id="c_region" required="true" tabindex="26">
                             <option value="" disabled label=" " class="empty" >Select Region</option>
 
                             <option value="{{ eachcandidate.fk_region_code_id }}" selected  label="{{ eachcandidate.fk_region_code }}">{{ eachcandidate.fk_region_code.fk_entity_code_id }}</option>
@@ -652,7 +652,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_state" id="c_state" required="true" tabindex="26">
+                        <select name="c_state" id="c_state" required="true" tabindex="27">
                             <option value="" disabled label=" " class="empty">Select State</option>
 
                             <option value="{{ eachcandidate.fk_state_code_id }}" selected  label="{{ eachcandidate.fk_state_code }}">{{ eachcandidate.fk_state_code.fk_region_code_id }}</option>
@@ -677,7 +677,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_city" id="c_city" required="true" tabindex="27">
+                        <select name="c_city" id="c_city" required="true" tabindex="28">
                             <option value="" disabled label="" class="empty">Select City</option>
 
                             <option value="{{ eachcandidate.fk_city_code_id }}" selected  label="{{ eachcandidate.fk_city_code }}">{{ eachcandidate.fk_city_code.fk_state_code_id }}</option>
@@ -702,7 +702,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_location" id="c_location" required="true" tabindex="19">
+                        <select name="c_location" id="c_location" required="true" tabindex="29">
                             <option value="" disabled label=" " class="empty">Select Location</option>
 
                             <option value="{{ eachcandidate.fk_location_code_id }}" selected  label="{{ eachcandidate.fk_location_code }}">{{ eachcandidate.fk_location_code.fk_city_code_id }}</option>
@@ -727,7 +727,7 @@
                         <input type="text" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" readonly value="{{ eachcandidate.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" tabindex="29">
+                        <input type="text" readonly value="{{ eachcandidate.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true">
                     </div>
                 </div>
 
@@ -739,7 +739,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" readonly tabindex="60" value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
+                        <input type="text" readonly value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
                     </div>
                 </div>
 
@@ -754,7 +754,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
                     </div>
                     <div>
-                        <input readonly type="text" tabindex="31" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="50">
+                        <input readonly type="text" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="50">
                     </div>
                 </div>
 
@@ -766,7 +766,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
                     </div>
                     <div>
-                        <input readonly type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                        <input readonly type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                         <small id="rmemailmsg"></small>
                         
                     </div>
@@ -781,7 +781,7 @@
                           
                     </div>
                     <div>
-                        <select readonly name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
+                        <select readonly name="c_email_creation" id="c_email_creation" required="true" >
                             <option value="{{ eachcandidate.E_Mail_ID_Creation }}" selected  label="{{ eachcandidate.E_Mail_ID_Creation }}">{{ eachcandidate.E_Mail_ID_Creation }}</option>
                              
                         </select>
@@ -797,7 +797,7 @@
                           
                     </div>
                     <div>
-                        <select readonly name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
+                        <select readonly name="c_laptop_allocation" id="c_laptop_allocation" required="true" >
                             <option value="{{ eachcandidate.Laptop_Allocation_id }}" selected  label="{{ eachcandidate.Laptop_Allocation }}">{{ eachcandidate.Laptop_Allocation }}</option>
     
                            
@@ -813,7 +813,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="31" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="50" autocapitalize="on">
+                        <input type="text" tabindex="30" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="50" autocapitalize="on">
                     </div>
                 </div>
 
@@ -825,7 +825,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
                     </div>
                     <div>
-                        <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                        <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" tabindex="31" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                         <small id="rmemailmsg"></small>
                         
                     </div>
@@ -840,7 +840,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
+                        <select name="c_email_creation" id="c_email_creation" required="true" tabindex="32">
                             <option value="{{ eachcandidate.E_Mail_ID_Creation }}" selected  label="{{ eachcandidate.E_Mail_ID_Creation }}">{{ eachcandidate.E_Mail_ID_Creation }}</option>
                             {% if eachcandidate.E_Mail_ID_Creation != 'No' %}
                                 <option value="No">No</option>
@@ -860,7 +860,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
+                        <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="33">
                             <option value="{{ eachcandidate.Laptop_Allocation_id }}" selected  label="{{ eachcandidate.Laptop_Allocation }}">{{ eachcandidate.Laptop_Allocation }}</option>
     
                             {% if laptop_allocation_list %}
@@ -887,7 +887,7 @@
                           
                     </div>
                     <div>
-                        <select name="c_salary_type" id="c_salary_type" required="true" tabindex="35">
+                        <select name="c_salary_type" id="c_salary_type" required="true" tabindex="34">
                             <option value="{{ eachcandidate.Salary_Type_id }}" selected  label="{{ eachcandidate.Salary_Type }}">{{ eachcandidate.Salary_Type }}</option>
                             {% if salary_type_list %}
                                 {% for eachsalary_type in salary_type_list %}
@@ -908,7 +908,7 @@
                         <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Entered }}" >           
                     </div>
                     <div>
-                        <input type="text" tabindex="36" readonly value="{{ eachcandidate.Gross_Salary_Entered }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
+                        <input type="text" tabindex="35" readonly value="{{ eachcandidate.Gross_Salary_Entered }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
                     </div>
                 </div>
 

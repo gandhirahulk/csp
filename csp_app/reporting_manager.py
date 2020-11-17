@@ -103,7 +103,11 @@ def joining_confirmation(request):
             # rm_input = joining_date
             # if rm_input <= expected:
             #     print(2)
-            if remark != None or remark != '':
+            # print(remark)
+            # if remark == None:
+            #     print("None hai")
+            if remark != None or remark != ' ':
+                
                 selected_candidate.remarks = remark
                 selected_candidate.save()
                 subject, from_email = 'Candidate Wants To Join Early', 'workmail052020@gmail.com'   

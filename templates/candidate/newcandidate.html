@@ -151,7 +151,7 @@
                 </div>
                 <div class="margin-left">
                     <label for="">Physically Challenged</label>
-                    <select name="challenged" id="" required="true" tabindex="36">
+                    <select name="challenged" id="" required="true" tabindex="18">
                         <option value="" disabled selected></option>
                         <option value="No">No</option>
                         <option value="Yes">Yes</option>
@@ -164,7 +164,7 @@
                 <div>
                     <label for="" >Company</label>
 
-                    <select name="c_entity" id="c_entity" required="true" tabindex="18">
+                    <select name="c_entity" id="c_entity" required="true" tabindex="19">
                         <option value="" disabled selected>Select Company</option>
                         {% if entity_list %}
                             {% for eachentity in entity_list %}
@@ -176,7 +176,7 @@
                 <div class="margin-left">
                     <label for="">Vendor</label>
 
-                    <select name="c_vendor" id="c_vendor" required="true" disabled="true" tabindex="19">
+                    <select name="c_vendor" id="c_vendor" required="true" disabled="true" tabindex="20">
                         <option value="" disabled selected label=" " class="empty">Select vendor</option>
 
                         {% if vendor_list %}
@@ -192,7 +192,7 @@
             <div >
                 <label for="" >Department</label>
 
-                <select name="c_dept" id="c_dept" required="true" disabled="true" tabindex="20">
+                <select name="c_dept" id="c_dept" required="true" disabled="true" tabindex="21">
                     <option value="" disabled selected label=" " class="empty">Select Department</option>
 
                     {% if department_list %}
@@ -205,7 +205,7 @@
             <div class="margin-left">
                 <label for="">Function</label>
 
-                <select name="c_function" id="c_function" required="true" disabled="true" tabindex="21">
+                <select name="c_function" id="c_function" required="true" disabled="true" tabindex="22">
                     <option value="" disabled selected label=" " class="empty">Select Function</option>
 
                     {% if function_list %}
@@ -221,7 +221,7 @@
             <div>
                 <label for="" >Team</label>
 
-                <select name="c_team" id="c_team" required="true"  disabled="true" tabindex="22">
+                <select name="c_team" id="c_team" required="true"  disabled="true" tabindex="23">
                     <option value="" disabled selected label=" " class="empty">Select Team</option>
 
                     {% if team_list %}
@@ -234,7 +234,7 @@
             <div  class="margin-left">
             <label for="">Sub Team</label>
 
-                <select name="c_subteam" id="c_subteam" required="true" disabled="true" tabindex="23">
+                <select name="c_subteam" id="c_subteam" required="true" disabled="true" tabindex="24">
                     <option value="" disabled selected label=" " class="empty">Select Sub Team</option>
 
                     {% if sub_team_list %}
@@ -250,7 +250,7 @@
             <div>
                 <label for="" >Designation</label>
 
-                <select name="c_desg" id="c_desg" required="true" disabled="true" tabindex="24">
+                <select name="c_desg" id="c_desg" required="true" disabled="true" tabindex="25">
                     <option value="" disabled selected label=" " class="empty">Select Designation</option>
 
                     {% if designation_list %}
@@ -264,7 +264,7 @@
             <div class="margin-left">
             <label for="">Region</label>
 
-                <select name="c_region" id="c_region" required="true" disabled="true" tabindex="25">
+                <select name="c_region" id="c_region" required="true" disabled="true" tabindex="26">
                     <option value="" disabled selected label=" " class="empty" >Select Region</option>
 
                     {% if region_list %}
@@ -280,7 +280,7 @@
             <div>
                 <label for="" >State</label>
 
-                <select name="c_state" id="c_state" required="true" disabled="true" tabindex="26">
+                <select name="c_state" id="c_state" required="true" disabled="true" tabindex="27">
                     <option value="" disabled selected label=" " class="empty">Select State</option>
 
                     {% if state_list %}
@@ -293,7 +293,7 @@
             <div class="margin-left">
                 <label for="">City</label>
 
-                <select name="c_city" id="c_city" required="true" disabled="true" tabindex="27">
+                <select name="c_city" id="c_city" required="true" disabled="true" tabindex="28">
                     <option value="" disabled selected label=" " class="empty">Select City</option>
 
                     {% if city_list %}
@@ -319,7 +319,7 @@
             <div>
                 <label for="" >Location</label>
 
-                <select name="c_location" id="c_location" required="true" disabled="true" tabindex="28">
+                <select name="c_location" id="c_location" required="true" disabled="true" tabindex="29">
                     <option value="" disabled selected label=" " class="empty">Select Location</option>
 
                     {% if location_list %}
@@ -332,7 +332,7 @@
             <div class="margin-left">
                 <label for="">Email ID Creation</label>
 
-                <select name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
+                <select name="c_email_creation" id="c_email_creation" required="true" tabindex="30">
                     <option value="" disabled selected>Email ID Creation</option>
                     <option value="Yes" >Yes</option>
                     <option value="No" >No</option>                    
@@ -345,22 +345,23 @@
             
         <div class="candidate-forms-input-holder">
             <div>
+                <label for="">Reporting / Hiring Manager Name</label>
+                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50">
+            </div  class="margin-left">
+            <div>
                 <label for="" >Reporting / Hiring Manager Email ID</label>
 
                 <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                 <small id="rmemailmsg"></small>
             </div>
-            <div class="margin-left">
-                <label for="">Reporting / Hiring Manager Name</label>
-                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50">
-            </div>
+            
         
         </div>
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >Laptop Allocation</label>
 
-                <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
+                <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="33">
                     <option value="" disabled selected>Laptop Allocation</option>
                     {% if laptop_allocation_list %}
                         {% for eachlaptop_allocation in laptop_allocation_list %}
@@ -371,7 +372,7 @@
             </div>
             <div class="margin-left">
                 <label for="">Salary Type</label>
-                <select name="c_salary_type" id="c_salary_type" required="true" tabindex="35">
+                <select name="c_salary_type" id="c_salary_type" required="true" tabindex="34">
                     <option value="" disabled selected>Select Salary Type</option>
                     {% if salary_type_list %}
                         {% for eachsalary_type in salary_type_list %}
@@ -386,7 +387,7 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >Monthly Gross Salary (Fixed Salary + Variable [If Any])</label>
-                <input type="number" title="" tabindex="36" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
+                <input type="number" title="Monthly Gross Salary" tabindex="35" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
                 <span id="wage_result" style="color: #bf0711;"></span>
             </div>
             <div class="margin-left">

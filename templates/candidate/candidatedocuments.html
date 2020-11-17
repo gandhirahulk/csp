@@ -9,7 +9,7 @@
                 {% if request.user.groups.all %}
                     {% for eachgroup in request.user.groups.all %}
                         {% if eachgroup.name == 'Candidate' %}
-                            <a href="{% url 'csp_app:candidate_profile' %}" class="tab-btns">Profile</a> 
+                            <!-- <a href="{% url 'csp_app:candidate_profile' %}" class="tab-btns">Profile</a>  -->
                             <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a> 
                         {% else %}
                             <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>             
@@ -51,13 +51,26 @@
                         {% csrf_token %}
                         <div class="document_form_content">
                     
+                            
                             <div class="forms-input-holder">
                                 <label for="c_catogory" style="width: 40%;">Document Catogory</label>
                                 <select  id="c_catogory" style="width: 60%;" name="c_catogory" required="true">
                                     <option value="" disabled selected>Select Document Catogory</option>
                                     {% if mandatory_list %}
                                         {% for eachmandatory in mandatory_list %}
-                                            <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
+                                            {% if document_list %}
+                                                {% for eachdocument in document_list %}
+                                                    {% if eachdocument.document_catagory_id != eachmandatory.pk %}
+                                                        <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
+                                                    {% endif %}                
+
+                                                {% endfor %} 
+                                            {% else %}
+                                           
+                                                <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
+                                             
+                                            {% endif %}
+
                                         {% endfor %}                
                                     {% endif %}
                                 </select>
@@ -107,13 +120,9 @@
                             <form action="" method="POST">{% csrf_token %}
                                 <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
                                 <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> | 
-                                {% if request.user.groups.all %}
-                                {% for eachgroup in request.user.groups.all %}
-                                    {% if eachgroup.name != 'Candidate' %}
+
                                 <input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
-                                {% endif %}
-                                {% endfor %}       
-                                      {% endif %}
+                         
                             </form>
                             
                         </td>
