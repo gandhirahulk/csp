@@ -40,7 +40,7 @@
                     <td>{{ eachcandidate.Contact_Number }}</td>
                     <td>{{ eachcandidate.Personal_Email_Id }}</td>
                     <td>{{ eachcandidate.fk_designation_code }}</td>
-                    <td>{{ eachcandidate.Date_of_Joining }}</td>
+                    <td id="c_doj">{{ eachcandidate.Date_of_Joining }}</td>
                     <td class="action-col"><a id="confirm-modal" style="color: blue;" onclick="showDelete('{{eachcandidate.pk}}','confirm-modal-form')">Confirm Joining | Not Joined</a></td>
                 </tr>
                 {% endfor %}
@@ -123,8 +123,48 @@
 </script>
 <script>
     function showDelete(itemid, formid){
+        // alert($('#c_doj').html())
         document.getElementById(formid).style.display = "block";
         document.getElementById("delete_me").setAttribute("value", itemid);
+
+        var dtToday = new Date($('#c_doj').html()); 
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var day1 = dtToday.getDate() + 1;
+
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();          
+        var minDate= year + '-' + month + '-' + day;
+        var minDate1= year + '-' + month + '-' + day1; 
+
+        var adminDate = new Date(minDate);
+        adminDate.setDate(adminDate.getDate() - 30);
+        var m = adminDate.getMonth() + 1;
+        var d = adminDate.getDate();
+        var y = adminDate.getFullYear();
+        if(m < 10)
+            m = '0' + m.toString();
+        if(d < 10)
+            d = '0' + d.toString();          
+        var admin_date= y + '-' + m + '-' + d; 
+        var maxDate = new Date(minDate);
+        maxDate.setDate(maxDate.getDate() + 30);
+        var m = maxDate.getMonth() + 1;
+        var d = maxDate.getDate();
+        var y = maxDate.getFullYear();
+        if(m < 10)
+            m = '0' + m.toString();
+        if(d < 10)
+            d = '0' + d.toString();          
+        var max_date= y + '-' + m + '-' + d; 
+        $('#calendar_inp').attr('max', minDate);
+        $('#calendar_inp').attr('min', admin_date);
+        $('#calendar_inp_future').attr('min', minDate1);
+        $('#calendar_inp_future').attr('max', max_date);
+        
     }
 </script>
 {% endblock %}
