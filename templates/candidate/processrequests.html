@@ -452,6 +452,7 @@
                         <div>
                             <select name="c_entity" id="c_entity" required="true" tabindex="19">
                                 <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
+                                
                                 {% if entity_list %}
                                     {% for eachentity in entity_list %}
                                         {% if eachentity.pk != eachcandidate.fk_entity_code_id %}
@@ -475,14 +476,22 @@
                     </div>
                     <div>
                         <select name="c_vendor" id="c_vendor" required="true" tabindex="20">
-                            <option value="" disabled label=" " class="empty">Select vendor</option>
+                            {% if eachcandidate.fk_vendor_code_id == '0' %}
+                                <option value="" disabled label=" " class="empty" selected></option>
+                            {% else %}
+                                <option value="{{ eachcandidate.fk_vendor_code_id }}" selected  label="{{ eachcandidate.fk_vendor_code }}">{{ eachcandidate.fk_vendor_code.fk_entity_code_id }}</option>
 
-                            <option value="{{ eachcandidate.fk_vendor_code_id }}" selected  label="{{ eachcandidate.fk_vendor_code }}">{{ eachcandidate.fk_vendor_code.fk_entity_code_id }}</option>
+                            {% endif %}
+                            
+
     
                             {% if vendor_list %}
                                 {% for eachvendor in vendor_list %}
+                                    <!-- <option value="{{ eachvendor.pk }}">{{ eachvendor.pk }}</option>
+                                    <option value="{{ eachcandidate.fk_vendor_code_id }}">{{ eachcandidate.fk_vendor_code_id }}</option> -->
+
                                     {% if eachvendor.pk != eachcandidate.fk_vendor_code_id %}
-                                    <option style="display: none;" value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
+                                    <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
                                     {% endif %}                                    
                                 {% endfor %}                
                             {% endif %}
