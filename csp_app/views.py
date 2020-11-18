@@ -3324,6 +3324,26 @@ def candidate_document_upload(request, candidate_id):
 
         except ObjectDoesNotExist:
             pass
+         
+        try:
+            is_vendor = User.objects.get(username= request.user, groups__name='Vendor')
+            candidate = master_candidate.objects.filter(pk = candidate_id)
+            logged_in_candidate = master_candidate.objects.get(pk = candidate_id)
+            candidate_fk = master_candidate.objects.get(pk = candidate_id)
+            if logged_in_candidate.pk != candidate_id:
+                return HttpResponse("No Data To Display....")
+            flag, document_count = check_for_mandatory_documents_upload(candidate_id)
+            mandatory_list = mandatory_documents.objects.all()
+            if flag == 1:                
+                document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+                
+            else:
+                document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
+            # print(document_list)
+            # return render(request, 'candidate/candidatedocuments.html', {'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
+
+        except ObjectDoesNotExist:
+            pass
         # try:
         #     is_vendor = User.objects.get(username= request.user, groups__name='Vendor')
          
