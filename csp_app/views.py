@@ -1691,7 +1691,7 @@ def edit_salary_structure_process(request, cid):
                         return redirect("csp_app:new_candidate")
                     vendor_fk = master_vendor.objects.get(pk= vendor)
                 else:
-                    vendor_fk = 'Null'
+                    vendor_fk = master_vendor.objects.get(pk= 0)
                 if department == None or department == '':
                     messages.warning(request, "Choose  Department  And Try Again")
                     return redirect("csp_app:candidate")
@@ -1897,7 +1897,7 @@ def edit_salary_structure(request):
                     return redirect("csp_app:new_candidate")
                 vendor_fk = master_vendor.objects.get(pk= vendor)
             else:
-                vendor_fk = 'Null'
+                vendor_fk = master_vendor.objects.get(pk= 0)
             if department == None or department == '':
                 messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:candidate")
@@ -2326,7 +2326,7 @@ def edit_candidate(request):
                     return redirect("csp_app:new_candidate")
                 vendor_fk = master_vendor.objects.get(pk= vendor)
             else:
-                vendor_fk = 'Null'
+                vendor_fk = master_vendor.objects.get(pk= 0)
             if department == None or department == '':
                 messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:candidate")
@@ -2672,7 +2672,7 @@ def create_candidate(request):
                     return redirect("csp_app:new_candidate")
                 vendor_fk = master_vendor.objects.get(pk= vendor)
             else:
-                vendor_fk = 'Null'
+                vendor_fk = master_vendor.objects.get(pk= 0)
             if department == None or department == '':
                 messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:new_candidate")
@@ -3068,7 +3068,7 @@ def save_new_candidate(request):
                     return redirect("csp_app:new_candidate")
                 vendor_fk = master_vendor.objects.get(pk= vendor)
             else:
-                vendor_fk = 'Null'
+                vendor_fk = master_vendor.objects.get(pk= 0)
 
             if department == None or department == '':
                 messages.warning(request, "Choose  Department  And Try Again")
