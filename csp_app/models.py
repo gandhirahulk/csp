@@ -92,8 +92,8 @@ class master_vendor(models.Model):
     modified_date_time = models.DateTimeField(null=True,blank=True)
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
     group_id = models.IntegerField()
-    def __str__(self):
-        return self.vendor_name
+    # def __str__(self):
+    #     return self.vendor_name
 
 class master_department(models.Model):
     pk_department_code = models.AutoField(primary_key=True)
