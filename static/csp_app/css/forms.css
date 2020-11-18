@@ -640,15 +640,17 @@ input:read-only:focus{
   border: 1px solid #ddd;
   border-left: none;
   border-right: none;
-  border-bottom: none;
+  border-top: none;
   width: calc(100% - 80px);
   margin: auto;
-  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .saperator_legend{
   padding: 15px;
   color: #bf0711 !important;
   font-weight: 500;
-  font-size: large;
+  font-size: initial;
+  text-align: left;
+  padding-left: 0px;
 }

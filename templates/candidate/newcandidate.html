@@ -31,6 +31,9 @@
     <div class="candidate_form_content">
         <form method="POST" autocomplete="off" id="new-candidate">
             {% csrf_token %}
+            {% include 'headings/personal.html' %}
+          
+           
             <div class="candidate-forms-input-holder">
                 <div>
                 <label class="move-out" for="c_firstname">First Name</label>
@@ -176,9 +179,8 @@
             
 
         </div> -->
-        <fieldset class="saperator_fieldset">
-            <legend class="saperator_legend">Organization and Position Details</legend>
-        </fieldset>
+        {% include 'headings/organization.html' %}
+        
         
         <div class="candidate-forms-input-holder">
             <div>
@@ -361,7 +363,8 @@
            
           
         </div>
-
+        {% include 'headings/asset.html' %}
+        
             
         <div class="candidate-forms-input-holder">
             <div>
