@@ -434,7 +434,7 @@ class master_candidate(models.Model):
     Referral = models.CharField(max_length=20, null=True, blank=True) #should come from employees table ?
     Sub_Source = models.ForeignKey(sub_source, on_delete=models.CASCADE)
     fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE)
-    fk_vendor_code = models.ForeignKey(master_vendor, on_delete=models.CASCADE)
+    fk_vendor_code = models.ForeignKey(master_vendor, on_delete=models.CASCADE, null=True, blank=True)
     fk_department_code = models.ForeignKey(master_department, on_delete=models.CASCADE)
     fk_function_code = models.ForeignKey(master_function, on_delete=models.CASCADE)
     fk_team_code = models.ForeignKey(master_team, on_delete=models.CASCADE)
@@ -511,7 +511,7 @@ class dummy_candidate(models.Model):
     Referral = models.CharField(max_length=20, null=True, blank=True) #should come from employees table ?
     Sub_Source = models.ForeignKey(sub_source, on_delete=models.CASCADE)
     fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE)
-    fk_vendor_code = models.ForeignKey(master_vendor, on_delete=models.CASCADE)
+    fk_vendor_code = models.ForeignKey(master_vendor, on_delete=models.CASCADE, null= True, blank=True)
     fk_department_code = models.ForeignKey(master_department, on_delete=models.CASCADE)
     fk_function_code = models.ForeignKey(master_function, on_delete=models.CASCADE)
     fk_team_code = models.ForeignKey(master_team, on_delete=models.CASCADE)

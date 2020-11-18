@@ -605,3 +605,50 @@ input:read-only:focus{
 .show_me{
   display: block;
 }
+
+
+.addworkflow-container {
+  /* padding: 50px; */
+  padding-top: 20px;
+  text-align: center;
+}
+
+.addworkflow-container input[type="text"],
+.addworkflow-container textarea {
+  padding: 5px 5px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #ddd;
+  margin-left: 10px;
+}
+
+.addworkflow-container input[type="text"] {
+  width: 40rem;
+}
+
+.hr-label {
+  width: 100px;
+  background: var(--primary-color);
+  height: 3px;
+  margin-top: .5rem;
+}
+
+.saperator_fieldset {
+  border: 1px solid #ddd;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  width: calc(100% - 80px);
+  margin: auto;
+  padding-bottom: 10px;
+}
+
+.saperator_legend{
+  padding: 15px;
+  color: #bf0711 !important;
+  font-weight: 500;
+  font-size: large;
+}

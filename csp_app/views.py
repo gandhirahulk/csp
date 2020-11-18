@@ -1682,10 +1682,16 @@ def edit_salary_structure_process(request, cid):
                     messages.warning(request, "Choose  Company  And Try Again")
                     return redirect("csp_app:candidate")
                 entity_fk = master_entity.objects.get(pk= entity)
-                if vendor == None or vendor == '':
-                    messages.warning(request, "Choose  vendor  And Try Again")
-                    return redirect("csp_app:candidate")
-                vendor_fk = master_vendor.objects.get(pk= vendor)
+                group = request.user.groups.all()
+                for groupname in group:
+                    group_name = groupname
+                if group_name == 'Admin' or group_name == 'Onboarding SPOC':
+                    if vendor == None or vendor == '':
+                        messages.warning(request, "Choose  vendor And Try Again")
+                        return redirect("csp_app:new_candidate")
+                    vendor_fk = master_vendor.objects.get(pk= vendor)
+                else:
+                    vendor_fk = 'Null'
                 if department == None or department == '':
                     messages.warning(request, "Choose  Department  And Try Again")
                     return redirect("csp_app:candidate")
@@ -1882,10 +1888,16 @@ def edit_salary_structure(request):
                 messages.warning(request, "Choose  Company  And Try Again")
                 return redirect("csp_app:candidate")
             entity_fk = master_entity.objects.get(pk= entity)
-            if vendor == None or vendor == '':
-                messages.warning(request, "Choose  vendor  And Try Again")
-                return redirect("csp_app:candidate")
-            vendor_fk = master_vendor.objects.get(pk= vendor)
+            group = request.user.groups.all()
+            for groupname in group:
+                group_name = groupname
+            if group_name == 'Admin' or group_name == 'Onboarding SPOC':
+                if vendor == None or vendor == '':
+                    messages.warning(request, "Choose  vendor And Try Again")
+                    return redirect("csp_app:new_candidate")
+                vendor_fk = master_vendor.objects.get(pk= vendor)
+            else:
+                vendor_fk = 'Null'
             if department == None or department == '':
                 messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:candidate")
@@ -2305,10 +2317,16 @@ def edit_candidate(request):
                 messages.warning(request, "Choose  Company  And Try Again")
                 return redirect("csp_app:candidate")
             entity_fk = master_entity.objects.get(pk= entity)
-            if vendor == None or vendor == '':
-                messages.warning(request, "Choose  vendor  And Try Again")
-                return redirect("csp_app:candidate")
-            vendor_fk = master_vendor.objects.get(pk= vendor)
+            group = request.user.groups.all()
+            for groupname in group:
+                group_name = groupname
+            if group_name == 'Admin' or group_name == 'Onboarding SPOC':
+                if vendor == None or vendor == '':
+                    messages.warning(request, "Choose  vendor And Try Again")
+                    return redirect("csp_app:new_candidate")
+                vendor_fk = master_vendor.objects.get(pk= vendor)
+            else:
+                vendor_fk = 'Null'
             if department == None or department == '':
                 messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:candidate")
@@ -2568,7 +2586,7 @@ def candidate_form_lists():
     sub_source_list = sub_source.objects.filter(status= active_status).order_by('sub_source_name')
     salary_type_list = salary_type.objects.filter(status= active_status).order_by('salary_type_name')
     gender_list = gender.objects.filter(status= active_status)
-    laptop_allocation_list = laptop_allocation.objects.filter(status= active_status)
+    laptop_allocation_list = laptop_allocation.objects.filter(status= active_status).order_by('-option_name')
     return entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list
 
 
@@ -2645,10 +2663,16 @@ def create_candidate(request):
                 messages.warning(request, "Choose  Company  And Try Again")
                 return redirect("csp_app:new_candidate")
             entity_fk = master_entity.objects.get(pk= entity)
-            if vendor == None or vendor == '':
-                messages.warning(request, "Choose  vendor And Try Again")
-                return redirect("csp_app:new_candidate")
-            vendor_fk = master_vendor.objects.get(pk= vendor)
+            group = request.user.groups.all()
+            for groupname in group:
+                group_name = groupname
+            if group_name == 'Admin' or group_name == 'Onboarding SPOC':
+                if vendor == None or vendor == '':
+                    messages.warning(request, "Choose  vendor And Try Again")
+                    return redirect("csp_app:new_candidate")
+                vendor_fk = master_vendor.objects.get(pk= vendor)
+            else:
+                vendor_fk = 'Null'
             if department == None or department == '':
                 messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:new_candidate")
@@ -3035,10 +3059,17 @@ def save_new_candidate(request):
                 messages.warning(request, "Choose  Company  And Try Again")
                 return redirect("csp_app:new_candidate")
             entity_fk = master_entity.objects.get(pk= entity)
-            if vendor == None or vendor == '':
-                messages.warning(request, "Choose  vendor And Try Again")
-                return redirect("csp_app:new_candidate")
-            vendor_fk = master_vendor.objects.get(pk= vendor)
+            group = request.user.groups.all()
+            for groupname in group:
+                group_name = groupname
+            if group_name == 'Admin' or group_name == 'Onboarding SPOC':
+                if vendor == None or vendor == '':
+                    messages.warning(request, "Choose  vendor And Try Again")
+                    return redirect("csp_app:new_candidate")
+                vendor_fk = master_vendor.objects.get(pk= vendor)
+            else:
+                vendor_fk = 'Null'
+
             if department == None or department == '':
                 messages.warning(request, "Choose  Department  And Try Again")
                 return redirect("csp_app:new_candidate")

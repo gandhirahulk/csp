@@ -109,8 +109,8 @@
                 <small id="panmsg"></small>
             </div>
         </div>
-            <div class="candidate-forms-input-holder">
-                <div>               
+        <div class="candidate-forms-input-holder">
+            <div>               
                 <label for="">Type Of Hiring</label>
                 <select name="c_hiring_type" id="hiring" tabindex="13" >
                     <option value="" disabled selected>Type Of Hiring</option>
@@ -120,11 +120,11 @@
                         {% endfor %}                
                     {% endif %}
                 </select>
-                 </div>
-                <div class="margin-left">
-                    <label for="">Replacement UID </label>
-                    <input type="text" disabled="true" tabindex="14" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
-                </div>
+            </div>
+            <div class="margin-left">
+                <label for="">Replacement UID </label>
+                <input type="text" disabled="true" tabindex="14" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+            </div>
                 
         </div>
 
@@ -164,33 +164,47 @@
                 </div>
               
         </div>
+        <!-- <div class="candidate-forms-input-holder" style=" text-align: left;">
+            <div class="forms-heading">
+                <h3>Organization & Position Details</h3>
+                <div class="hr_line">&nbsp;</div>
+            </div>
+           <div class="margin-left">
 
-            <div class="candidate-forms-input-holder">
-                <div>
-                    <label for="" >Company</label>
+           </div>
+            
 
-                    <select name="c_entity" id="c_entity" required="true" tabindex="19">
-                        <option value="" disabled selected>Select Company</option>
-                        {% if entity_list %}
-                            {% for eachentity in entity_list %}
-                                <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
-                            {% endfor %}                
-                        {% endif %}
-                    </select>
-                </div>
-                <div class="margin-left">
-                    <label for="">Vendor</label>
+        </div> -->
+        <fieldset class="saperator_fieldset">
+            <legend class="saperator_legend">Organization and Position Details</legend>
+        </fieldset>
+        
+        <div class="candidate-forms-input-holder">
+            <div>
+                <label for="" >Company</label>
 
-                    <select name="c_vendor" id="c_vendor" required="true" disabled="true" tabindex="20">
-                        <option value="" disabled selected label=" " class="empty">Select vendor</option>
+                <select name="c_entity" id="c_entity" required="true" tabindex="19">
+                    <option value="" disabled selected>Select Company</option>
+                    {% if entity_list %}
+                        {% for eachentity in entity_list %}
+                            <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
+            <div class="margin-left">
+                <label for="">Vendor</label>
 
-                        {% if vendor_list %}
-                            {% for eachvendor in vendor_list %}
-                                <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
-                            {% endfor %}                
-                        {% endif %}
-                    </select>
-                 </div>
+                <select name="c_vendor" id="c_vendor" required="true" disabled="true" tabindex="20">
+                    <option value="" disabled selected label=" " class="empty">Select vendor</option>
+
+                    {% if vendor_list %}
+                        {% for eachvendor in vendor_list %}
+                            <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
+                        {% endfor %}                
+                    {% endif %}
+                </select>
+            </div>
                
         </div>
         <div class="candidate-forms-input-holder">
@@ -401,6 +415,7 @@
         </div>
               
     </div>
+
     <div class="candidate_form_footer">
 
         <!-- <button class="forms-save-btn" style="width: auto;" onclick="showDelete('salary_structure')">Show Salary Structure</button> -->
