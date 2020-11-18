@@ -108,11 +108,15 @@
                         <td>{{ eachdocument.file_name }}</td>
                         <td class="action-col">
                             <form action="" method="POST">{% csrf_token %}
-                                <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
-                                <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> 
+           
                                 {% if request.user.groups.all %}
                                     {% for eachgroup in request.user.groups.all %}
                                        {% if eachgroup.name == "Candidate" and eachdocument.document_catagory_id == 1 %}
+                                            <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
+                                            <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> 
+                                        {% else %}
+                                            <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
+                                            <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> 
                                             | <input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
                                         {% endif %}
                                     {% endfor %}

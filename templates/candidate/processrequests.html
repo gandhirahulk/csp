@@ -312,9 +312,10 @@
                             <select name="challenged"  required="true" tabindex="18">
                                 <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
                                 {% if eachcandidate.physically_challenged != 'No' %}
-                                    <option value="No">No</option>
-                                {% else %}
                                     <option value="Yes">Yes</option>
+                                {% else %}
+                                    
+                                    <option value="No">No</option>
                                 {% endif %}
                             </select>
                         </div>
@@ -433,9 +434,10 @@
                             <select name="challenged"  required="true" tabindex="18">
                                 <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
                                 {% if eachcandidate.physically_challenged != 'No' %}
-                                    <option value="No">No</option>
-                                {% else %}
+                                    
                                     <option value="Yes">Yes</option>
+                                {% else %}
+                                    <option value="No">No</option>
                                 {% endif %}
                             </select>
                         </div>
@@ -851,10 +853,11 @@
                     <div>
                         <select name="c_email_creation" id="c_email_creation" required="true" tabindex="32">
                             <option value="{{ eachcandidate.E_Mail_ID_Creation }}" selected  label="{{ eachcandidate.E_Mail_ID_Creation }}">{{ eachcandidate.E_Mail_ID_Creation }}</option>
-                            {% if eachcandidate.E_Mail_ID_Creation != 'No' %}
-                                <option value="No">No</option>
-                            {% else %}
+                            {% if eachcandidate.E_Mail_ID_Creation == 'No' %}
+                                
                                 <option value="Yes">Yes</option>
+                            {% else %}
+                                <option value="No">No</option>
                             {% endif %}     
                         </select>
                     </div>

@@ -177,9 +177,9 @@
                         <option value="" disabled></option>
                         <option value="{{ eachc.physically_challenged }}" selected>{{ eachc.physically_challenged }}</option>
                         {% if eachc.physically_challenged != 'No' %}
-                            <option value="No">No</option>
-                        {% else %}
                             <option value="Yes">Yes</option>
+                        {% else %}
+                            <option value="No">No</option>
                         {% endif %} 
                     </select>
                 </div>
@@ -409,9 +409,9 @@
                 <select tabindex="30" name="c_email_creation" id="c_email_creation" required="true">
                     <option value="{{ eachc.E_Mail_ID_Creation }}" label="{{ eachc.E_Mail_ID_Creation }}" selected>{{ eachc.E_Mail_ID_Creation }}</option>
                     {% if eachc.E_Mail_ID_Creation != 'No' %}
-                        <option value="No">No</option>
-                    {% else %}
                         <option value="Yes">Yes</option>
+                    {% else %}
+                        <option value="No">No</option>
                     {% endif %}                     
                 </select>
                  </div>
