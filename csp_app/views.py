@@ -654,12 +654,13 @@ def process_requests(request, cid):
                 return redirect("csp_app:process_request", cid = cid)
             entity_fk = master_entity.objects.get(pk= entity)
             group = request.user.groups.all()
+            print(vendor)
             for groupname in group:
                 group_name = groupname
             if str(group_name) == 'Admin' or str(group_name) == 'Onboarding SPOC' or str(group_name) == 'Vendor':
-                if vendor == None or vendor == '':
+                if vendor == None or vendor == '' or vendor == '0' or vendor == 0:
                     messages.warning(request, "Choose  vendor And Try Again")
-                    return redirect("csp_app:new_candidate")
+                    return redirect("csp_app:process_request", cid = cid)
                 vendor_fk = master_vendor.objects.get(pk= vendor)
             else:
                 if vendor == None or vendor == '':
@@ -1695,12 +1696,12 @@ def edit_salary_structure_process(request, cid):
                 group = request.user.groups.all()
                 for groupname in group:
                     group_name = groupname
-                print(group_name)
+                print(vendor)
                 if str(group_name) == 'Admin' or str(group_name) == 'Onboarding SPOC' or str(group_name) == 'Vendor':
                     
-                    if vendor == None or vendor == '':
+                    if vendor == None or vendor == '' or vendor == '0' or vendor == 0:
                         messages.warning(request, "Choose  vendor And Try Again")
-                        return redirect("csp_app:new_candidate")
+                        return redirect("csp_app:edit_salary_structure_process", cid = cid)
                     vendor_fk = master_vendor.objects.get(pk= vendor)
                 else:
                     if vendor == None or vendor == '':

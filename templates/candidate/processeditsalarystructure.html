@@ -26,7 +26,11 @@
         <span>{{ cid }} | {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</span>                
   
     </div>
-
+{% if request.user.groups.all %}
+    {% for eachgroup in request.user.groups.all %}
+        <input type="hidden" name="" value="{{ eachgroup.name }}" id="user_group">
+    {% endfor %}
+{% endif %}
     <div class="candidate_form">
         <div class="candidate_form_header">
             <div class="forms-heading">
@@ -1485,5 +1489,22 @@
              
     });
 </script>
+<!-- <script>
+    $(document).ready(function(){
+        var selectedvalue = $('#referral').val();
+        var usergroup = $('#user_group').val();
+        alert(selectedvalue)
+        alert(usergroup)
+        if (selectedvalue == '3' && usergroup != 'Onboarding SPOC'){
+            $('#c_vendor').attr("disabled", true);
+            $('#c_vendor').prop("required", false);
+
+        } else {
+            $('#c_vendor').attr("disabled", false);
+            $('#c_vendor').prop("required", true);
+
+        }
+    });
+</script> -->
 
 {% endblock %}

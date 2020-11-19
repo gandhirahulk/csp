@@ -23,7 +23,11 @@
 {% endblock %}
 
 {% block tabcontentblock %}
-
+{% if request.user.groups.all %}
+    {% for eachgroup in request.user.groups.all %}
+        <input type="hidden" name="" value="{{ eachgroup.name }}" id="user_group">
+    {% endfor %}
+{% endif %}
 {% if selected_candidate %}
     {% for eachcandidate in selected_candidate %}
     <div class="crumbs" style="z-index: 1;"><span><a href="{% url 'csp_app:pending_request' %}">Pending Requests</a></span>
@@ -478,9 +482,11 @@
                     </div>
                     <div>
                         <select name="c_vendor" id="c_vendor" required="true" tabindex="20">
-                            {% if eachcandidate.fk_vendor_code_id == '0' %}
-                                <option value="" disabled label=" " class="empty" selected></option>
+                            {% if eachcandidate.fk_vendor_code_id == 0 %}
+                         
+                                <option disabled label="" class="empty" selected></option>
                             {% else %}
+                       
                                 <option value="{{ eachcandidate.fk_vendor_code_id }}" selected  label="{{ eachcandidate.fk_vendor_code }}">{{ eachcandidate.fk_vendor_code.fk_entity_code_id }}</option>
 
                             {% endif %}
@@ -1008,5 +1014,22 @@
         document.getElementById(formid).style.display = "block";
     }
 </script>
+<!-- <script>
+    $(document).ready(function(){
+        var selectedvalue = $('#referral').val();
+        var usergroup = $('#user_group').val();
+        alert(selectedvalue)
+        alert(usergroup)
+        if (selectedvalue == '3' && usergroup != 'Onboarding SPOC'){
+            $('#c_vendor').attr("disabled", true);
+            $('#c_vendor').prop("required", false);
+
+        } else {
+            $('#c_vendor').attr("disabled", false);
+            $('#c_vendor').prop("required", true);
+
+        }
+    });
+</script> -->
 
 {% endblock %}

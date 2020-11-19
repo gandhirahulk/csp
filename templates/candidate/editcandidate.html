@@ -20,6 +20,11 @@
     <span><i class="fas fa-chevron-right"></i></span>
     <span style="color: dimgray;">{{ eachc.pk }} | {{ eachc.First_Name }} {{ eachc.Middle_Name }} {{ eachc.Last_Name }}</span>
 </div>
+{% if request.user.groups.all %}
+    {% for eachgroup in request.user.groups.all %}
+        <input type="hidden" name="" value="{{ eachgroup.name }}" id="user_group">
+    {% endfor %}
+{% endif %}
 <div class="candidate_form">
     <div class="candidate_form_header">
         <div class="forms-heading">

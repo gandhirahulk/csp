@@ -1,5 +1,24 @@
 $(document).ready(function(){ 
-    
+    var selectedvalue = $('#referral').val();
+    var usergroup = $('#user_group').val();
+    var vendor = $('#c_vendor').val()
+
+    if (selectedvalue == '3' && usergroup != 'Onboarding SPOC'){
+        $('#c_vendor').attr("disabled", true);
+        $('#c_vendor').prop("required", false);
+
+    } else {
+        $('#c_vendor').attr("disabled", false);
+        $('#c_vendor').attr("value", null);
+        $('#c_vendor').prop("required", true);
+
+    }
+    if (vendor == '0' && usergroup == 'Onboarding SPOC'){
+        $('#c_vendor').attr("disabled", false);
+        $('#c_vendor').attr("value", null);
+      
+        $('#c_vendor').prop("required", true);
+    }
     if ($('#hiring').val() == '1'){
             $('#c_replacement').attr("disabled", false);
         } else {

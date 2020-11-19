@@ -12,10 +12,16 @@
 {% endblock %}
 
 {% block tabcontentblock %}
+
 <div class="crumbs" id="crumbs" style="z-index: 0;"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
     <span><i class="fas fa-chevron-right"></i></span>
     <span style="color: dimgray;">New Candidate</span>
 </div>
+{% if request.user.groups.all %}
+    {% for eachgroup in request.user.groups.all %}
+        <input type="hidden" name="" value="{{ eachgroup.name }}" id="user_group">
+    {% endfor %}
+{% endif %}
 <div class="candidate_form">
     <div class="candidate_form_header">
         <div class="forms-heading">
