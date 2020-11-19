@@ -19,6 +19,13 @@ $(document).ready(function(){
       
         $('#c_vendor').prop("required", true);
     }
+    if (usergroup == 'Vendor'){
+        $('#c_vendor').attr("disabled", false);
+        $('#c_vendor').attr("readonly", true);
+        $('#c_vendor').prop("readonly", true);
+
+    
+    }
     if ($('#hiring').val() == '1'){
             $('#c_replacement').attr("disabled", false);
         } else {
