@@ -3,7 +3,7 @@ $(document).ready(function(){
     var usergroup = $('#user_group').val();
     var vendor = $('#c_vendor').val()
 
-    if (selectedvalue == '3' && usergroup != 'Onboarding SPOC'){
+    if (selectedvalue == '3' && usergroup != 'Onboarding SPOC' ){
         $('#c_vendor').attr("disabled", true);
         $('#c_vendor').prop("required", false);
 
@@ -22,9 +22,11 @@ $(document).ready(function(){
     if (usergroup == 'Vendor'){
         $('#c_vendor').attr("disabled", false);
         $('#c_vendor').attr("readonly", true);
-        $('#c_vendor').prop("readonly", true);
-
-    
+        $('#c_vendor').prop("readonly", true);    
+    }
+    if (usergroup == 'Admin'){
+        $('#c_vendor').attr("disabled", false);
+   
     }
     if ($('#hiring').val() == '1'){
             $('#c_replacement').attr("disabled", false);

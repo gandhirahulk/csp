@@ -327,16 +327,7 @@
             </div>
            
         </div>
-        <!-- <div class="candidate-forms-input-holder">
-            <div>
-                <label for="" >TA SPOC Email ID</label>
-                <input type="email" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" tabindex="29">
-            </div>
-            <div class="margin-left">
-                <label for="" >Onboarding SPOC Email ID</label>
-                <input type="email" tabindex="30" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
-            </div>
-        </div> -->
+   
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="" >Location</label>
@@ -352,13 +343,7 @@
                 </select>
             </div>
             <div class="margin-left">
-                <label for="">Email ID Creation</label>
-
-                <select name="c_email_creation" id="c_email_creation" required="true" tabindex="30">
-                    <option value="" disabled selected>Email ID Creation</option>
-                    <option value="Yes" >Yes</option>
-                    <option value="No" >No</option>                    
-                </select>
+                
             </div>
            
           
@@ -394,6 +379,20 @@
                 </select>
             </div>
             <div class="margin-left">
+                <label for="">Email ID Creation</label>
+
+                <select name="c_email_creation" id="c_email_creation" required="true" tabindex="30">
+                    <option value="" disabled selected>Email ID Creation</option>
+                    <option value="Yes" >Yes</option>
+                    <option value="No" >No</option>                    
+                </select>
+                
+            </div>
+            
+          
+        </div>
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="">Salary Type</label>
                 <select name="c_salary_type" id="c_salary_type" required="true" tabindex="34">
                     <option value="" disabled selected>Select Salary Type</option>
@@ -403,18 +402,12 @@
                         {% endfor %}                
                     {% endif %}                   
                 </select>
+                
             </div>
-            
-          
-        </div>
-        <div class="candidate-forms-input-holder">
-            <div>
+            <div class="margin-left">
                 <label for="" >Monthly Gross Salary (Fixed Salary + Variable [If Any])</label>
                 <input type="number" title="Monthly Gross Salary" tabindex="35" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
                 <span id="wage_result" style="color: #bf0711;"></span>
-            </div>
-            <div class="margin-left">
-
             </div>
         </div>
               

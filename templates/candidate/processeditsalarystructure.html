@@ -307,7 +307,7 @@
                               
                         </div>
                         <div>
-                            <select name="challenged" required="true" tabindex="38">
+                            <select name="challenged" readonly="true" required="true" tabindex="38">
                                 <option value="{{ dummy.physically_challenged }}" selected  label="{{ dummy.physically_challenged }}">{{ dummy.physically_challenged }}</option>
                                 {% if dummy.physically_challenged != 'No' %}
                                     <option value="Yes">Yes</option>
@@ -340,6 +340,258 @@
                         </div>
                     </div>
 
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Vendor</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_vendor" id="c_vendor" required="true" tabindex="20">
+                                <option value="" disabled label=" " class="empty">Select vendor</option>
+    
+                                <option value="{{ dummy.fk_vendor_code_id }}" selected  label="{{ dummy.fk_vendor_code }}">{{ dummy.fk_vendor_code.fk_entity_code_id }}</option>
+        
+                                {% if vendor_list %}
+                                    {% for eachvendor in vendor_list %}
+                                        {% if eachvendor.pk != dummy.fk_vendor_code_id %}
+                                        <option style="display: none;" value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
+                                        {% endif %}                                    
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Department</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_dept" id="c_dept" required="true" tabindex="21">
+                                <option value="" disabled label=" " class="empty">Select Department</option>
+    
+                                <option value="{{ dummy.fk_department_code_id }}" selected  label="{{ dummy.fk_department_code }}">{{ dummy.fk_department_code.fk_entity_code_id }}</option>
+    
+                                {% if department_list %}
+                                    {% for eachdepartment in department_list %}
+                                        {% if eachdepartment.pk != dummy.fk_department_code_id %}
+                                        <option style="display: none;" value="{{ eachdepartment.pk }}" label="{{ eachdepartment.department_name }}">{{ eachdepartment.fk_entity_code_id }}</option>
+                                        {% endif %}
+                                        
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Function</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_function" id="c_function" required="true" tabindex="22">
+                                <option value="" disabled label=" " class="empty">Select Function</option>
+    
+                                <option value="{{ dummy.fk_function_code_id }}" selected  label="{{ dummy.fk_function_code }}">{{ dummy.fk_function_code.fk_department_code_id }}</option>
+    
+                                {% if function_list %}
+                                    {% for eachfunction in function_list %}
+                                        {% if eachfunction.pk != dummy.fk_function_code_id %}
+                                        <option style="display: none;" value="{{ eachfunction.pk }}" label="{{ eachfunction.function_name }}">{{ eachfunction.fk_department_code_id }}</option>
+                                        {% endif %}
+                            
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Team</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_team" id="c_team" required="true" tabindex="23">
+                                <option value="" disabled label=" " class="empty">Select Team</option>
+    
+                                <option value="{{ dummy.fk_team_code_id }}" selected  label="{{ dummy.fk_team_code }}">{{ dummy.fk_team_code.fk_function_code_id }}</option>
+    
+                                {% if team_list %}
+                                    {% for eachteam in team_list %}
+                                        {% if eachteam.pk != dummy.fk_team_code_id %}
+                                        <option style="display: none;" value="{{ eachteam.pk }}" label="{{ eachteam.team_name }}">{{ eachteam.fk_function_code_id }}</option>
+                                        {% endif %}
+                                        
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Sub Team</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_subteam" id="c_subteam" required="true" tabindex="24">
+                                <option value="" disabled label=" " class="empty">Select Sub Team</option>
+    
+                                <option value="{{ dummy.fk_subteam_code_id }}" selected  label="{{ dummy.fk_subteam_code }}">{{ dummy.fk_subteam_code.fk_team_code_id }}</option>
+    
+                                {% if sub_team_list %}
+                                    {% for eachsubteam in sub_team_list %}
+                                        {% if eachsubteam.pk != dummy.fk_subteam_code_id %}
+                                        <option style="display: none;" value="{{ eachsubteam.pk }}" label="{{ eachsubteam.sub_team_name }}">{{ eachsubteam.fk_team_code_id }}</option>
+                                        {% endif %}                                    
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Designation</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_desg" id="c_desg" required="true" tabindex="25">
+                                <option value="" disabled label=" " class="empty">Select Designation</option>
+    
+                                <option value="{{ dummy.fk_designation_code_id }}" selected  label="{{ dummy.fk_designation_code }}">{{ dummy.fk_designation_code.fk_sub_team_code_id }}</option>
+    
+                                {% if designation_list %}
+                                    {% for eachdesignation in designation_list %}
+                                        {% if eachdesignation.pk != dummy.fk_designation_code_id %}
+                                        <option style="display: none;" value="{{ eachdesignation.pk }}" label="{{ eachdesignation.designation_name }}">{{ eachdesignation.fk_sub_team_code_id }}</option>
+                                        {% endif %}                                    
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Region</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_region" id="c_region" required="true" tabindex="26">
+                                <option value="" disabled label=" " class="empty" >Select Region</option>
+    
+                                <option value="{{ dummy.fk_region_code_id }}" selected  label="{{ dummy.fk_region_code }}">{{ dummy.fk_region_code.fk_entity_code_id }}</option>
+    
+                                {% if region_list %}
+                                    {% for eachregion in region_list %}
+                                        {% if eachregion.pk != dummy.fk_region_code_id %}
+                                        <option style="display: none;" value="{{ eachregion.pk }}" label="{{ eachregion.region_name }}">{{ eachregion.fk_entity_code_id }}</option>
+                                        {% endif %}                                    
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">State</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_state" id="c_state" required="true" tabindex="27">
+                                <option value="" disabled label=" " class="empty">Select State</option>
+    
+                                <option value="{{ dummy.fk_state_code_id }}" selected  label="{{ dummy.fk_state_code }}">{{ dummy.fk_state_code.fk_region_code_id }}</option>
+    
+                                {% if state_list %}
+                                    {% for eachstate in state_list %}
+                                        {% if eachestate.pk != dummy.fk_state_code_id %}
+                                        <option style="display: none;" value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
+                                        {% endif %}                                    
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">City</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_city" id="c_city" required="true" tabindex="28">
+                                <option value="" disabled label="" class="empty">Select City</option>
+    
+                                <option value="{{ dummy.fk_city_code_id }}" selected  label="{{ dummy.fk_city_code }}">{{ dummy.fk_city_code.fk_state_code_id }}</option>
+    
+                                {% if city_list %}
+                                    {% for eachcity in city_list %}
+                                        {% if eachcity.pk != dummy.fk_city_code_id %}
+                                        <option style="display: none;" value="{{ eachcity.pk }}" label="{{ eachcity.city_name }}">{{ eachcity.fk_state_code_id }}</option>
+                                        {% endif %}                                    
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="request-forms-input-holder">
+                        <div>
+                            <label for="">Location</label>    
+                        </div>
+                        <div>
+                            <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
+                              
+                        </div>
+                        <div>
+                            <select readonly="true" name="c_location" id="c_location" required="true" tabindex="29">
+                                <option value="" disabled label=" " class="empty">Select Location</option>
+    
+                                <option value="{{ dummy.fk_location_code_id }}" selected  label="{{ dummy.fk_location_code }}">{{ dummy.fk_location_code.fk_city_code_id }}</option>
+        
+                                {% if location_list %}
+                                    {% for eachlocation in location_list %}
+                                        {% if eachlocation.pk != dummy.fk_location_code_id %}
+                                        <option style="display: none;" value="{{ eachlocation.pk }}" label="{{ eachlocation.location_name }}">{{ eachlocation.fk_city_code_id }}</option>
+                                        {% endif %}                                    
+                                    {% endfor %}                
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
 
 
                 {% else %}
@@ -471,10 +723,7 @@
                         </select>
                     </div>
                 </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-
+                
                 <div class="request-forms-input-holder">
                     <div>
                         <label for="">Vendor</label>    
@@ -727,6 +976,10 @@
                         </select>
                     </div>
                 </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
 
                 <div class="request-forms-input-holder">
                     <div>
@@ -918,13 +1171,17 @@
 
                 <div class="request-forms-input-holder">
                     <div>
-                        <label for="">Gross Salary Entered</label>    
+                        <label for="">Gross Salary Entered Recruiter / Initial</label>    
                     </div>
                     <div>
                         <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Entered }}" >           
                     </div>
                     <div>
                         <input type="text" tabindex="36" readonly value="{{ dummy.Gross_Salary_Entered }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
+                        <i class="fas fa-info-circle" style="    position: absolute;
+                        right: 3rem;
+                        line-height: 3;" title="View History" id="gross_history" onclick="showDelete('view_history_form')"></i>
+           
                     </div>
                 </div>
 
@@ -1461,7 +1718,42 @@
             </form>
         </div>
     </div>
-    
+    <div id="view_history_form" class="form_modal" style="padding-top: 10%;">
+        <div class="delete_form_header" style="width: 80%;">
+            <div class="forms-heading">
+                <h2>Gross Salary History</h2>
+            </div>     
+            <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
+        </div>
+        <div class="delete_form_footer" style="width: 80%;text-align: center;">
+            <table id="entity_table" class="dataTable">
+                <thead>
+                    <th>Entered By</th>
+                    <th>Salary Type</th>
+                    <th>Amount Entered</th>
+                    <th>Amount Calculated</th>
+                    <th>Date Time</th>
+                </thead>
+                <tbody>
+                    {% if history_list %}
+                        {% for eachrecord in history_list %}
+                        <tr>
+                            <td>{{ eachrecord.enetered_by }}</td>
+                            <td>{{ eachrecord.salary_type_selected }}</td>
+                            <td>{{ eachrecord.gross_salary_entered }}</td>
+                            <td>{{ eachrecord.gross_salary_calculated }}</td>
+                            <td>{{ eachrecord.created_date_time }}</td>
+
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+            <br>
+            <button id="close_history" class="delete-forms-close-btn">Close</button>        
+        
+        </div>
+    </div>
 {% endif %}
 <script src="{% static 'csp_app/js/candidateeditajax.js' %}"></script>
 <script src="{% static 'csp_app/js/candidatedropdowns.js' %}"></script>
@@ -1479,13 +1771,24 @@
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#salary_structure").css("display", "none");
+            $("#view_history_form").css("display", "none");
+            $("#reject_reason_form").css("display", "none");
             }
         });
         $(window).click(function(e) {
-        if (e.target.id === 'salary_structure') {
+        if (e.target.id === 'salary_structure' || e.target.id === 'view_history_form' || e.target.id === 'reject_reason_form') {
             $("#salary_structure").css("display", "none");
+            $("#view_history_form").css("display", "none");
+            $("#reject_reason_form").css("display", "none");
         }   
         });  
+        
+    
+   
+
+        $('#close_history').click(function(){
+            $("#view_history_form").css("display", "none");
+        });
              
     });
 </script>
@@ -1517,6 +1820,11 @@
         $('#c_vendor').prop("readonly", true);
 
     
+    }
+    if (usergroup == 'Admin'){
+        $('#c_vendor').attr("disabled", false);
+        $('#c_vendor').attr("readonly", false);
+        $('#c_vendor').prop("readonly", false);
     }
     });
 </script>

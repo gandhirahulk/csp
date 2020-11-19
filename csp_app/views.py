@@ -562,6 +562,7 @@ def onboarding_pending_candidates(usrname):
 @user_passes_test(lambda u: u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists())
 def process_requests(request, cid):
     candidate_id = cid
+    c = master_candidate.objects.get(pk_candidate_code=cid)
     for eachgroup in request.user.groups.all():
         if str(eachgroup) == 'Vendor':
             candidate_list = vendor_candidates(request.user)
@@ -1121,7 +1122,8 @@ def process_requests(request, cid):
 
         delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
         dojcount = len(delay_joiners)
-        return render(request, 'candidate/processrequests.html', {'selected_candidate': selected_candidate_data, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        history_list = gross_salary_history.objects.filter(fk_candidate_code=c)
+        return render(request, 'candidate/processrequests.html', {'history_list':history_list,'selected_candidate': selected_candidate_data, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -1256,7 +1258,7 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
         s_amount = 1
     selected_candidate.Gross_Salary_Amount= gross_salary
     if s_type > 0 or s_amount > 0:
-        new_gross_salary = gross_salary_history(fk_candidate_code= selected_candidate, gross_salary_entered= gross_salary, gross_salary_calculated= INR_to_number(ss_gross_salary), salary_type_selected= salarytype_fk, enetered_by= str(request.user))
+        new_gross_salary = gross_salary_history(fk_candidate_code= selected_candidate, gross_salary_entered= gross_salary, gross_salary_calculated= INR_to_number(ss_gross_salary), salary_type_selected= salarytype_fk, enetered_by= str(request.user), created_date_time= datetime.now())
         new_gross_salary.save()    
     return changes_list
 

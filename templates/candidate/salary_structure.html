@@ -403,13 +403,7 @@
                 </select>
             </div>
             <div class="margin-left">
-                <label for="">Email ID Creation</label>
-
-                <select name="c_email_creation" id="c_email_creation" required="true" tabindex="30">
-                    <option value="{{ dummy.E_Mail_ID_Creation }}" label="{{ dummy.E_Mail_ID_Creation }}" selected>{{ dummy.E_Mail_ID_Creation }}</option>
-                    <option value="Yes" >Yes</option>
-                    <option value="No" >No</option>                    
-                </select>
+               
             </div>
         </div>
             
@@ -446,6 +440,20 @@
                 </select>
             </div>
             <div  class="margin-left">
+                <label for="">Email ID Creation</label>
+
+                <select name="c_email_creation" id="c_email_creation" required="true" tabindex="30">
+                    <option value="{{ dummy.E_Mail_ID_Creation }}" label="{{ dummy.E_Mail_ID_Creation }}" selected>{{ dummy.E_Mail_ID_Creation }}</option>
+                    <option value="Yes" >Yes</option>
+                    <option value="No" >No</option>                    
+                </select>
+                
+            </div>
+        </div>
+             
+      
+        <div class="candidate-forms-input-holder">
+            <div>
                 <label for="">Salary Type</label>
                 <select name="c_salary_type" id="c_salary_type" required="true" tabindex="34">
                     <option value="{{ dummy.Salary_Type_id }}" label="{{ dummy.Salary_Type }}" selected>{{ dummy.Salary_Type }}</option>
@@ -461,16 +469,10 @@
                     {% endif %}                                   
                 </select>
             </div>
-        </div>
-             
-      
-        <div class="candidate-forms-input-holder">
-            <div>
+            <div class="margin-left">
                 <label for="" >Monthly Gross Salary (Fixed Salary + Variable [If Any])</label>
                 <input type="number" value="{{ dummy.Gross_Salary_Amount }}" tabindex="35" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1" max="100000">
                 <span id="wage_result" style="color: #bf0711;"></span>
-            <div class="margin-left">
-
             </div>
         </div>
               

@@ -670,4 +670,5 @@ class gross_salary_history(models.Model):
     gross_salary_calculated = models.FloatField()
     salary_type_selected = models.ForeignKey(salary_type, on_delete=models.CASCADE)
     enetered_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(blank=True, null=True)
 
