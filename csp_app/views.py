@@ -571,7 +571,9 @@ def process_requests(request, cid):
             count = len(pending_candidate_list)
         elif str(eachgroup) == 'Onboarding SPOC':
             candidate_list = onboarding_candidates(request.user)
-            all_active_candidates = onboarding_candidates(request.user)
+            # all_active_candidates = onboarding_candidates(request.user)
+            all_active_candidates = all_active_candidates
+
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
         else:
@@ -1434,7 +1436,9 @@ def pending_requests(request):
                 dojcount = len(delay_joiners)
             elif str(eachgroup) == 'Onboarding SPOC':
                 candidate_list = onboarding_candidates(request.user)
-                all_active_candidates = onboarding_candidates(request.user)
+                # all_active_candidates = onboarding_candidates(request.user)
+                all_active_candidates = master_candidate.objects.filter(status=active_status)
+
                 pending_candidate_list = onboarding_pending_candidates(request.user)
                 count = len(pending_candidate_list)
                 delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
@@ -1473,7 +1477,7 @@ def future_joining_requests(request):
             count = len(pending_candidate_list)
         elif str(eachgroup) == 'Onboarding SPOC':
             candidate_list = onboarding_candidates(request.user)
-            all_active_candidates = onboarding_candidates(request.user)
+            all_active_candidates = master_candidate.objects.filter(status=active_status)
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
             delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
@@ -1542,13 +1546,15 @@ def candidate(request):
             count = len(pending_candidate_list)
         elif str(eachgroup) == 'Onboarding SPOC':
             candidate_list = onboarding_candidates(request.user)
-            all_active_candidates = onboarding_candidates(request.user)
+            # all_active_candidates = onboarding_candidates(request.user)
+            all_active_candidates = master_candidate.objects.filter(status=active_status)
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
             delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
             dojcount = len(delay_joiners)
         elif str(eachgroup) == 'Recruiter':
-            all_active_candidates = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id= str(request.user))
+            # all_active_candidates = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id= str(request.user))
+            all_active_candidates = master_candidate.objects.filter(status=active_status)
             candidate_list = master_candidate.objects.filter(status=active_status, TA_Spoc_Email_Id= str(request.user))
 
         else:
@@ -1611,7 +1617,8 @@ def edit_salary_structure_process(request, cid):
                 count = len(pending_candidate_list)
             elif str(eachgroup) == 'Onboarding SPOC':
                 candidate_list = onboarding_candidates(request.user)
-                all_active_candidates = onboarding_candidates(request.user)
+                # all_active_candidates = onboarding_candidates(request.user)
+                all_active_candidates = master_candidate.objects.filter(status=active_status)
                 pending_candidate_list = onboarding_pending_candidates(request.user)
                 count = len(pending_candidate_list)
             else:
