@@ -315,7 +315,7 @@
                             <div>
                                 <select name="challenged" readonly="true" required="true" tabindex="18">
                                     <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
-                                    {% if eachcandidate.physically_challenged != 'No' %}
+                                    {% if eachcandidate.physically_challenged == 'No' %}
                                         <option value="Yes">Yes</option>
                                     {% else %}
                                         
@@ -699,7 +699,7 @@
                             <div>
                                 <select name="challenged"  required="true" tabindex="18">
                                     <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
-                                    {% if eachcandidate.physically_challenged != 'No' %}
+                                    {% if eachcandidate.physically_challenged == 'No' %}
                                         
                                         <option value="Yes">Yes</option>
                                     {% else %}
@@ -1217,7 +1217,7 @@
 
             <div class="candidate_form_footer">
                 
-                <button class="delete-forms-close-btn" id="reject" formaction=""  style="width: auto;padding: 9px;" onclick="showDelete('reject_reason_form')">Reject Candidate</button>                 
+                <input class="delete-forms-close-btn" value="Reject Candidate" type="button" id="reject"  style="width: auto;padding: 9px;" onclick="showDelete('reject_reason_form')">                
 
                 {% if request.user.groups.all %}
                     {% for eachgroup in request.user.groups.all %}
@@ -1249,15 +1249,20 @@
                 
             </div>
             <div id="reject_reason_form" class="form_modal" style="padding-top: 15%;">
-                <div class="delete_form_header">
+                <div class="delete_form_header" style="width: 60%;">
                     <div class="forms-heading">
                         <h2>Reject Candidate?</h2>
                     </div>     
                 </div>
-                <div class="delete_form_footer">
-                    <textarea name="reason" id="" cols="10" rows="3" placeholder="Reason For Rejection"></textarea>
-                    <button type="submit" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" class="forms-delete-btn">Reject Candidate</button>
-                    <button id="close_delete" class="delete-forms-close-btn">Cancel</button>     
+                <div class="delete_form_footer" style="width: 60%;">
+                    <div class="candidate-forms-input-holder">
+                        <textarea style="width: 100%;padding: 10px;outline: none;" name="reason" id="" cols="10" rows="3" placeholder="Reason For Rejection"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" style="width: auto;" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" class="forms-delete-btn">Reject Candidate</button>
+                        <button id="close_delete" class="delete-forms-close-btn">Cancel</button> 
+                    </div>
+    
                 
                 </div>
             </div>        

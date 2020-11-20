@@ -128,7 +128,13 @@
                                         class = "pending-col"
 
                                         {% endif %}>{{ eachcandidate.vendor_status }}</td>
-                                        <td class="action-col"><a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">{{ eachcandidate.Gross_Salary_Amount }} </a>
+
+                                        <td class="action-col">
+                                            {% if eachcandidate.candidate_status_id == 0 %}
+                                            <span class="na-col"> {{ eachcandidate.Gross_Salary_Amount }}</span>
+                                            {% else %}
+                                                <a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">{{ eachcandidate.Gross_Salary_Amount }} </a>
+                                            {% endif %}     
                                         </td>
                                     
                                         <td {% if eachcandidate.loi_status_id == 1 %}
@@ -186,7 +192,18 @@
 
                                         class = "pending-col"
 
-                                        {% endif %}>  {{ eachcandidate.offer_letter_status }}</td>
+                                        {% endif %}>
+                                        {% if eachcandidate.offer_letter_status_id == 1 %}
+                                            {% for doc in document_list %}
+                                                {% if doc.fk_candidate_code_id == eachcandidate.pk and doc.document_catagory_id == 1 %}
+                                                    <a href="{{ doc.file_upload }}" >{{ eachcandidate.offer_letter_status }}</a>
+                                                {% endif %}
+                                            {% endfor %}
+                                       
+                                        {% else %}
+                                            {{ eachcandidate.offer_letter_status }}
+                                        {% endif %}
+                                        </td>
                                         <td {% if eachcandidate.it_intimation_status_id == 1 %}
                                         
                                         class ="approve-col"
@@ -286,6 +303,7 @@
                                         class = "pending-col"
 
                                         {% endif %}>
+                                        
                                             {{ eachcandidate.candidate_status }}
                                         </td>
                                         <td class="sort-latest" >{{ eachcandidate.created_date_time }}</td>
@@ -363,7 +381,13 @@
                                         class = "pending-col"
 
                                         {% endif %}>{{ eachcandidate.vendor_status }}</td>
-                                        <td class="action-col"><a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">{{ eachcandidate.Gross_Salary_Amount }} </a>
+                                        <td class="action-col">
+                                            {% if eachcandidate.candidate_status_id == 0 %}
+                                               <span class="na-col"> {{ eachcandidate.Gross_Salary_Amount }}</span>
+                                            {% else %}
+                                                <a href="/view_salary_structure/{{ eachcandidate.pk }}/" target="_blank">{{ eachcandidate.Gross_Salary_Amount }} </a>
+                                            {% endif %}
+                                            
                                         </td>
                                         <td  {% if eachcandidate.loi_status_id == 1 %}
                                         
@@ -419,7 +443,17 @@
 
                                         class = "pending-col"
 
-                                        {% endif %}>{{ eachcandidate.offer_letter_status }}</td>
+                                        {% endif %}> 
+                                        {% if eachcandidate.offer_letter_status_id == 1 %}
+                                            {% for doc in document_list %}
+                                                {% if doc.fk_candidate_code_id == eachcandidate.pk and doc.document_catagory_id == 1 %}
+                                                    <a href="{{ doc.file_upload }}" >{{ eachcandidate.offer_letter_status }}</a>
+                                                {% endif %}
+                                            {% endfor %}
+                                    
+                                        {% else %}
+                                            {{ eachcandidate.offer_letter_status }}
+                                        {% endif %}</td>
                                         <td {% if eachcandidate.it_intimation_status_id == 1 %}
                                         
                                         class ="approve-col"
