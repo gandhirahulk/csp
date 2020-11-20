@@ -1,9 +1,9 @@
 function getPDF(){
     // alert("save me");
-    var HTML_Width = 600;
+    var HTML_Width = 500;
     var HTML_Height = HTML_Width * 1.3;
-    var top_left_margin = 40 ;
-    var PDF_Width = 600 +(top_left_margin*2);
+    var top_left_margin = 45 ;
+    var PDF_Width = 500 +(top_left_margin*2);
     // var PDF_Width = HTML_Width+(top_left_margin*2);
 
     var PDF_Height = (PDF_Width)+(top_left_margin*2);
@@ -40,4 +40,4 @@ function getPDF(){
     pdf.save("salary-structure.pdf");
     });
     };
-    
+
