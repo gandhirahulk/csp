@@ -156,7 +156,8 @@ select[readonly]:focus{
 }
 
 .candidate-forms-input-holder select,
-.candidate-forms-input-holder input{
+.candidate-forms-input-holder input,
+.candidate-forms-input-holder textarea{
   /* width: 75%; */
   border: none;
   border-bottom: 1px solid #ddd;
@@ -642,7 +643,7 @@ select[readonly]:focus{
   border: 1px solid #ddd;
   border-left: none;
   border-right: none;
-  border-top: none;
+  /* border-top: none; */
   border-bottom: none;
   width: calc(100% - 80px);
   margin: auto;
@@ -650,10 +651,11 @@ select[readonly]:focus{
 }
 
 .saperator_legend{
-  padding: 15px;
-  color: #bf0711 !important;
+  padding: 5px;
+  color: #f5f5fa !important;
   font-weight: 500;
   font-size: initial;
-  text-align: left;
-  padding-left: 0px;
+  text-align: start;
+  /* padding-left: 0px; */
+  background: #bf0711;
 }

@@ -309,7 +309,7 @@
                         <div>
                             <select name="challenged" readonly="true" required="true" tabindex="38">
                                 <option value="{{ dummy.physically_challenged }}" selected  label="{{ dummy.physically_challenged }}">{{ dummy.physically_challenged }}</option>
-                                {% if dummy.physically_challenged != 'No' %}
+                                {% if dummy.physically_challenged == 'No' %}
                                     <option value="Yes">Yes</option>
                                 {% else %}
                                     <option value="No">No</option>
@@ -690,7 +690,7 @@
                     <div>
                         <select name="challenged"  required="true" tabindex="18">
                             <option value="{{ dummy.physically_challenged }}" selected  label="{{ dummy.physically_challenged }}">{{ dummy.physically_challenged }}</option>
-                            {% if dummy.physically_challenged != 'No' %}
+                            {% if dummy.physically_challenged == 'No' %}
                                 <option value="Yes">Yes</option>
                             {% else %}
                                 <option value="No">No</option>

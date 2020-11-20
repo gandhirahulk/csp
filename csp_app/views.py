@@ -1416,7 +1416,7 @@ def reject_candidate_vendor(request, cid):
         return HttpResponse("No Data To Display.")
 
 def save_rejected_reason(selected_candidate, request, reason):
-    rejected_reason = reject_reason(fk_candidate_code=selected_candidate.pk, created_by=str(request.user), created_date_time= datetime.now(), reason= reason)
+    rejected_reason = reject_reason(fk_candidate_code=selected_candidate, created_by=str(request.user), created_date_time= datetime.now(), reason= reason)
     rejected_reason.save()
 
 @login_required(login_url='/notlogin/')
@@ -1533,7 +1533,7 @@ def candidate(request):
     dojcount = 0
     all_active_candidates = master_candidate.objects.filter(status=active_status)
     candidate_list = master_candidate.objects.filter(status=active_status)
-
+    document_list = candidate_document.objects.filter(status=active_status)
     entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
     c_status_list = candidate_status.objects.all()
     v_status_list = vendor_status.objects.all()
@@ -1564,7 +1564,7 @@ def candidate(request):
             # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
             count = len(pending_candidate_list)
 
-    return render(request, 'candidate/candidates.html', {'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+    return render(request, 'candidate/candidates.html', {'document_list':document_list, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 'c_status_list': c_status_list,
@@ -2627,7 +2627,7 @@ def candidate_form_lists():
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def create_candidate(request):
     entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
-    
+    document_list = candidate_document.objects.filter(status=active_status)
     try:
         if request.method == 'POST':
             firstname = request.POST.get("c_firstname").title()
@@ -2816,7 +2816,7 @@ def create_candidate(request):
                 'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list,'variable': convert_to_INR(var), 'annual_var': convert_to_INR(annual_var), 'minimum_wage': minimum_wage, 'minimum_wage_list':minimum_wage_list, 'difference': convert_to_INR(diff), 'gpac': convert_to_INR(gpi_2), 'fs': convert_to_INR(fs), 'annual_fs': convert_to_INR(annual_fs)})
                 
 
-            return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,})
+            return render(request, 'candidate/candidates.html', {'document_list':document_list,'allcandidates': all_active_candidates,})
 
     except IndexError:
         return HttpResponse("No Data To Display.")
@@ -2920,6 +2920,7 @@ def salary_structure_calculation(gsa, wage, state_name, salary_type):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def save_new_candidate(request):
     try:
+        document_list = candidate_document.objects.filter(status=active_status)
         if request.method == 'POST':
             firstname = request.POST.get("c_firstname").title()
             middlename = request.POST.get("c_middlename").title()
@@ -3230,7 +3231,7 @@ def save_new_candidate(request):
                 messages.success(request, "Candidate Saved Successfully")
                 return redirect("csp_app:candidate")
 
-            return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,})
+            return render(request, 'candidate/candidates.html', {'document_list':document_list,'allcandidates': all_active_candidates,})
 
     except IndexError:
         return HttpResponse("No Data To Display.")
@@ -3260,6 +3261,7 @@ def view_candidate(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def change_candidate_status(request):
     candidate_list = master_candidate.objects.filter(status = active_status)
+    document_list = candidate_document.objects.filter(status=active_status)
     try:
         if request.method == 'POST':
             candidate_id = request.POST.get("c_id")
@@ -3305,7 +3307,7 @@ def change_candidate_status(request):
             our_email.send()            
             messages.success(request, "Candidate Status Updated")
             return redirect('csp_app:candidate')
-        return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
+        return render(request, 'candidate/candidates.html', {'document_list':document_list,'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 
@@ -3524,6 +3526,7 @@ def check_for_mandatory_documents_upload(candidate_id):
 @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists())
 def change_candidate_status_vendor(request):
     try:
+        document_list = candidate_document.objects.filter(status=active_status)
         if request.method == 'POST':
             candidate_id = request.POST.get("v_c_id")
             status_id = request.POST.get("v_change_id")
@@ -3574,7 +3577,7 @@ def change_candidate_status_vendor(request):
             messages.success(request, "Candidate Status Updated")
             return redirect('csp_app:candidate')
         all_active_candidates = vendor_candidates(request.user)
-        return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
+        return render(request, 'candidate/candidates.html', {'document_list':document_list,'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
   
@@ -3582,6 +3585,7 @@ def change_candidate_status_vendor(request):
 @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists())
 def change_candidate_status_vendor(request):
     try:
+        document_list = candidate_document.objects.filter(status=active_status)
         if request.method == 'POST':
             candidate_id = request.POST.get("v_c_id")
             status_id = request.POST.get("v_change_id")
@@ -3628,7 +3632,7 @@ def change_candidate_status_vendor(request):
       
             messages.success(request, "Candidate Status Updated")
             return redirect('csp_app:candidate')
-        return render(request, 'candidate/candidates.html', {'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
+        return render(request, 'candidate/candidates.html', {'document_list':document_list,'allcandidates': all_active_candidates,'candidate_list': candidate_list })        
     except UnboundLocalError:
         return HttpResponse("No Data To Display.")
 

@@ -181,7 +181,8 @@
                     <select name="challenged" id="" required="true" tabindex="18">
                         <option value="" disabled></option>
                         <option value="{{ eachc.physically_challenged }}" selected>{{ eachc.physically_challenged }}</option>
-                        {% if eachc.physically_challenged != 'No' %}
+                        {% if eachc.physically_challenged == 'No' %}
+                           
                             <option value="Yes">Yes</option>
                         {% else %}
                             <option value="No">No</option>
