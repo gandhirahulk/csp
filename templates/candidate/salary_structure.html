@@ -512,6 +512,7 @@
                     <div style="font-size: 16px;"> <strong> Name : </strong> {{ dummy.First_Name }} {{ dummy.Middle_Name }} {{ dummy.Last_Name }}</div> 
                     <div style="font-size: 16px;"><strong> Email : </strong> {{ dummy.Personal_Email_Id}} </div> 
                     <div style="font-size: 16px;"><strong>  Phone : </strong> {{ dummy.Contact_Number }}</div>
+                    <br>
                 </div>
         
                 <div class="salary-heading-one">
@@ -936,7 +937,7 @@
        
         <div class="form_footer" style="width: 80vw;background: #fff;">
             
-                <button onclick="getPDF()" class="delete-forms-close-btn" style="width: auto;">Save as PDF</button>        
+                <button onmouseover="getPDF()" class="delete-forms-close-btn" style="width: auto;" id="savePDF" >Save as PDF</button>        
                 <button class="forms-save-btn" formaction="{% url 'csp_app:save_new_candidate' %}" type="submit">Save Candidate</button>
             </form>
         </div>
@@ -966,7 +967,8 @@
                 $("#salary_structure").css("display", "none");
             }   
             });  
-                 
+
+          
         });
     </script>
     

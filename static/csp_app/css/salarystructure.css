@@ -6,6 +6,7 @@
 .ss-table{
     width: 100%;
     border-collapse: collapse;
+    font-size: initial;
 }
 
 .ss-table thead tr th{
@@ -46,12 +47,14 @@
 .salary-heading-three{
     padding: 5px !important;
     text-align: center;
+    font-size: initial;
 }
 
 #s-wrapper{
     display: flex;
     background: #fff;
     font-size: smaller;
+    padding: 30px;
 }
 
 .ss {
