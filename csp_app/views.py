@@ -1125,7 +1125,8 @@ def process_requests(request, cid):
         delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
         dojcount = len(delay_joiners)
         history_list = gross_salary_history.objects.filter(fk_candidate_code=c)
-        return render(request, 'candidate/processrequests.html', {'history_list':history_list,'selected_candidate': selected_candidate_data, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+        candidate_history_list = candidate_history.objects.filter(fk_candidate_code=c)
+        return render(request, 'candidate/processrequests.html', {'candidate_history_list':candidate_history_list,'history_list':history_list,'selected_candidate': selected_candidate_data, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
@@ -1261,7 +1262,15 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     selected_candidate.Gross_Salary_Amount= gross_salary
     if s_type > 0 or s_amount > 0:
         new_gross_salary = gross_salary_history(fk_candidate_code= selected_candidate, gross_salary_entered= gross_salary, gross_salary_calculated= INR_to_number(ss_gross_salary), salary_type_selected= salarytype_fk, enetered_by= str(request.user), created_date_time= datetime.now())
-        new_gross_salary.save()    
+        new_gross_salary.save() 
+    
+    previous_changes = candidate_history.objects.filter(fk_candidate_code=selected_candidate, status=active_status)
+    for i in previous_changes:
+        i.status = deactive_status
+        i.save()
+    for k,v in changes_list.items():
+        new_record = candidate_history(fk_candidate_code=selected_candidate, field_name=k,old_value= v[0], new_value= v[1],created_by=str(request.user), created_date_time=datetime.now())
+        new_record.save()
     return changes_list
 
 
@@ -1820,7 +1829,9 @@ def edit_salary_structure_process(request, cid):
                         changed = 1
                     else:
                         changed = 0
-                    return render(request, 'candidate/processeditsalarystructure.html', {'changed':changed, 'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
+                    history_list = gross_salary_history.objects.filter(fk_candidate_code=selected_candidate)
+                    candidate_history_list = candidate_history.objects.filter(fk_candidate_code=selected_candidate)
+                    return render(request, 'candidate/processeditsalarystructure.html', {'candidate_history_list':candidate_history_list,'history_list':history_list,'changed':changed, 'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                     'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
                     'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),
                     'annualerpf': convert_to_INR(annual_eprf), 'annualerpf_admin': convert_to_INR(annual_pfadmin), 'annualersic': convert_to_INR(annual_ersic), 'annualgpa': convert_to_INR(annual_gpa), 'annualgmi': convert_to_INR(annual_gmi), 'tec': convert_to_INR(tec), 'annual_tec': convert_to_INR(annual_tec), 'ctc': convert_to_INR(ctc), 'annual_ctc': convert_to_INR(annual_ctc),

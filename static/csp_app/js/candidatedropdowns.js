@@ -26,7 +26,9 @@ $(document).ready(function(){
     }
     if (usergroup == 'Admin'){
         $('#c_vendor').attr("disabled", false);
-   
+        $('#c_vendor').attr("value", null);
+      
+        $('#c_vendor').prop("required", true);
     }
     if ($('#hiring').val() == '1'){
             $('#c_replacement').attr("disabled", false);

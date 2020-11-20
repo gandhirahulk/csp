@@ -672,3 +672,12 @@ class gross_salary_history(models.Model):
     enetered_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(blank=True, null=True)
 
+class candidate_history(models.Model):
+    pk_candidate_history_code = models.AutoField(primary_key=True)
+    fk_candidate_code = models.ForeignKey(master_candidate, on_delete=models.CASCADE)
+    field_name = models.CharField(max_length=300)
+    old_value = models.CharField(max_length=300)
+    new_value = models.CharField(max_length=300)
+    created_by = models.CharField(max_length=100)
+    created_date_time = models.DateTimeField(blank=True, null=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
