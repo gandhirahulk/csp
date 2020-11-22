@@ -6,7 +6,7 @@
 .ss-table{
     width: 100%;
     border-collapse: collapse;
-    font-size: initial;
+    font-size: 14px;
 }
 
 .ss-table thead tr th{

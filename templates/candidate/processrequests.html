@@ -37,6 +37,7 @@
         <span>{{ eachcandidate.pk }} | {{ eachcandidate.First_Name }} {{ eachcandidate.Middle_Name }} {{ eachcandidate.Last_Name }}</span>                
   
     </div>
+
     <form method="POST" autocomplete="off" id="new-candidate">
         {% csrf_token %}
         <div class="candidate_form">
@@ -47,6 +48,7 @@
                 <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
             
             </div>
+            
             <div class="candidate_form_content">
                 <div class="request-forms-input-holder">
                     <div style="font-weight: bold;">
@@ -83,7 +85,12 @@
                             <input disabled value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name"  required="true"   >
                         </div>
                         <div>
-                            <input value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'First_Name' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
                         </div>
                     </div>
                     <div class="request-forms-input-holder">
@@ -94,7 +101,12 @@
                             <input type="text" value="{{ eachcandidate.Middle_Name }}" disabled maxlength="30" placeholder="Middle Name" >
                         </div>
                         <div>
-                            <input type="text" value="{{ eachcandidate.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename"  tabindex="2">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'Middle_Name' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" value="{{ eachcandidate.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename"  tabindex="2">
                         </div>
                     </div>
                     <div class="request-forms-input-holder">
@@ -105,7 +117,12 @@
                             <input type="text" value="{{ eachcandidate.Last_Name }}" disabled maxlength="30" placeholder="Last Name"  >
                         </div>
                         <div>
-                            <input type="text" value="{{ eachcandidate.Last_Name }}" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname" tabindex="3">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'Last_Name' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" value="{{ eachcandidate.Last_Name }}" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname" tabindex="3">
                         </div>
                     </div>
                     <div class="request-forms-input-holder">
@@ -116,7 +133,12 @@
                             <input type="date" disabled value='{{ eachcandidate.Date_of_Birth }}'  placeholder="Date Of Birth" required="true" >
                         </div>
                         <div>
-                            <input type="date" tabindex="4" value="{{ eachcandidate.Date_of_Birth }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" >
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'Date_of_Birth' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="date" tabindex="4" value="{{ eachcandidate.Date_of_Birth }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" >
                         </div>
                     </div>
                     <div class="request-forms-input-holder">
@@ -128,7 +150,12 @@
                             
                         </div>
                         <div>
-                            <input type="text" value="{{ eachcandidate.Contact_Number }}" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
+                            <input 
+                            {% for x in candidate_recent_change %}
+                                {% if 'Contact_Number' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" value="{{ eachcandidate.Contact_Number }}" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
                             <small id="contactmsg"></small>    
                         </div>
                     </div>
@@ -142,7 +169,12 @@
                             
                         </div>
                         <div>
-                            <input type="text" value="{{ eachcandidate.Emergency_Contact_Number }}" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'Emergency_Contact_Number' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" value="{{ eachcandidate.Emergency_Contact_Number }}" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
                             <span id='message'></span>
                         </div>
                     </div>
@@ -156,7 +188,12 @@
                             
                         </div>
                         <div>
-                            <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" tabindex="7" value="{{ eachcandidate.Personal_Email_Id }}" name="c_email" id="email" placeholder="Email Id">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'Personal_Email_Id' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" tabindex="7" value="{{ eachcandidate.Personal_Email_Id }}" name="c_email" id="email" placeholder="Email Id">
                             <small id="emailmsg"></small>    
                         </div>
                     </div>
@@ -170,7 +207,12 @@
                             
                         </div>
                         <div>
-                            <select name="c_gender" id="c_gender" required="true" tabindex="8">
+                            <select
+                            {% for x in candidate_recent_change %}
+                                {% if 'Gender' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} name="c_gender" id="c_gender" required="true" tabindex="8">
                                 <option value="{{ eachcandidate.Gender_id }}" selected>{{ eachcandidate.Gender }}</option>
                                 {% if gender_list %}
                                     {% for eachgender in gender_list %}
@@ -191,7 +233,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Father_Name }}" required="true" >           
                         </div>
                         <div>
-                            <input type="text" tabindex="9" value="{{ eachcandidate.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'Father_Name' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" tabindex="9" value="{{ eachcandidate.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true">
                         </div>
                     </div>
 
@@ -203,7 +250,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Mother_Name }}" required="true" >           
                         </div>
                         <div>
-                            <input type="text" tabindex="10" value="{{ eachcandidate.Mother_Name }}" placeholder="Mother Name" name="c_mothername" id="c_mothername" required="true">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'Mother_Name' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" tabindex="10" value="{{ eachcandidate.Mother_Name }}" placeholder="Mother Name" name="c_mothername" id="c_mothername" required="true">
                         </div>
                     </div>
 
@@ -215,7 +267,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Aadhaar_Number }}" required="true" >           
                         </div>
                         <div>
-                            <input type="text" tabindex="11" value="{{ eachcandidate.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'Aadhaar_Number' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" tabindex="11" value="{{ eachcandidate.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
                             <small id="adhaarmsg"></small>    
                         </div>
                     </div>
@@ -228,7 +285,12 @@
                             <input type="text" disabled value="{{ eachcandidate.PAN_Number }}" required="true" >           
                         </div>
                         <div>
-                            <input type="text" tabindex="12" value="{{ eachcandidate.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{3}[P]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'PAN_Number' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" tabindex="12" value="{{ eachcandidate.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{3}[P]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
                             <small id="panmsg"></small>    
                         </div>
                     </div>
@@ -246,7 +308,12 @@
                                 <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
                             </div>
                             <div>
-                                <select name="c_hiring_type" id="hiring" tabindex="13" readonly="true">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Type_of_Hiring' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_hiring_type" id="hiring" tabindex="13" readonly="true">
                                     <option value="{{ eachcandidate.Type_of_Hiring_id }}" selected>{{ eachcandidate.Type_of_Hiring }}</option>
                                 
                                 </select>
@@ -261,7 +328,12 @@
                                 <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
                             </div>
                             <div>
-                                <input type="text" readonly tabindex="14" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                                <input
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Replacement' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="text" readonly tabindex="14" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
                             </div>
                         </div>
                         <div class="request-forms-input-holder">
@@ -273,7 +345,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_sub_source" id="referral" tabindex="15" readonly="true" >
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Sub_Source' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_sub_source" id="referral" tabindex="15" readonly="true" >
                                     <option value="{{ eachcandidate.Sub_Source_id }}" selected>{{ eachcandidate.Sub_Source }}</option>
                                     
                                 </select>
@@ -289,7 +366,12 @@
                                 <input type="text" disabled value="{{ eachcandidate.Referral }}">           
                             </div>
                             <div>
-                                <input type="text" readonly value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
+                                <input
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Referral' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="text" readonly value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
                             </div>
                         </div>
         
@@ -303,7 +385,12 @@
                             </div>
         
                             <div>
-                                <input type="date" readonly tabindex="17" value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+                                <input
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Date_of_Joining' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="date" readonly tabindex="17" value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
         
                             </div>
                         </div>  
@@ -317,7 +404,12 @@
                                 
                             </div>
                             <div>
-                                <select name="challenged" readonly="true" required="true" tabindex="18">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'physically_challenged' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="challenged" readonly="true" required="true" tabindex="18">
                                     <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
                                     {% if eachcandidate.physically_challenged == 'No' %}
                                         <option value="Yes">Yes</option>
@@ -339,7 +431,12 @@
                                 
                             </div>
                             <div>
-                                <select readonly name="c_entity" id="c_entity" required="true" tabindex="19">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_entity_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} readonly name="c_entity" id="c_entity" required="true" tabindex="19">
                                     <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
                                     
                                 </select>
@@ -355,7 +452,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_vendor" id="c_vendor" required="true" readonly="true" tabindex="20">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_vendor_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_vendor" id="c_vendor" required="true" readonly="true" tabindex="20">
                                     {% if eachcandidate.fk_vendor_code_id == 0 %}
                                 
                                         <option disabled label="" class="empty" selected></option>
@@ -390,7 +492,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_dept" id="c_dept" required="true" readonly="true" tabindex="21">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_department_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_dept" id="c_dept" required="true" readonly="true" tabindex="21">
                                     <option value="" disabled label=" " class="empty">Select Department</option>
     
                                     <option value="{{ eachcandidate.fk_department_code_id }}" selected  label="{{ eachcandidate.fk_department_code }}">{{ eachcandidate.fk_department_code.fk_entity_code_id }}</option>
@@ -416,7 +523,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_function" id="c_function" required="true" readonly="true" tabindex="22">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_function_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_function" id="c_function" required="true" readonly="true" tabindex="22">
                                     <option value="" disabled label=" " class="empty">Select Function</option>
     
                                     <option value="{{ eachcandidate.fk_function_code_id }}" selected  label="{{ eachcandidate.fk_function_code }}">{{ eachcandidate.fk_function_code.fk_department_code_id }}</option>
@@ -442,7 +554,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_team" id="c_team" required="true" readonly="true" tabindex="23">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_team_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_team" id="c_team" required="true" readonly="true" tabindex="23">
                                     <option value="" disabled label=" " class="empty">Select Team</option>
     
                                     <option value="{{ eachcandidate.fk_team_code_id }}" selected  label="{{ eachcandidate.fk_team_code }}">{{ eachcandidate.fk_team_code.fk_function_code_id }}</option>
@@ -468,7 +585,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_subteam" id="c_subteam" required="true" readonly="true" tabindex="24">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_subteam_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_subteam" id="c_subteam" required="true" readonly="true" tabindex="24">
                                     <option value="" disabled label=" " class="empty">Select Sub Team</option>
     
                                     <option value="{{ eachcandidate.fk_subteam_code_id }}" selected  label="{{ eachcandidate.fk_subteam_code }}">{{ eachcandidate.fk_subteam_code.fk_team_code_id }}</option>
@@ -493,7 +615,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_desg" id="c_desg" readonly="true" required="true" tabindex="25">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_designation_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_desg" id="c_desg" readonly="true" required="true" tabindex="25">
                                     <option value="" disabled label=" " class="empty">Select Designation</option>
     
                                     <option value="{{ eachcandidate.fk_designation_code_id }}" selected  label="{{ eachcandidate.fk_designation_code }}">{{ eachcandidate.fk_designation_code.fk_sub_team_code_id }}</option>
@@ -518,7 +645,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_region" id="c_region" readonly="true" required="true" tabindex="26">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_region_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_region" id="c_region" readonly="true" required="true" tabindex="26">
                                     <option value="" disabled label=" " class="empty" >Select Region</option>
     
                                     <option value="{{ eachcandidate.fk_region_code_id }}" selected  label="{{ eachcandidate.fk_region_code }}">{{ eachcandidate.fk_region_code.fk_entity_code_id }}</option>
@@ -543,7 +675,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_state" id="c_state" readonly="true" required="true" tabindex="27">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_state_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_state" id="c_state" readonly="true" required="true" tabindex="27">
                                     <option value="" disabled label=" " class="empty">Select State</option>
     
                                     <option value="{{ eachcandidate.fk_state_code_id }}" selected  label="{{ eachcandidate.fk_state_code }}">{{ eachcandidate.fk_state_code.fk_region_code_id }}</option>
@@ -568,7 +705,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_city" id="c_city" readonly="true" required="true" tabindex="28">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_city_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_city" id="c_city" readonly="true" required="true" tabindex="28">
                                     <option value="" disabled label="" class="empty">Select City</option>
     
                                     <option value="{{ eachcandidate.fk_city_code_id }}" selected  label="{{ eachcandidate.fk_city_code }}">{{ eachcandidate.fk_city_code.fk_state_code_id }}</option>
@@ -593,7 +735,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_location" readonly="true" id="c_location" required="true" tabindex="29">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_location_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_location" readonly="true" id="c_location" required="true" tabindex="29">
                                     <option value="" disabled label=" " class="empty">Select Location</option>
     
                                     <option value="{{ eachcandidate.fk_location_code_id }}" selected  label="{{ eachcandidate.fk_location_code }}">{{ eachcandidate.fk_location_code.fk_city_code_id }}</option>
@@ -618,7 +765,12 @@
                                 <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
                             </div>
                             <div>
-                                <select name="c_hiring_type" id="hiring" tabindex="13" >
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Type_of_Hiring' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_hiring_type" id="hiring" tabindex="13" >
                                     <option value="{{ eachcandidate.Type_of_Hiring_id }}" selected>{{ eachcandidate.Type_of_Hiring }}</option>
                                     {% if hiring_type_list %}
                                         {% for eachhiring_type in hiring_type_list %}
@@ -640,7 +792,12 @@
                                 <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
                             </div>
                             <div>
-                                <input type="text" tabindex="14" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                                <input
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Replacement' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="text" tabindex="14" value="{{ eachcandidate.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
                             </div>
                         </div>
                         <div class="request-forms-input-holder">
@@ -652,7 +809,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_sub_source" id="referral" tabindex="15" >
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Sub_Source' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_sub_source" id="referral" tabindex="15" >
                                     <option value="{{ eachcandidate.Sub_Source_id }}" selected>{{ eachcandidate.Sub_Source }}</option>
                                     {% if sub_source_list %}
                                         {% for eachsub_source in sub_source_list %}
@@ -674,7 +836,12 @@
                                 <input type="text" disabled value="{{ eachcandidate.Referral }}">           
                             </div>
                             <div>
-                                <input type="text" value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
+                                <input
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Referral' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="text" value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
                             </div>
                         </div>
 
@@ -687,7 +854,12 @@
                                 
                             </div>
                             <div>
-                                <input type="date" tabindex="17" value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+                                <input
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Date_of_Joining' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="date" tabindex="17" value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
 
                             </div>
                         </div>
@@ -701,7 +873,12 @@
                                 
                             </div>
                             <div>
-                                <select name="challenged"  required="true" tabindex="18">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'physically_challenged' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="challenged"  required="true" tabindex="18">
                                     <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
                                     {% if eachcandidate.physically_challenged == 'No' %}
                                         
@@ -722,7 +899,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_entity" id="c_entity" required="true" tabindex="19">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_entity_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_entity" id="c_entity" required="true" tabindex="19">
                                     <option value="{{ eachcandidate.fk_entity_code_id }}" selected>{{ eachcandidate.fk_entity_code }}</option>
                                     
                                     {% if entity_list %}
@@ -744,7 +926,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_vendor" id="c_vendor" required="true" tabindex="20">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_vendor_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_vendor" id="c_vendor" required="true" tabindex="20">
                                     {% if eachcandidate.fk_vendor_code_id == 0 %}
                                 
                                         <option disabled label="" class="empty" selected></option>
@@ -779,7 +966,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_dept" id="c_dept" required="true" tabindex="21">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_department_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_dept" id="c_dept" required="true" tabindex="21">
                                     <option value="" disabled label=" " class="empty">Select Department</option>
     
                                     <option value="{{ eachcandidate.fk_department_code_id }}" selected  label="{{ eachcandidate.fk_department_code }}">{{ eachcandidate.fk_department_code.fk_entity_code_id }}</option>
@@ -805,7 +997,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_function" id="c_function" required="true" tabindex="22">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_function_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_function" id="c_function" required="true" tabindex="22">
                                     <option value="" disabled label=" " class="empty">Select Function</option>
     
                                     <option value="{{ eachcandidate.fk_function_code_id }}" selected  label="{{ eachcandidate.fk_function_code }}">{{ eachcandidate.fk_function_code.fk_department_code_id }}</option>
@@ -831,7 +1028,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_team" id="c_team" required="true" tabindex="23">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_team_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_team" id="c_team" required="true" tabindex="23">
                                     <option value="" disabled label=" " class="empty">Select Team</option>
     
                                     <option value="{{ eachcandidate.fk_team_code_id }}" selected  label="{{ eachcandidate.fk_team_code }}">{{ eachcandidate.fk_team_code.fk_function_code_id }}</option>
@@ -857,7 +1059,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_subteam" id="c_subteam" required="true" tabindex="24">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_subteam_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_subteam" id="c_subteam" required="true" tabindex="24">
                                     <option value="" disabled label=" " class="empty">Select Sub Team</option>
     
                                     <option value="{{ eachcandidate.fk_subteam_code_id }}" selected  label="{{ eachcandidate.fk_subteam_code }}">{{ eachcandidate.fk_subteam_code.fk_team_code_id }}</option>
@@ -882,7 +1089,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_desg" id="c_desg" required="true" tabindex="25">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_designation_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_desg" id="c_desg" required="true" tabindex="25">
                                     <option value="" disabled label=" " class="empty">Select Designation</option>
     
                                     <option value="{{ eachcandidate.fk_designation_code_id }}" selected  label="{{ eachcandidate.fk_designation_code }}">{{ eachcandidate.fk_designation_code.fk_sub_team_code_id }}</option>
@@ -907,7 +1119,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_region" id="c_region" required="true" tabindex="26">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_region_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_region" id="c_region" required="true" tabindex="26">
                                     <option value="" disabled label=" " class="empty" >Select Region</option>
     
                                     <option value="{{ eachcandidate.fk_region_code_id }}" selected  label="{{ eachcandidate.fk_region_code }}">{{ eachcandidate.fk_region_code.fk_entity_code_id }}</option>
@@ -932,7 +1149,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_state" id="c_state" required="true" tabindex="27">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_state_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_state" id="c_state" required="true" tabindex="27">
                                     <option value="" disabled label=" " class="empty">Select State</option>
     
                                     <option value="{{ eachcandidate.fk_state_code_id }}" selected  label="{{ eachcandidate.fk_state_code }}">{{ eachcandidate.fk_state_code.fk_region_code_id }}</option>
@@ -957,7 +1179,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_city" id="c_city" required="true" tabindex="28">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_city_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_city" id="c_city" required="true" tabindex="28">
                                     <option value="" disabled label="" class="empty">Select City</option>
     
                                     <option value="{{ eachcandidate.fk_city_code_id }}" selected  label="{{ eachcandidate.fk_city_code }}">{{ eachcandidate.fk_city_code.fk_state_code_id }}</option>
@@ -982,7 +1209,12 @@
                                 
                             </div>
                             <div>
-                                <select name="c_location" id="c_location" required="true" tabindex="29">
+                                <select
+                                {% for x in candidate_recent_change %}
+                                    {% if 'fk_location_code' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_location" id="c_location" required="true" tabindex="29">
                                     <option value="" disabled label=" " class="empty">Select Location</option>
     
                                     <option value="{{ eachcandidate.fk_location_code_id }}" selected  label="{{ eachcandidate.fk_location_code }}">{{ eachcandidate.fk_location_code.fk_city_code_id }}</option>
@@ -1011,7 +1243,12 @@
                             <input type="text" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" required="true" >           
                         </div>
                         <div>
-                            <input type="text" readonly value="{{ eachcandidate.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                {% if 'TA_Spoc_Email_Id' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} type="text" readonly value="{{ eachcandidate.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true">
                         </div>
                     </div>
 
@@ -1023,7 +1260,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" required="true" >           
                         </div>
                         <div>
-                            <input type="text" readonly value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
+                            <input
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Onboarding_Spoc_Email_Id' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="text" readonly value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
                         </div>
                     </div>
 
@@ -1038,7 +1280,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
                         </div>
                         <div>
-                            <input readonly type="text" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="50">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Reporting_Manager' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} readonly type="text" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="50">
                         </div>
                     </div>
 
@@ -1050,7 +1297,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
                         </div>
                         <div>
-                            <input readonly type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} readonly type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                             <small id="rmemailmsg"></small>
                             
                         </div>
@@ -1065,7 +1317,12 @@
                             
                         </div>
                         <div>
-                            <select readonly name="c_email_creation" id="c_email_creation" required="true" >
+                            <select
+                            {% for x in candidate_recent_change %}
+                                    {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} readonly name="c_email_creation" id="c_email_creation" required="true" >
                                 <option value="{{ eachcandidate.E_Mail_ID_Creation }}" selected  label="{{ eachcandidate.E_Mail_ID_Creation }}">{{ eachcandidate.E_Mail_ID_Creation }}</option>
                                 
                             </select>
@@ -1081,7 +1338,12 @@
                             
                         </div>
                         <div>
-                            <select readonly name="c_laptop_allocation" id="c_laptop_allocation" required="true" >
+                            <select
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Laptop_Allocation' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} readonly name="c_laptop_allocation" id="c_laptop_allocation" required="true" >
                                 <option value="{{ eachcandidate.Laptop_Allocation_id }}" selected  label="{{ eachcandidate.Laptop_Allocation }}">{{ eachcandidate.Laptop_Allocation }}</option>
         
                             
@@ -1097,7 +1359,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
                         </div>
                         <div>
-                            <input type="text" tabindex="30" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="50" autocapitalize="on">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Reporting_Manager' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="text" tabindex="30" value="{{ eachcandidate.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true"  maxlength="50" autocapitalize="on">
                         </div>
                     </div>
 
@@ -1109,7 +1376,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
                         </div>
                         <div>
-                            <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" tabindex="31" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" tabindex="31" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                             <small id="rmemailmsg"></small>
                             
                         </div>
@@ -1124,7 +1396,12 @@
                             
                         </div>
                         <div>
-                            <select name="c_email_creation" id="c_email_creation" required="true" tabindex="32">
+                            <select
+                            {% for x in candidate_recent_change %}
+                                    {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_email_creation" id="c_email_creation" required="true" tabindex="32">
                                 <option value="{{ eachcandidate.E_Mail_ID_Creation }}" selected  label="{{ eachcandidate.E_Mail_ID_Creation }}">{{ eachcandidate.E_Mail_ID_Creation }}</option>
                                 {% if eachcandidate.E_Mail_ID_Creation == 'No' %}
                                     
@@ -1145,7 +1422,12 @@
                             
                         </div>
                         <div>
-                            <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="33">
+                            <select
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Laptop_Allocation' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="33">
                                 <option value="{{ eachcandidate.Laptop_Allocation_id }}" selected  label="{{ eachcandidate.Laptop_Allocation }}">{{ eachcandidate.Laptop_Allocation }}</option>
         
                                 {% if laptop_allocation_list %}
@@ -1172,7 +1454,12 @@
                             
                         </div>
                         <div>
-                            <select name="c_salary_type" id="c_salary_type" required="true" tabindex="34">
+                            <select
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Salary_Type' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} name="c_salary_type" id="c_salary_type" required="true" tabindex="34">
                                 <option value="{{ eachcandidate.Salary_Type_id }}" selected  label="{{ eachcandidate.Salary_Type }}">{{ eachcandidate.Salary_Type }}</option>
                                 {% if salary_type_list %}
                                     {% for eachsalary_type in salary_type_list %}
@@ -1193,7 +1480,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Entered }}" >           
                         </div>
                         <div>
-                            <input type="text" tabindex="35" readonly value="{{ eachcandidate.Gross_Salary_Entered }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Gross_Salary_Entered' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="text" tabindex="35" readonly value="{{ eachcandidate.Gross_Salary_Entered }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
                             <i class="fas fa-info-circle" style="    position: absolute;
                             right: 3rem;
                             line-height: 3;" title="View History" id="gross_history" onclick="showDelete('view_history_form')"></i>
@@ -1208,7 +1500,12 @@
                             <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >           
                         </div>
                         <div>
-                            <input type="number" tabindex="36" value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
+                            <input
+                            {% for x in candidate_recent_change %}
+                                    {% if 'Gross_Salary_Amount' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} type="number" tabindex="36" value="{{ eachcandidate.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
                             <span id="wage_result" style="color: #bf0711;"></span>
                         </div>
                     </div>

@@ -678,6 +678,17 @@ class candidate_history(models.Model):
     field_name = models.CharField(max_length=300)
     old_value = models.CharField(max_length=300)
     new_value = models.CharField(max_length=300)
+    tbl_column_name = models.CharField(max_length=100)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(blank=True, null=True)
     status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+class master_candidate_fields(models.Model):
+    pk_field_code = models.AutoField(primary_key=True)
+    field_name = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=100, blank=True, null=True)
+    created_date_time = models.DateTimeField(blank=True, null=True)
+    status = status = models.ForeignKey(status, on_delete=models.CASCADE, default= 1)
+
+    def __str__(self):
+        return self.field_name

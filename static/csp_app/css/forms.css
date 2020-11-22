@@ -659,3 +659,8 @@ select[readonly]:focus{
   /* padding-left: 0px; */
   background: #bf0711;
 }
+
+
+.changed_field{
+  border: 1px solid green !important;
+}
