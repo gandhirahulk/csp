@@ -12,7 +12,7 @@
            
             {% if eachgroup.name == 'Admin' or eachgroup.name == 'Onboarding SPOC' %}
                 <a href="{% url 'csp_app:future_joining_request' %}" class="tab-btns">Future Joining Requests <button disabled id="request_count" >{{ dojcount }}</button> </a>   
-                <a href="{% url 'csp_app:future_joining_request' %}" class="tab-btns">Approved Candidates</button> </a>   
+                <a href="{% url 'csp_app:approved_candidates' %}" class="tab-btns">Approved Candidates</button> </a>   
 
             {% endif %}
         {% endfor %}

@@ -1,6 +1,6 @@
 from datetime import datetime
 from pytz import utc
-from csp_app.models import master_candidate, master_vendor, vendor_status, onboarding_status, status
+from csp_app.models import master_candidate, master_vendor, vendor_status, onboarding_status, status, mandatory_documents
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string

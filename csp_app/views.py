@@ -173,8 +173,32 @@ def send_email(subject, from_email, to, template):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def approved_candidates(request):
-    candidate_list = master_candidate.objects.filter(status=active_status,candidate_status=approved_candidates)
-    return render(request, 'candidate/approvedcandidates.html',{'candidate_list':candidate_list})
+    count = 0
+    dojcount = 0
+    all_active_candidates = master_candidate.objects.filter(status=active_status)
+    candidate_list = master_candidate.objects.filter(status=active_status)
+  
+    for eachgroup in request.user.groups.all():
+        if str(eachgroup) == 'Vendor':
+            candidate_list = vendor_candidates(request.user)
+            all_active_candidates = vendor_candidates(request.user)
+            pending_candidate_list = vendor_pending_candidates(request.user)
+            count = len(pending_candidate_list)
+        elif str(eachgroup) == 'Onboarding SPOC':
+            candidate_list = onboarding_candidates(request.user)
+            all_active_candidates = master_candidate.objects.filter(status=active_status)
+            pending_candidate_list = onboarding_pending_candidates(request.user)
+            count = len(pending_candidate_list)
+            delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+            dojcount = len(delay_joiners)
+        else:
+            delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
+            dojcount = len(delay_joiners)
+            pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
+            # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
+            count = len(pending_candidate_list)
+    candidate_list = master_candidate.objects.filter(status=active_status,candidate_status=candidate_status.objects.get(pk=1))
+    return render(request, 'candidate/approvedcandidates.html',{'candidate_list':candidate_list, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates})
 
 
 @login_required(login_url='/notlogin/')
@@ -572,7 +596,7 @@ def process_requests(request, cid):
         elif str(eachgroup) == 'Onboarding SPOC':
             candidate_list = onboarding_candidates(request.user)
             # all_active_candidates = onboarding_candidates(request.user)
-            all_active_candidates = all_active_candidates
+            all_active_candidates = master_candidate.objects.filter(status=active_status)
 
             pending_candidate_list = onboarding_pending_candidates(request.user)
             count = len(pending_candidate_list)
@@ -1029,51 +1053,53 @@ def process_requests(request, cid):
                         our_email.fail_silently = False
                         our_email.send()
                         
-                        try:
-                            assign_group = Group.objects.get(name='Candidate')                     
-                            user = User.objects.create_user(selected_candidate.Personal_Email_Id)
-                            password = User.objects.make_random_password()
-                            user.password = password
-                            user.set_password(user.password)
-                            user.first_name = selected_candidate.First_Name
-                            user.last_name = selected_candidate.Last_Name
-                            user.email = selected_candidate.Personal_Email_Id
-                        
-                            assign_group.user_set.add(user)
-                            user.save()
-                        except IntegrityError:
-                            pass
-                        try:
-                            u = User.objects.get(username= selected_candidate.Reporting_Manager_E_Mail_ID)
-                            # new_reporting_manager_candidate_approve
-                            subject, from_email, to = 'Candidate Approved', 'workmail052020@gmail.com', selected_candidate.Reporting_Manager_E_Mail_ID
-   
-                            html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code})
-                            text_content = strip_tags(html_content)
-                            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-                            msg.attach_alternative(html_content, "text/html")
-                            msg.send()
-                        except ObjectDoesNotExist:
-                            user = User.objects.create_user(selected_candidate.Reporting_Manager_E_Mail_ID)
-                            password = User.objects.make_random_password()
-                            user.password = password
-                            user.set_password(user.password)
-                            user.first_name = selected_candidate.Reporting_Manager
-                            user.email = selected_candidate.Reporting_Manager_E_Mail_ID
-                           
-                            user.save()
-                            subject, from_email, to = 'Candidate Approved', 'workmail052020@gmail.com', selected_candidate.Reporting_Manager_E_Mail_ID
-   
-                            html_content = render_to_string('emailtemplates/new_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code, 'username': selected_candidate.Reporting_Manager_E_Mail_ID,'pwd': password})
-                            text_content = strip_tags(html_content)
-                            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-                            msg.attach_alternative(html_content, "text/html")
-                            msg.send()
-                        
                         
                         
                         try:
                             
+                            try:
+                                u = User.objects.get(username= selected_candidate.Reporting_Manager_E_Mail_ID)
+                                
+                                # new_reporting_manager_candidate_approve
+                                subject, from_email, to = 'Candidate Approved', 'workmail052020@gmail.com', selected_candidate.Reporting_Manager_E_Mail_ID
+    
+                                html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code})
+                                text_content = strip_tags(html_content)
+                                msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                                msg.attach_alternative(html_content, "text/html")
+                                msg.send()
+                            except ObjectDoesNotExist:
+                                user = User.objects.create_user(selected_candidate.Reporting_Manager_E_Mail_ID)
+                                password = User.objects.make_random_password()
+                                user.password = password
+                                user.set_password(user.password)
+                                user.first_name = selected_candidate.Reporting_Manager
+                                user.email = selected_candidate.Reporting_Manager_E_Mail_ID
+                            
+                                user.save()
+                                subject, from_email, to = 'Candidate Approved', 'workmail052020@gmail.com', selected_candidate.Reporting_Manager_E_Mail_ID
+    
+                                html_content = render_to_string('emailtemplates/new_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code, 'username': selected_candidate.Reporting_Manager_E_Mail_ID,'pwd': password})
+                                text_content = strip_tags(html_content)
+                                msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                                msg.attach_alternative(html_content, "text/html")
+                                msg.send()
+                            
+                        
+                            try:
+                                assign_group = Group.objects.get(name='Candidate')                     
+                                user = User.objects.create_user(selected_candidate.Personal_Email_Id)
+                                password = User.objects.make_random_password()
+                                user.password = password
+                                user.set_password(user.password)
+                                user.first_name = selected_candidate.First_Name
+                                user.last_name = selected_candidate.Last_Name
+                                user.email = selected_candidate.Personal_Email_Id
+                            
+                                assign_group.user_set.add(user)
+                                user.save()
+                            except IntegrityError:
+                                password = 'Use old password else reset it.'
                             my_host = selected_candidate.fk_vendor_code.vendor_smtp
                             my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
                             my_username = selected_candidate.fk_vendor_code.vendor_email_id
@@ -1124,14 +1150,14 @@ def process_requests(request, cid):
 
         delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
         dojcount = len(delay_joiners)
-        history_list = gross_salary_history.objects.filter(fk_candidate_code=c)
-        candidate_history_list = candidate_history.objects.filter(fk_candidate_code=c)
+        history_list = gross_salary_history.objects.filter(fk_candidate_code=c).order_by('-created_date_time')
+        candidate_history_list = candidate_history.objects.filter(fk_candidate_code=c).order_by('-created_date_time')
         return render(request, 'candidate/processrequests.html', {'candidate_history_list':candidate_history_list,'history_list':history_list,'selected_candidate': selected_candidate_data, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
         'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
         'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 
         'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list})
-    except UnboundLocalError:
+    except ObjectDoesNotExist:
         return HttpResponse("No Data To Display.")
 
 def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary,physically_challenged, request):
@@ -1142,6 +1168,8 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     if selected_candidate.Middle_Name != middlename:
         changes_list['Middle Name'] = [ selected_candidate.Middle_Name, middlename ]
     selected_candidate.Middle_Name=middlename 
+    print(selected_candidate.Last_Name)
+    print(lastname)
     if selected_candidate.Last_Name != lastname: 
         changes_list['Last Name'] = [ selected_candidate.Last_Name, lastname ]
     selected_candidate.Last_Name= lastname
@@ -1502,7 +1530,9 @@ def future_joining_requests(request):
         confirm = request.POST.get('confirm_cid')
         if reject == None or reject == '' and confirm != None:
             selected_candidate = master_candidate.objects.get(pk = confirm)
-            selected_candidate.candidate_status = candidate_status.objects.get(pk=7)
+            selected_candidate.Date_of_Joining = selected_candidate.delay_date
+            selected_candidate.vendor_status = pending_vendor
+            selected_candidate.candidate_status = candidate_status.objects.get(pk=2)
             selected_candidate.joining_status = joining_status.objects.get(pk = 0)
             selected_candidate.save()
             subject, from_email = 'Future Joining Date Request Accepted', 'workmail052020@gmail.com'
@@ -1519,10 +1549,12 @@ def future_joining_requests(request):
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.Personal_Email_Id ])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+            messages.success(request, "Request Accepted.")
+            return redirect("csp_app:future_joining_request")
         if confirm == None or confirm == '' and reject != None:
             selected_candidate = master_candidate.objects.get(pk = reject)
-            selected_candidate.candidate_status = candidate_status.objects.get(pk=7)
-            selected_candidate.joining_status = joining_status.objects.get(pk = 5)
+            selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
+            selected_candidate.joining_status = joining_status.objects.get(pk = 0)
             selected_candidate.save()
             subject, from_email = 'Future Joining Date Request Rejected', 'workmail052020@gmail.com'
     
@@ -1532,6 +1564,8 @@ def future_joining_requests(request):
 
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+            messages.success(request, "Request Rejected.")
+            return redirect("csp_app:future_joining_request")
     return render(request, 'candidate/futurejoiningrequest.html', {'dojcount': dojcount, 'future_requests': delay_joiners,'count': count})
 
 
@@ -1598,7 +1632,7 @@ def new_candidate(request):
         return HttpResponse("No Data To Display.")
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() )
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Onboarding SPOC').exists() )
 def view_edit_candidate(request): 
     try:
         if request.method == 'POST':
@@ -1829,8 +1863,8 @@ def edit_salary_structure_process(request, cid):
                         changed = 1
                     else:
                         changed = 0
-                    history_list = gross_salary_history.objects.filter(fk_candidate_code=selected_candidate)
-                    candidate_history_list = candidate_history.objects.filter(fk_candidate_code=selected_candidate)
+                    history_list = gross_salary_history.objects.filter(fk_candidate_code=selected_candidate).order_by('-created_date_time')
+                    candidate_history_list = candidate_history.objects.filter(fk_candidate_code=selected_candidate).order_by('-created_date_time')
                     return render(request, 'candidate/processeditsalarystructure.html', {'candidate_history_list':candidate_history_list,'history_list':history_list,'changed':changed, 'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                     'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
                     'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),
@@ -1850,7 +1884,7 @@ def edit_salary_structure_process(request, cid):
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def edit_salary_structure(request): 
     
     try:
@@ -2280,7 +2314,7 @@ def create_dummy(firstname, middlename, lastname, doj, dob, fathername, motherna
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def edit_candidate(request): 
     try:
         if request.method == 'POST':
@@ -2557,11 +2591,16 @@ def edit_candidate(request):
                 dummy = dummy_candidate.objects.get(pk=new_code)
                 
                 loc_code = remove_specials(loc_code)
+                selected_candidate = master_candidate.objects.get(pk_candidate_code= candidate_id)
+                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged, request)
               
                 selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, ss_gross_salary, physically_challenged)
-                changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged, request)
-                
-                
+                print("edit candidate")
+                print(changes_list)
+                if len(changes_list) > 0:
+                    selected_candidate.vendor_status = pending_vendor
+                    selected_candidate.candidate_status = pending_status
+                    selected_candidate.save()
 
                 create_salary_structure(selected_candidate, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, ss_gross_salary, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary, variable, annualvariable, fixedsalary, annualfixedsalary)
                 alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})

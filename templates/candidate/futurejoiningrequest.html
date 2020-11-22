@@ -49,8 +49,8 @@
                         <td>{{ eachcandidate.Personal_Email_Id }}</td>
                         <td>{{ eachcandidate.Contact_Number }}</td>
                         <td>{{ eachcandidate.fk_designation_code }}</td> 
-                        <td>{{ eachcandidate.Date_Of_Joining }}</td>
-                        <td>{{ eachcandidate.delay_date }}</td>
+                        <td>{{ eachcandidate.Date_of_Joining | date:"M d, Y" }}</td>
+                        <td>{{ eachcandidate.delay_date | date:"M d, Y" }}</td>
                         <td><a style="color: blue;" onclick="showConfirm('{{eachcandidate.pk}}','confirm_form')">Approve</a> | <a style="color: blue;" onclick="showReject('{{eachcandidate.pk}}','reject_form')">Reject</a></td>
                     </tr>
 
@@ -114,7 +114,7 @@
     <div class="delete_form_footer">
         <form action="" method="post">
             {% csrf_token %}
-            <button type="submit" formaction="{% url 'csp_app:delete_entity' %}" value="" id="confirm_me" name="confirm_cid" class="forms-delete-btn">Confirm</button>
+            <button type="submit" formaction="{% url 'csp_app:future_joining_request' %}" value="" id="confirm_me" name="confirm_cid" class="forms-delete-btn">Confirm</button>
             <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
         </form>
     </div>
@@ -129,7 +129,7 @@
     <div class="delete_form_footer">
         <form action="" method="post">
             {% csrf_token %}
-            <button type="submit" formaction="{% url 'csp_app:delete_entity' %}" value="" id="reject_me" name="reject_cid" class="forms-delete-btn">Confirm</button>
+            <button type="submit" formaction="{% url 'csp_app:future_joining_request' %}" value="" id="reject_me" name="reject_cid" class="forms-delete-btn">Confirm</button>
             <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
         </form>
     </div>

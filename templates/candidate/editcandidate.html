@@ -554,8 +554,71 @@
 {% endif %}
 <script src="{% static 'csp_app/js/candidateeditajax.js' %}"></script>
 <script src="{% static 'csp_app/js/candidatedropdowns.js' %}"></script>
-
 <script src="{% static 'csp_app/js/candidatedom.js' %}"></script>
+<script src="{% static 'csp_app/js/age.js' %}"></script>
+
+<script>
+    $(document).ready(function(){
+        $('#entity_table').dataTable()
+        $('#function_table').dataTable()
+
+
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#view_history_form").css("display", "none");
+            $("#reject_reason_form").css("display", "none");
+            $("#view_candidate_history_form").css("display", "none");
+
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'view_history_form' || e.target.id === 'reject_reason_form' || e.target.id === 'view_candidate_history_form') {
+            $("#view_history_form").css("display", "none");
+            $("#reject_reason_form").css("display", "none");
+            $("#view_candidate_history_form").css("display", "none");
+        }   
+        }); 
+
+        $('#close_history').click(function(){
+            $("#view_history_form").css("display", "none");
+        });
+        $('#close_c_history').click(function(){
+            $("#view_candidate_history_form").css("display", "none");
+        });
+        var selectedvalue = $('#referral').val();
+        var usergroup = $('#user_group').val();
+        var vendor = $('#c_vendor').val()
+
+        if (selectedvalue == '3' && usergroup != 'Onboarding SPOC'){
+            $('#c_vendor').attr("disabled", true);
+            $('#c_vendor').prop("required", false);
+
+        } else {
+            $('#c_vendor').attr("disabled", false);
+            $('#c_vendor').attr("value", null);
+            $('#c_vendor').prop("required", true);
+
+        }
+        if (vendor == '0' && usergroup == 'Onboarding SPOC'){
+            $('#c_vendor').attr("disabled", false);
+            $('#c_vendor').attr("value", null);
+        
+            $('#c_vendor').prop("required", true);
+        }
+        if (usergroup == 'Vendor'){
+        $('#c_vendor').attr("disabled", false);
+        $('#c_vendor').attr("readonly", true);
+        $('#c_vendor').prop("readonly", true);
+        
+    
+    }
+    if (usergroup == 'Admin'){
+        $('#c_vendor').attr("disabled", false);
+        $('#c_vendor').attr("readonly", false);
+        $('#c_vendor').prop("readonly", false);
+    }
+    });
+</script>
 
 <script>
     function showDelete(formid){

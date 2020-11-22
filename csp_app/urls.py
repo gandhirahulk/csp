@@ -88,6 +88,7 @@ urlpatterns = [
     # path('csp_candidates/document_upload/delete_document/', views.candidate_delete_document, name= 'candidate_delete_document'),
 
     path('csp_candidates/pending_requests/', views.pending_requests, name= 'pending_request'),
+    path('csp_candidates/approved_candidates/', views.approved_candidates, name= 'approved_candidates'),
     path('csp_candidates/future_joining_requests/', views.future_joining_requests, name= 'future_joining_request'),
 
     path('csp_candidates/process_requests/<str:cid>/', views.process_requests, name= 'process_request'),
