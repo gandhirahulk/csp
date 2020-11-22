@@ -928,3 +928,62 @@ INSERT INTO CSP_APP_CITIES (CITY_NAME,PK_CITY_CODE,FK_STATE_CODE_ID) VALUES('Tri
 
 
 
+
+
+insert into "csp_app_master_candidate_fields" values ( 1,'fk_location_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 2,'Salary_Type_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 3,'Sub_Source_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 4,'Type_of_Hiring_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 5,'candidate_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 6,'documentation_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 7,'email_creation_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 8,'fk_city_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 9,'fk_department_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 10,'fk_designation_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 11,'fk_entity_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 12,'fk_function_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 13,'fk_region_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 14,'fk_state_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 15,'fk_subteam_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 16,'fk_team_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 17,'fk_vendor_code_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 18,'it_intimation_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 19,'joining_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 20,'laptop_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 21,'loi_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 22,'offer_letter_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 23,'onboarding_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 24,'status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 25,'vendor_status_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 26,'Date_of_Joining','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 27,'Gross_Salary_Entered','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 28,'Gross_Salary_Amount','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 29,'created_date_time','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 30,'modified_date_time','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 31,'delay_date','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 32,'Gender_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 33,'Laptop_Allocation_id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 34,'First_Name','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 35,'Middle_Name','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 36,'Last_Name','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 37,'Date_of_Birth','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 38,'Contact_Number','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 39,'Emergency_Contact_Number','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 40,'Personal_Email_Id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 41,'Father_Name','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 42,'Mother_Name','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 43,'Aadhaar_Number','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 44,'PAN_Number','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 45,'modified_by','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 46,'Replacement','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 47,'Referral','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 48,'physically_challenged','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 49,'TA_Spoc_Email_Id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 50,'Onboarding_Spoc_Email_Id','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 51,'Reporting_Manager','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 52,'Reporting_Manager_E_Mail_ID','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 53,'E_Mail_ID_Creation','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 54,'pk_candidate_code','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 55,'ecode_status','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 56,'created_by','sdf',null,1);
+insert into "csp_app_master_candidate_fields" values ( 57,'remarks','sdf',null,1);
