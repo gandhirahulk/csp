@@ -2595,8 +2595,7 @@ def edit_candidate(request):
                 changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged, request)
               
                 selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, ss_gross_salary, physically_challenged)
-                print("edit candidate")
-                print(changes_list)
+          
                 if len(changes_list) > 0:
                     selected_candidate.vendor_status = pending_vendor
                     selected_candidate.candidate_status = pending_status
