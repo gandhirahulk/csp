@@ -39,7 +39,9 @@
                                     
                     <tr>
                         <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form> 
+                            <a href="/csp_candidates/view_candidate/{{ eachcandidate.pk }}/">{{ eachcandidate.pk }}</a>   
+
+                            <!-- <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>  -->
                         </td>
                         <td >
                         

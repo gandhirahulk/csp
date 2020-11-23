@@ -165,8 +165,8 @@
                     <form action="" method="POST">
                         {% csrf_token %}
                         <input type="hidden" value="{{ eachcandidate.pk }}" name="view_id">
-                        <input type="submit" value="View Profile" id="view" style="border: none; outline: none; color: blue;background: none;cursor: pointer;" formaction="{% url 'csp_app:view_candidate' %}">
-                   
+                        <a href="/csp_candidates/view_candidate/{{ eachcandidate.pk }}/">{{ eachcandidate.pk }}</a>   
+
                     </form>
                     <fieldset class="fds">
                         <legend>Basic Details</legend>
