@@ -355,12 +355,12 @@
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="">Reporting / Hiring Manager Name</label>
-                <input type="text" tabindex="31" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50">
+                <input type="text" tabindex="30" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50">
             </div  class="margin-left">
             <div>
                 <label for="" >Reporting / Hiring Manager Email ID</label>
 
-                <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                <input type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" tabindex="31" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                 <small id="rmemailmsg"></small>
             </div>
             
@@ -370,7 +370,7 @@
             <div>
                 <label for="" >Laptop Allocation</label>
 
-                <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="33">
+                <select name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="32">
                     <option value="" disabled selected>Laptop Allocation</option>
                     {% if laptop_allocation_list %}
                         {% for eachlaptop_allocation in laptop_allocation_list %}
@@ -382,7 +382,7 @@
             <div class="margin-left">
                 <label for="">Email ID Creation</label>
 
-                <select name="c_email_creation" id="c_email_creation" required="true" tabindex="30">
+                <select name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
                     <option value="" disabled selected>Email ID Creation</option>
                     <option value="Yes" >Yes</option>
                     <option value="No" >No</option>                    

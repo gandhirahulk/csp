@@ -5430,8 +5430,8 @@ def save_edit_city(request):
                     if function == None or function == '':
                         messages.warning(request, "Choose State and Try Again")
                         return redirect('csp_app:city')
-                    state_name = states.objects.get(state_name= function)
-                    state_fk = master_state.objects.get(state_name = state_name.pk, fk_region_code=region_fk )
+                    # state_name = states.objects.get(state_name_id =function)
+                    state_fk = master_state.objects.get(pk = function, fk_region_code=region_fk )
                    
                     if city_id == None or city_id == '':
                         messages.warning(request, "City Cannot Be Blank")

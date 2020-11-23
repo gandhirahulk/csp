@@ -87,9 +87,9 @@
                             <option value="{{ eachcity.fk_state_code_id }}" label="{{ eachcity.fk_state_code }}">{{ eachcity.fk_state_code.fk_region_code_id }}</option>
                             {% if state_list %}
                                 {% for eachstate in state_list %}
-                                    {% if eachstate.pk != eachcity.fk_state_code_id %}
+                                    {% if eachstate.pk != eachcity.fk_state_code.state_name_id %}
 
-                                        <option value="{{ eachstate.state_name }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id  }}</option>
+                                        <option value="{{ eachstate.state_name_id }}" label="{{ eachstate.state_name }}">{{ eachcity.fk_state_code.fk_region_code_id  }}</option>
                                     {% endif %}                                
                                 {% endfor %}                
                             {% endif %}
@@ -103,10 +103,10 @@
 
                             {% if all_city_list %}
                                 {% for each in all_city_list %}
-                                    {% if each.pk != eachcity.fk_city_code_id %}
-
-                                        <option style="display: none;" value="{{ each.pk }}" label="{{ each.city_name }}">{{ each.fk_state_code.state_name  }}</option>
-                                    {% endif %}                                
+                                    {% if each.fk_state_code_id == eachcity.fk_state_code.state_name_id %}
+                                        <option value="{{ each.pk }}" label="{{ each.city_name }}">{{ each.fk_state_code.state_name  }}</option>
+                                    {% endif %} 
+                                                               
                                 {% endfor %}                
                             {% endif %}
                         </select>
