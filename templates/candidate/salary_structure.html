@@ -33,6 +33,7 @@
     <div class="candidate_form_content">
         <form method="POST" autocomplete="off" id="new-candidate">
             {% csrf_token %}
+            {% include 'headings/personal.html' %}
             <div class="candidate-forms-input-holder">
                 <div>
                 <label class="move-out" for="c_firstname">First Name</label>
@@ -175,7 +176,7 @@
                 </div>
                 
         </div>
-
+        {% include 'headings/organization.html' %}
             <div class="candidate-forms-input-holder">
                 <div >
                     <label for="" >Company</label>
@@ -406,7 +407,7 @@
                
             </div>
         </div>
-            
+        {% include 'headings/asset.html' %}  
         <div class="candidate-forms-input-holder">
             <div>
                 <label for="">Reporting / Hiring Manager Name</label>

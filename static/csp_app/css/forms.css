@@ -643,7 +643,7 @@ select[readonly]:focus{
   border: 1px solid #ddd;
   border-left: none;
   border-right: none;
-  /* border-top: none; */
+  border-top: none;
   border-bottom: none;
   width: calc(100% - 80px);
   margin: auto;
@@ -658,6 +658,7 @@ select[readonly]:focus{
   text-align: start;
   /* padding-left: 0px; */
   background: #bf0711;
+  width: 100%;
 }
 
 
