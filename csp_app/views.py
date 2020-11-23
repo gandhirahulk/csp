@@ -321,7 +321,7 @@ def check_rm_email(request):
         valid['result'] = ''
         return JsonResponse(valid)
     else:
-        valid['result'] = 'Invalid Email ID'
+        valid['result'] = 'Allowed Domain : udaan.com'
         return JsonResponse(valid)
 
 
@@ -1642,8 +1642,11 @@ def new_candidate(request):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Onboarding SPOC').exists() )
-def view_edit_candidate(request): 
+def view_edit_candidate(request, cid): 
     try:
+        candidate_id = cid   
+        entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
+        candidate_list = master_candidate.objects.filter(pk=candidate_id)
         if request.method == 'POST':
             candidate_id = request.POST.get("view_id")   
             entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
@@ -3319,9 +3322,11 @@ def remove_specials(a):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists())
-def view_candidate(request):
+def view_candidate(request, cid):
     candidate_list = master_candidate.objects.filter(status = active_status)
     try:
+        candidate_id = cid
+        view_candidate_list = master_candidate.objects.get(pk = candidate_id)
         if request.method == 'POST':
             candidate_id = request.POST.get("view_id")
             view_candidate_list = master_candidate.objects.get(pk = candidate_id)

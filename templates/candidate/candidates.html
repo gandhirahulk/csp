@@ -80,7 +80,9 @@
                                         
                                     <tr>
                                         <td class="action-col">
-                                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form> 
+                                            <a href="/csp_candidates/view_candidate/{{ eachcandidate.pk }}/">{{ eachcandidate.pk }}</a>   
+
+                                            <!-- <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form>  -->
                                         
                                             </td>
                                         <td class="action-col" style="text-align: left;">
@@ -321,13 +323,13 @@
                                             {% if request.user.groups.all %}
                                                 {% for eachgroup in request.user.groups.all %}
                                                     {% if eachgroup.name == 'Admin' %}   
-                                                        {% if eachcandidate.onboarding_status_id == 2 %}                                                     
-                                                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_edit_candidate' %}"></form> 
+                                                        {% if eachcandidate.onboarding_status_id == 2 %}                    
+                                                            <a href="/csp_candidates/view_edit_candidate/{{ eachcandidate.pk }}/">{{ eachcandidate.pk }}</a>                                 
                                                         {% else %}
-                                                            <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form> 
+                                                            <a href="/csp_candidates/view_candidate/{{ eachcandidate.pk }}/">{{ eachcandidate.pk }}</a> 
                                                         {% endif %}
                                                     {% else %}
-                                                        <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_candidate' %}"></form> 
+                                                        <a href="/csp_candidates/view_candidate/{{ eachcandidate.pk }}/">{{ eachcandidate.pk }}</a>   
                                                         
                                                     {% endif %}
                                                 {% endfor %}

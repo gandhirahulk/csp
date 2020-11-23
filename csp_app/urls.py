@@ -71,7 +71,7 @@ urlpatterns = [
     
     path('csp_candidates/', views.candidate, name= 'candidate'),
     path('csp_candidates/new_candidate/', views.new_candidate, name= 'new_candidate'),
-    path('csp_candidates/view_edit_candidate/', views.view_edit_candidate, name= 'view_edit_candidate'),
+    path('csp_candidates/view_edit_candidate/<str:cid>/', views.view_edit_candidate, name= 'view_edit_candidate'),
     path('csp_candidates/edit_candidate_salary/', views.edit_salary_structure, name= 'edit_salary_structure'),
 
     path('csp_candidates/edit_candidate/', views.edit_candidate, name= 'edit_candidate'),
@@ -80,7 +80,7 @@ urlpatterns = [
     path('csp_candidates/check_duplicacy_new/', views.check_duplicate_candidate_new, name= 'check_duplicate_candidate_new'),
     path('csp_candidates/check_duplicacy_edit/', views.check_duplicate_candidate_edit, name= 'check_duplicate_candidate_edit'),
    
-    path('csp_candidates/view_candidate/', views.view_candidate, name= 'view_candidate'),
+    path('csp_candidates/view_candidate/<str:cid>/', views.view_candidate, name= 'view_candidate'),
     path('csp_candidates/change_status/', views.change_candidate_status, name= 'change_candidate_status'),
     path('csp_candidates/vendor_change_status/', views.change_candidate_status_vendor, name= 'change_candidate_status_vendor'),
 
