@@ -1306,7 +1306,7 @@
                             {% endif %}
                         {% endfor %} name="c_email_creation" id="c_email_creation" required="true" tabindex="30">
                             <option value="{{ dummy.E_Mail_ID_Creation }}" selected  label="{{ dummy.E_Mail_ID_Creation }}">{{ dummy.E_Mail_ID_Creation }}</option>
-                            {% if dummy.E_Mail_ID_Creation != 'No' %}
+                            {% if dummy.E_Mail_ID_Creation == 'No' %}
                                 <option value="Yes">Yes</option>
                             {% else %}
                                 <option value="No">No</option>
@@ -1391,7 +1391,7 @@
                             {% endif %}
                         {% endfor %} name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
                             <option value="{{ dummy.E_Mail_ID_Creation }}" selected  label="{{ dummy.E_Mail_ID_Creation }}">{{ dummy.E_Mail_ID_Creation }}</option>
-                            {% if dummy.E_Mail_ID_Creation != 'No' %}
+                            {% if dummy.E_Mail_ID_Creation == 'No' %}
                                 <option value="Yes">Yes</option>
                             {% else %}
                                 <option value="No">No</option>

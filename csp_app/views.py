@@ -878,7 +878,18 @@ def process_requests(request, cid):
             except ObjectDoesNotExist:
                 selected_candidate = master_candidate.objects.get(pk= candidate_id)
                 changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged, request)
-               
+                previous_changes = candidate_history.objects.filter(fk_candidate_code=selected_candidate, status=active_status)
+                for i in previous_changes:
+                    i.status = deactive_status
+                    i.save()
+                
+                for k,v in changes_list.items():
+                    try:
+                        existing = candidate_history.objects.get(fk_candidate_code=selected_candidate, field_name=k,old_value= v[0], new_value= v[1],tbl_column_name= v[2], status=active_status)
+                    except ObjectDoesNotExist:
+                        
+                        new_record = candidate_history(fk_candidate_code=selected_candidate, field_name=k,old_value= v[0], new_value= v[1],tbl_column_name= v[2], created_by=str(request.user), created_date_time=datetime.now())
+                        new_record.save()
   
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time= datetime.now()
@@ -1857,18 +1868,7 @@ def edit_salary_structure_process(request, cid):
                 dojcount = len(delay_joiners)
                 selected_candidate = master_candidate.objects.get(pk=cid)
                 changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged, request)
-                previous_changes = candidate_history.objects.filter(fk_candidate_code=selected_candidate, status=active_status)
-                for i in previous_changes:
-                    i.status = deactive_status
-                    i.save()
                 
-                for k,v in changes_list.items():
-                    try:
-                        existing = candidate_history.objects.get(fk_candidate_code=selected_candidate, field_name=k,old_value= v[0], new_value= v[1],tbl_column_name= v[2])
-                    except ObjectDoesNotExist:
-                        
-                        new_record = candidate_history(fk_candidate_code=selected_candidate, field_name=k,old_value= v[0], new_value= v[1],tbl_column_name= v[2], created_by=str(request.user), created_date_time=datetime.now())
-                        new_record.save()
     
                 if len(changes_list) > 0:
                     changed = 1
