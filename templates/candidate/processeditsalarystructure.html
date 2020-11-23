@@ -78,10 +78,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'First_Name' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} value="{{ dummy.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
+                            {% if 'First_Name' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} value="{{ dummy.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -94,10 +94,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Middle_Name' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" value="{{ dummy.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename"  tabindex="2">
+                            {% if 'Middle_Name' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" value="{{ dummy.Middle_Name }}" maxlength="30" placeholder="Middle Name" name="c_middlename" id="c_middlename"  tabindex="2">
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -110,10 +110,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Last_Name' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" value="{{ dummy.Last_Name }}" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname" tabindex="3">
+                            {% if 'Last_Name' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" value="{{ dummy.Last_Name }}" maxlength="30" placeholder="Last Name" name="c_lastname" id="c_lastname" tabindex="3">
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -126,10 +126,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Date_of_Birth' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="date" tabindex="4" value="{{ dummy.Date_of_Birth }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" >
+                            {% if 'Date_of_Birth' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="date" tabindex="4" value="{{ dummy.Date_of_Birth }}" placeholder="Date Of Birth" name="c_dob" id="c_dob" required="true" >
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -143,10 +143,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Contact_Number' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" value="{{ dummy.Contact_Number }}" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
+                            {% if 'Contact_Number' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" value="{{ dummy.Contact_Number }}" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
                         <small id="contactmsg"></small>    
                     </div>
                 </div>
@@ -162,10 +162,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Emergency_Contact_Number' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" value="{{ dummy.Emergency_Contact_Number }}" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
+                            {% if 'Emergency_Contact_Number' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" value="{{ dummy.Emergency_Contact_Number }}" tabindex="6" placeholder="Emergency Contact Number" name="c_emergency" id="c_emergency" title="Emergency No. Cannot Be Same As Contact No." required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10">
                         <span id='message'></span>
                     </div>
                 </div>
@@ -181,10 +181,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Personal_Email_Id' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" tabindex="7" value="{{ dummy.Personal_Email_Id }}" name="c_email" id="email" placeholder="Email Id">
+                            {% if 'Personal_Email_Id' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})" tabindex="7" value="{{ dummy.Personal_Email_Id }}" name="c_email" id="email" placeholder="Email Id">
                         <small id="emailmsg"></small>    
                     </div>
                 </div>
@@ -200,10 +200,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'Gender' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} name="c_gender" id="c_gender" required="true" tabindex="8">
+                            {% if 'Gender' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="c_gender" id="c_gender" required="true" tabindex="8">
                             <option value="{{ dummy.Gender_id }}" selected>{{ dummy.Gender }}</option>
                             {% if gender_list %}
                                 {% for eachgender in gender_list %}
@@ -226,10 +226,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Father_Name' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" tabindex="9" value="{{ dummy.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true">
+                            {% if 'Father_Name' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" tabindex="9" value="{{ dummy.Father_Name }}" placeholder="Father Name" name="c_fathername" id="c_fathername" required="true">
                     </div>
                 </div>
 
@@ -243,10 +243,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Mother_Name' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" tabindex="10" value="{{ dummy.Mother_Name }}" placeholder="Mother Name" name="c_mothername" id="c_mothername" required="true" >
+                            {% if 'Mother_Name' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" tabindex="10" value="{{ dummy.Mother_Name }}" placeholder="Mother Name" name="c_mothername" id="c_mothername" required="true" >
                     </div>
                 </div>
 
@@ -260,10 +260,10 @@
                     <div>
                          <input
                          {% for x in candidate_recent_change %}
-                                {% if 'Aadhaar_Number' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" tabindex="11" value="{{ dummy.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
+                            {% if 'Aadhaar_Number' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" tabindex="11" value="{{ dummy.Aadhaar_Number }}" placeholder="Aadhaar Number" name="c_aadhaar" id="c_aadhaar" required="true" maxlength="12" minlength="12" pattern="[0-9]{12}">
                          <small id="adhaarmsg"></small>    
                     </div>
                 </div>
@@ -278,10 +278,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'PAN_Number' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" tabindex="12" value="{{ dummy.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{3}[P]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
+                            {% if 'PAN_Number' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" tabindex="12" value="{{ dummy.PAN_Number }}" placeholder="PAN Number" name="c_pan" id="c_pan" required="true" pattern="[A-Z]{3}[P]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}" minlength="10" maxlength="10">
                         <small id="panmsg"></small>    
                     </div>
                 </div>
@@ -338,10 +338,10 @@
                         <div>
                             <select
                             {% for x in candidate_recent_change %}
-                            {% if 'Sub_Source' in x.tbl_column_name %}
-                                class = "changed_field"
-                            {% endif %}
-                        {% endfor %} name="c_sub_source" id="referral" tabindex="15" readonly="true" >
+                                {% if 'Sub_Source' in x.tbl_column_name %}
+                                    class = "changed_field"
+                                {% endif %}
+                            {% endfor %} name="c_sub_source" id="referral" tabindex="15" readonly="true" >
                                 <option value="{{ dummy.Sub_Source_id }}" selected>{{ dummy.Sub_Source }}</option>
                                 
                             </select>
@@ -755,10 +755,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'Type_of_Hiring' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} name="c_hiring_type" id="hiring" tabindex="13" >
+                            {% if 'Type_of_Hiring' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="c_hiring_type" id="hiring" tabindex="13" >
                             <option value="{{ dummy.Type_of_Hiring_id }}" selected>{{ dummy.Type_of_Hiring }}</option>
                             {% if hiring_type_list %}
                                 {% for eachhiring_type in hiring_type_list %}
@@ -782,10 +782,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Replacement' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" tabindex="14" value="{{ dummy.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
+                            {% if 'Replacement' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" tabindex="14" value="{{ dummy.Replacement }}" placeholder="Replacement UID" name="c_replacement" id="c_replacement" pattern="[U]{1}[0-9]{2,5}" maxlength="6" autocapitalize="on">
                     </div>
                 </div>
                 <div class="request-forms-input-holder">
@@ -799,10 +799,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'Sub_Source' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor % name="c_sub_source" id="referral" tabindex="15" >
+                            {% if 'Sub_Source' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="c_sub_source" id="referral" tabindex="15" >
                             <option value="{{ dummy.Sub_Source_id }}" selected>{{ dummy.Sub_Source }}</option>
                             {% if sub_source_list %}
                                 {% for eachsub_source in sub_source_list %}
@@ -826,10 +826,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Referral' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" value="{{ dummy.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
+                            {% if 'Referral' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" value="{{ dummy.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
                     </div>
                 </div>
 
@@ -845,10 +845,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Date_of_Joining' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="date" tabindex="17" value="{{ dummy.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+                            {% if 'Date_of_Joining' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="date" tabindex="17" value="{{ dummy.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
 
                     </div>
                 </div>
@@ -864,10 +864,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'physically_challenged' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} name="challenged"  required="true" tabindex="18">
+                            {% if 'physically_challenged' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="challenged"  required="true" tabindex="18">
                             <option value="{{ dummy.physically_challenged }}" selected  label="{{ dummy.physically_challenged }}">{{ dummy.physically_challenged }}</option>
                             {% if dummy.physically_challenged == 'No' %}
                                 <option value="Yes">Yes</option>
@@ -892,10 +892,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'fk_entity_code' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} name="c_entity" id="c_entity" required="true" tabindex="19">
+                            {% if 'fk_entity_code' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="c_entity" id="c_entity" required="true" tabindex="19">
                             <option value="{{ dummy.fk_entity_code_id }}" selected>{{ dummy.fk_entity_code }}</option>
                             {% if entity_list %}
                                 {% for eachentity in entity_list %}
@@ -919,10 +919,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'fk_vendor_code' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} name="c_vendor" id="c_vendor" required="true" tabindex="20">
+                            {% if 'fk_vendor_code' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="c_vendor" id="c_vendor" required="true" tabindex="20">
                             <option value="" disabled label=" " class="empty">Select vendor</option>
 
                             <option value="{{ dummy.fk_vendor_code_id }}" selected  label="{{ dummy.fk_vendor_code }}">{{ dummy.fk_vendor_code.fk_entity_code_id }}</option>
@@ -1225,10 +1225,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'TA_Spoc_Email_Id' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" readonly value="{{ dummy.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" >
+                            {% if 'TA_Spoc_Email_Id' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" readonly value="{{ dummy.TA_Spoc_Email_Id }}" placeholder="TA SPOC Email ID" name="c_ta_spoc" id="c_ta_spoc" required="true" >
                     </div>
                 </div>
 
@@ -1242,10 +1242,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Onboarding_Spoc_Email_Id' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" readonly  value="{{ dummy.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
+                            {% if 'Onboarding_Spoc_Email_Id' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" readonly  value="{{ dummy.Onboarding_Spoc_Email_Id }}" placeholder="Onboarding SPOC Email ID" name="c_onboarding_spoc" id="c_onboarding_spoc" required="true">         
                     </div>
                 </div>
 
@@ -1263,10 +1263,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Reporting_Manager' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} readonly type="text"  value="{{ dummy.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" >
+                            {% if 'Reporting_Manager' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} readonly type="text"  value="{{ dummy.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" >
                     </div>
                 </div>
 
@@ -1280,10 +1280,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} readonly type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ dummy.Reporting_Manager_E_Mail_ID }}"  placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                            {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} readonly type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ dummy.Reporting_Manager_E_Mail_ID }}"  placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                         <small id="rmemailmsg"></small>
                     
                     </div>
@@ -1300,10 +1300,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} name="c_email_creation" id="c_email_creation" required="true" tabindex="30">
+                            {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="c_email_creation" id="c_email_creation" required="true" tabindex="30">
                             <option value="{{ dummy.E_Mail_ID_Creation }}" selected  label="{{ dummy.E_Mail_ID_Creation }}">{{ dummy.E_Mail_ID_Creation }}</option>
                             {% if dummy.E_Mail_ID_Creation != 'No' %}
                                 <option value="Yes">Yes</option>
@@ -1325,10 +1325,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'Laptop_Allocation' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} readonly="true" name="c_laptop_allocation" id="c_laptop_allocation" required="true" >
+                            {% if 'Laptop_Allocation' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} readonly="true" name="c_laptop_allocation" id="c_laptop_allocation" required="true" >
                             <option value="{{ dummy.Laptop_Allocation_id }}" selected  label="{{ dummy.Laptop_Allocation }}">{{ dummy.Laptop_Allocation }}</option>
     
                         </select>
@@ -1348,10 +1348,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Reporting_Manager' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" tabindex="30" value="{{ dummy.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50" autocapitalize="on">
+                            {% if 'Reporting_Manager' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" tabindex="30" value="{{ dummy.Reporting_Manager }}" placeholder="Reporting Manager" name="c_reporting_manager" id="reporting_manager" required="true" maxlength="50" autocapitalize="on">
                     </div>
                 </div>
 
@@ -1365,10 +1365,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ dummy.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
+                            {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" pattern="([a-zA-Z0-9_\-\.]+)@udaan.com" value="{{ dummy.Reporting_Manager_E_Mail_ID }}" tabindex="32" placeholder="Reporting Manager Email ID" name="c_reporting_manager_email" id="reporting_manager_email" required="true">
                         <small id="rmemailmsg"></small>
                     
                     </div>
@@ -1385,10 +1385,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
+                            {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="c_email_creation" id="c_email_creation" required="true" tabindex="33">
                             <option value="{{ dummy.E_Mail_ID_Creation }}" selected  label="{{ dummy.E_Mail_ID_Creation }}">{{ dummy.E_Mail_ID_Creation }}</option>
                             {% if dummy.E_Mail_ID_Creation != 'No' %}
                                 <option value="Yes">Yes</option>
@@ -1410,10 +1410,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'Laptop_Allocation' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
+                            {% if 'Laptop_Allocation' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="c_laptop_allocation" id="c_laptop_allocation" required="true" tabindex="34">
                             <option value="{{ dummy.Laptop_Allocation_id }}" selected  label="{{ dummy.Laptop_Allocation }}">{{ dummy.Laptop_Allocation }}</option>
     
                             {% if laptop_allocation_list %}
@@ -1442,10 +1442,10 @@
                     <div>
                         <select
                         {% for x in candidate_recent_change %}
-                                {% if 'Salary_Type' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} name="c_salary_type" id="c_salary_type" required="true" tabindex="35">
+                            {% if 'Salary_Type' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} name="c_salary_type" id="c_salary_type" required="true" tabindex="35">
                             <option value="{{ dummy.Salary_Type_id }}" selected  label="{{ dummy.Salary_Type }}">{{ dummy.Salary_Type }}</option>
                             {% if salary_type_list %}
                                 {% for eachsalary_type in salary_type_list %}
@@ -1468,10 +1468,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Gross_Salary_Entered' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="text" tabindex="36" readonly value="{{ dummy.Gross_Salary_Entered }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
+                            {% if 'Gross_Salary_Entered' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="text" tabindex="36" readonly value="{{ dummy.Gross_Salary_Entered }}" placeholder="Gross Salary Amount Entered" maxlength="10" minlength="1">
                         <i class="fas fa-info-circle" style="    position: absolute;
                         right: 3rem;
                         line-height: 3;" title="View History" id="gross_history" onclick="showDelete('view_history_form')"></i>
@@ -1489,10 +1489,10 @@
                     <div>
                         <input
                         {% for x in candidate_recent_change %}
-                                {% if 'Gross_Salary_Amount' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} type="number" tabindex="37" value="{{ dummy.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
+                            {% if 'Gross_Salary_Amount' in x.tbl_column_name %}
+                                class = "changed_field"
+                            {% endif %}
+                        {% endfor %} type="number" tabindex="37" value="{{ dummy.Gross_Salary_Amount }}" placeholder="Gross Salary Amount" name="c_gross_salary" id="c_salary" required="true" maxlength="10" minlength="1"  max="100000">
                         <span id="wage_result" style="color: #bf0711;"></span>
                     </div>
                 </div>
