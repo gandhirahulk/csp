@@ -289,9 +289,8 @@
                                         
                                 <tr>
                                     <td class="action-col">
-                                        <a href="{% url 'csp_app:view_edit_candidate' eachcandidate.pk  %}">{{ eachcandidate.pk }}</a>   
-                                        <!-- <form action="" method="POST">{% csrf_token %}<input type="hidden" value="{{ eachcandidate.pk }}" name="view_id"><input type="submit" value="{{ eachcandidate.pk }}" id="view" formaction="{% url 'csp_app:view_edit_candidate' %}"></form>  -->
-                                      
+                                        <a href="/csp_candidates/view_edit_candidate/{{ eachcandidate.pk }}/">{{ eachcandidate.pk }}</a>   
+                                       
                                     </td>
                                     <td >
                                     

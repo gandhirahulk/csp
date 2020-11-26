@@ -47,7 +47,7 @@ delete from "csp_app_master_sub_team";
 delete from "csp_app_master_team";
 delete from "csp_app_master_function";
 delete from "csp_app_master_department";
-delete from "csp_app_master_vendor";
+delete from "csp_app_master_vendor" where not pk_vendor_code = 0;
 delete from "csp_app_master_entity";
 delete from "csp_app_master_minimum_wages";
 delete from "csp_app_csp_candidate_code";
