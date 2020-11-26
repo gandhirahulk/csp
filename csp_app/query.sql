@@ -31,6 +31,8 @@ insert into "csp_app_states" (pk_state_code,zone,state_name) values(30,'WEST','G
 insert into "csp_app_states" (pk_state_code,zone,state_name) values(32,'WEST','MADHYA PRADESH');
 insert into "csp_app_states" (pk_state_code,zone,state_name) values(31,'WEST','MAHARASHTRA');
 
+delete from "csp_app_reject_reason";
+delete from "csp_app_candidate_history";
 delete from "csp_app_gross_salary_history";
 delete from "csp_app_candidate_document";
 delete from "csp_app_salary_structure";

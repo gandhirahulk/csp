@@ -3322,7 +3322,7 @@ def remove_specials(a):
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Recruiter').exists() or u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists())
-def view_candidate(request, cid):
+def view_candidate(request, cid = 'C000000001'):
     candidate_list = master_candidate.objects.filter(status = active_status)
     try:
         candidate_id = cid
