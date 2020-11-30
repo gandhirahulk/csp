@@ -82,11 +82,17 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'obtooldb',
+        # 'USER': 'postgres',
+        # 'PASSWORD': 'associate',
+        # 'HOST': '172.31.20.44',
+        # 'PORT': 5432,
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'obtooldb',
-        'USER': 'postgres',
-        'PASSWORD': 'associate',
-        'HOST': '172.31.20.44',
+        'USER': 'ob_admin@ob-tool-server',
+        'PASSWORD': 'Udaan@123',
+        'HOST': 'ob-tool-server.postgres.database.azure.com',
         'PORT': 5432,
     }
 }
