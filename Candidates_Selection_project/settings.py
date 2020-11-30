@@ -90,9 +90,9 @@ DATABASES = {
         # 'PORT': 5432,
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'obtooldb',
-        'USER': 'ob_admin@ob-tool-server',
-        'PASSWORD': 'Udaan@123',
-        'HOST': 'ob-tool-server.postgres.database.azure.com',
+        'USER': 'hrmsadmin@hrms-server',
+        'PASSWORD': 'Ud@@NhRm$',
+        'HOST': 'hrms-server.postgres.database.azure.com',
         'PORT': 5432,
     }
 }
