@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'csp_app',
+    'Candidates_Selection_project',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
