@@ -51,12 +51,12 @@ all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
 try:
-   
+    
     Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
     Onboarding_SPOC = Onboarding_SPOC_list.email
- 
+    
 except ObjectDoesNotExist:
-    Onboarding_SPOC = 'workmail052020@gmail.com'
+    Onboarding_SPOC = 'associateonboarding@udaan.com'
 
 
 
@@ -107,14 +107,12 @@ def custom_send_email(request):
     try:
         my_host = 'smtp.gmail.com'
         my_port = 465
-        my_username = 'gandhirahulk@gmail.com'
-        my_password = 'nshshrevvrluviez'
-        # my_password = 'nshshr'
-
+        my_username = 'associateonboarding@udaan.com'
+        my_password = 'lyboapvarmagsbsv'
         my_use_tls = False
         my_use_ssl = True
-        subject1 = 'LOI'
-        body1 = 'LOI'
+        subject1 = 'Test'
+        body1 = 'Test'
         from1 = my_username
         with get_connection(
         host=my_host, 
@@ -124,9 +122,31 @@ def custom_send_email(request):
         use_tls=my_use_tls,
         use_ssl= my_use_ssl
         ) as connection:
-            EmailMessage(subject1, body1, from1, ['sadaf.shaikh@udaan.com'],
+            EmailMessage(subject1, body1, from1, ['sadaf.shaikh@udaan.com','rahul.gandhi@udaan.com'],
             connection=connection).send(fail_silently=False)
         return HttpResponse("mail sent")
+    
+    # try:
+    #     my_host = 'smtp.gmail.com'
+    #     my_port = 465
+    #     my_username = 'gandhirahulk@gmail.com'
+    #     my_password = 'nshshrevvrluviez'
+    #     my_use_tls = False
+    #     my_use_ssl = True
+    #     subject1 = 'LOI'
+    #     body1 = 'LOI'
+    #     from1 = my_username
+    #     with get_connection(
+    #     host=my_host, 
+    #     port=my_port, 
+    #     username=my_username, 
+    #     password=my_password, 
+    #     use_tls=my_use_tls,
+    #     use_ssl= my_use_ssl
+    #     ) as connection:
+    #         EmailMessage(subject1, body1, from1, ['sadaf.shaikh@udaan.com'],
+    #         connection=connection).send(fail_silently=False)
+    #     return HttpResponse("mail sent")
     except TimeoutError:
         return HttpResponse("Timeout")
     except SMTPAuthenticationError:
@@ -646,6 +666,13 @@ def process_requests(request, cid):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             # ta_spoc = request.user.email #check
+            try:
+    
+                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                Onboarding_SPOC = Onboarding_SPOC_list.email
+                
+            except ObjectDoesNotExist:
+                Onboarding_SPOC = 'associateonboarding@udaan.com'
             onboarding_spoc = Onboarding_SPOC #check
             physically_challenged = request.POST.get("challenged")
             reporting_manager = request.POST.get("c_reporting_manager").title()
@@ -925,13 +952,19 @@ def process_requests(request, cid):
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
-                        
+                        try:
+    
+                            Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                            Onboarding_SPOC = Onboarding_SPOC_list.email
+                            
+                        except ObjectDoesNotExist:
+                            Onboarding_SPOC = 'associateonboarding@udaan.com'
                         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                         our_email = EmailMessage(
                             'Candidate account edited by admin.',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com' ],
+                            [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com' ],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -968,13 +1001,19 @@ def process_requests(request, cid):
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
-                    
+                    try:
+    
+                        Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                        Onboarding_SPOC = Onboarding_SPOC_list.email
+                        
+                    except ObjectDoesNotExist:
+                        Onboarding_SPOC = 'associateonboarding@udaan.com'
                     alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                     our_email = EmailMessage(
                         'Candidate account edited.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
+                        [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -1003,12 +1042,19 @@ def process_requests(request, cid):
                             selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                         selected_candidate.save()
                         #modified email
+                        try:
+    
+                            Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                            Onboarding_SPOC = Onboarding_SPOC_list.email
+                            
+                        except ObjectDoesNotExist:
+                            Onboarding_SPOC = 'associateonboarding@udaan.com'
                         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                         our_email = EmailMessage(
                             'Modified and approved',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
+                            [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -1040,13 +1086,19 @@ def process_requests(request, cid):
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
-                        
+                        try:
+    
+                            Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                            Onboarding_SPOC = Onboarding_SPOC_list.email
+                            
+                        except ObjectDoesNotExist:
+                            Onboarding_SPOC = 'associateonboarding@udaan.com'
                         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                         our_email = EmailMessage(
                             'Candidate approved by vendor.',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
+                            [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -1060,7 +1112,7 @@ def process_requests(request, cid):
                             'IT Intimation',
                             alltemplate,
                             settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', IT_email_id, 'rahul.gandhi@udaan.com'],
+                            [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', IT_email_id, 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
@@ -1073,7 +1125,7 @@ def process_requests(request, cid):
                                 u = User.objects.get(username= selected_candidate.Reporting_Manager_E_Mail_ID)
                                 
                                 # new_reporting_manager_candidate_approve
-                                subject, from_email, to = 'Candidate Approved', 'workmail052020@gmail.com', selected_candidate.Reporting_Manager_E_Mail_ID
+                                subject, from_email, to = 'Candidate Approved', 'associateonboarding@udaan.com', selected_candidate.Reporting_Manager_E_Mail_ID
     
                                 html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code})
                                 text_content = strip_tags(html_content)
@@ -1089,7 +1141,7 @@ def process_requests(request, cid):
                                 user.email = selected_candidate.Reporting_Manager_E_Mail_ID
                             
                                 user.save()
-                                subject, from_email, to = 'Candidate Approved', 'workmail052020@gmail.com', selected_candidate.Reporting_Manager_E_Mail_ID
+                                subject, from_email, to = 'Candidate Approved', 'associateonboarding@udaan.com', selected_candidate.Reporting_Manager_E_Mail_ID
     
                                 html_content = render_to_string('emailtemplates/new_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code, 'username': selected_candidate.Reporting_Manager_E_Mail_ID,'pwd': password})
                                 text_content = strip_tags(html_content)
@@ -1333,12 +1385,19 @@ def reject_candidate_onboarding(request, cid):
         selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
         selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
         selected_candidate.save()
+        try:
+    
+            Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+            Onboarding_SPOC = Onboarding_SPOC_list.email
+            
+        except ObjectDoesNotExist:
+            Onboarding_SPOC = 'associateonboarding@udaan.com'
         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
         our_email = EmailMessage(
             'Candidate Rejected.',
             alltemplate,
             settings.EMAIL_HOST_USER,
-            [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
+            [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
         ) 
         our_email.fail_silently = False
         our_email.send()
@@ -1373,13 +1432,20 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                     selected_candidate.save()
+                    try:
+    
+                        Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                        Onboarding_SPOC = Onboarding_SPOC_list.email
+                        
+                    except ObjectDoesNotExist:
+                        Onboarding_SPOC = 'associateonboarding@udaan.com'
                     save_rejected_reason(selected_candidate, request, reason)
                     alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
                     our_email = EmailMessage(
                         'Candidate Rejected By Admin.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
+                        [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -1409,13 +1475,20 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                     selected_candidate.save()
+                    try:
+                        
+                        Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                        Onboarding_SPOC = Onboarding_SPOC_list.email
+                        
+                    except ObjectDoesNotExist:
+                        Onboarding_SPOC = 'associateonboarding@udaan.com'
                     save_rejected_reason(selected_candidate, request, reason)
                     alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
                     our_email = EmailMessage(
                         'Candidate Rejected.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
+                        [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -1435,13 +1508,20 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                     selected_candidate.save()
+                    try:
+    
+                        Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                        Onboarding_SPOC = Onboarding_SPOC_list.email
+                        
+                    except ObjectDoesNotExist:
+                        Onboarding_SPOC = 'associateonboarding@udaan.com'
                     save_rejected_reason(selected_candidate, request, reason)
                     alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
                     our_email = EmailMessage(
                         'Candidate Rejected.',
                         alltemplate,
                         settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'workmail052020@gmail.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
+                        [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
                     ) 
                     our_email.fail_silently = False
                     our_email.send()
@@ -1544,14 +1624,14 @@ def future_joining_requests(request):
             selected_candidate.candidate_status = candidate_status.objects.get(pk=2)
             selected_candidate.joining_status = joining_status.objects.get(pk = 0)
             selected_candidate.save()
-            subject, from_email = 'Future Joining Date Request Accepted', 'workmail052020@gmail.com'
+            subject, from_email = 'Future Joining Date Request Accepted', 'associateonboarding@udaan.com'
     
             html_content = render_to_string('emailtemplates/sdf.html') 
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
-            subject, from_email = 'Revised details of joining', 'workmail052020@gmail.com'
+            subject, from_email = 'Revised details of joining', 'associateonboarding@udaan.com'
     
             html_content = render_to_string('emailtemplates/sdf.html')
             text_content = strip_tags(html_content)
@@ -1565,7 +1645,7 @@ def future_joining_requests(request):
             selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
             selected_candidate.joining_status = joining_status.objects.get(pk = 0)
             selected_candidate.save()
-            subject, from_email = 'Future Joining Date Request Rejected', 'workmail052020@gmail.com'
+            subject, from_email = 'Future Joining Date Request Rejected', 'associateonboarding@udaan.com'
     
             html_content = render_to_string('emailtemplates/sdf.html')
             text_content = strip_tags(html_content) 
@@ -1724,6 +1804,13 @@ def edit_salary_structure_process(request, cid):
             location = request.POST.get("c_location")
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
+            try:
+    
+                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                Onboarding_SPOC = Onboarding_SPOC_list.email
+                
+            except ObjectDoesNotExist:
+                Onboarding_SPOC = 'associateonboarding@udaan.com'
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -1941,6 +2028,13 @@ def edit_salary_structure(request):
             location = request.POST.get("c_location")
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
+            try:
+    
+                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                Onboarding_SPOC = Onboarding_SPOC_list.email
+                
+            except ObjectDoesNotExist:
+                Onboarding_SPOC = 'associateonboarding@udaan.com'
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -2373,6 +2467,13 @@ def edit_candidate(request):
              #check
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
+            try:
+                
+                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                Onboarding_SPOC = Onboarding_SPOC_list.email
+                
+            except ObjectDoesNotExist:
+                Onboarding_SPOC = 'associateonboarding@udaan.com'
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -2737,6 +2838,13 @@ def create_candidate(request):
             location = request.POST.get("c_location")
 
             ta_spoc = request.user.email #check
+            try:
+    
+                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                Onboarding_SPOC = Onboarding_SPOC_list.email
+                
+            except ObjectDoesNotExist:
+                Onboarding_SPOC = 'associateonboarding@udaan.com'
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -3029,6 +3137,13 @@ def save_new_candidate(request):
             location = request.POST.get("c_location")
             physically_challenged = request.POST.get("challenged")
             ta_spoc = request.user.email #check
+            try:
+    
+                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                Onboarding_SPOC = Onboarding_SPOC_list.email
+                
+            except ObjectDoesNotExist:
+                Onboarding_SPOC = 'associateonboarding@udaan.com'
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -3263,6 +3378,13 @@ def save_new_candidate(request):
                 laptop_request = laptop_request_status.objects.get(pk=3)          
                 
                 email_request = email_creation_request_status.objects.get(pk=3)
+                try:
+    
+                    Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                    Onboarding_SPOC = Onboarding_SPOC_list.email
+                    
+                except ObjectDoesNotExist:
+                    Onboarding_SPOC = 'associateonboarding@udaan.com'
                 new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Mother_Name= mothername,
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
@@ -3954,7 +4076,7 @@ def delete_vendor(request):
                 selected_vendor.save()
                 
                 msg = 'Vendor account disabled for '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' by ' + str(request.user) + ' .'
-                send_mail('Vendor Account Disabled', msg,'workmail052020@gmail.com' ,[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
+                send_mail('Vendor Account Disabled', msg,'associateonboarding@udaan.com' ,[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
       
                 messages.success(request, "Vendor Deleted Successfully")
                 return redirect('csp_app:vendor')
