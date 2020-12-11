@@ -1659,6 +1659,8 @@ def future_joining_requests(request):
 
 
 @login_required(login_url='/notlogin/')
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Recruiter').exists())
+
 def candidate(request):
     
     count = 0
