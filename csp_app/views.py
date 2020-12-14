@@ -4665,7 +4665,7 @@ def  create_function(request):
             messages.error(request, "Function Already Exist")
             return redirect('csp_app:function')
         except ObjectDoesNotExist:            
-            new_function = master_function( function_name= function_name , fk_department_code= department_fk, created_by = str(request.user), created_date_time= datetime.now())
+            new_function = master_function( function_name= function_name ,fk_entity_code= department_fk.fk_entity_code, fk_department_code= department_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_function.save()
             messages.success(request, "Function Saved Successfully")
             return redirect('csp_app:function')
@@ -4727,6 +4727,7 @@ def save_edit_function(request):
                         return redirect('csp_app:function')
                     except ObjectDoesNotExist:
                         selected.function_name = name 
+                        selected.fk_entity_code= department_fk.fk_entity_code
                         selected.fk_department_code = department_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -4797,7 +4798,7 @@ def  create_team(request):
             messages.error(request, "Team Already Exist")
             return redirect('csp_app:team')
         except ObjectDoesNotExist: 
-            new_team = master_team( team_name= team_name , fk_function_code=function_fk, created_by = str(request.user), created_date_time= datetime.now())
+            new_team = master_team( team_name= team_name ,fk_entity_code=function_fk.fk_entity_code, fk_department_code=function_fk.fk_department_code,  fk_function_code=function_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_team.save()
             messages.success(request, "Team Saved Successfully")
             return redirect('csp_app:team')
@@ -4864,6 +4865,8 @@ def save_edit_team(request):
                         return redirect('csp_app:team')
                     except ObjectDoesNotExist:
                         selected.team_name = name 
+                        selected.fk_entity_code=function_fk.fk_entity_code
+                        selected.fk_department_code=function_fk.fk_department_code
                         selected.fk_function_code = function_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -4935,7 +4938,7 @@ def  create_subteam(request):
             messages.error(request, "Sub Team Already Exist")
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
-            new_subteam = master_sub_team( sub_team_name= subteam_name , fk_team_code=team_fk, created_by = str(request.user), created_date_time= datetime.now())
+            new_subteam = master_sub_team( sub_team_name= subteam_name,fk_entity_code=team_fk.fk_entity_code, fk_department_code=team_fk.fk_department_code, fk_function_code=team_fk.fk_function_code , fk_team_code=team_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_subteam.save()
             messages.success(request, "Sub Team Saved Successfully")
             return redirect('csp_app:subteam')
@@ -5007,6 +5010,9 @@ def save_edit_subteam(request):
                         return redirect('csp_app:team')
                     except ObjectDoesNotExist:
                         selected.sub_team_name = name 
+                        selected.fk_entity_code=team_fk.fk_entity_code
+                        selected.fk_department_code=team_fk.fk_department_code
+                        selected.fk_function_code=team_fk.fk_function_code
                         selected.fk_team_code = team_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -5086,7 +5092,7 @@ def  create_designation(request):
             return redirect('csp_app:subteam')
         except ObjectDoesNotExist: 
 
-            new_designation = master_designation( designation_name= designation_name , fk_sub_team_code=subteam_fk, fk_skill_code= skill_fk, created_by = str(request.user), created_date_time= datetime.now())
+            new_designation = master_designation( designation_name= designation_name, fk_entity_code=subteam_fk.fk_entity_code, fk_department_code=subteam_fk.fk_department_code, fk_function_code=subteam_fk.fk_function_code , fk_team_code=subteam_fk.fk_team_code, fk_sub_team_code=subteam_fk, fk_skill_code= skill_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_designation.save()
             messages.success(request, "Designation Saved Successfully")
             return redirect('csp_app:designation')
@@ -5163,6 +5169,10 @@ def save_edit_designation(request):
                         return redirect('csp_app:designation')
                     except ObjectDoesNotExist:
                         selected.designation_name = name 
+                        selected.fk_entity_code=subteam_fk.fk_entity_code
+                        selected.fk_department_code=subteam_fk.fk_department_code
+                        selected.fk_function_code=subteam_fk.fk_function_code 
+                        selected.fk_team_code=subteam_fk.fk_team_code
                         selected.fk_sub_team_code = subteam_fk
                         selected.fk_skill_code = skill_fk
                         selected.modified_by = str(request.user)
@@ -5380,7 +5390,7 @@ def  create_state(request):
             messages.error(request, "State Already Exist")
             return redirect('csp_app:state')
         except ObjectDoesNotExist: 
-            new_state = master_state( state_name= state_name , fk_region_code =region_fk, created_by = str(request.user), created_date_time= datetime.now())
+            new_state = master_state( state_name= state_name , fk_entity_code= region_fk.fk_entity_code, fk_region_code =region_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_state.save()
             messages.success(request, "State Saved Successfully")
             return redirect('csp_app:state')
@@ -5454,6 +5464,7 @@ def save_edit_state(request):
                         return redirect('csp_app:state')
                     except ObjectDoesNotExist:
                         selected.state_name = name 
+                        selected.fk_entity_code= region_fk.fk_entity_code
                         selected.fk_region_code = region_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -5576,6 +5587,8 @@ def save_edit_city(request):
                         return redirect('csp_app:city')
                     except ObjectDoesNotExist:
                         selected.city_name = name 
+                        selected.fk_entity_code= state_fk.fk_entity_code
+                        selected.fk_region_code= state_fk.fk_region_code
                         selected.fk_state_code = state_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()
@@ -5640,7 +5653,7 @@ def  create_city(request):
             messages.error(request, "City Already Exist")
             return redirect('csp_app:city')
         except ObjectDoesNotExist: 
-            new_city = master_city( city_name= city_name , fk_state_code =state_fk, created_by = str(request.user), created_date_time= datetime.now())
+            new_city = master_city( city_name= city_name , fk_entity_code= state_fk.fk_entity_code, fk_region_code= state_fk.fk_region_code, fk_state_code =state_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_city.save()
             messages.success(request, "City Saved Successfully")
             return redirect('csp_app:city')
@@ -5680,7 +5693,7 @@ def  create_location(request):
             messages.error(request, "Location Already Exist")
             return redirect('csp_app:location')
         except ObjectDoesNotExist: 
-            new_location = master_location( location_name= location_name ,location_code=code, fk_city_code =city_fk, created_by = str(request.user), created_date_time= datetime.now())
+            new_location = master_location( location_name= location_name , fk_entity_code=city_fk.fk_entity_code, fk_region_code= city_fk.fk_region_code, fk_state_code= city_fk.fk_state_code, location_code=code, fk_city_code =city_fk, created_by = str(request.user), created_date_time= datetime.now())
             new_location.save()
             messages.success(request, "Location Saved Successfully")
             return redirect('csp_app:location')
@@ -5756,7 +5769,9 @@ def save_edit_location(request):
                     except ObjectDoesNotExist:
                         selected.location_name = name 
                         selected.location_code = code 
-
+                        selected.fk_entity_code=city_fk.fk_entity_code
+                        selected.fk_region_code= city_fk.fk_region_code
+                        selected.fk_state_code= city_fk.fk_state_code
                         selected.fk_city_code = city_fk
                         selected.modified_by = str(request.user)
                         selected.modified_date_time = datetime.now()

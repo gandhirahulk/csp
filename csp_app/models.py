@@ -111,6 +111,7 @@ class master_department(models.Model):
 class master_function(models.Model):
     pk_function_code = models.AutoField(primary_key=True)
     function_name = models.CharField(max_length=100)
+    fk_entity_code = models.ForeignKey( master_entity, on_delete=models.CASCADE, default=None)
     fk_department_code = models.ForeignKey(master_department, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
@@ -124,6 +125,8 @@ class master_function(models.Model):
 class master_team(models.Model):
     pk_team_code = models.AutoField(primary_key=True)
     team_name = models.CharField(max_length=100)
+    fk_entity_code = models.ForeignKey( master_entity, on_delete=models.CASCADE, default=None)
+    fk_department_code = models.ForeignKey(master_department, on_delete=models.CASCADE, default=None)
     fk_function_code = models.ForeignKey(master_function, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
@@ -137,6 +140,9 @@ class master_team(models.Model):
 class master_sub_team(models.Model):
     pk_sub_team_code = models.AutoField(primary_key=True)
     sub_team_name = models.CharField(max_length=100)
+    fk_entity_code = models.ForeignKey( master_entity, on_delete=models.CASCADE, default=None)
+    fk_department_code = models.ForeignKey(master_department, on_delete=models.CASCADE, default=None)
+    fk_function_code = models.ForeignKey(master_function, on_delete=models.CASCADE, default=None)
     fk_team_code = models.ForeignKey(master_team, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
@@ -150,6 +156,10 @@ class master_sub_team(models.Model):
 class master_designation(models.Model):
     pk_designation_code = models.AutoField(primary_key=True)
     designation_name = models.CharField(max_length=100)
+    fk_entity_code = models.ForeignKey( master_entity, on_delete=models.CASCADE, default=None)
+    fk_department_code = models.ForeignKey(master_department, on_delete=models.CASCADE, default=None)
+    fk_function_code = models.ForeignKey(master_function, on_delete=models.CASCADE, default=None)
+    fk_team_code = models.ForeignKey(master_team, on_delete=models.CASCADE, default=None)
     fk_sub_team_code = models.ForeignKey(master_sub_team, on_delete=models.CASCADE)
     fk_skill_code = models.ForeignKey(skill_type, on_delete= models.CASCADE)
     created_by = models.CharField(max_length=100)
@@ -177,6 +187,7 @@ class master_region(models.Model):
 class master_state(models.Model):
     pk_state_code = models.AutoField(primary_key=True)
     state_name = models.ForeignKey(states, models.CASCADE, default=1)
+    fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE, default=None)
     fk_region_code = models.ForeignKey(master_region, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
@@ -195,6 +206,8 @@ class cities(models.Model):
 class master_city(models.Model):
     pk_city_code = models.AutoField(primary_key=True)
     city_name = models.CharField(max_length=100)
+    fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE, default=None)
+    fk_region_code = models.ForeignKey(master_region, on_delete=models.CASCADE, default=None)
     fk_state_code = models.ForeignKey(master_state, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
@@ -209,6 +222,9 @@ class master_location(models.Model):
     pk_location_code = models.AutoField(primary_key=True)
     location_name = models.CharField(max_length=100)
     location_code = models.CharField(max_length=20)
+    fk_entity_code = models.ForeignKey(master_entity, on_delete=models.CASCADE, default=None)
+    fk_region_code = models.ForeignKey(master_region, on_delete=models.CASCADE, default=None)
+    fk_state_code = models.ForeignKey(master_state, on_delete=models.CASCADE, default=None)
     fk_city_code = models.ForeignKey(master_city, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
