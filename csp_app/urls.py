@@ -9,6 +9,8 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    path('clear_data/', views.clear_data, name='clear_data'),
+
     path('reporting_manager/joined/', reporting_manager.joined, name='rm_joined'),
     path('reporting_manager/joining_confirmation/', reporting_manager.joining_confirmation, name='rm_joining_confirmation'),
     path('reporting_manager/drop_out/', reporting_manager.drop_out, name='rm_drop_out'),

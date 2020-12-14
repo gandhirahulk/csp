@@ -5978,3 +5978,23 @@ def  csp_logout(request):
 def notlogin(request):
     return render(request, 'csp_app/timeout.html', {'allcandidates': all_active_candidates,})
 
+def clear_data(request):
+    reject_reason.objects.all().delete()
+    candidate_history.objects.all().delete()
+    gross_salary_history.objects.all().delete()
+    candidate_document.objects.all().delete()
+    salary_structure.objects.all().delete()
+    master_candidate.objects.all().delete()
+    dummy_candidate.objects.all().delete()
+    csp_candidate_code.objects.all().delete()
+    dummy_candidate_code.objects.all().delete()
+    c_code = csp_candidate_code(candidate_code='C000000000')
+    c_code.save()
+    d_code = dummy_candidate_code(candidate_code='C000000000')
+    d_code.save()
+    candidate_user_list = User.objects.filter(groups__name='Candidate')
+    for i in candidate_user_list:
+        User.objects.filter(id=i.pk).delete()
+    messages.success(request, 'Data Deleted Succesfully')
+    return redirect('csp_app:candidate')
+   
