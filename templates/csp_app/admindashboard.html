@@ -120,7 +120,7 @@
                 {% endif %}
             </div>
             {% if request.user.groups.all %}
-          {% for eachgroup in request.user.groups.all %}
+            {% for eachgroup in request.user.groups.all %}
             {% if eachgroup.name != 'Candidate' %}
             <div class="search-input">
               <input type="search" name="search_c" id="search-bar" maxlength="300" placeholder="search name, phone, email" list="all_candidates">

@@ -225,7 +225,7 @@ def approved_candidates(request):
 @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
 def candidate_profile(request):
     print(request.user)
-    try:
+    try:        
         me = master_candidate.objects.get(pk=request.user.username)
         return render(request, 'candidate/candidatesdashboard.html', {'me':me})
     except UnboundLocalError:

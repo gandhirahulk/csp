@@ -3,7 +3,7 @@ $(document).ready(function(){
     var usergroup = $('#user_group').val();
     var vendor = $('#c_vendor').val()
 
-    if (selectedvalue == '3' && usergroup != 'Onboarding SPOC' ){
+    if (selectedvalue == '3' && usergroup == 'Recruiter' ){
         $('#c_vendor').attr("disabled", true);
         $('#c_vendor').prop("required", false);
 
@@ -13,7 +13,7 @@ $(document).ready(function(){
         $('#c_vendor').prop("required", true);
 
     }
-    if (vendor == '0' && usergroup == 'Onboarding SPOC'){
+    if (vendor == '0' && usergroup != 'Recruiter'){
         $('#c_vendor').attr("disabled", false);
         $('#c_vendor').attr("value", null);
       
@@ -26,7 +26,7 @@ $(document).ready(function(){
     }
     if (usergroup == 'Admin'){
         $('#c_vendor').attr("disabled", false);
-        $('#c_vendor').attr("value", null);
+        // $('#c_vendor').attr("value", null);
       
         $('#c_vendor').prop("required", true);
     }
@@ -45,7 +45,7 @@ $(document).ready(function(){
     $('#referral').change(function() {
         var selectedvalue = $(this).val();
         var usergroup = $('#user_group').val();
-        if (selectedvalue == '3' && usergroup != 'Onboarding SPOC'){
+        if (selectedvalue == '3' && usergroup == 'Recruiter'){
             $('#c_vendor').attr("disabled", true);
             $('#c_vendor').prop("required", false);
 
