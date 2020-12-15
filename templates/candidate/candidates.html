@@ -72,6 +72,7 @@
                         <th>Final Status</th>
                         <th class="sort-latest">ctime</th>
                         <th class="sort-latest">mtime</th>
+                        <th>History</th>
                     
                     </tr>
                 </thead>
@@ -315,6 +316,7 @@
                                         {% else %}
                                             {{ eachcandidate.modified_date_time }}
                                         {% endif %}</td>
+                                        <td><a href="http://">View History</a></td>
                                     </tr>
 
                                 {% else %}                          
@@ -566,7 +568,7 @@
                                         {% else %}
                                             {{ eachcandidate.modified_date_time }}
                                         {% endif %} </td>
-                                        
+                                        <td><a onclick="showDelete('view_candidate_history_form')">View History</a></td>
                                     </tr>
 
                                          
@@ -606,7 +608,7 @@
                         <th>E Mail ID Creation Request</th>
                         <th>Laptop Request</th>
                         <th>Final Status</th>
-                    
+                        <th>History</th>
                     
                     
                     </tr>
@@ -631,11 +633,79 @@
     <input type="hidden" id="phone_no">
 
 
+    <div id="view_candidate_history_form" class="form_modal" style="padding-top: 2%;">
+        <div class="delete_form_header" style="width: 80%;">
+            <div class="forms-heading">
+                <h2>Candidate Data Modification Details</h2>
+            </div>     
+            <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
+        </div>
+        <div class="delete_form_footer" style="width: 80%;text-align: center;">
+            <table id="entity_table" class="dataTable">
+                <thead>
+                    <tr>
+                        <th>Field Name</th>
+                        <th>Old Value</th>
+                        <th>New Value</th>
+                        <th>Modified By</th>
+                        <th>Date Time</th>
+                    </tr>
+                   
+                </thead>
+                <tbody>
+                    {% if candidate_history_list %}
+                        {% for eachrecord in candidate_history_list %}
+                            <tr>
+                                <td style="text-align: left;">{{ eachrecord.field_name }}</td>
+                                <td>{{ eachrecord.old_value }}</td>
+                                <td>{{ eachrecord.new_value }}</td>
+                                <td>{{ eachrecord.created_by }}</td>
+                                <td>{{ eachrecord.created_date_time | date:"M d, Y" }}</td>
 
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for eachrecord in candidate_history_list %}
+                            <tr>
+                                <td colspan="5">No Data To Display</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+            <br>
+            <button id="close_c_history" class="delete-forms-close-btn">Close</button>        
+        
+        </div>
+    </div>
 
 <script>
     $(document).ready(function(){
         showMe('Candidate', 'can-expand');
-    }); 
+        $('#entity_table').dataTable()
+
+
+        $(document).keyup(function(){
+            if (event.keyCode === 27){
+            $("#view_candidate_history_form").css("display", "none");
+
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'view_candidate_history_form') {
+            $("#view_candidate_history_form").css("display", "none");
+        }   
+        }); 
+   
+        $('#close_c_history').click(function(){
+            $("#view_candidate_history_form").css("display", "none");
+        });
+     
+    });
+</script>
+<script>
+    function showDelete(formid){
+        document.getElementById(formid).style.display = "block";
+    }
 </script>
 {% endblock %}

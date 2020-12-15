@@ -1197,14 +1197,16 @@ def process_requests(request, cid):
                             msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
                             msg.attach_alternative(html_content, "text/html")
                             msg.send()
+                        selected_candidate.loi_status = loi_status.objects.get(pk =1)
+                        selected_candidate.save()
                         messages.success(request, "Candidate approved LOI sent to candidate.")
                         return redirect("csp_app:pending_request")
                      
 
         delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
         dojcount = len(delay_joiners)
-        history_list = gross_salary_history.objects.filter(fk_candidate_code=c).order_by('-created_date_time')
-        candidate_history_list = candidate_history.objects.filter(fk_candidate_code=c).order_by('-created_date_time')
+        history_list = gross_salary_history.objects.filter(fk_candidate_code=c).order_by('-created_date_time').distinct()
+        candidate_history_list = candidate_history.objects.filter(fk_candidate_code=c).order_by('-created_date_time').distinct()
         candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=c, status= active_status)
         return render(request, 'candidate/processrequests.html', {'candidate_recent_change':candidate_recent_change,'candidate_history_list':candidate_history_list,'history_list':history_list,'selected_candidate': selected_candidate_data, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates,'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
         'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
@@ -1257,11 +1259,11 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
         changes_list['Emergency Contact Number'] = [ selected_candidate.Emergency_Contact_Number, emergency_no, 'Emergency_Contact_Number' ]
     selected_candidate.Emergency_Contact_Number= emergency_no
     if selected_candidate.Type_of_Hiring != hiring_fk:
-        changes_list['Type of Hiring'] = [ selected_candidate.Type_of_Hiring, hiring, 'Type_of_Hiring' ]
+        changes_list['Type of Hiring'] = [ selected_candidate.Type_of_Hiring.hiring_type_name , hiring_fk.hiring_type_name , 'Type_of_Hiring' ]
 
     selected_candidate.Type_of_Hiring= hiring_fk
     if selected_candidate.Replacement != replacement:
-        changes_list['Replacement'] = [ selected_candidate.Replacement, replacement, 'Replacement' ]                    
+        changes_list['Replacement'] = [ selected_candidate.Replacement, replacement , 'Replacement' ]                    
     selected_candidate.Replacement= replacement
     if selected_candidate.Personal_Email_Id != email:
         changes_list['Personal Email Id'] = [ selected_candidate.Personal_Email_Id, email, 'Personal_Email_Id' ]  
@@ -1686,8 +1688,9 @@ def candidate(request):
             pending_candidate_list = master_candidate.objects.filter(onboarding_status= pending_onboarding,status=active_status ) 
             # | master_candidate.objects.filter(vendor_status= pending_vendor,status=active_status )
             count = len(pending_candidate_list)
-
-    return render(request, 'candidate/candidates.html', {'document_list':document_list, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
+    candidate_history_list = candidate_history.objects.all().order_by('-created_date_time').distinct()
+               
+    return render(request, 'candidate/candidates.html', {'candidate_history_list':candidate_history_list, 'document_list':document_list, 'dojcount':dojcount, 'count': count, 'allcandidates': all_active_candidates, 'entity_list': entity_list, 'location_list': location_list, 
     'city_list': city_list, 'state_list':state_list, 'region_list': region_list, 'department_list': dept_list, 
     'function_list': function_list, 'team_list': team_list, 'sub_team_list': subteam_list, 'designation_list': desg_list,
     'hiring_type_list': hiring_type_list, 'sub_source_list': sub_source_list, 'salary_type_list': salary_type_list, 'c_status_list': c_status_list,
@@ -1955,8 +1958,8 @@ def edit_salary_structure_process(request, cid):
                     changed = 1
                 else:
                     changed = 0
-                history_list = gross_salary_history.objects.filter(fk_candidate_code=selected_candidate).order_by('-created_date_time')
-                candidate_history_list = candidate_history.objects.filter(fk_candidate_code=selected_candidate).order_by('-created_date_time')
+                history_list = gross_salary_history.objects.filter(fk_candidate_code=selected_candidate).order_by('-created_date_time').distinct()
+                candidate_history_list = candidate_history.objects.filter(fk_candidate_code=selected_candidate).order_by('-created_date_time').distinct()
                 candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=selected_candidate, status= active_status)
                 return render(request, 'candidate/processeditsalarystructure.html', {'candidate_recent_change':candidate_recent_change,'candidate_history_list':candidate_history_list,'history_list':history_list,'changed':changed, 'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                 'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
