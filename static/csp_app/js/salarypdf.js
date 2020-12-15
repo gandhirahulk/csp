@@ -1,9 +1,9 @@
 function getPDF(){
     // alert("save me");
-    var HTML_Width = 450;
-    var HTML_Height = HTML_Width * 1.3;
-    var top_left_margin = 45 ;
-    var PDF_Width = 450 +(top_left_margin*2);
+    var HTML_Width = 400;
+    var HTML_Height = HTML_Width * 2;
+    var top_left_margin = 50 ;
+    var PDF_Width = 400 +(top_left_margin*2);
     // var PDF_Width = HTML_Width+(top_left_margin*2);
 
     var PDF_Height = (PDF_Width)+(top_left_margin*2);

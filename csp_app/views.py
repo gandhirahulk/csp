@@ -1023,8 +1023,7 @@ def process_requests(request, cid):
 
                 
                 if request.POST.get('ve_status') != None:                   
-                    print(changes_list)
-                    print(len(changes_list))
+                
                     if len(changes_list) > 0:
                         selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=2)
@@ -1115,102 +1114,92 @@ def process_requests(request, cid):
                             [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', IT_email_id, 'rahul.gandhi@udaan.com'],
                         ) 
                         our_email.fail_silently = False
-                        our_email.send()
-                        
-                        
-                        
+                        our_email.send() 
                         try:
+                            u = User.objects.get(username= selected_candidate.Reporting_Manager_E_Mail_ID)
                             
-                            try:
-                                u = User.objects.get(username= selected_candidate.Reporting_Manager_E_Mail_ID)
-                                
-                                # new_reporting_manager_candidate_approve
-                                subject, from_email, to = 'Candidate Approved', 'associateonboarding@udaan.com', selected_candidate.Reporting_Manager_E_Mail_ID
-    
-                                html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code})
-                                text_content = strip_tags(html_content)
-                                msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-                                msg.attach_alternative(html_content, "text/html")
-                                msg.send()
-                            except ObjectDoesNotExist:
-                                user = User.objects.create_user(selected_candidate.Reporting_Manager_E_Mail_ID)
-                                password = User.objects.make_random_password()
-                                user.password = password
-                                user.set_password(user.password)
-                                user.first_name = selected_candidate.Reporting_Manager
-                                user.email = selected_candidate.Reporting_Manager_E_Mail_ID
-                            
-                                user.save()
-                                subject, from_email, to = 'Candidate Approved', 'associateonboarding@udaan.com', selected_candidate.Reporting_Manager_E_Mail_ID
-    
-                                html_content = render_to_string('emailtemplates/new_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code, 'username': selected_candidate.Reporting_Manager_E_Mail_ID,'pwd': password})
-                                text_content = strip_tags(html_content)
-                                msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-                                msg.attach_alternative(html_content, "text/html")
-                                msg.send()
-                            
+                            # new_reporting_manager_candidate_approve
+                            subject, from_email, to = 'Candidate Approved', 'associateonboarding@udaan.com', selected_candidate.Reporting_Manager_E_Mail_ID
+
+                            html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code})
+                            text_content = strip_tags(html_content)
+                            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
+                        except ObjectDoesNotExist:
+                            user = User.objects.create_user(selected_candidate.Reporting_Manager_E_Mail_ID)
+                            password = User.objects.make_random_password()
+                            user.password = password
+                            user.set_password(user.password)
+                            user.first_name = selected_candidate.Reporting_Manager
+                            user.email = selected_candidate.Reporting_Manager_E_Mail_ID
                         
-                            try:
-                                assign_group = Group.objects.get(name='Candidate')                     
-                                user = User.objects.create_user(selected_candidate.Personal_Email_Id)
-                                password = User.objects.make_random_password()
-                                user.password = password
-                                user.set_password(user.password)
-                                user.first_name = selected_candidate.First_Name
-                                user.last_name = selected_candidate.Last_Name
-                                user.email = selected_candidate.Personal_Email_Id
-                            
-                                assign_group.user_set.add(user)
-                                user.save()
-                            except IntegrityError:
-                                password = 'Use old password else reset it.'
-                            my_host = selected_candidate.fk_vendor_code.vendor_smtp
-                            my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
-                            my_username = selected_candidate.fk_vendor_code.vendor_email_id
-                            my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
-                            my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
-                            my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
-                            candidate_salary_structure = salary_structure.objects.get(candidate_code= selected_candidate.pk)
-                            ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
-                            ctc_word = num2words(ctc_number, lang = 'en_IN')
-                            subject1 = 'Letter Of Intent'
-                            html_content = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'company_name': selected_candidate.fk_entity_code,'state': selected_candidate.fk_state_code, 'city': selected_candidate.fk_city_code, 'doj': selected_candidate.Date_of_Joining,'ctc_number': ctc_number ,'ctc_words': ctc_word})
-                            body1 = strip_tags(html_content)
-                            from1 = my_username
-                            with get_connection(
-                            host=my_host, 
-                            port=my_port, 
-                            username=my_username, 
-                            password=my_password, 
-                            use_tls=my_use_tls,
-                            use_ssl= my_use_ssl
-                            ) as connection:
-                                msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
-                                msg.attach_alternative(html_content, "text/html")
-                                msg.send()
-                            subject1 = 'Credentials'
-                            html_content = render_to_string('emailtemplates/candidate_credentials.html', {'candidate_name': selected_candidate.First_Name, 'username': selected_candidate.Personal_Email_Id, 'password': password})
-                            body1 = strip_tags(html_content)
-                            from1 = my_username
-                            with get_connection(
-                            host=my_host, 
-                            port=my_port, 
-                            username=my_username, 
-                            password=my_password, 
-                            use_tls=my_use_tls,
-                            use_ssl= my_use_ssl
-                            ) as connection:
-                                msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
-                                msg.attach_alternative(html_content, "text/html")
-                                msg.send()
-                            messages.success(request, "Candidate approved LOI sent to candidate.")
-                            return redirect("csp_app:pending_request")
-                        except TimeoutError:                            
-                            return HttpResponse("A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
-                        # send_mail(subject, message, from_email= vendoremail, [selected_candidate.Personal_Email_Id], fail_silently=False, auth_user=vendoremail, auth_password=password)
-    
+                            user.save()
+                            subject, from_email, to = 'Candidate Approved', 'associateonboarding@udaan.com', selected_candidate.Reporting_Manager_E_Mail_ID
+
+                            html_content = render_to_string('emailtemplates/new_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code, 'username': selected_candidate.Reporting_Manager_E_Mail_ID,'pwd': password})
+                            text_content = strip_tags(html_content)
+                            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
+                        
+                    
+                        try:
+                            assign_group = Group.objects.get(name='Candidate')                     
+                            user = User.objects.create_user(selected_candidate.Personal_Email_Id)
+                            password = User.objects.make_random_password()
+                            user.password = password
+                            user.set_password(user.password)
+                            user.first_name = selected_candidate.First_Name
+                            user.last_name = selected_candidate.Last_Name
+                            user.email = selected_candidate.Personal_Email_Id
+                        
+                            assign_group.user_set.add(user)
+                            user.save()
+                        except IntegrityError:
+                            password = 'Use old password else reset it.'
+                        my_host = selected_candidate.fk_vendor_code.vendor_smtp
+                        my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+                        my_username = selected_candidate.fk_vendor_code.vendor_email_id
+                        my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+                        my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+                        my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+                        candidate_salary_structure = salary_structure.objects.get(candidate_code= selected_candidate.pk)
+                        ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
+                        ctc_word = num2words(ctc_number, lang = 'en_IN')
+                        subject1 = 'Letter Of Intent'
+                        html_content = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'company_name': selected_candidate.fk_entity_code,'state': selected_candidate.fk_state_code, 'city': selected_candidate.fk_city_code, 'doj': selected_candidate.Date_of_Joining,'ctc_number': ctc_number ,'ctc_words': ctc_word})
+                        body1 = strip_tags(html_content)
+                        from1 = my_username
+                        with get_connection(
+                        host=my_host, 
+                        port=my_port, 
+                        username=my_username, 
+                        password=my_password, 
+                        use_tls=my_use_tls,
+                        use_ssl= my_use_ssl
+                        ) as connection:
+                            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
+                        subject1 = 'Credentials'
+                        html_content = render_to_string('emailtemplates/candidate_credentials.html', {'candidate_name': selected_candidate.First_Name, 'username': selected_candidate.Personal_Email_Id, 'password': password})
+                        body1 = strip_tags(html_content)
+                        from1 = my_username
+                        with get_connection(
+                        host=my_host, 
+                        port=my_port, 
+                        username=my_username, 
+                        password=my_password, 
+                        use_tls=my_use_tls,
+                        use_ssl= my_use_ssl
+                        ) as connection:
+                            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
                         messages.success(request, "Candidate approved LOI sent to candidate.")
                         return redirect("csp_app:pending_request")
+                     
 
         delay_joiners = master_candidate.objects.filter(candidate_status=candidate_status.objects.get(pk=7))
         dojcount = len(delay_joiners)
