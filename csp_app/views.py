@@ -3630,7 +3630,7 @@ def candidate_document_upload(request, candidate_id):
                 else:
                     candidate_fk.documentation_status = documentation_status.objects.get(pk=2)
                     candidate_fk.save()
-            print('1')
+            # print('1')
             candidate_fk = master_candidate.objects.get(pk = candidate_id)
 
             f_catogory = request.POST.get("c_catogory")
@@ -3654,7 +3654,7 @@ def candidate_document_upload(request, candidate_id):
             catogory_fk = mandatory_documents.objects.get(pk = f_catogory)
           
             try:
-                print(2)
+                # print(2)
                 if f_catogory != '0':
                     
                     duplicate_catogory = candidate_document.objects.get(document_catagory= catogory_fk, fk_candidate_code= candidate_id, status= active_status)
@@ -3686,11 +3686,11 @@ def check_for_mandatory_documents_upload(candidate_id):
     selected_candidate = master_candidate.objects.get(pk_candidate_code=candidate_id, status=active_status)
     non_mandatory = [0, 1]
     mandatory_list = mandatory_documents.objects.all().exclude(pk__in = non_mandatory)
-    print(mandatory_list)
+    # print(mandatory_list)
     candidate_document_list = candidate_document.objects.filter(fk_candidate_code = selected_candidate).exclude(document_catagory_id__in= non_mandatory)
     mandatory_document_len = len(mandatory_list)
     candidate_document_len = len(candidate_document_list)
-    print(len(candidate_document_list))
+    # print(len(candidate_document_list))
     if mandatory_document_len == candidate_document_len:
      
         return 1, candidate_document_len

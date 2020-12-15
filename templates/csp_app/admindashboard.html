@@ -113,10 +113,16 @@
         <div class="top_navbar">
           <div class="top_menu">
             <div class="logo">
-                {% if request.user.is_staff %}
-                   <a href="{% url 'csp_app:entity' %}"><img src="{% static 'csp_app/images/udaanredlogo.png' %}" alt="Company Logo" style="width: 55px;" title="Dashboard"></a>
-                {% else %}
-                    <a href="{% url 'csp_app:candidate' %}"><img src="{% static 'csp_app/images/udaanredlogo.png' %}" alt="Company Logo" style="width: 55px;" title="Dashboard"></a>
+                
+                {% if request.user.groups.all %}
+                    {% for eachgroup in request.user.groups.all %}
+                        {% if eachgroup.name != 'Candidate' %}
+                            <a href="{% url 'csp_app:candidate' %}"><img src="{% static 'csp_app/images/udaanredlogo.png' %}" alt="Company Logo" style="width: 55px;" title="Dashboard"></a>
+                        {% else %} 
+                            <a href=""><img src="{% static 'csp_app/images/udaanredlogo.png' %}" alt="Company Logo" style="width: 55px;" title="Dashboard"></a>
+
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
             </div>
             {% if request.user.groups.all %}
