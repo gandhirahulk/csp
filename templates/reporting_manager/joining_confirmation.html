@@ -41,7 +41,7 @@
                     <td>{{ eachcandidate.Personal_Email_Id }}</td>
                     <td>{{ eachcandidate.fk_designation_code }}</td>
                     <td id="c_doj">{{ eachcandidate.Date_of_Joining }}</td>
-                    <td class="action-col"><a id="confirm-modal" style="color: blue;" onclick="showDelete('{{eachcandidate.pk}}','confirm-modal-form')">Confirm Joining | Not Joined</a></td>
+                    <td class="action-col"><a id="confirm-modal" style="color: blue;cursor: pointer;" onclick="showDelete('{{eachcandidate.pk}}','confirm-modal-form')">Confirm Joining | Not Joined</a></td>
                 </tr>
                 {% endfor %}
             {% else %}
