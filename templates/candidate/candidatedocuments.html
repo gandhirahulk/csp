@@ -36,51 +36,54 @@
       
         </div>
         <div style="margin-top: 55px;">
+       
         {% if flag != 1 %}
             {% if request.user.groups.all %}
                 {% for eachgroup in request.user.groups.all %}
                     {% if eachgroup.name == 'Vendor' or eachgroup.name == 'Candidate' %}
-                        
-                        <div class="document_form_header">
-                            <div class="forms-heading">
-                                <h2>Add New Document</h2>
+                        {% if flag != 3 %}
+                            <div class="document_form_header">
+                                <div class="forms-heading">
+                                    <h2>Add New Document</h2>
+                                </div>
+                                <div class="hr_line">&nbsp;</div>
+                            
                             </div>
-                            <div class="hr_line">&nbsp;</div>
-                        
-                        </div>
-                        <form method="POST" action="" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="document_form_content">
-                        
-                                
-                                <div class="forms-input-holder">
-                                    <label for="c_catogory" style="width: 40%;">Document Catogory</label>
-                                    <select  id="c_catogory" style="width: 60%;" name="c_catogory" required="true">
-                                        <option value="" disabled selected>Select Document Catogory</option>
-                                        {% if mandatory_list %}
-                                            {% for eachmandatory in mandatory_list %}
-                                                <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
-                                                
-
-                                            {% endfor %}                
-                                        {% endif %}
-                                    </select>
+                            <form method="POST" action="" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="document_form_content">
+                            
                                     
-                                    <label for="c_filename" id="doc_name_l"  style="width: 40%;display: none;">Document Name</label>
-                                    <input type="text" id="doc_name_t" disabled style="width: 60%;display: none;" placeholder="Document Name" name="c_filename" id="c_filename" required="true"    >
-                            
-                                    <label for="" style="width: 40%;">Choose File</label>
-                                    <input type="file" style="width: 60%;" placeholder="File" name="file" id="c_file" required="true" >
-                            
-                                </div>                   
+                                    <div class="forms-input-holder">
+                                        <label for="c_catogory" style="width: 40%;">Document Catogory</label>
+                                        <select  id="c_catogory" style="width: 60%;" name="c_catogory" required="true">
+                                            <option value="" disabled selected>Select Document Catogory</option>
+                                            {% if mandatory_list %}
+                                                {% for eachmandatory in mandatory_list %}
+                                                    <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
+                                                    
+
+                                                {% endfor %}                
+                                            {% endif %}
+                                        </select>
+                                        
+                                        <label for="c_filename" id="doc_name_l"  style="width: 40%;display: none;">Document Name</label>
+                                        
+                                        <input type="text" id="doc_name_t" disabled style="width: 60%;display: none;" placeholder="Document Name" name="c_filename" id="c_filename" required="true"    >
                                 
-                            </div>
-                            <div class="document_form_footer">
+                                        <label for="" style="width: 40%;">Choose File</label>
+                                        <input type="file" style="width: 60%;" placeholder="File" name="file" id="c_file" required="true" >
                                 
-                                <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
-                            
-                            </div>
-                        </form>
+                                    </div>                   
+                                    
+                                </div>
+                                <div class="document_form_footer">
+                                    
+                                    <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
+                                
+                                </div>
+                            </form>
+                        {% endif %}
 
                         
                     {% endif %}
@@ -89,7 +92,15 @@
             {% endif %}
        
         </div>
-                
+        {% if flag == 3 %}
+            <div class="document_form_header">
+                <div class="forms-heading">
+                    <h2>Documents List</h2>
+                </div>
+                <div class="hr_line">&nbsp;</div>
+            
+            </div>
+        {% endif %}
 
             <div class="table-container">
             
@@ -119,7 +130,10 @@
                                                     {% else %}
                                                         <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
                                                         <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> 
-                                                        | <input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
+                                                        {% if flag != 3 %}
+                                                        | <input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form', 'delete_me')"> 
+                                                        {% endif %}
+
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endif %}
@@ -143,19 +157,52 @@
                 </table>
             
             </div>
-
+            {% if request.user.groups.all %}
+                {% for eachgroup in request.user.groups.all %}
+                    {% if eachgroup.name == 'Candidate' %}
+                        {% if disabled == 'true' %}
+                            <div>
+                                <button class="add-new-btn" disabled="{{ disabled }}" style="display: '{{ display }}';float: right;" title="Upload all mandatory documents." onclick="showDelete('{{ eachc.pk }}', 'submit_document_form', 'submit_me')">Submit</button>
+                            </div>
+                        {% else %}
+                            <div>
+                                <button class="add-new-btn" style="display:{{ display }};float: right;" title="Upload all mandatory documents." onclick="showDelete('{{ eachc.pk }}', 'submit_document_form', 'submit_me')">Submit</button>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             <div id="delete_document_form" class="form_modal" style="padding-top: 15%;">
                 <div class="delete_form_header">
                     <div class="forms-heading">
                         <h2>Delete This Document?</h2>
                     </div>     
                 </div>
-                <div class="delete_form_footer">
+                <div class="delete_form_footer" style="display: flex;justify-content: space-evenly;">
                     <form action="" method="POST">
                         {% csrf_token %}
                         <button type="submit" value="" id="delete_me"   name="delete_id" class="forms-delete-btn">Delete</button>
-                        <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+                                
                     </form>
+                    <button id="close_delete" class="delete-forms-close-btn">Cancel</button>
+                </div>
+            </div>
+            <div id="submit_document_form" class="form_modal" style="padding-top: 15%;">
+                <div class="delete_form_header">
+                    <div class="forms-heading">
+                        <h2>Submit Documents?</h2>
+                    </div>     
+                    <p>Please revalidate your documents, as once submitted you will not be able to Replace / delete them</p>
+             
+                </div>
+                <div class="delete_form_footer" style="display: flex;justify-content: space-evenly;">
+                    <form action="" method="POST">                        
+                        {% csrf_token %}
+                        
+                        <button type="submit" value="" id="submit_me"   name="submit_id" class="forms-delete-btn">Submit</button>
+                    </form>
+                    <button id="close_submit" class="delete-forms-close-btn">Cancel</button>        
+
                 </div>
             </div>
         {% else %}
@@ -164,21 +211,29 @@
             </div>
         {% endif %}
 
+
     {% endfor %}
 {% endif %} 
-
+<input type="hidden" id="name">
+    <input type="hidden" id="email">
+    <input type="hidden" id="spocemail">
+    <input type="hidden" id="phone_no">
 <script>
     $(document).ready(function(){
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#document_form").css("display", "none");
             $("#delete_document_form").css("display", "none");
+            $('#submit_document_form').css("display", "none");
             }
         });
         $(window).click(function(e) {
-        if (e.target.id === 'document_form' || e.target.id === 'delete_document_form') {
+        if (e.target.id === 'document_form' || e.target.id === 'delete_document_form' || e.target.id === 'submit_document_form') {
             $("#document_form").css("display", "none");
             $("#delete_document_form").css("display", "none");
+            $("#submit_document_form").css("display", "none");
+
+
         }   
         });  
         $('#new_document').click(function(){
@@ -187,6 +242,9 @@
         $('#close_delete').click(function(){
             $("#delete_document_form").css("display", "none");
         });   
+        $('#close_submit').click(function(){
+            $("#submit_document_form").css("display", "none");
+        }); 
         
         $('#c_catogory').change(function(){
             var cat = $(this).val();
@@ -208,9 +266,9 @@
     })
 </script>
 <script>
-    function showDelete(itemid, formid){
+    function showDelete(itemid, formid, btnid){
         document.getElementById(formid).style.display = "block";
-        document.getElementById("delete_me").setAttribute("value", itemid);
+        document.getElementById(btnid).setAttribute("value", itemid);
     }
 </script>
 

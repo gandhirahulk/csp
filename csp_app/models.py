@@ -488,7 +488,7 @@ class master_candidate(models.Model):
     delay_date = models.DateField(default='2020-01-01')
     remarks = models.CharField(max_length=300, default=" ")
     physically_challenged = models.CharField(max_length=10, default='No')
-    
+    submit_status = models.IntegerField(default=0)
     def __str__(self):
         return self.pk_candidate_code
 
@@ -589,6 +589,7 @@ class candidate_document(models.Model):
     document_catagory = models.ForeignKey( mandatory_documents, on_delete=models.CASCADE, default=1)
     file_name = models.CharField(max_length=200)
     file_upload = models.FileField(upload_to='documents/', validators=[validate_file_extension])
+    
     created_by = models.CharField(max_length=100)
     created_date_time = models.DateTimeField(  blank=True)
     modified_by = models.CharField(max_length=100, null=True,blank=True)

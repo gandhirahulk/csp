@@ -11,6 +11,12 @@ body{
   background: #f5f5fa;
   /* overflow: hidden; */
 }
+button[disabled = "true"]{
+  background: #E36369;
+}
+button[disabled = "true"]:hover{
+  background: #E36369;
+}
 /* .wrapper{
   margin: 10px;
 } */

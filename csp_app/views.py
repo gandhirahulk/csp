@@ -1197,6 +1197,7 @@ def process_requests(request, cid):
                             msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
                             msg.attach_alternative(html_content, "text/html")
                             msg.send()
+                        selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=1)
                         selected_candidate.loi_status = loi_status.objects.get(pk =1)
                         selected_candidate.save()
                         messages.success(request, "Candidate approved LOI sent to candidate.")
@@ -3508,7 +3509,6 @@ def change_candidate_status(request):
 @user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Candidate').exists())
 def candidate_document_upload(request, candidate_id):
     try:
-        print(request.user)
        
         try:
             is_candidate = User.objects.get(username= request.user, groups__name='Candidate')
@@ -3607,10 +3607,15 @@ def candidate_document_upload(request, candidate_id):
             
         
         
-        
+        if request.POST.get("submit_id") != None:
+            candidate_fk.submit_status = 1
+            candidate_fk.save()
+            messages.success(request, "Document Submitted Successfully")
+            return redirect('csp_app:document_upload', candidate_id)
         if request.method == 'POST':
             candidate = master_candidate.objects.filter(pk = candidate_id)
             candidate_fk = master_candidate.objects.get(pk = candidate_id)
+          
             flag, document_count = check_for_mandatory_documents_upload(candidate_id)
             if flag == 1:
                 document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
@@ -3619,6 +3624,7 @@ def candidate_document_upload(request, candidate_id):
             else:
                 is_vendor = User.objects.filter(username= request.user, groups__name='Vendor')
                 if len(is_vendor) > 0:
+                
                     mandatory_list = mandatory_documents.objects.all()
                     document_list = candidate_document.objects.filter(fk_candidate_code= candidate_fk, status=active_status)
                 else:
@@ -3677,9 +3683,28 @@ def candidate_document_upload(request, candidate_id):
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
         
         all_active_candidates = vendor_candidates(request.user)
+        disabled = "false"
+        display = "none"
+        if flag == 1:
+            display = "none"
+            disabled = "false"
+        else:
+            display = "block"
+            disabled = "true"
+            
         if flag == 1 and candidate_fk.offer_letter_status.pk == 1:
+            flag = 3
+            display = "none"
+        if flag == 1 and candidate_fk.submit_status == 0:
             flag = 0
-        return render(request, 'candidate/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list, 'flag': flag })        
+            display = "block"
+            disabled = "false"
+        is_vendor = User.objects.filter(username= request.user, groups__name='Vendor')
+        if len(is_vendor) > 0:
+            flag = 0
+        
+        
+        return render(request, 'candidate/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list, 'flag': flag, 'display': display, 'disabled': disabled })        
 
     except ObjectDoesNotExist:
         return HttpResponse("No Data To Display.")
