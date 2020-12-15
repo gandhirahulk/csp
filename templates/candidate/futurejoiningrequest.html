@@ -53,7 +53,7 @@
                         <td>{{ eachcandidate.fk_designation_code }}</td> 
                         <td>{{ eachcandidate.Date_of_Joining | date:"M d, Y" }}</td>
                         <td>{{ eachcandidate.delay_date | date:"M d, Y" }}</td>
-                        <td><a style="color: blue;" onclick="showConfirm('{{eachcandidate.pk}}','confirm_form')">Approve</a> | <a style="color: blue;" onclick="showReject('{{eachcandidate.pk}}','reject_form')">Reject</a></td>
+                        <td><a style="color: blue;cursor: pointer;" onclick="showConfirm('{{eachcandidate.pk}}','confirm_form')">Approve</a> | <a style="color: blue;" onclick="showReject('{{eachcandidate.pk}}','reject_form')">Reject</a></td>
                     </tr>
 
                  {% endfor %}
@@ -117,7 +117,7 @@
         <form action="" method="post">
             {% csrf_token %}
             <button type="submit" formaction="{% url 'csp_app:future_joining_request' %}" value="" id="confirm_me" name="confirm_cid" class="forms-delete-btn">Confirm</button>
-            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+            <button id="close_confirm" class="delete-forms-close-btn">Cancel</button>        
         </form>
     </div>
 </div>
@@ -132,7 +132,7 @@
         <form action="" method="post">
             {% csrf_token %}
             <button type="submit" formaction="{% url 'csp_app:future_joining_request' %}" value="" id="reject_me" name="reject_cid" class="forms-delete-btn">Confirm</button>
-            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+            <button id="close_reject" class="delete-forms-close-btn">Cancel</button>        
         </form>
     </div>
 </div>
@@ -140,6 +140,27 @@
 <script>
 $(document).ready(function(){
     showMe('Candidate', 'can-expand');
+    
+    $(document).keyup(function(){
+        if (event.keyCode === 27){
+            $("#confirm_form").css("display", "none");
+            $("#reject_form").css("display", "none");
+
+            }
+        });
+        $(window).click(function(e) {
+        if (e.target.id === 'confirm_form' || e.target.id === 'reject_form') {
+            $("#confirm_form").css("display", "none");
+            $("#reject_form").css("display", "none");
+        }   
+        }); 
+
+        $('#close_reject').click(function(){
+            $("#reject_form").css("display", "none");
+        });
+        $('#close_confirm').click(function(){
+            $("#confirm_form").css("display", "none");
+        });
 }); 
 </script>
 <script>
