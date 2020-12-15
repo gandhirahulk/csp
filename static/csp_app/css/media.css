@@ -61,6 +61,10 @@
     .view_form_footer{
         max-width: 320px;
     }
+    .fields_container{
+        width: 97%;
+        margin-top: 80px;
+    }
 }
   
   

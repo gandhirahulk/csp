@@ -36,127 +36,133 @@
       
         </div>
         <div style="margin-top: 55px;">
-        {% if request.user.groups.all %}
-            {% for eachgroup in request.user.groups.all %}
-                {% if eachgroup.name == 'Vendor' or eachgroup.name == 'Candidate' %}
-                    
-                    <div class="document_form_header">
-                        <div class="forms-heading">
-                            <h2>Add New Document</h2>
+        {% if flag != 1 %}
+            {% if request.user.groups.all %}
+                {% for eachgroup in request.user.groups.all %}
+                    {% if eachgroup.name == 'Vendor' or eachgroup.name == 'Candidate' %}
+                        
+                        <div class="document_form_header">
+                            <div class="forms-heading">
+                                <h2>Add New Document</h2>
+                            </div>
+                            <div class="hr_line">&nbsp;</div>
+                        
                         </div>
-                        <div class="hr_line">&nbsp;</div>
-                    
-                    </div>
-                    <form method="POST" action="" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="document_form_content">
-                    
-                            
-                            <div class="forms-input-holder">
-                                <label for="c_catogory" style="width: 40%;">Document Catogory</label>
-                                <select  id="c_catogory" style="width: 60%;" name="c_catogory" required="true">
-                                    <option value="" disabled selected>Select Document Catogory</option>
-                                    {% if mandatory_list %}
-                                        {% for eachmandatory in mandatory_list %}
-                                            <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
-                                            
-
-                                        {% endfor %}                
-                                    {% endif %}
-                                </select>
+                        <form method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="document_form_content">
+                        
                                 
-                                <label for="c_filename" id="doc_name_l"  style="width: 40%;display: none;">Document Name</label>
-                                <input type="text" id="doc_name_t" disabled style="width: 60%;display: none;" placeholder="Document Name" name="c_filename" id="c_filename" required="true"    >
-                        
-                                <label for="" style="width: 40%;">Choose File</label>
-                                <input type="file" style="width: 60%;" placeholder="File" name="file" id="c_file" required="true" >
-                        
-                            </div>                   
-                            
-                        </div>
-                        <div class="document_form_footer">
-                            
-                            <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
-                        
-                        </div>
-                    </form>
+                                <div class="forms-input-holder">
+                                    <label for="c_catogory" style="width: 40%;">Document Catogory</label>
+                                    <select  id="c_catogory" style="width: 60%;" name="c_catogory" required="true">
+                                        <option value="" disabled selected>Select Document Catogory</option>
+                                        {% if mandatory_list %}
+                                            {% for eachmandatory in mandatory_list %}
+                                                <option value="{{ eachmandatory.pk }}" label="{{ eachmandatory.document_name }}">{{ eachmandatory.document_name }}</option>
+                                                
 
-                    
-                {% endif %}
-               
-            {% endfor %}
-        {% endif %}
-        </div>
-        
-
-<div class="table-container">
-  
-    <table id="document-table" class="dataTable">
-        <thead>
-            <tr>
-                <th>Catogory</th>
-                <th>Document Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if document_list %}
-                {% for eachdocument in document_list %}
-
-                    <tr>
-                        <td>{{ eachdocument.document_catagory }}</td>
-                        <td>{{ eachdocument.file_name }}</td>
-                        <td class="action-col">
-                            <form action="" method="POST">{% csrf_token %}
-           
-                                {% if request.user.groups.all %}
-                                    {% for eachgroup in request.user.groups.all %}
-                                       {% if eachgroup.name == "Candidate" and eachdocument.document_catagory_id == 1 %}
-                                            <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
-                                            <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> 
-                                        {% else %}
-                                            <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
-                                            <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> 
-                                            | <input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
+                                            {% endfor %}                
                                         {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            </form>
+                                    </select>
+                                    
+                                    <label for="c_filename" id="doc_name_l"  style="width: 40%;display: none;">Document Name</label>
+                                    <input type="text" id="doc_name_t" disabled style="width: 60%;display: none;" placeholder="Document Name" name="c_filename" id="c_filename" required="true"    >
                             
-                        </td>
-                    
-                    </tr>
+                                    <label for="" style="width: 40%;">Choose File</label>
+                                    <input type="file" style="width: 60%;" placeholder="File" name="file" id="c_file" required="true" >
+                            
+                                </div>                   
+                                
+                            </div>
+                            <div class="document_form_footer">
+                                
+                                <button type="submit" formaction="{% url 'csp_app:document_upload' eachc.pk  %}" class="forms-save-btn">Save document</button>
+                            
+                            </div>
+                        </form>
 
-                {% endfor %}                
-
-            {% else %}
-                {% for eachdocument in document_list %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
+                        
+                    {% endif %}
+                
                 {% endfor %}
             {% endif %}
-        </tbody>   
-    </table>
-  
-</div>
+       
+        </div>
+                
 
-<div id="delete_document_form" class="form_modal" style="padding-top: 15%;">
-    <div class="delete_form_header">
-        <div class="forms-heading">
-            <h2>Delete This Document?</h2>
-        </div>     
-    </div>
-    <div class="delete_form_footer">
-        <form action="" method="POST">
-            {% csrf_token %}
-            <button type="submit" value="" id="delete_me"   name="delete_id" class="forms-delete-btn">Delete</button>
-            <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
-        </form>
-    </div>
-</div>
+            <div class="table-container">
+            
+                <table id="document-table" class="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Catogory</th>
+                            <th>Document Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if document_list %}
+                            {% for eachdocument in document_list %}
 
+                                <tr>
+                                    <td>{{ eachdocument.document_catagory }}</td>
+                                    <td>{{ eachdocument.file_name }}</td>
+                                    <td class="action-col">
+                                        <form action="" method="POST">{% csrf_token %}
+                    
+                                            {% if request.user.groups.all %}
+                                                {% for eachgroup in request.user.groups.all %}
+                                                {% if eachgroup.name == "Candidate" and eachdocument.document_catagory_id == 1 %}
+                                                        <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
+                                                        <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> 
+                                                    {% else %}
+                                                        <a href="{{ eachdocument.file_upload  }}" target="_blank">View</a>
+                                                        <input type="hidden" value="{{ eachdocument.pk }}" name="view_id" id="selected_id"> 
+                                                        | <input value="Remove" readonly onclick="showDelete('{{ eachdocument.pk }}', 'delete_document_form')"> 
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </form>
+                                        
+                                    </td>
+                                
+                                </tr>
+
+                            {% endfor %}                
+
+                        {% else %}
+                            {% for eachdocument in document_list %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>   
+                </table>
+            
+            </div>
+
+            <div id="delete_document_form" class="form_modal" style="padding-top: 15%;">
+                <div class="delete_form_header">
+                    <div class="forms-heading">
+                        <h2>Delete This Document?</h2>
+                    </div>     
+                </div>
+                <div class="delete_form_footer">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" value="" id="delete_me"   name="delete_id" class="forms-delete-btn">Delete</button>
+                        <button id="close_delete" class="delete-forms-close-btn">Cancel</button>        
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <div class="fields_container">
+                <h4>Your documents have been uploaded successfully, you shall be notified once your offer letter gets prepared/uploaded.</h4>
+            </div>
+        {% endif %}
 
     {% endfor %}
 {% endif %} 

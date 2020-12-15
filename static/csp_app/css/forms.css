@@ -671,3 +671,19 @@ select[readonly]:focus{
   border: 1px solid #B7D9E1 !important;
 
 }
+
+.fields_container{
+  margin: auto;
+  padding: 20px;
+  width: 400px;
+  overflow: auto;
+  text-align: center;
+  box-shadow: 1px 1px 5px 1px #ddd;
+  height: auto;
+  /* border-left: 1px solid #f5f5fa;
+  border-right: 1px solid #f5f5fa; */
+}
+
+.fields_container label{
+  font-weight: bold;
+}

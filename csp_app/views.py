@@ -3677,7 +3677,7 @@ def candidate_document_upload(request, candidate_id):
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
         
         all_active_candidates = vendor_candidates(request.user)
-        return render(request, 'candidate/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list })        
+        return render(request, 'candidate/candidatedocuments.html', {'allcandidates': all_active_candidates, 'view_candidate': candidate, 'mandatory_list': mandatory_list, 'document_list': document_list, 'flag': flag })        
 
     except ObjectDoesNotExist:
         return HttpResponse("No Data To Display.")
