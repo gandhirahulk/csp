@@ -3,7 +3,7 @@ $(document).ready(function(){
     var usergroup = $('#user_group').val();
     var vendor = $('#c_vendor').val()
 
-    if (selectedvalue == '3' && usergroup == 'Recruiter' ){
+    if (selectedvalue != '3' && usergroup == 'Recruiter' ){
         $('#c_vendor').attr("disabled", true);
         $('#c_vendor').prop("required", false);
 
@@ -45,7 +45,7 @@ $(document).ready(function(){
     $('#referral').change(function() {
         var selectedvalue = $(this).val();
         var usergroup = $('#user_group').val();
-        if (selectedvalue == '3' && usergroup == 'Recruiter'){
+        if (selectedvalue != '3' && usergroup == 'Recruiter'){
             $('#c_vendor').attr("disabled", true);
             $('#c_vendor').prop("required", false);
 
