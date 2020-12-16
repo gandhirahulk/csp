@@ -159,21 +159,33 @@
         </div>
         <div class="candidate-forms-input-holder">
                 
-                 <div >
-                    <label for="" >Date of Joining</label>
-                    <input type="date" value="{{ dummy.Date_of_Joining|date:'Y-m-d' }}" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
-               
-                </div>
-                <div class="margin-left">
-                    <label for="">Physically Challenged</label>
-                    <select name="challenged" id="" required="true" tabindex="18">
-                        <option value="" disabled></option>
-                        <option value="{{ dummy.physically_challenged }}" selected>{{ dummy.physically_challenged }}</option>
-                        
-                        <option value="No">No</option>
-                        <option value="Yes">Yes</option>
-                    </select>
-                </div>
+            {% if request.user.groups.all %}
+                {% for eachgroup in request.user.groups.all %}
+                    {% if eachgroup.name == 'Recruiter' %}
+                        <div>
+                            <label for="" >Date of Joining</label>
+                            <input type="date" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="False">
+                    
+                        </div>
+                    {% else %}
+                        <div>
+                            <label for="" >Date of Joining</label>
+                            <input type="date" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="True">
+                    
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <div class="margin-left">
+                <label for="">Physically Challenged</label>
+                <select name="challenged" id="" required="true" tabindex="18">
+                    <option value="" disabled></option>
+                    <option value="{{ dummy.physically_challenged }}" selected>{{ dummy.physically_challenged }}</option>
+                    
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
                 
         </div>
         {% include 'headings/organization.html' %}

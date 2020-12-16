@@ -151,12 +151,23 @@
             </div>
         </div>
         <div class="candidate-forms-input-holder">
-                
-                 <div >
-                    <label for="" >Date of Joining</label>
-                    <input type="date" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="True">
-               
-                </div>
+                {% if request.user.groups.all %}
+                    {% for eachgroup in request.user.groups.all %}
+                        {% if eachgroup.name == 'Recruiter' %}
+                            <div>
+                                <label for="" >Date of Joining</label>
+                                <input type="date" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="False">
+                        
+                            </div>
+                        {% else %}
+                            <div>
+                                <label for="" >Date of Joining</label>
+                                <input type="date" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="True">
+                        
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
                 <div class="margin-left">
                     <label for="">Physically Challenged</label>
                     <select name="challenged" id="" required="true" tabindex="18">
