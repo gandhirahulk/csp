@@ -85,7 +85,7 @@ def joining_confirmation(request):
             return redirect("csp_app:rm_joining_confirmation")
      
         if choice == '6':
-            subject, from_email = 'Candidate Dropped Out', 'workmail052020@gmail.com'
+            subject, from_email = 'Candidate Dropped Out', 'associateonboarding@udaan.com'
    
             html_content = render_to_string('emailtemplates/candidate_dropped_out.html',{'cid': selected_candidate.pk})
             text_content = strip_tags(html_content) 
@@ -106,11 +106,12 @@ def joining_confirmation(request):
             # print(remark)
             # if remark == None:
             #     print("None hai")
-            if remark != None or remark != ' ':
+            print(remark)
+            if remark != None:
                 
                 selected_candidate.remarks = remark
                 selected_candidate.save()
-                subject, from_email = 'Candidate Wants To Join Early', 'workmail052020@gmail.com'   
+                subject, from_email = 'Candidate Wants To Join Early', 'associateonboarding@udaan.com'   
                 html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
                 text_content = strip_tags(html_content) 
                 msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ])
@@ -118,7 +119,7 @@ def joining_confirmation(request):
                 msg.send()
                 messages.success(request, "Details Mailed To Concerned Team.")
                 return redirect("csp_app:rm_joining_confirmation")
-            subject, from_email = 'Candidate Joined', 'workmail052020@gmail.com'   
+            subject, from_email = 'Candidate Joined', 'associateonboarding@udaan.com'   
             html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
             text_content = strip_tags(html_content) 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ])
@@ -129,7 +130,7 @@ def joining_confirmation(request):
                 IT_email_id = IT_email.email_id
             except ObjectDoesNotExist:
                 IT_email_id = 'rahul.gandhi@udaan.com'
-            subject, from_email = 'Email ID Request', 'workmail052020@gmail.com'   
+            subject, from_email = 'Email ID Request', 'associateonboarding@udaan.com'   
             html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
             text_content = strip_tags(html_content) 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ IT_email_id ])
@@ -139,7 +140,7 @@ def joining_confirmation(request):
             selected_candidate.joining_status = joining_status.objects.get(pk=1)
             selected_candidate.save()
 
-            messages.success(request, "Candidate Status Updated")
+            messages.success(request, "Candidate Marked as joined")
             return redirect("csp_app:rm_joining_confirmation")
             # else:
             #     messages.error(request, "Invalid Joining Date")
@@ -152,7 +153,7 @@ def joining_confirmation(request):
             selected_candidate.delay_date = future_date
             selected_candidate.joining_status = joining_status.objects.get(pk=4)
 
-            subject, from_email = 'Request for future date of joining', 'workmail052020@gmail.com'   
+            subject, from_email = 'Request for future date of joining', 'associateonboarding@udaan.com'   
             html_content = render_to_string('emailtemplates/request_for_future_doj.html',{'cid': selected_candidate.pk})
             text_content = strip_tags(html_content) 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id ])

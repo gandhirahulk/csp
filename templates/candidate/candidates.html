@@ -678,10 +678,15 @@
         
         </div>
     </div>
-
+{% if request.user.is_staff %}
 <script>
     $(document).ready(function(){
         showMe('Candidate', 'can-expand');
+    })
+</script>
+{% endif %}
+<script>
+    $(document).ready(function(){
         $('#entity_table').dataTable()
 
 

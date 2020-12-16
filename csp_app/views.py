@@ -29,7 +29,7 @@ a = default_token_generator
 from django.db.models import Count
 from django.db.models.query import QuerySet
 from num2words import num2words
-print(num2words(100000, lang = 'en_IN'))
+# print(num2words(100000, lang = 'en_IN'))
 # 0 - reject
 # 1 - approve
 # 2 - pending
@@ -5895,10 +5895,6 @@ def  create_user(request):
             ) 
             our_email.fail_silently = False
             our_email.send()
-            # msg = 'User account of type " ' + group +' " created with Username " ' + usrname + '" and  Password " ' + password + '" " ."'
-            # send_mail('New User Account Created', msg,'workmail052020@gmail.com',[ email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
-            # print("after")
-            # return HttpResponse("success")
             messages.success(request, "User Created Successfully")
             return redirect('csp_app:user')
         except IntegrityError:

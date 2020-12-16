@@ -8,7 +8,7 @@ $(document).ready(function(){
         $('#c_vendor').prop("required", false);
 
     } else {
-        $('#c_vendor').attr("disabled", false);
+        // $('#c_vendor').attr("disabled", false);
         $('#c_vendor').attr("value", null);
         $('#c_vendor').prop("required", true);
 
@@ -50,7 +50,7 @@ $(document).ready(function(){
             $('#c_vendor').prop("required", false);
 
         } else {
-            $('#c_vendor').attr("disabled", false);
+            // $('#c_vendor').attr("disabled", false);
             $('#c_vendor').prop("required", true);
 
         }
@@ -209,14 +209,16 @@ $(document).ready(function(){
         }
         var selectedvalue = $('#referral').val();
         var usergroup = $('#user_group').val();
-        if (selectedvalue == '3' && usergroup != 'Onboarding SPOC'){
+    
+        if (selectedvalue != '3' && usergroup == 'Recruiter' ){
             $('#c_vendor').attr("disabled", true);
             $('#c_vendor').prop("required", false);
-
+    
         } else {
             $('#c_vendor').attr("disabled", false);
+            $('#c_vendor').attr("value", null);
             $('#c_vendor').prop("required", true);
-
+    
         }
     });
   
