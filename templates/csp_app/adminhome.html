@@ -4,7 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div style="flex-grow: 1;
+    width: 100%;"> 
+   
+    {% if forloop.first %}
+    <span> 
+        <input type="checkbox" name="" id="selectall" value="Select All"> Select All      
+    </span> 
+    <br>
+    {% endif %}
+    <span>
 
+        <input type="checkbox" name="vendor_entity" value="{{ eachentity.pk }}" id="" class="entities"> {{ eachentity.entity_name }}  
+    </span>
+
+    </div>  
     <title>
         
             Dashboard
