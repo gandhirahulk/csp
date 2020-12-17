@@ -11,9 +11,9 @@
         }
     </style>
     <body>
-        <p>Dear Recruiter SPOC / {{ onboarding_spoc_firstname }},</p>
-        <p>Please be informed that while giving the joining confirmation, reporting manager {{ rm_name }} has confirmed that the below mentioned candidate has <span class="color:red;" > “dropped-out”</span>.</p>
-        <p>Request you to please connect with candidate and do the needful.</p>
+        <p>Dear {{ onboarding_spoc }},</p>
+        <p>Please be informed that as per the recruitment and selection process, we have selected the below mentioned candidature who is fit as per business / functional requirements. Following details are for your kind perusal, kindly accept / reject / modify the same, basis your guidelines / processes.</p>
+                  
         <table class="email_table">
             <tr>
                 <td class="red_td">Candidate Name</td>
@@ -35,13 +35,29 @@
                 <td>Location Details</td>
                 <td>{{ region_name }} | {{ state_name }} | {{ city_name }} | {{ location_name }} & {{ location_code }}</td>
             </tr>
-           
+            <tr>
+                <td>Monthly Gross</td>
+                <td>{{ salary_num }} ( {{ salary_word }} )</td>
+            </tr>
+            <tr>
+                <td>Reporting Manager</td>
+                <td>{{ rm_name }} | {{ rm_mail }}</td>
+            </tr>
+            <tr>
+                <td>Date of joining</td>
+                <td>{{ doj }}</td>
+            </tr>
             <tr>
                 <td class="red_td">Web Application Link</td>
                 <td><a href="https://www.ob.associatehrms.com/">https://www.ob.associatehrms.com/</a></td>
             </tr>           
            
         </table>
+
+        <p>Complete details are attached for your review, you are requested to review the details and perform duplicity checks. If required, do correct the details by modifying the request.</p>
+        <p>Do share your confirmation by submitting the details over the portal. Once submitted, the request will further go to vendor. Once the Vendor Submits the request the “Letter of Intent” LOI will be sent to the Candidate.</p>
+        <p>Help Manual is attached in the <a href="{{ manual_link }}">link</a> for your kind reference and easy navigation.</p>
+        <p>For any further queries, please contact the Recruitment SPOC ( {{ recruitment_spoc }} ).</p>
         <p>Regards,</p>
         <p>Team HR</p>
         <p>Note: This is a system generated mail, please do not reply.</p>        

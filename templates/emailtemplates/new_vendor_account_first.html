@@ -11,12 +11,20 @@
         }
     </style>
     <body>
-        <p>Dear {{ candidate_name }},</p>
-        <p>Welcome aboard, below are the credentials to login over Onboarding Tool, we request you to upload the documents and view the offer letter.</p>
+        <p>Dear {{ vendor_spoc }}, </p>
+        <p>Welcome aboard, below are the credentials to login over Associate Onboarding Tool.</p> 
         <table class="email_table">
             <tr>
-                <td class="red_td">Candidate Name</td>
-                <td>{{ candidate_name }}</td>
+                <td class="red_td">Organization Name</td>
+                <td>{{ company_name }}</td>
+            </tr>
+            <tr>
+                <td>E Mail - For Communication with Candidate</td>
+                <td>{{ vendor_email }}</td>
+            </tr>
+            <tr>
+                <td>Vendor SPOC</td>
+                <td>{{ vendor_spoc }}</td>
             </tr>
             <tr>
                 <td class="red_td">Web Application Link</td>
@@ -36,9 +44,9 @@
             </tr>
         </table>
         <p>Please use above credentials to login over Associate Onboarding Tool. Do change your password on your first login.</p>
-        <p>In case you face any issues while uploading or face issues or have any queries / require any clarification, then please connect with ({{ vendor_spoc }} & E Mail ID : {{ vendor_spoc_mail }}).</p>
+        <p>For any further queries / clarification, please contact with Onboarding SPOC ( {{ onboarding_spoc }} & E Mail ID : {{ onboarding_spoc_mail }}) / Admin ({{admin}} & E Mail ID : {{ admin_mail }}).        </p>
         <p>Regards,</p>
         <p>Team HR</p>
-        <p>Note: This is a system generated mail, please do not reply.</p>  
+        <p>Note: This is a system generated mail, please do not reply.</p>          
     </body>
 </html>

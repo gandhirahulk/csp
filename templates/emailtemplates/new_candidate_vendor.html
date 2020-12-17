@@ -1,0 +1,69 @@
+<html>
+    <style>
+        .email_table{
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        .email_table tr td {
+            border: 1px solid #000;
+            padding: 5px;
+        }
+    </style>
+    <body>
+        <p>Dear {{ vendor_spoc }},</p>
+        <p>Please be informed that as per the recruitment and selection process, we have selected the below mentioned candidature who is fit as per business / functional requirements. Following details are for your kind perusal, kindly accept or reject the same over <a href="https://www.ob.associatehrms.com/">portal</a> , basis your organizational manpower outsourcing guidelines / processes. </p>
+                  
+        <table class="email_table">
+            <tr>
+                <td class="red_td">Candidate Name</td>
+                <td>{{ candidate_name }} | {{ candidate_id }} </td>
+            </tr>
+            <tr>
+                <td>Vendor</td>
+                <td>{{ vendor_name }}</td>
+            </tr> 
+            <tr>
+                <td>Functional Details</td>
+                <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }}</td>
+            </tr>
+            <tr>
+                <td>Designation</td>
+                <td>{{ desg_name }}</td>
+            </tr>
+            <tr>
+                <td>Location Details</td>
+                <td>{{ region_name }} | {{ state_name }} | {{ city_name }} | {{ location_name }} & {{ location_code }}</td>
+            </tr>
+            <tr>
+                <td>Monthly Gross</td>
+                <td>{{ salary_num }} ( {{ salary_word }} )</td>
+            </tr>
+            <tr>
+                <td>Reporting Manager</td>
+                <td>{{ rm_name }} | {{ rm_mail }}</td>
+            </tr>
+            <tr>
+                <td>Date of joining</td>
+                <td>{{ doj }}</td>
+            </tr>
+            <tr>
+                <td class="red_td">Web Application Link</td>
+                <td><a href="https://www.ob.associatehrms.com/">https://www.ob.associatehrms.com/</a></td>
+            </tr>           
+           
+        </table>
+        <p>Complete details are attached for your review, you are requested to further follow all your organizational processes towards onboarding. Do ensure to complete the documentation and perform duplicity / background verification related checks. If required, do correct the details by modifying the request. </p>
+        <p>Do share your confirmation by submitting the details over the portal (<a href="https://www.ob.associatehrms.com/">http://www.ob.associatehrms.com/</a>). Once you submit the request the “Letter of Intent” will be sent to the Candidate.</p>
+        
+        
+        
+        <p>Help Manual is attached in the <a href="{{ manual_link }}">link</a> for your kind reference and easy navigation.</p>
+        <p>For any further queries, please contact the Recruitment SPOC ({{ recruitment_spoc }}) or the Onboarding SPOC (onboarding_spoc).</p>
+        <p>Regards,</p>
+        <p>Team HR</p>
+        <p>Note: This is a system generated mail, please do not reply.</p>        
+        
+            
+    </body>
+</html>

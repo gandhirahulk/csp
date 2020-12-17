@@ -85,17 +85,44 @@ def joining_confirmation(request):
             return redirect("csp_app:rm_joining_confirmation")
      
         if choice == '6':
-            subject, from_email = 'Candidate Dropped Out', 'associateonboarding@udaan.com'
-   
-            html_content = render_to_string('emailtemplates/candidate_dropped_out.html',{'cid': selected_candidate.pk})
-            text_content = strip_tags(html_content) 
-            msg = EmailMultiAlternatives(subject, text_content, from_email, [ selected_candidate.fk_vendor_code.vendor_email_id, selected_candidate.Onboarding_Spoc_Email_Id ])
+            subject = 'Candidate Dropped Out :  ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+            to_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]   
+            cc_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+            from_email = 'associateonboarding@udaan.com'
+            html_content = render_to_string('emailtemplates/candidate_dropped_out.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 'onboarding_spoc_mail' : selected_candidate.Onboarding_Spoc_Email_Id,
+            'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
             msg.attach_alternative(html_content, "text/html")
             msg.send()
             selected_candidate.candidate_status = candidate_status.objects.get(pk=6)
-
             selected_candidate.save()
-            messages.success(request, "Candidate Status Updated")
+            my_host = selected_candidate.fk_vendor_code.vendor_smtp
+            my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+            my_username = selected_candidate.fk_vendor_code.vendor_email_id
+            my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+            my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+            my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+            candidate_salary_structure = salary_structure.objects.get(candidate_code= selected_candidate.pk)
+            ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
+            ctc_word = num2words(ctc_number, lang = 'en_IN')
+            subject1 = 'Offer Withdrawal : ' + str(selected_candidate.First_Name) 
+            html_content = render_to_string('emailtemplates/offer_withdrawel.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'vendor_phone': selected_candidate.fk_vendor_code.vendor_phone_number, 'offer_date': 'offer_date'})
+            body1 = strip_tags(html_content)
+            from1 = my_username
+            with get_connection(
+            host=my_host, 
+            port=my_port, 
+            username=my_username, 
+            password=my_password, 
+            use_tls=my_use_tls,
+            use_ssl= my_use_ssl
+            ) as connection:
+                msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], bcc= [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ] connection=connection)
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+            messages.success(request, "Candidate Dropped Out Details Mailed To Concerned Team")
             return redirect("csp_app:rm_joining_confirmation")
         if choice == '5':
             # print(1)
@@ -107,7 +134,7 @@ def joining_confirmation(request):
             # if remark == None:
             #     print("None hai")
             print(remark)
-            if remark != None:
+            if len(remark) > 1:
                 
                 selected_candidate.remarks = remark
                 selected_candidate.save()
@@ -130,12 +157,35 @@ def joining_confirmation(request):
                 IT_email_id = IT_email.email_id
             except ObjectDoesNotExist:
                 IT_email_id = 'rahul.gandhi@udaan.com'
-            subject, from_email = 'Email ID Request', 'associateonboarding@udaan.com'   
-            html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
-            text_content = strip_tags(html_content) 
-            msg = EmailMultiAlternatives(subject, text_content, from_email, [ IT_email_id ])
+            subject = 'Candidate Date of Joining Confirmed : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+            to_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]   
+            cc_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+            from_email = 'associateonboarding@udaan.com'
+            html_content = render_to_string('emailtemplates/candidate_joined.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 'onboarding_spoc_mail' : selected_candidate.Onboarding_Spoc_Email_Id,
+            'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+            subject = 'Candidate Date of Joining Confirmed : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+            cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]   
+            to_email = [ selected_candidate.fk_vendor_code.spoc_email_id ]
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+            from_email = 'associateonboarding@udaan.com'
+            html_content = render_to_string('emailtemplates/candidate_joined_to_vendor.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 'onboarding_spoc_mail' : selected_candidate.Onboarding_Spoc_Email_Id,
+            'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+
+            # subject, from_email = 'Email ID Request', 'associateonboarding@udaan.com'   
+            # html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
+            # text_content = strip_tags(html_content) 
+            # msg = EmailMultiAlternatives(subject, text_content, from_email, [ IT_email_id ])
+            # msg.attach_alternative(html_content, "text/html")
+            # msg.send()
             selected_candidate.candidate_status = candidate_status.objects.get(pk=5)
             selected_candidate.joining_status = joining_status.objects.get(pk=1)
             selected_candidate.save()
@@ -152,6 +202,17 @@ def joining_confirmation(request):
             selected_candidate.candidate_status = candidate_status.objects.get(pk=7)
             selected_candidate.delay_date = future_date
             selected_candidate.joining_status = joining_status.objects.get(pk=4)
+            subject = 'Change in Date of Joining :  ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+            to_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]   
+            cc_email = [ selected_candidate.fk_vendor_code.spoc_email_id ]
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+            from_email = 'associateonboarding@udaan.com'
+            html_content = render_to_string('emailtemplates/candidate_joined_to_vendor.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 'onboarding_spoc_mail' : selected_candidate.Onboarding_Spoc_Email_Id,
+            'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com', 'new_date': selected_candidate.delay_date}) 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
 
             subject, from_email = 'Request for future date of joining', 'associateonboarding@udaan.com'   
             html_content = render_to_string('emailtemplates/request_for_future_doj.html',{'cid': selected_candidate.pk})

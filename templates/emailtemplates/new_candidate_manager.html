@@ -1,0 +1,78 @@
+<html>
+    <style>
+        .email_table{
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        .email_table tr td {
+            border: 1px solid #000;
+            padding: 5px;
+        }
+    </style>
+    <body>
+
+            
+        <p>Dear {{ manager }},</p>
+        <p>Please be informed that as per the recruitment and selection process, we have sent the offer generation request of below mentioned candidature who is fit for the job role basis your confirmation. Details are as follows for your kind reference.</p>
+                  
+        <table class="email_table">
+            <tr>
+                <td class="red_td">Candidate Name</td>
+                <td>{{ candidate_name }} | {{ candidate_id }} </td>
+            </tr>
+            <tr>
+                <td>Vendor</td>
+                <td>{{ vendor_name }}</td>
+            </tr> 
+            <tr>
+                <td>Functional Details</td>
+                <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }}</td>
+            </tr>
+            <tr>
+                <td>Designation</td>
+                <td>{{ desg_name }}</td>
+            </tr>
+            <tr>
+                <td>Location Details</td>
+                <td>{{ region_name }} | {{ state_name }} | {{ city_name }} | {{ location_name }} & {{ location_code }}</td>
+            </tr>
+            <tr>
+                <td>Monthly Gross</td>
+                <td>{{ salary_num }} ( {{ salary_word }} )</td>
+            </tr>
+            <tr>
+                <td>Reporting Manager</td>
+                <td>{{ rm_name }} | {{ rm_mail }}</td>
+            </tr>
+            <tr>
+                <td>Expected Date of joining</td>
+                <td>{{ doj }}</td>
+            </tr>
+            <tr>
+                <td class="red_td">Web Application Link</td>
+                <td><a href="https://www.ob.associatehrms.com/">https://www.ob.associatehrms.com/</a></td>
+            </tr>           
+           
+        </table>
+        <p>Next Steps:</p>
+        <ul>
+            <li>The request has gone to Onboarding SPOC, once it gets approved from the Onboarding SPOC, It will further be sent to the Vendor for further onboarding process.
+            </li>
+            <li>Once Vendor approves the request, the “Letter of Intent” along with credentials for the portal to upload mandatory documents will be shared with the Candidate.
+            </li>
+            <li>Once all the documents are uploaded, the offer will be released and will be made visible to the candidate.
+            </li>
+            <li>On Date of Joining, you will be informed with credentials and a link to Login for sharing the joining confirmation for the candidate. Once confirmed, his/her candidature will be finalized towards employment under Vendor Organization.
+            </li>
+            <li>Candidate will be on the payroll of {{ vendor_name }}.</li>
+        </ul>        
+
+        <p>In case of any disconnect in above shared details, please reach-out to the Recruitment SPOC ( {{ recruitment_spoc }} ).</p>
+        <p>Regards,</p>
+        <p>Team HR</p>
+        <p>Note: This is a system generated mail, please do not reply.</p>        
+        
+            
+    </body>
+</html>

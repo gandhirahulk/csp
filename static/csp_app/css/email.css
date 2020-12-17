@@ -1,0 +1,13 @@
+.email_table{
+    border-collapse: collapse;
+}
+
+.email_table tr td {
+    border: 1px solid #000;
+    padding: 2px;
+}
+
+.red_td{
+    background: #bf0711;
+    color: #f5f5fa;
+}

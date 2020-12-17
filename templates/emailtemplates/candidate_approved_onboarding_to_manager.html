@@ -12,7 +12,7 @@
     </style>
     <body>
         <p>Dear {{ rm_name }},</p>
-        <p>Please be informed that candidate request has been approved with below mentioned details:</p>
+        <p>Please be informed that as per the recruitment and selection process, we have approved the below candidate request. The same has been sent to Vendor for further approval.</p>
                   
         <table class="email_table">
             <tr>
@@ -28,20 +28,26 @@
                 <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }}</td>
             </tr>
             <tr>
-                <td>Expected Date Of Joining</td>
-                <td>{{ doj }}</td>
-            </tr>        
+                <td>Designation</td>
+                <td>{{ desg_name }}</td>
+            </tr>
+            <tr>
+                <td>Location Details</td>
+                <td>{{ region_name }} | {{ state_name }} | {{ city_name }} | {{ location_name }} & {{ location_code }}</td>
+            </tr>           
             <tr>
                 <td class="red_td">Web Application Link</td>
                 <td><a href="https://www.ob.associatehrms.com/">https://www.ob.associatehrms.com/</a></td>
             </tr>           
            
         </table>
-        <p>The “Letter of Intent” has been sent to candidate from Vendor to Candidate’s Personal E Mail ID {{ candidate_email }}. Once Candidate / Vendor uploads the mandatory documents of candidate the offer letter will also be emailed to the candidate.</p>
-        <p>For any further queries, please contact the Onboarding SPOC ({{ onboarding_spoc }}) or the Recruiter SPOC ( {{ recruitment_spoc }} ).</p>
+        <p>Once approved from the Vendor SPOC, the “Letter of Intent” will be sent to the Candidate, and after candidate documents are upload the offer letter will also be made visible to the candidate. We shall keep you posted on every development.</p>
+        
+        <p>Help Manual is attached in the <a href="{{ manual_link }}">link</a> for your kind reference and easy navigation.</p>
+        <p>For any further queries, please contact the Recruiter SPOC ({{ recruitment_spoc }}) Onboarding SPOC ({{ onboarding_spoc }}).</p>
         <p>Regards,</p>
         <p>Team HR</p>
-        <p>Note: This is a system generated mail, please do not reply.</p>               
+        <p>Note: This is a system generated mail, please do not reply.</p>        
         
             
     </body>

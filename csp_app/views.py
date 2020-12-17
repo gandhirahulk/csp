@@ -50,15 +50,35 @@ approve_vendor = vendor_status.objects.get(pk = 1)
 all_active_candidates = master_candidate.objects.filter(status=active_status)
 candidate_list = master_candidate.objects.filter(status=active_status)
 
-try:
-    
-    Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-    Onboarding_SPOC = Onboarding_SPOC_list.email
-    
-except ObjectDoesNotExist:
-    Onboarding_SPOC = 'associateonboarding@udaan.com'
+def get_onbording_spoc():
+    try:
 
+        Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+        Onboarding_SPOC = Onboarding_SPOC_list.email
 
+    except ObjectDoesNotExist:
+        Onboarding_SPOC = 'associateonboarding@udaan.com'
+    return Onboarding_SPOC
+
+Onboarding_SPOC = get_onbording_spoc()
+
+def send_the_mail(subject, html_file, to_email, bcc_email ):
+    # from_email = 'associateonboarding@udaan.com'
+    from_email = 'sadaf.shaikh@udaan.com'
+
+    html_content = render_to_string(html_file) 
+    text_content = strip_tags(html_content)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+def send_the_mail_demo(subject, html_file, to_email, bcc_email ):
+    from_email = 'associateonboarding@udaan.com'
+    html_content = render_to_string(html_file) 
+    text_content = strip_tags(html_content)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [ to_email ], bcc= [ bcc_email ])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
 
 def resend_loi(request, cid):
     selected_candidate = master_candidate.objects.get(pk=cid)
@@ -666,13 +686,7 @@ def process_requests(request, cid):
             city = request.POST.get("c_city")
             location = request.POST.get("c_location")
             # ta_spoc = request.user.email #check
-            try:
-    
-                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                Onboarding_SPOC = Onboarding_SPOC_list.email
-                
-            except ObjectDoesNotExist:
-                Onboarding_SPOC = 'associateonboarding@udaan.com'
+            Onboarding_SPOC = get_onbording_spoc()
             onboarding_spoc = Onboarding_SPOC #check
             physically_challenged = request.POST.get("challenged")
             reporting_manager = request.POST.get("c_reporting_manager").title()
@@ -941,33 +955,46 @@ def process_requests(request, cid):
                         if len(changes_list) > 0:
                             selected_candidate.onboarding_status = onboarding_status.objects.get(pk=4)
                         selected_candidate.save()
-                    
-                        
-                        limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':candidate_id ,'user': request.user, 'vendor': vendor_fk.vendor_name })
-                        our_email = EmailMessage(
-                            'Candidate Edited By Admin.',
-                            limtemplate,
-                            settings.EMAIL_HOST_USER,
-                            [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-                        ) 
-                        our_email.fail_silently = False
-                        our_email.send()
-                        try:
-    
-                            Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                            Onboarding_SPOC = Onboarding_SPOC_list.email
-                            
-                        except ObjectDoesNotExist:
-                            Onboarding_SPOC = 'associateonboarding@udaan.com'
-                        alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
-                        our_email = EmailMessage(
-                            'Candidate account edited by admin.',
-                            alltemplate,
-                            settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com' ],
-                        ) 
-                        our_email.fail_silently = False
-                        our_email.send()
+                        Onboarding_SPOC = get_onbording_spoc()
+                        # send_mail_code
+                        subject = 'New Resource Requirement & Finalized Candidate Information : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        to_email = [ selected_candidate.fk_vendor_code.spoc_email_id ]   
+                        cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]
+                        bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                        from_email = 'sadaf.shaikh@udaan.com'
+                        html_content = render_to_string('emailtemplates/new_candidate_vendor.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                        'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                        text_content = strip_tags(html_content)
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send() 
+
+                        # send_mail_code
+                        subject = 'Candidate Approval from Admin :' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        to_email = [ selected_candidate.TA_Spoc_Email_Id]   
+                        cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
+                        bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                        from_email = 'sadaf.shaikh@udaan.com'
+                        html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_ta.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                        'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                        text_content = strip_tags(html_content)
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send() 
+
+                        # send_mail_code
+                        subject = 'Candidate Approval from Admin :' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID]   
+                        cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
+                        bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                        from_email = 'sadaf.shaikh@udaan.com'
+                        html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_manager.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                        'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                        text_content = strip_tags(html_content)
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send() 
+
                         
                         messages.success(request, "Candidate details mailed to vendor.")
                         return redirect("csp_app:pending_request")
@@ -991,32 +1018,44 @@ def process_requests(request, cid):
                     if len(changes_list) > 0:
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=4)
                     selected_candidate.save()
-                    
-                    limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
-                    our_email = EmailMessage(
-                        'Candidate Edited .',
-                        limtemplate,
-                        settings.EMAIL_HOST_USER,
-                        [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-                    ) 
-                    our_email.fail_silently = False
-                    our_email.send()
-                    try:
-    
-                        Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                        Onboarding_SPOC = Onboarding_SPOC_list.email
-                        
-                    except ObjectDoesNotExist:
-                        Onboarding_SPOC = 'associateonboarding@udaan.com'
-                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
-                    our_email = EmailMessage(
-                        'Candidate account edited.',
-                        alltemplate,
-                        settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
-                    ) 
-                    our_email.fail_silently = False
-                    our_email.send()
+                    # send_mail_code
+                    subject = 'New Resource Requirement & Finalized Candidate Information :' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                    to_email = [ selected_candidate.fk_vendor_code.spoc_email_id ]   
+                    cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                    from_email = 'sadaf.shaikh@udaan.com'
+                    html_content = render_to_string('emailtemplates/new_candidate_vendor.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                    'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send() 
+
+                    # send_mail_code
+                    subject = 'Candidate Approval from Onboarding SPOC :' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                    to_email = [ selected_candidate.TA_Spoc_Email_Id]   
+                    cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                    from_email = 'sadaf.shaikh@udaan.com'
+                    html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_ta.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                    'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send() 
+
+                    # send_mail_code
+                    subject = 'Candidate Approval from Onboarding SPOC :' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                    to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID]   
+                    cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                    from_email = 'sadaf.shaikh@udaan.com'
+                    html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_manager.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                    'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send() 
                     
                     messages.success(request, "Candidate details mailed to vendor.")
                     return redirect("csp_app:pending_request")
@@ -1041,13 +1080,7 @@ def process_requests(request, cid):
                             selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                         selected_candidate.save()
                         #modified email
-                        try:
-    
-                            Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                            Onboarding_SPOC = Onboarding_SPOC_list.email
-                            
-                        except ObjectDoesNotExist:
-                            Onboarding_SPOC = 'associateonboarding@udaan.com'
+                        Onboarding_SPOC = get_onbording_spoc()
                         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
                         our_email = EmailMessage(
                             'Modified and approved',
@@ -1085,22 +1118,26 @@ def process_requests(request, cid):
                         ) 
                         our_email.fail_silently = False
                         our_email.send()
+                        Onboarding_SPOC = get_onbording_spoc()
                         try:
-    
                             Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                            Onboarding_SPOC = Onboarding_SPOC_list.email
-                            
+                            Onboarding_SPOC_first_name = Onboarding_SPOC_list.first_name
                         except ObjectDoesNotExist:
-                            Onboarding_SPOC = 'associateonboarding@udaan.com'
-                        alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
-                        our_email = EmailMessage(
-                            'Candidate approved by vendor.',
-                            alltemplate,
-                            settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
-                        ) 
-                        our_email.fail_silently = False
-                        our_email.send()
+                            Onboarding_SPOC_first_name = 'Admin'
+                        # send_mail_code
+                        subject = 'Candidate Approved : Intimation :' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        to_email = [ selected_candidate.Onboarding_Spoc_Email_Id]   
+                        cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id ]
+                        bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                        from_email = 'sadaf.shaikh@udaan.com'
+                        html_content = render_to_string('emailtemplates/candidate_approved_vendor_to_onboarding.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 'candidate_email': selected_candidate.Personal_Email_Id, 'vendor_email': selected_candidate.fk_vendor_code.vendor_email_id,
+                        'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                        text_content = strip_tags(html_content)
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send() 
+
+                        
                         try:
                             IT_email = IT_Email_ID.objects.get(pk=1)
                             IT_email_id = IT_email.email_id
@@ -1117,15 +1154,19 @@ def process_requests(request, cid):
                         our_email.send() 
                         try:
                             u = User.objects.get(username= selected_candidate.Reporting_Manager_E_Mail_ID)
-                            
-                            # new_reporting_manager_candidate_approve
-                            subject, from_email, to = 'Candidate Approved', 'associateonboarding@udaan.com', selected_candidate.Reporting_Manager_E_Mail_ID
-
-                            html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code})
+                            # send_mail_code
+                            subject = 'Candidate Approved : Intimation :' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                            to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID]   
+                            cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]
+                            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                            from_email = 'sadaf.shaikh@udaan.com'
+                            html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 'candidate_email': selected_candidate.Personal_Email_Id, 'vendor_email': selected_candidate.fk_vendor_code.vendor_email_id,
+                            'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                             text_content = strip_tags(html_content)
-                            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
                             msg.attach_alternative(html_content, "text/html")
                             msg.send()
+                            
                         except ObjectDoesNotExist:
                             user = User.objects.create_user(selected_candidate.Reporting_Manager_E_Mail_ID)
                             password = User.objects.make_random_password()
@@ -1135,13 +1176,20 @@ def process_requests(request, cid):
                             user.email = selected_candidate.Reporting_Manager_E_Mail_ID
                         
                             user.save()
-                            subject, from_email, to = 'Candidate Approved', 'associateonboarding@udaan.com', selected_candidate.Reporting_Manager_E_Mail_ID
-
-                            html_content = render_to_string('emailtemplates/new_reporting_manager_candidate_approve.html',{'rm': selected_candidate.Reporting_Manager, 'cid': selected_candidate.pk, 'desg': selected_candidate.fk_designation_code, 'username': selected_candidate.Reporting_Manager_E_Mail_ID,'pwd': password})
+                            # send_mail_code
+                            subject = 'Candidate Approved : Intimation :' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                            to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID]   
+                            cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]
+                            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                            from_email = 'sadaf.shaikh@udaan.com'
+                            html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 'candidate_email': selected_candidate.Personal_Email_Id, 'vendor_email': selected_candidate.fk_vendor_code.vendor_email_id, 'username': selected_candidate.Reporting_Manager_E_Mail_ID, 'password': password,
+                            'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                             text_content = strip_tags(html_content)
-                            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
                             msg.attach_alternative(html_content, "text/html")
                             msg.send()
+
+                            
                         
                     
                         try:
@@ -1167,7 +1215,7 @@ def process_requests(request, cid):
                         candidate_salary_structure = salary_structure.objects.get(candidate_code= selected_candidate.pk)
                         ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
                         ctc_word = num2words(ctc_number, lang = 'en_IN')
-                        subject1 = 'Letter Of Intent'
+                        subject1 = 'Letter Of Intent : ' + str(selected_candidate.fk_vendor_code.vendor_name) + ' | ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code) 
                         html_content = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'company_name': selected_candidate.fk_entity_code,'state': selected_candidate.fk_state_code, 'city': selected_candidate.fk_city_code, 'doj': selected_candidate.Date_of_Joining,'ctc_number': ctc_number ,'ctc_words': ctc_word})
                         body1 = strip_tags(html_content)
                         from1 = my_username
@@ -1179,11 +1227,11 @@ def process_requests(request, cid):
                         use_tls=my_use_tls,
                         use_ssl= my_use_ssl
                         ) as connection:
-                            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
+                            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], bcc= [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ] connection=connection)
                             msg.attach_alternative(html_content, "text/html")
                             msg.send()
-                        subject1 = 'Credentials'
-                        html_content = render_to_string('emailtemplates/candidate_credentials.html', {'candidate_name': selected_candidate.First_Name, 'username': selected_candidate.Personal_Email_Id, 'password': password})
+                        subject1 = 'Onboarding Tool - User Credentials & Manual : ' + str(selected_candidate.First_Name) + ' ( ' + str(selected_candidate.pk) + ' ) '
+                        html_content = render_to_string('emailtemplates/candidate_credentials.html', {'candidate_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name), 'username': selected_candidate.Personal_Email_Id, 'password': password, 'manual_link': 'manual_link_when_created', 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id})
                         body1 = strip_tags(html_content)
                         from1 = my_username
                         with get_connection(
@@ -1194,7 +1242,7 @@ def process_requests(request, cid):
                         use_tls=my_use_tls,
                         use_ssl= my_use_ssl
                         ) as connection:
-                            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
+                            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], bcc= [ 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ] connection=connection)
                             msg.attach_alternative(html_content, "text/html")
                             msg.send()
                         selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=1)
@@ -1216,6 +1264,8 @@ def process_requests(request, cid):
         'gender_list': gender_list, 'laptop_allocation_list': laptop_allocation_list, 'vendor_list': vendor_list})
     except ObjectDoesNotExist:
         return HttpResponse("No Data To Display.")
+
+
 
 def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary,physically_challenged, request):
     changes_list = {}
@@ -1377,13 +1427,7 @@ def reject_candidate_onboarding(request, cid):
         selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
         selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
         selected_candidate.save()
-        try:
-    
-            Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-            Onboarding_SPOC = Onboarding_SPOC_list.email
-            
-        except ObjectDoesNotExist:
-            Onboarding_SPOC = 'associateonboarding@udaan.com'
+        Onboarding_SPOC = get_onbording_spoc()
         alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
         our_email = EmailMessage(
             'Candidate Rejected.',
@@ -1424,32 +1468,35 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                     selected_candidate.save()
-                    try:
-    
-                        Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                        Onboarding_SPOC = Onboarding_SPOC_list.email
-                        
-                    except ObjectDoesNotExist:
-                        Onboarding_SPOC = 'associateonboarding@udaan.com'
+                    Onboarding_SPOC = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
-                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
-                    our_email = EmailMessage(
-                        'Candidate Rejected By Admin.',
-                        alltemplate,
-                        settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
-                    ) 
-                    our_email.fail_silently = False
-                    our_email.send()
-                    template = render_to_string('emailtemplates/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
-                    our_email = EmailMessage(
-                        'Candidate Rejected By Admin.',
-                        template,
-                        settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id, 'rahul.gandhi@udaan.com'],
-                    ) 
-                    our_email.fail_silently = False
-                    our_email.send()
+                    # send_mail_code
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    to_email = [ selected_candidate.TA_Spoc_Email_Id ]   
+                    cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                    from_email = 'sadaf.shaikh@udaan.com'
+                    html_content = render_to_string('emailtemplates/candidate_rejected_onboarding.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
+                    'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                    
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send() 
+
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
+                    cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                    from_email = 'sadaf.shaikh@udaan.com'
+                    html_content = render_to_string('emailtemplates/candidate_rejected_onboarding_manager.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
+                    'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                    
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send() 
+
                     
                     messages.success(request, "Candidate Rejected .") 
                     return redirect("csp_app:pending_request")
@@ -1467,23 +1514,34 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                     selected_candidate.save()
-                    try:
-                        
-                        Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                        Onboarding_SPOC = Onboarding_SPOC_list.email
-                        
-                    except ObjectDoesNotExist:
-                        Onboarding_SPOC = 'associateonboarding@udaan.com'
+                    Onboarding_SPOC = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
-                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user})
-                    our_email = EmailMessage(
-                        'Candidate Rejected.',
-                        alltemplate,
-                        settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
-                    ) 
-                    our_email.fail_silently = False
-                    our_email.send()
+                    # send_mail_code
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    to_email = [ selected_candidate.TA_Spoc_Email_Id ]   
+                    cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                    from_email = 'sadaf.shaikh@udaan.com'
+                    html_content = render_to_string('emailtemplates/candidate_rejected_onboarding.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
+                    'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                    
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send() 
+
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
+                    cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                    from_email = 'sadaf.shaikh@udaan.com'
+                    html_content = render_to_string('emailtemplates/candidate_rejected_onboarding_manager.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
+                    'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                    
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send() 
                     messages.success(request, "Candidate Rejected Mail Sent To Admin.")
                     return redirect("csp_app:pending_request")
                 else:       
@@ -1500,32 +1558,35 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                     selected_candidate.save()
-                    try:
-    
-                        Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                        Onboarding_SPOC = Onboarding_SPOC_list.email
-                        
-                    except ObjectDoesNotExist:
-                        Onboarding_SPOC = 'associateonboarding@udaan.com'
+                    Onboarding_SPOC = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
-                    alltemplate = render_to_string('emailtemplates/candidate_edited_by_vendor_admin_et.html', {'candidate_code':cid ,'user': request.user})
-                    our_email = EmailMessage(
-                        'Candidate Rejected.',
-                        alltemplate,
-                        settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', 'associateonboarding@udaan.com', Onboarding_SPOC, 'rahul.gandhi@udaan.com'],
-                    ) 
-                    our_email.fail_silently = False
-                    our_email.send()
-                    template = render_to_string('emailtemplates/candidate_edited_by_vendor_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': selected_candidate.fk_vendor_code.vendor_name })
-                    our_email = EmailMessage(
-                        'Candidate Rejected.',
-                        template,
-                        settings.EMAIL_HOST_USER,
-                        [ 'sadaf.shaikh@udaan.com', selected_candidate.Onboarding_Spoc_Email_Id, 'rahul.gandhi@udaan.com'],
-                    ) 
-                    our_email.fail_silently = False
-                    our_email.send()
+                    # send_mail_code
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    to_email = [ selected_candidate.Onboarding_Spoc_Email_Id]   
+                    cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                    from_email = 'sadaf.shaikh@udaan.com'
+                    html_content = render_to_string('emailtemplates/candidate_rejected_vendor.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
+                    'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                    
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send() 
+
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
+                    cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                    from_email = 'sadaf.shaikh@udaan.com'
+                    html_content = render_to_string('emailtemplates/candidate_rejected_vendor_manager.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 'onboarding_spoc_mail' : selected_candidate.Onboarding_Spoc_Email_Id,
+                    'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                    
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send() 
+
                     
                     messages.success(request, "Candidate Rejected Mail Sent To Admin.")
                     return redirect("csp_app:pending_request")
@@ -1799,13 +1860,7 @@ def edit_salary_structure_process(request, cid):
             location = request.POST.get("c_location")
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
-            try:
-    
-                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                Onboarding_SPOC = Onboarding_SPOC_list.email
-                
-            except ObjectDoesNotExist:
-                Onboarding_SPOC = 'associateonboarding@udaan.com'
+            Onboarding_SPOC = get_onbording_spoc()
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -2023,13 +2078,7 @@ def edit_salary_structure(request):
             location = request.POST.get("c_location")
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
-            try:
-    
-                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                Onboarding_SPOC = Onboarding_SPOC_list.email
-                
-            except ObjectDoesNotExist:
-                Onboarding_SPOC = 'associateonboarding@udaan.com'
+            Onboarding_SPOC = get_onbording_spoc()
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -2462,13 +2511,7 @@ def edit_candidate(request):
              #check
 
             ta_spoc = request.POST.get("c_ta_spoc") #check
-            try:
-                
-                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                Onboarding_SPOC = Onboarding_SPOC_list.email
-                
-            except ObjectDoesNotExist:
-                Onboarding_SPOC = 'associateonboarding@udaan.com'
+            Onboarding_SPOC = get_onbording_spoc()
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -2723,6 +2766,8 @@ def edit_candidate(request):
                     selected_candidate.candidate_status = pending_status
                     selected_candidate.save()
 
+
+
                 create_salary_structure(selected_candidate, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, ss_gross_salary, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary, variable, annualvariable, fixedsalary, annualfixedsalary)
                 alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
                 our_email = EmailMessage(
@@ -2833,13 +2878,7 @@ def create_candidate(request):
             location = request.POST.get("c_location")
 
             ta_spoc = request.user.email #check
-            try:
-    
-                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                Onboarding_SPOC = Onboarding_SPOC_list.email
-                
-            except ObjectDoesNotExist:
-                Onboarding_SPOC = 'associateonboarding@udaan.com'
+            Onboarding_SPOC = get_onbording_spoc()
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -3132,13 +3171,7 @@ def save_new_candidate(request):
             location = request.POST.get("c_location")
             physically_challenged = request.POST.get("challenged")
             ta_spoc = request.user.email #check
-            try:
-    
-                Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                Onboarding_SPOC = Onboarding_SPOC_list.email
-                
-            except ObjectDoesNotExist:
-                Onboarding_SPOC = 'associateonboarding@udaan.com'
+            Onboarding_SPOC = get_onbording_spoc()
             onboarding_spoc = Onboarding_SPOC #check
             reporting_manager = request.POST.get("c_reporting_manager").title()
             reporting_manager_email = request.POST.get("c_reporting_manager_email").lower()
@@ -3373,13 +3406,7 @@ def save_new_candidate(request):
                 laptop_request = laptop_request_status.objects.get(pk=3)          
                 
                 email_request = email_creation_request_status.objects.get(pk=3)
-                try:
-    
-                    Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
-                    Onboarding_SPOC = Onboarding_SPOC_list.email
-                    
-                except ObjectDoesNotExist:
-                    Onboarding_SPOC = 'associateonboarding@udaan.com'
+                Onboarding_SPOC = get_onbording_spoc()
                 new_candidate = master_candidate(pk_candidate_code=new_code, First_Name=firstname , Middle_Name=middlename , Last_Name= lastname , Date_of_Joining= doj, Date_of_Birth= dob, Father_Name= fathername, Mother_Name= mothername,
                 Aadhaar_Number= aadhaar, PAN_Number= Pan, Contact_Number= contact_no, Emergency_Contact_Number= emergency_no, Type_of_Hiring= hiring_fk, Replacement= replacement , Personal_Email_Id= email,
                 Sub_Source= subsource_fk, Referral= referral , fk_vendor_code= vendor_fk, fk_entity_code= entity_fk, fk_department_code= department_fk, fk_function_code= function_fk, 
@@ -3397,28 +3424,38 @@ def save_new_candidate(request):
                 group_mediclaim_insurance= group_mediclaim_insurance, annual_group_mediclaim_insurance = annualgroup_mediclaim_insurance, employer_total_contribution= employer_total_contribution, annual_employer_total_contribution= annualemployer_total_contribution, cost_to_company=cost_to_company,
                 annual_cost_to_company= annualcost_to_company, take_home_salary= take_home_salary, annual_take_home_salary= annualtake_home_salary, variable= variable, annual_var= annualvariable, fixed_salary= fixedsalary, annual_fixed_salary= annualfixedsalary)
                 new_salary_structure.save()
-                limtemplate = render_to_string('emailtemplates/candidate_saved_et_limited.html', {'candidate_code':new_code ,'user': request.user})
-                our_email = EmailMessage(
-                    'Candidate account created action required.',
-                    limtemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ reporting_manager_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                subject = "Candidate Selection & Offer Request: " + str(firstname) + str(middlename) + str(lastname) + ' | ' + str(new_code)
-                template = render_to_string('email_templates/new_candidate_onboarding_notification.html',{'onboarding_spoc_name': onboarding_spoc})
-                # sent = send_email(subject, 'workmail052020@gmail.com', to = Onboarding_SPOC, template)
+                try:
+                    Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
+                    Onboarding_SPOC_first_name = Onboarding_SPOC_list.first_name
+                except ObjectDoesNotExist:
+                    Onboarding_SPOC_first_name = 'Admin'
+                # send_mail_code
+                subject = 'Candidate Selection & Offer Request : ' + str(firstname) + ' | ' + str(new_code)
+                to_email = [ Onboarding_SPOC ]   
+                cc_email = [ ta_spoc ]
+                bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                from_email = 'sadaf.shaikh@udaan.com'
+                html_content = render_to_string('emailtemplates/new_candidate_onboarding.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
+                'desg_name': designation_fk.designation_name, 'region_name': region_fk.region_name.zone_name , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                 
-                alltemplate = render_to_string('emailtemplates/candidate_saved_et_all.html', {'candidate_code':new_code ,'user': request.user})
-                our_email = EmailMessage(
-                    'Candidate account created action required.',
-                    alltemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ ta_spoc, onboarding_spoc, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
+                text_content = strip_tags(html_content)
+                msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                msg.attach_alternative(html_content, "text/html")
+                msg.send() 
+
+                # send_mail_code
+                subject = 'Candidate Selection Notification : ' + str(firstname) + ' | ' + str(new_code)
+                to_email = [ reporting_manager_email ]   
+                cc_email = [ ta_spoc, Onboarding_SPOC ]
+                bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+                from_email = 'sadaf.shaikh@udaan.com'
+                html_content = render_to_string('emailtemplates/new_candidate_manager.html' , {'manager': reporting_manager, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
+                'desg_name': designation_fk.designation_name, 'region_name': region_fk.region_name.zone_name , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+                text_content = strip_tags(html_content)
+                msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                msg.attach_alternative(html_content, "text/html")
+                msg.send() 
+
                 
                 messages.success(request, "Candidate Saved Successfully")
                 return redirect("csp_app:candidate")
@@ -4096,9 +4133,6 @@ def delete_vendor(request):
                 selected_vendor.status = deactive_status
                 selected_vendor.save()
                 
-                msg = 'Vendor account disabled for '+ str(selected_vendor.vendor_name) +' with Username " ' + str(selected_vendor.vendor_email_id) + ' by ' + str(request.user) + ' .'
-                send_mail('Vendor Account Disabled', msg,'associateonboarding@udaan.com' ,[ selected_vendor.vendor_email_id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],fail_silently=False)
-      
                 messages.success(request, "Vendor Deleted Successfully")
                 return redirect('csp_app:vendor')
         return render(request, 'csp_app/vendor.html', {'v_list': created_by_vendors(),'allcandidates': all_active_candidates,})
@@ -4262,37 +4296,7 @@ def save_edit_vendor(request):
                     except ObjectDoesNotExist:   
                         print('here')   
 
-                    try:      
-                        
-                        assign_group = Group.objects.get(name='Vendor')         
-                        user = User.objects.create_user(vendor_spoc_email)
-                        password = User.objects.make_random_password()
-                        user.password = password
-                        user.set_password(user.password)
-                        user.first_name = vendor_name 
-                        user.email = vendor_spoc_email
-                        assign_group.user_set.add(user)     
-                        user.save()
-                        newtemplate = render_to_string('emailtemplates/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_email, 'password': password})
-                        our_email = EmailMessage(
-                            'CSP_APP: Vendor Edited.',
-                            newtemplate,
-                            settings.EMAIL_HOST_USER,
-                            [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-                        ) 
-                        our_email.fail_silently = False
-                        our_email.send()
-                    except IntegrityError:
-                        template = render_to_string('emailtemplates/use_old_password_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk, 'mail': vendor_spoc_email})
-                        our_email = EmailMessage(
-                            'CSP_APP',
-                            template,
-                            settings.EMAIL_HOST_USER,
-                            [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-                        ) 
-                        our_email.fail_silently = False
-                        our_email.send()  
-                
+                    
                 for i in add_entities:
                     entity_fk = master_entity.objects.get(pk=i)
                     new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = vendor_smtp, vendor_email_port = port_fk, created_by = str(request.user), created_date_time= datetime.now(), group_id=vendor.group_id)
@@ -4478,50 +4482,35 @@ def create_vendor(request):
             user.email = vendor_spoc_email
             assign_group.user_set.add(user)     
             user.save()
-            newtemplate = render_to_string('emailtemplates/new_vendor_account_success_et.html', {'vendor':vendor_name, 'username': vendor_spoc_email, 'password': password})
-            our_email = EmailMessage(
-                'CSP_APP: New vendor account created.',
-                newtemplate,
-                settings.EMAIL_HOST_USER,
-                [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()
+            Onboarding_SPOC = get_onbording_spoc()
+            # send_mail_code
+            subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + vendor_spoc 
+            to_email = [ vendor_spoc_email ]   
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul,gandhi@udaan.com' ]
+            from_email = 'sadaf.shaikh@udaan.com'
+            html_content = render_to_string('emailtemplates/new_vendor_account_first.html' , {'vendor_spoc': vendor_spoc,'company_name': entity_fk.entity_name, 'vendor_email': vendor_email, 'onboarding_spoc_mail': Onboarding_SPOC, 'onboarding_spoc': Onboarding_SPOC, 'username': vendor_spoc_email, 'password': password, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()   
+            
         except IntegrityError:
-            template = render_to_string('emailtemplates/use_old_password_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk, 'mail': vendor_spoc_email})
-            our_email = EmailMessage(
-                'CSP_APP',
-                template,
-                settings.EMAIL_HOST_USER,
-                [ vendor_email, vendor_spoc_email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()  
+            subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + vendor_spoc 
+            to_email = [ vendor_spoc_email ]   
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul,gandhi@udaan.com' ]
+            from_email = 'sadaf.shaikh@udaan.com'
+            html_content = render_to_string('emailtemplates/new_vendor_account_first.html' , {'vendor_spoc': vendor_spoc,'company_name': entity_fk.entity_name, 'vendor_email': vendor_email, 'onboarding_spoc_mail': Onboarding_SPOC, 'onboarding_spoc': Onboarding_SPOC, 'username': vendor_spoc_email, 'password': 'Use Old Password / Reset It', 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()   
         for i in entity:
             entity_fk = master_entity.objects.get(pk=i)
             new_vendor = master_vendor(vendor_name= vendor_name , spoc_name= vendor_spoc,spoc_email_id= vendor_spoc_email, vendor_phone_number= vendor_phone, vendor_email_id= vendor_email, vendor_email_id_password= vendor_email_pwd, fk_entity_code= entity_fk, vendor_smtp = smtp, vendor_email_port = port_fk, created_by = str(request.user), created_date_time= datetime.now(), group_id=next_group_id)
             new_vendor.save()
             new_groupid = group_ids(group_id=next_group_id)
             new_groupid.save()
-        
-        newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_admin_et.html', {'vendor_name':vendor_name, 'entity': entity_fk, 'vendor_email': vendor_email, 'vendor_spoc': vendor_spoc, 'vendor_spoc_email': vendor_spoc_email, 'admin': str(request.user)})
-        our_email = EmailMessage(
-            'CSP_APP: New vendor account created.',
-            newadmintemplate,
-            settings.EMAIL_HOST_USER,
-            [ request.user.email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ],
-        ) 
-        our_email.fail_silently = False
-        our_email.send() 
-        newadmintemplate = render_to_string('emailtemplates/new_vendor_account_success_vendor_et.html', {'vendor':vendor_name, 'entity': entity_fk.entity_name , 'user': str(request.user)})
-        our_email = EmailMessage(
-            'CSP_APP: New vendor account created.',
-            newadmintemplate,
-            settings.EMAIL_HOST_USER,
-            [ request.user.email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ],
-        ) 
-        our_email.fail_silently = False
-        our_email.send() 
+    
             
             
         messages.success(request, "Vendor Account Created. Check Mail For Credentials")            
@@ -5837,15 +5826,15 @@ def delete_location(request):
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def  create_user_view(request):
     user_list = User.objects.all().exclude(is_superuser=True)
-    
-    group_list = Group.objects.all().exclude(name='Candidate')    
+    exclude_group = [ 'Candidate' , 'Admin' ]
+    group_list = Group.objects.all().exclude(name__in= exclude_group)    
     return render(request, 'csp_app/create_user.html', {'allcandidates': all_active_candidates,'user_list': user_list, 'group_list': group_list})
 
 
 
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
-def  create_user(request):
+def create_user(request):
     if request.method == 'POST':
         usrname = request.POST.get('email')
         firstname = request.POST.get('firstname').title()
@@ -5876,25 +5865,17 @@ def  create_user(request):
             # user.groups = group
             
             assign_group.user_set.add(user)
-            user.save()
-            template = render_to_string('emailtemplates/new_user_et.html', {'user': firstname ,'username': email, 'password': password})
-            our_email = EmailMessage(
-                'Account Created with UDAAN CSP_APP.',
-                template,
-                settings.EMAIL_HOST_USER,
-                [ email, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()
-            admintemplate = render_to_string('emailtemplates/new_user_admin_et.html', {'user': firstname ,'username': email, 'password': password})
-            our_email = EmailMessage(
-                'Account Created with UDAAN CSP_APP.',
-                admintemplate,
-                settings.EMAIL_HOST_USER,
-                [ request.user.email , 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()
+            user.save()   
+            # send_mail_code
+            subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + firstname 
+            to_email = [ email ]   
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+            from_email = 'sadaf.shaikh@udaan.com'
+            html_content = render_to_string('emailtemplates/new_user_creation.html' , {'user': firstname ,'username': email, 'password': password, 'firstname': firstname, 'lastname': lastname, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()            
             messages.success(request, "User Created Successfully")
             return redirect('csp_app:user')
         except IntegrityError:
@@ -5919,6 +5900,17 @@ def  disable_user(request):
                 return redirect('csp_app:user')
             selected_user.is_active = False
             selected_user.save()
+            # send_mail_code
+            subject = 'Account Disabled – Associate Onboarding Tool : ' + selected_user.first_name
+            to_email = [ selected_user.email ]   
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+
+            from_email = 'sadaf.shaikh@udaan.com'
+            html_content = render_to_string('emailtemplates/user_disabled_enable.html' , {'user': selected_user.first_name , 'status': 'Disabled', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com' }) 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()            
             messages.success(request, "User Disabled")
             return redirect('csp_app:user')
         return render(request, 'csp_app/create_user.html', {'allcandidates': all_active_candidates,})        
@@ -5937,6 +5929,17 @@ def  enable_user(request):
             selected_user = User.objects.get(pk = user_id)
             selected_user.is_active = True
             selected_user.save()
+            # send_mail_code
+            subject = 'Account Enabled – Associate Onboarding Tool : ' + selected_user.first_name
+            to_email = [ selected_user.email ]   
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
+
+            from_email = 'sadaf.shaikh@udaan.com'
+            html_content = render_to_string('emailtemplates/user_disabled_enable.html' , {'user': selected_user.first_name , 'status': 'Enabled', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com' }) 
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()            
             messages.success(request, "User Enabled")
             return redirect('csp_app:user')
         return render(request, 'csp_app/create_user.html', {'allcandidates': all_active_candidates,})        

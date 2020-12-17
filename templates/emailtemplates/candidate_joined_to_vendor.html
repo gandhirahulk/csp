@@ -11,9 +11,9 @@
         }
     </style>
     <body>
-        <p>Dear {{ rm_name }},</p>
-        <p>Please be informed that candidate request has been approved with below mentioned details:</p>
-                  
+        <p>Dear {{ vendor_spoc }},</p>
+        <p>Please be informed that joining confirmation has been received from the reporting manager for below mentioned candidate with Date of Joining as {{ doj }}. </p>          
+        <p>Request you to please initiate the next step of intimation to other departments (for email / laptop) if required.</p>
         <table class="email_table">
             <tr>
                 <td class="red_td">Candidate Name</td>
@@ -28,20 +28,24 @@
                 <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }}</td>
             </tr>
             <tr>
-                <td>Expected Date Of Joining</td>
-                <td>{{ doj }}</td>
-            </tr>        
+                <td>Designation</td>
+                <td>{{ desg_name }}</td>
+            </tr>
+            <tr>
+                <td>Location Details</td>
+                <td>{{ region_name }} | {{ state_name }} | {{ city_name }} | {{ location_name }} & {{ location_code }}</td>
+            </tr>
+           
+            
             <tr>
                 <td class="red_td">Web Application Link</td>
                 <td><a href="https://www.ob.associatehrms.com/">https://www.ob.associatehrms.com/</a></td>
             </tr>           
            
         </table>
-        <p>The “Letter of Intent” has been sent to candidate from Vendor to Candidate’s Personal E Mail ID {{ candidate_email }}. Once Candidate / Vendor uploads the mandatory documents of candidate the offer letter will also be emailed to the candidate.</p>
-        <p>For any further queries, please contact the Onboarding SPOC ({{ onboarding_spoc }}) or the Recruiter SPOC ( {{ recruitment_spoc }} ).</p>
         <p>Regards,</p>
         <p>Team HR</p>
-        <p>Note: This is a system generated mail, please do not reply.</p>               
+        <p>Note: This is a system generated mail, please do not reply.</p>        
         
             
     </body>
