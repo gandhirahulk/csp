@@ -1080,17 +1080,31 @@ def process_requests(request, cid):
                         if selected_candidate.Laptop_Allocation_id == 1:
                             selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                         selected_candidate.save()
-                        #modified email
-                        Onboarding_SPOC = get_onbording_spoc()
-                        alltemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_admin_et.html', {'candidate_code':cid ,'user': request.user, 'changes': changes_list})
-                        our_email = EmailMessage(
-                            'Modified and approved',
-                            alltemplate,
-                            settings.EMAIL_HOST_USER,
-                            [ 'sadaf.shaikh@udaan.com', FROM_EMAIL, Onboarding_SPOC, ADMIN_MAIL],
-                        ) 
-                        our_email.fail_silently = False
-                        our_email.send()
+                        # send_mail_code
+                        subject = 'Candidate Information Edited : Approval Required : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        to_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
+                        bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
+                        from_email = FROM_EMAIL
+                        html_content = render_to_string('emailtemplates/candidate_edited_vendor_onboarding.html' , {'changes':changes_list, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                        'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
+                        text_content = strip_tags(html_content)
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send()
+                        # send_mail_code
+                        subject = 'Candidate Information Edited : Intimation : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
+                        to_email = [ selected_candidate.TA_Spoc_Email_Id ]
+                        bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
+                        from_email = FROM_EMAIL
+                        html_content = render_to_string('emailtemplates/candidate_edited_vendor_recruiter.html' , {'changes':changes_list, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                        'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
+                        text_content = strip_tags(html_content)
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send()
+
+                        
                         messages.success(request, "Candidate Details Sent To Onboarding For Approval.")
                         return redirect("csp_app:pending_request")
                     
@@ -1110,15 +1124,7 @@ def process_requests(request, cid):
                             selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
                         selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
                         selected_candidate.save()
-                        limtemplate = render_to_string('emailtemplates/candidate_edited_by_onboarding_et.html', {'candidate_code':cid ,'user': request.user, 'vendor': vendor_fk.vendor_name })
-                        our_email = EmailMessage(
-                            'Candidate Edited By Vendor.',
-                            limtemplate,
-                            settings.EMAIL_HOST_USER,
-                            [ vendor_fk.vendor_email_id , 'sadaf.shaikh@udaan.com', ADMIN_MAIL],
-                        ) 
-                        our_email.fail_silently = False
-                        our_email.send()
+                        
                         Onboarding_SPOC = get_onbording_spoc()
                         try:
                             Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
@@ -2770,25 +2776,18 @@ def edit_candidate(request):
 
 
                 create_salary_structure(selected_candidate, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, ss_gross_salary, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary, variable, annualvariable, fixedsalary, annualfixedsalary)
-                alltemplate = render_to_string('emailtemplates/candidate_edited_et.html', {'candidate_code':cid ,'user': request.user})
-                our_email = EmailMessage(
-                    'Candidate Account Updated.',
-                    alltemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ selected_candidate.TA_Spoc_Email_Id, onboarding_spoc, 'sadaf.shaikh@udaan.com', ADMIN_MAIL],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                limtemplate = render_to_string('emailtemplates/candidate_edited_et_limited.html', {'candidate_code':cid ,'user': request.user})
-                our_email = EmailMessage(
-                    'Candidate Account Updated.',
-                    limtemplate,
-                    settings.EMAIL_HOST_USER,
-                    [ reporting_manager_email, 'sadaf.shaikh@udaan.com', ADMIN_MAIL],
-                ) 
-                our_email.fail_silently = False
-                our_email.send()
-                
+                # send_mail_code
+                subject = 'Candidate Information Edit Intimation : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
+                to_email = [ selected_candidate.TA_Spoc_Email_Id ]
+                bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
+                from_email = FROM_EMAIL
+                html_content = render_to_string('emailtemplates/candidate_edited.html' , {'changes':changes_list, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
+                text_content = strip_tags(html_content)
+                msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
                 messages.success(request, "Candidate Updated Successfully")
                 return redirect("csp_app:candidate")
 
@@ -3717,6 +3716,20 @@ def candidate_document_upload(request, candidate_id):
                 if catogory_fk.pk == 1:
                     candidate_fk.offer_letter_status = offer_letter_status.objects.get(pk = 1)
                     candidate_fk.save()
+                if flag == 1 and candidate_fk.offer_letter_status.pk == 1:
+                    selected_candidate = master_candidate.objects.get(pk=candidate_id)
+                    # send_mail_code
+                    subject = 'Candidate Offer Closure : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                    cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id,selected_candidate.TA_Spoc_Email_Id ]
+                    to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
+                    from_email = FROM_EMAIL
+                    html_content = render_to_string('emailtemplates/candidate_offer_closure.html' , {'changes':changes_list, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                    'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
                 messages.success(request, "Document Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id = candidate_id)
         

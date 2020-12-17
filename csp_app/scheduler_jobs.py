@@ -9,6 +9,12 @@ from django.utils.html import strip_tags
 ###
 from django.core.mail import get_connection, send_mail
 from django.core.mail.message import EmailMessage
+from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
+###
+from django.conf import settings
+from django.template.loader import render_to_string
 
 active = status.objects.get(pk=1)
 
@@ -53,3 +59,24 @@ def DocumentReminder():
             our_email.fail_silently = False
             our_email.send()
             print("Reminder Mail Sent to " + str(each_canidate.fk_vendor_code) + " and "+ str(each_canidate.pk_candidate_code) +" in reference to document upload.")
+
+def confirmJoining():
+    approve_candidate = candidate_status.objects.get(pk=2)
+    active = status.objects.get(pk=1)
+    not_joined = joining_status.objects.get(pk = 0)
+    pending_confirmation_candidates = master_candidate.objects.filter( candidate_status=approve_candidate, joining_status=not_joined, status= active, Date_of_Joining=datetime.date.today())
+    for selected_candidate in pending_confirmation_candidates: 
+        # send_mail_code
+        subject = 'Joining Confirmation Required : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+        cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id,selected_candidate.TA_Spoc_Email_Id ]
+        to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]
+        bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
+        from_email = FROM_EMAIL
+        html_content = render_to_string('emailtemplates/candidate_offer_closure.html' , {'changes':changes_list, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+        'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
+        text_content = strip_tags(html_content)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        print("Date of joining Confirmation Mail Sent to " + str(selected_candidate.Reporting_Manager_E_Mail_ID) + " in reference to candidate with ID " + str(selected_candidate.pk) + " .")
+
