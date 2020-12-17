@@ -14,18 +14,18 @@ $(document).ready(function(){
 
     }
     if (vendor == '0' && usergroup != 'Recruiter'){
-        $('#c_vendor').attr("disabled", false);
+        // $('#c_vendor').attr("disabled", false);
         $('#c_vendor').attr("value", null);
       
         $('#c_vendor').prop("required", true);
     }
     if (usergroup == 'Vendor'){
-        $('#c_vendor').attr("disabled", false);
+        // $('#c_vendor').attr("disabled", false);
         $('#c_vendor').attr("readonly", true);
         $('#c_vendor').prop("readonly", true);    
     }
     if (usergroup == 'Admin'){
-        $('#c_vendor').attr("disabled", false);
+        // $('#c_vendor').attr("disabled", false);
         // $('#c_vendor').attr("value", null);
       
         $('#c_vendor').prop("required", true);
