@@ -1,4 +1,5 @@
 from datetime import datetime
+from .constants import *
 from pytz import utc
 from csp_app.models import *
 from django.conf import settings
@@ -42,23 +43,38 @@ def DocumentReminder():
     all_candidates_list = master_candidate.objects.filter(status=active, vendor_status= vendor_approve, onboarding_status= onboard_approve)
     mandatory_list = mandatory_documents.objects.all().exclude(pk=0)
     mandatory_document_len = len(mandatory_list)
-    for each_canidate in all_candidates_list:
-        candidate_document_list = candidate_document.objects.filter(fk_candidate_code = each_canidate.pk).exclude(document_catagory_id=0)
+    for selected_candidate in all_candidates_list:
+        candidate_document_list = candidate_document.objects.filter(fk_candidate_code = selected_candidate.pk).exclude(document_catagory_id=0)
         candidate_document_len = len(candidate_document_list)
         if mandatory_document_len == candidate_document_len:
             do_nothing = 1
         else:
-            vendor_email = each_canidate.fk_vendor_code.vendor_email_id
-            reminder_template = render_to_string('csp_app/reminder_template.html', {'candidate_code':each_canidate.pk ,'vendor': each_canidate.fk_vendor_code})
-            our_email = EmailMessage(
-                'Daily Reminder UDAAN:CSP_APP',
-                reminder_template,
-                settings.EMAIL_HOST_USER,
-                [ vendor_email,each_canidate.Personal_Email_Id, 'sadaf.shaikh@udaan.com'],
-            ) 
-            our_email.fail_silently = False
-            our_email.send()
-            print("Reminder Mail Sent to " + str(each_canidate.fk_vendor_code) + " and "+ str(each_canidate.pk_candidate_code) +" in reference to document upload.")
+            
+            my_host = selected_candidate.fk_vendor_code.vendor_smtp
+            my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+            my_username = selected_candidate.fk_vendor_code.vendor_email_id
+            my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+            my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+            my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+            subject = 'Document Upload Pending : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+            bcc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id , 'sadaf.shaikh@udaan.com', ADMIN_MAIL]   
+            to_email = [ selected_candidate.Personal_Email_Id ]
+            cc_email = [ selected_candidate.fk_vendor_code.vendor_email_id ]
+            html_content = render_to_string('emailtemplates/reminder_template.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'vendor_phone': selected_candidate.fk_vendor_code.vendor_phone_number, 'offer_date': 'offer_date'})
+            body1 = strip_tags(html_content)
+            from1 = my_username
+            with get_connection(
+            host=my_host, 
+            port=my_port, 
+            username=my_username, 
+            password=my_password, 
+            use_tls=my_use_tls,
+            use_ssl= my_use_ssl
+            ) as connection:
+                msg = EmailMultiAlternatives(subject1, body1, from1, to_email , bcc= bcc_email , cc= cc_email, connection=connection)
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+            print("Reminder Mail Sent to " + str(selected_candidate.fk_vendor_code) + " and "+ str(selected_candidate.pk_candidate_code) +" in reference to document upload.")
 
 def confirmJoining():
     approve_candidate = candidate_status.objects.get(pk=2)

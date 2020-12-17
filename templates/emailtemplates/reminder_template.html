@@ -1,8 +1,57 @@
-Hi {{ vendor }},
-
-Hope you're doing well. 
-
-This mail is just a reminder that you have some pending actions to be taken for a candidate with candidate ID {{ candidate_code }}.
-
-Thankyou,
-UDAAN 
+<html>
+    <head>
+        <style>
+            .email_table{
+                border-collapse: collapse;
+                width: 80%;
+            }
+    
+            .email_table tr td {
+                border: 1px solid #000;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <p>Dear {{ candidate_name }},</p>
+        <p>This email is about the profile <Designation Name, with Department Name>. Your candidature has been shortlisted and Letter of Intent has also been emailed to you from <Vendor Official E Mail ID>. You were requested to upload the documents over online portal, against which some of the documents were not uploaded so far. Kindly upload the same asap. </p>          
+        <p>Once all the below mentioned documents are uploaded the Offer Letter will be made visible to you.</p>
+        <table class="email_table">
+            <tr>
+                <td class="red_td">Candidate Name</td>
+                <td>{{ candidate_name }} | {{ candidate_id }} </td>
+            </tr>
+            <tr>
+                <td>Vendor</td>
+                <td>{{ vendor_name }}</td>
+            </tr> 
+            <tr>
+                <td>Functional Details</td>
+                <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }}</td>
+            </tr>
+            <tr>
+                <td>Designation</td>
+                <td>{{ desg_name }}</td>
+            </tr>
+            <tr>
+                <td>Location Details</td>
+                <td>{{ region_name }} | {{ state_name }} | {{ city_name }} | {{ location_name }} & {{ location_code }}</td>
+            </tr>
+           
+            
+            <tr>
+                <td class="red_td">Web Application Link</td>
+                <td><a href="https://www.ob.associatehrms.com/">https://www.ob.associatehrms.com/</a></td>
+            </tr>           
+           
+        </table>
+        <p>The credentials to access the portal <a href="https://www.ob.associatehrms.com/">http://www.ob.associatehrms.com/</a>, has already been sent to you. In case you are facing any challenges in accessing the credentials then please do click on Forgot Password. Please do change your password on your first login.</p>
+        <p>In case you face any issues while uploading the document(s) or have any query, then please connect with ({{ vendor_spoc }} , E Mail ID: {{ vendor_spoc_mail }}).</p>
+        <p>Help Manual --> <a href="{{ manual_link }}">link</a> </p>
+        <p>Regards,</p>
+        <p>Team HR</p>
+        <p>Note: This is a system generated mail, please do not reply.</p>        
+        
+            
+    </body>
+</html>

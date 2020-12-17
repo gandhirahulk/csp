@@ -190,10 +190,10 @@
         ul = document.getElementById(ulid);
         li = ul.getElementsByTagName("div");
         for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("span")[0];
+            a = li[i].getElementsByTagName("span")[1];
      
             txtValue = a.textContent || a.innerText;
-        
+           
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 li[i].style.display = "";
             } else {
