@@ -119,7 +119,7 @@ def joining_confirmation(request):
             use_tls=my_use_tls,
             use_ssl= my_use_ssl
             ) as connection:
-                msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], bcc= [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ] connection=connection)
+                msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], bcc= [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id, 'sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com' ], connection=connection)
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
             messages.success(request, "Candidate Dropped Out Details Mailed To Concerned Team")
