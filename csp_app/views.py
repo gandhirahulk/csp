@@ -64,7 +64,7 @@ Onboarding_SPOC = get_onbording_spoc()
 
 def send_the_mail(subject, html_file, to_email, bcc_email ):
     # from_email = 'associateonboarding@udaan.com'
-    from_email = 'sadaf.shaikh@udaan.com'
+    from_email = 'associateonboarding@udaan.com'
 
     html_content = render_to_string(html_file) 
     text_content = strip_tags(html_content)
@@ -961,7 +961,7 @@ def process_requests(request, cid):
                         to_email = [ selected_candidate.fk_vendor_code.spoc_email_id ]   
                         cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]
                         bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                        from_email = 'sadaf.shaikh@udaan.com'
+                        from_email = 'associateonboarding@udaan.com'
                         html_content = render_to_string('emailtemplates/new_candidate_vendor.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
                         'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                         text_content = strip_tags(html_content)
@@ -974,7 +974,7 @@ def process_requests(request, cid):
                         to_email = [ selected_candidate.TA_Spoc_Email_Id]   
                         cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
                         bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                        from_email = 'sadaf.shaikh@udaan.com'
+                        from_email = 'associateonboarding@udaan.com'
                         html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_ta.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
                         'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                         text_content = strip_tags(html_content)
@@ -987,7 +987,7 @@ def process_requests(request, cid):
                         to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID]   
                         cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
                         bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                        from_email = 'sadaf.shaikh@udaan.com'
+                        from_email = 'associateonboarding@udaan.com'
                         html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_manager.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
                         'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                         text_content = strip_tags(html_content)
@@ -1023,7 +1023,7 @@ def process_requests(request, cid):
                     to_email = [ selected_candidate.fk_vendor_code.spoc_email_id ]   
                     cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                    from_email = 'sadaf.shaikh@udaan.com'
+                    from_email = 'associateonboarding@udaan.com'
                     html_content = render_to_string('emailtemplates/new_candidate_vendor.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
                     'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                     text_content = strip_tags(html_content)
@@ -1036,7 +1036,7 @@ def process_requests(request, cid):
                     to_email = [ selected_candidate.TA_Spoc_Email_Id]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                    from_email = 'sadaf.shaikh@udaan.com'
+                    from_email = 'associateonboarding@udaan.com'
                     html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_ta.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
                     'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                     text_content = strip_tags(html_content)
@@ -1049,7 +1049,7 @@ def process_requests(request, cid):
                     to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                    from_email = 'sadaf.shaikh@udaan.com'
+                    from_email = 'associateonboarding@udaan.com'
                     html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_manager.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
                     'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                     text_content = strip_tags(html_content)
@@ -1129,7 +1129,7 @@ def process_requests(request, cid):
                         to_email = [ selected_candidate.Onboarding_Spoc_Email_Id]   
                         cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id ]
                         bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                        from_email = 'sadaf.shaikh@udaan.com'
+                        from_email = 'associateonboarding@udaan.com'
                         html_content = render_to_string('emailtemplates/candidate_approved_vendor_to_onboarding.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 'candidate_email': selected_candidate.Personal_Email_Id, 'vendor_email': selected_candidate.fk_vendor_code.vendor_email_id,
                         'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                         text_content = strip_tags(html_content)
@@ -1159,7 +1159,7 @@ def process_requests(request, cid):
                             to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID]   
                             cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]
                             bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                            from_email = 'sadaf.shaikh@udaan.com'
+                            from_email = 'associateonboarding@udaan.com'
                             html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 'candidate_email': selected_candidate.Personal_Email_Id, 'vendor_email': selected_candidate.fk_vendor_code.vendor_email_id,
                             'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                             text_content = strip_tags(html_content)
@@ -1181,7 +1181,7 @@ def process_requests(request, cid):
                             to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID]   
                             cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]
                             bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                            from_email = 'sadaf.shaikh@udaan.com'
+                            from_email = 'associateonboarding@udaan.com'
                             html_content = render_to_string('emailtemplates/old_reporting_manager_candidate_approve.html' , {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 'candidate_email': selected_candidate.Personal_Email_Id, 'vendor_email': selected_candidate.fk_vendor_code.vendor_email_id, 'username': selected_candidate.Reporting_Manager_E_Mail_ID, 'password': password,
                             'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                             text_content = strip_tags(html_content)
@@ -1475,7 +1475,7 @@ def reject_candidate_vendor(request, cid):
                     to_email = [ selected_candidate.TA_Spoc_Email_Id ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                    from_email = 'sadaf.shaikh@udaan.com'
+                    from_email = 'associateonboarding@udaan.com'
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
                     'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                     
@@ -1488,7 +1488,7 @@ def reject_candidate_vendor(request, cid):
                     to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                    from_email = 'sadaf.shaikh@udaan.com'
+                    from_email = 'associateonboarding@udaan.com'
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding_manager.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
                     'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                     
@@ -1521,7 +1521,7 @@ def reject_candidate_vendor(request, cid):
                     to_email = [ selected_candidate.TA_Spoc_Email_Id ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                    from_email = 'sadaf.shaikh@udaan.com'
+                    from_email = 'associateonboarding@udaan.com'
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
                     'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                     
@@ -1534,7 +1534,7 @@ def reject_candidate_vendor(request, cid):
                     to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                    from_email = 'sadaf.shaikh@udaan.com'
+                    from_email = 'associateonboarding@udaan.com'
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding_manager.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
                     'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                     
@@ -1565,7 +1565,7 @@ def reject_candidate_vendor(request, cid):
                     to_email = [ selected_candidate.Onboarding_Spoc_Email_Id]   
                     cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                    from_email = 'sadaf.shaikh@udaan.com'
+                    from_email = 'associateonboarding@udaan.com'
                     html_content = render_to_string('emailtemplates/candidate_rejected_vendor.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
                     'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                     
@@ -1578,7 +1578,7 @@ def reject_candidate_vendor(request, cid):
                     to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                    from_email = 'sadaf.shaikh@udaan.com'
+                    from_email = 'associateonboarding@udaan.com'
                     html_content = render_to_string('emailtemplates/candidate_rejected_vendor_manager.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 'onboarding_spoc_mail' : selected_candidate.Onboarding_Spoc_Email_Id,
                     'desg_name': designation_fk.designation_name, 'reason': reason , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                     
@@ -3434,7 +3434,7 @@ def save_new_candidate(request):
                 to_email = [ Onboarding_SPOC ]   
                 cc_email = [ ta_spoc ]
                 bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                from_email = 'sadaf.shaikh@udaan.com'
+                from_email = 'associateonboarding@udaan.com'
                 html_content = render_to_string('emailtemplates/new_candidate_onboarding.html' , {'onboarding_spoc': Onboarding_SPOC_first_name, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
                 'desg_name': designation_fk.designation_name, 'region_name': region_fk.region_name.zone_name , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                 
@@ -3448,7 +3448,7 @@ def save_new_candidate(request):
                 to_email = [ reporting_manager_email ]   
                 cc_email = [ ta_spoc, Onboarding_SPOC ]
                 bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-                from_email = 'sadaf.shaikh@udaan.com'
+                from_email = 'associateonboarding@udaan.com'
                 html_content = render_to_string('emailtemplates/new_candidate_manager.html' , {'manager': reporting_manager, 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name, 'dept_name': department_fk.department_name, 'function_name': function_fk.function_name, 'team_name': team_fk.team_name, 'sub_team_name': sub_team_fk.sub_team_name, 
                 'desg_name': designation_fk.designation_name, 'region_name': region_fk.region_name.zone_name , 'state_name': state_fk.state_name.state_name, 'location_name': location_fk.location_name, 'location_code': location_fk.location_code, 'salary_num': gross_salary, 'salary_word': num2words(gross_salary, lang = 'en_IN'), 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email, 'doj': doj, 'recruitment_spoc': ta_spoc, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
                 text_content = strip_tags(html_content)
@@ -4487,7 +4487,7 @@ def create_vendor(request):
             subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + vendor_spoc 
             to_email = [ vendor_spoc_email ]   
             bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul,gandhi@udaan.com' ]
-            from_email = 'sadaf.shaikh@udaan.com'
+            from_email = 'associateonboarding@udaan.com'
             html_content = render_to_string('emailtemplates/new_vendor_account_first.html' , {'vendor_spoc': vendor_spoc,'company_name': entity_fk.entity_name, 'vendor_email': vendor_email, 'onboarding_spoc_mail': Onboarding_SPOC, 'onboarding_spoc': Onboarding_SPOC, 'username': vendor_spoc_email, 'password': password, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
@@ -4498,7 +4498,7 @@ def create_vendor(request):
             subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + vendor_spoc 
             to_email = [ vendor_spoc_email ]   
             bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul,gandhi@udaan.com' ]
-            from_email = 'sadaf.shaikh@udaan.com'
+            from_email = 'associateonboarding@udaan.com'
             html_content = render_to_string('emailtemplates/new_vendor_account_first.html' , {'vendor_spoc': vendor_spoc,'company_name': entity_fk.entity_name, 'vendor_email': vendor_email, 'onboarding_spoc_mail': Onboarding_SPOC, 'onboarding_spoc': Onboarding_SPOC, 'username': vendor_spoc_email, 'password': 'Use Old Password / Reset It', 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
@@ -5870,7 +5870,7 @@ def create_user(request):
             subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + firstname 
             to_email = [ email ]   
             bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
-            from_email = 'sadaf.shaikh@udaan.com'
+            from_email = 'associateonboarding@udaan.com'
             html_content = render_to_string('emailtemplates/new_user_creation.html' , {'user': firstname ,'username': email, 'password': password, 'firstname': firstname, 'lastname': lastname, 'manual_link': 'manual_link_when_created', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com'}) 
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
@@ -5905,7 +5905,7 @@ def  disable_user(request):
             to_email = [ selected_user.email ]   
             bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
 
-            from_email = 'sadaf.shaikh@udaan.com'
+            from_email = 'associateonboarding@udaan.com'
             html_content = render_to_string('emailtemplates/user_disabled_enable.html' , {'user': selected_user.first_name , 'status': 'Disabled', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com' }) 
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
@@ -5934,7 +5934,7 @@ def  enable_user(request):
             to_email = [ selected_user.email ]   
             bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]
 
-            from_email = 'sadaf.shaikh@udaan.com'
+            from_email = 'associateonboarding@udaan.com'
             html_content = render_to_string('emailtemplates/user_disabled_enable.html' , {'user': selected_user.first_name , 'status': 'Enabled', 'admin' : 'Rahul Gandhi', 'admin_mail': 'rahul.gandhi@udann.com' }) 
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email)
