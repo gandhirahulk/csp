@@ -4500,7 +4500,7 @@ def create_vendor(request):
             # send_mail_code
             subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + vendor_spoc 
             to_email = [ vendor_spoc_email ]   
-            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul,gandhi@udaan.com' ]
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
             from_email = FROM_EMAIL
             html_content = render_to_string('emailtemplates/new_vendor_account_first.html' , {'vendor_spoc': vendor_spoc,'company_name': entity_fk.entity_name, 'vendor_email': vendor_email, 'onboarding_spoc_mail': Onboarding_SPOC, 'onboarding_spoc': Onboarding_SPOC, 'username': vendor_spoc_email, 'password': password, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
             text_content = strip_tags(html_content)
@@ -4509,9 +4509,10 @@ def create_vendor(request):
             msg.send()   
             
         except IntegrityError:
+            Onboarding_SPOC = get_onbording_spoc()
             subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + vendor_spoc 
             to_email = [ vendor_spoc_email ]   
-            bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul,gandhi@udaan.com' ]
+            bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
             from_email = FROM_EMAIL
             html_content = render_to_string('emailtemplates/new_vendor_account_first.html' , {'vendor_spoc': vendor_spoc,'company_name': entity_fk.entity_name, 'vendor_email': vendor_email, 'onboarding_spoc_mail': Onboarding_SPOC, 'onboarding_spoc': Onboarding_SPOC, 'username': vendor_spoc_email, 'password': 'Use Old Password / Reset It', 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
             text_content = strip_tags(html_content)
