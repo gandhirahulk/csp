@@ -64,21 +64,22 @@ def doj_limit(request):
 
 def joined(request):
     joined_candidates = master_candidate.objects.filter( candidate_status=joined_candidate, Reporting_Manager_E_Mail_ID= str(request.user),status=active_status)
-
-    return render(request, 'reporting_manager/joined.html',{ 'joined_candidates': joined_candidates})
+    today = date.today() 
+    last_ten_days = today - timedelta(days = 10)   
+    request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0), candidate_status=candidate_status.objects.get(pk=1)).exclude(Date_of_Joining__gt=today)
+    count = len(request_candidates)
+    return render(request, 'reporting_manager/joined.html',{'count':count, 'joined_candidates': joined_candidates})
 
 def joining_confirmation(request):
     today = date.today() 
-    last_ten_days = today - timedelta(days = 10)
-   
+    last_ten_days = today - timedelta(days = 10)   
     request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0), candidate_status=candidate_status.objects.get(pk=1)).exclude(Date_of_Joining__gt=today)
-
+    count = len(request_candidates)
     if request.method == 'POST' and request.POST.get('cid') != None:
         cid = request.POST.get('cid')
         
         selected_candidate = master_candidate.objects.get(pk=cid)
         choice = request.POST.get('choosed_option')
-        print(choice)
         future_date = request.POST.get('calendar_input_future')
         joining_date = request.POST.get("calendar_input")
         remark = request.POST.get("remark")
@@ -132,15 +133,7 @@ def joining_confirmation(request):
             messages.success(request, "Candidate Dropped Out Details Mailed To Concerned Team")
             return redirect("csp_app:rm_joining_confirmation")
         if choice == '5':
-            # print(1)
-            # expected = selected_candidate.Date_of_Joining
-            # rm_input = joining_date
-            # if rm_input <= expected:
-            #     print(2)
-            # print(remark)
-            # if remark == None:
-            #     print("None hai")
-            print(remark)
+           
             if len(remark) > 1:
                 
                 selected_candidate.remarks = remark
@@ -182,21 +175,13 @@ def joining_confirmation(request):
             msg.attach_alternative(html_content, "text/html")
             msg.send()
 
-            # subject, from_email = 'Email ID Request', 'associateonboarding@udaan.com'   
-            # html_content = render_to_string('emailtemplates/candidate_joined.html',{'cid': selected_candidate.pk})
-            # text_content = strip_tags(html_content) 
-            # msg = EmailMultiAlternatives(subject, text_content, from_email, [ IT_email_id ])
-            # msg.attach_alternative(html_content, "text/html")
-            # msg.send()
             selected_candidate.candidate_status = candidate_status.objects.get(pk=5)
             selected_candidate.joining_status = joining_status.objects.get(pk=1)
             selected_candidate.save()
 
             messages.success(request, "Candidate Marked as joined")
             return redirect("csp_app:rm_joining_confirmation")
-            # else:
-            #     messages.error(request, "Invalid Joining Date")
-            #     return redirect("csp_app:rm_joining_confirmation")
+            
         if choice == '7':
             if future_date == None or future_date == '':
                 messages.warning(request, "Please provide a future date")
@@ -230,16 +215,22 @@ def joining_confirmation(request):
 
         messages.success(request, "")
         return redirect("csp_app:rm_joining_confirmation")
-    return render(request, 'reporting_manager/joining_confirmation.html',{ 'request_candidates': request_candidates})
+    return render(request, 'reporting_manager/joining_confirmation.html',{'count':count, 'request_candidates': request_candidates})
 
 def drop_out(request):
     drop_out_candidates = master_candidate.objects.filter( candidate_status=dropout_candidate, Reporting_Manager_E_Mail_ID= str(request.user),status=active_status)
-
-    return render(request, 'reporting_manager/drop_out.html',{ 'drop_out_candidates': drop_out_candidates})
+    today = date.today() 
+    last_ten_days = today - timedelta(days = 10)   
+    request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0), candidate_status=candidate_status.objects.get(pk=1)).exclude(Date_of_Joining__gt=today)
+    count = len(request_candidates)
+    return render(request, 'reporting_manager/drop_out.html',{ 'count':count, 'drop_out_candidates': drop_out_candidates})
 
 def future_joining(request):
-    today = date.today()
+    today = date.today() 
+    last_ten_days = today - timedelta(days = 10)   
+    request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0), candidate_status=candidate_status.objects.get(pk=1)).exclude(Date_of_Joining__gt=today)
+    count = len(request_candidates)
  
     future_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= today,status=active_status, joining_status=joining_status.objects.get(pk=0), vendor_status= approve_vendor)
-    print(future_candidates)
-    return render(request, 'reporting_manager/future_joining.html',{'future_candidates': future_candidates})
+  
+    return render(request, 'reporting_manager/future_joining.html',{'count':count,'future_candidates': future_candidates})
