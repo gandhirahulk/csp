@@ -41,8 +41,6 @@ $(document).ready(function(){
         });
     });
     
-    
-
     $('#c_contact').keyup(function(){
         contact = $('#c_contact').val()
         pan = ''
@@ -82,6 +80,7 @@ $(document).ready(function(){
             }
         });
     });
+
     $('#c_pan').keyup(function(){
         pan = $('#c_pan').val();
         contact = 0
@@ -121,6 +120,7 @@ $(document).ready(function(){
             }
         });
     });
+
     $('#email').keyup(function(){
         email = $('#email').val();
         contact = 0
@@ -142,7 +142,6 @@ $(document).ready(function(){
             },
             dataType: 'Json',
             success: function(data){
-                console.log(data)
                 if (data['invalid_domain'] != ''){
                     $('#emailmsg').html(data['invalid_domain']).css('color','red');
                     $('#new-candidate').attr('onsubmit','return false;');

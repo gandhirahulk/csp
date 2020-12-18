@@ -164,13 +164,13 @@
                     {% if eachgroup.name == 'Recruiter' %}
                         <div>
                             <label for="" >Date of Joining</label>
-                            <input type="date" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="False">
+                            <input type="date" tabindex="17" placeholder="Date Of Joining" name="c_doj" value="{{ dummy.Date_of_Joining|date:'Y-m-d' }}" required="true" tabindex="4" id="False">
                     
                         </div>
                     {% else %}
                         <div>
                             <label for="" >Date of Joining</label>
-                            <input type="date" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="True">
+                            <input type="date" tabindex="17" placeholder="Date Of Joining" name="c_doj" required="true" value="{{ dummy.Date_of_Joining|date:'Y-m-d' }}" tabindex="4" id="True">
                     
                         </div>
                     {% endif %}
