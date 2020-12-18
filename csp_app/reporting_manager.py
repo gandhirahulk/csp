@@ -15,6 +15,7 @@ from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from .constants import *
 from num2words import num2words
+from django.core.mail import get_connection
 
 # 4	"Hold"
 # 5	"Joined"
@@ -113,10 +114,9 @@ def joining_confirmation(request):
             my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
             my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
             candidate_salary_structure = salary_structure.objects.get(candidate_code= selected_candidate.pk)
-            ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
-            ctc_word = num2words(ctc_number, lang = 'en_IN')
+            
             subject1 = 'Offer Withdrawal : ' + str(selected_candidate.First_Name) 
-            html_content = render_to_string('emailtemplates/offer_withdrawel.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'vendor_phone': selected_candidate.fk_vendor_code.vendor_phone_number, 'offer_date': 'offer_date'})
+            html_content = render_to_string('emailtemplates/offer_withdrawel.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'vendor_phone': selected_candidate.fk_vendor_code.vendor_phone_number, 'offer_date': 'offer_date'})
             body1 = strip_tags(html_content)
             from1 = my_username
             with get_connection(
