@@ -33,7 +33,7 @@
 <!--Table -->
 {% include 'organization_tables/vendor_table.html' %}
 
-<div  class="form_modal" style="display: block;padding-top: 1%;">
+<div  class="form_modal" style="display: block;padding-top: 3%;">
 
     <div class="view_form_header">
         <div class="forms-heading">
@@ -44,7 +44,7 @@
     {% if view_vendor_list %}
         {% for eachvendor in view_vendor_list %}
         {% if forloop.first %}
-            <div class="view_form_content">
+            <div class="view_form_content" style="height: 70vh;">
                 <fieldset class="fds">
                     <legend>Basic Details</legend>
                     <table>
