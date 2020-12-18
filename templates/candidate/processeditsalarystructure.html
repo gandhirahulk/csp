@@ -2002,6 +2002,9 @@
                             <input type="hidden" value="vendor" name="ve_status">
                             {% if changed == 1 %}
                                 <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' cid  %}" type="submit" style="width: auto;">Submit to Onboarding for Approval</button> 
+                            {% elif side_letter == 1 %}
+                                <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' cid  %}" type="submit" style="width: auto;">Approve to Send Side Letter to Candidate</button> 
+
                             {% else %}
                                 <button class="forms-save-btn" formaction="{% url 'csp_app:process_request' cid  %}" type="submit" style="width: auto;">Approve to Send LOI to Candidate</button> 
 

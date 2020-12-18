@@ -1086,9 +1086,62 @@ def process_requests(request, cid):
                     return redirect("csp_app:pending_request")
 
                 
-                if request.POST.get('ve_status') != None:                   
+                if request.POST.get('ve_status') != None:         
+                    
                     # print(changes_list)
                     if len(changes_list) > 0:
+                        if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
+                            my_host = selected_candidate.fk_vendor_code.vendor_smtp
+                            my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+                            my_username = selected_candidate.fk_vendor_code.vendor_email_id
+                            my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+                            my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+                            my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+                            
+                            subject1 = 'Change Of Appointment : ' + str(selected_candidate.fk_vendor_code.vendor_name) + ' | ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code) 
+                            html_content = render_to_string('emailtemplates/side_letter.html', {'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) , 'today_date': datetime.today() , 'vendor_name': selected_candidate.fk_vendor_code,'doj': selected_candidate.Date_of_Joining, 'candidate_father_name': selected_candidate.Father_Name })
+                            body1 = strip_tags(html_content)
+                            from1 = my_username
+                            with get_connection(
+                            host=my_host, 
+                            port=my_port, 
+                            username=my_username, 
+                            password=my_password, 
+                            use_tls=my_use_tls,
+                            use_ssl= my_use_ssl
+                            ) as connection:
+                                msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], bcc= [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id, 'sadaf.shaikh@udaan.com', ADMIN_MAIL ], connection=connection)
+                                msg.attach_alternative(html_content, "text/html")
+                                msg.send()
+                            # send_mail_code
+                            subject = 'Candidate Information Edited : Approval Required : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                            to_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
+                            bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
+                            from_email = FROM_EMAIL
+                            html_content = render_to_string('emailtemplates/candidate_edited_vendor_onboarding.html' , {'changes':changes_list, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                            'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
+                            text_content = strip_tags(html_content)
+                            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email )
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
+                            # send_mail_code
+                            subject = 'Candidate Information Edited : Intimation : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                            cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
+                            to_email = [ selected_candidate.TA_Spoc_Email_Id ]
+                            bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
+                            from_email = FROM_EMAIL
+                            html_content = render_to_string('emailtemplates/candidate_edited_vendor_recruiter.html' , {'changes':changes_list, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                            'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
+                            text_content = strip_tags(html_content)
+                            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
+
+                            selected_candidate.vendor_status = approve_vendor
+                            selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
+                            selected_candidate.save()
+                            messages.success(request, "A mail with side letter sent to candidate.")
+                            return redirect("csp_app:pending_request")
                         selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=2)
                         
@@ -1134,6 +1187,34 @@ def process_requests(request, cid):
                     
 
                     else:
+                        if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
+                            my_host = selected_candidate.fk_vendor_code.vendor_smtp
+                            my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+                            my_username = selected_candidate.fk_vendor_code.vendor_email_id
+                            my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+                            my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+                            my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+                            
+                            subject1 = 'Change Of Appointment : ' + str(selected_candidate.fk_vendor_code.vendor_name) + ' | ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code) 
+                            html_content = render_to_string('emailtemplates/side_letter.html', {'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) , 'today_date': datetime.today() , 'vendor_name': selected_candidate.fk_vendor_code,'doj': selected_candidate.Date_of_Joining, 'candidate_father_name': selected_candidate.Father_Name })
+                            body1 = strip_tags(html_content)
+                            from1 = my_username
+                            with get_connection(
+                            host=my_host, 
+                            port=my_port, 
+                            username=my_username, 
+                            password=my_password, 
+                            use_tls=my_use_tls,
+                            use_ssl= my_use_ssl
+                            ) as connection:
+                                msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], bcc= [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id, 'sadaf.shaikh@udaan.com', ADMIN_MAIL ], connection=connection)
+                                msg.attach_alternative(html_content, "text/html")
+                                msg.send()
+                            selected_candidate.vendor_status = approve_vendor
+                            selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
+                            selected_candidate.save()
+                            messages.success(request, "A mail with side letter sent to candidate.")
+                            return redirect("csp_app:pending_request")
                         selected_candidate.vendor_status = approve_vendor
                         selected_candidate.loi_status = loi_status.objects.get(pk=0)
                         selected_candidate.documentation_status = documentation_status.objects.get(pk=2)
@@ -2040,15 +2121,19 @@ def edit_salary_structure_process(request, cid):
                 selected_candidate = master_candidate.objects.get(pk=cid)
                 changes_list = check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary, physically_challenged, request)
                 
-    
+                if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
+                    side_letter = 1
+                else:
+                    side_letter = 0
                 if len(changes_list) > 0:
+                    
                     changed = 1
                 else:
                     changed = 0
                 history_list = gross_salary_history.objects.filter(fk_candidate_code=selected_candidate).order_by('-created_date_time').distinct()
                 candidate_history_list = candidate_history.objects.filter(fk_candidate_code=selected_candidate).order_by('-created_date_time').distinct()
                 candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=selected_candidate, status= active_status)
-                return render(request, 'candidate/processeditsalarystructure.html', {'candidate_recent_change':candidate_recent_change,'candidate_history_list':candidate_history_list,'history_list':history_list,'changed':changed, 'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
+                return render(request, 'candidate/processeditsalarystructure.html', {'side_letter': side_letter, 'candidate_recent_change':candidate_recent_change,'candidate_history_list':candidate_history_list,'history_list':history_list,'changed':changed, 'dojcount':dojcount, 'count': count, 'cid':candidate_id, 'mwc':convert_to_INR(mwc), 'gsa':convert_to_INR(gsa_value), 'eachcandidate': selected_candidate, 'dummy': dummy, 'basic': convert_to_INR(basic), 'hra': convert_to_INR(hra), 'sb': convert_to_INR(sb), 'sa': convert_to_INR(sa), 'gross_salary': convert_to_INR(grossalary), 'annualbasic': convert_to_INR(annual_basic), 'annualhra': convert_to_INR(annual_hra), 
                 'annualsb': convert_to_INR(annual_sb), 'annualsa': convert_to_INR(annual_sa), 'annualgs': convert_to_INR(annual_gs), 'annualepf': convert_to_INR(annual_epf), 'annualesic': convert_to_INR(annual_esic), 'annualtd': convert_to_INR(annual_td),
                 'annualths': convert_to_INR(annual_ths), 'epf': convert_to_INR(epf), 'esic': convert_to_INR(esic), 'td': convert_to_INR(td), 'ths': convert_to_INR(ths), 'erpf': convert_to_INR(erpf), 'erpf_admin': convert_to_INR(erpf_admin), 'ersic': convert_to_INR(ersic), 'gpa': convert_to_INR(gpa), 'gmi': convert_to_INR(gmi),
                 'annualerpf': convert_to_INR(annual_eprf), 'annualerpf_admin': convert_to_INR(annual_pfadmin), 'annualersic': convert_to_INR(annual_ersic), 'annualgpa': convert_to_INR(annual_gpa), 'annualgmi': convert_to_INR(annual_gmi), 'tec': convert_to_INR(tec), 'annual_tec': convert_to_INR(annual_tec), 'ctc': convert_to_INR(ctc), 'annual_ctc': convert_to_INR(annual_ctc),
@@ -2793,8 +2878,23 @@ def edit_candidate(request):
                 selected_candidate, ss_gross_salary = update_selected_candidate(candidate_id, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, replacement, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, loc_code, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, request, email, ss_gross_salary, physically_challenged)
           
                 if len(changes_list) > 0:
+                    print(changes_list)
+                    subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                    to_email = [ selected_candidate.TA_Spoc_Email_Id ]
+                    bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
+                    from_email = FROM_EMAIL
+                    html_content = render_to_string('emailtemplates/candidate_edited_onboarding.html' , {'changes':changes_list, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
+                    'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
+                    text_content = strip_tags(html_content)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
+                    if 'Date Of Joining' in changes_list:
+                        selected_candidate.candidate_status = candidate_status.objects.get(pk=9)
+                    else:
+                        selected_candidate.candidate_status = pending_status
+
                     selected_candidate.vendor_status = pending_vendor
-                    selected_candidate.candidate_status = pending_status
                     selected_candidate.save()
 
 
