@@ -18,8 +18,8 @@
         </style>
     </head>
     <body>
-        <p>Dear Recruiter SPOC,</p>
-        <p>Please be informed that as per the discussion and further agreement, we have edited the details of the below mentioned candidate:</p>
+        <p>Dear {{ vendor_spoc }},</p>
+        <p>Please be informed that as per the discussion and further agreement, we have edited the below mentioned candidate details:</p>
                   
         <table class="email_table">
             <tr>
@@ -34,18 +34,12 @@
                 <td>Functional Details</td>
                 <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }}</td>
             </tr>
-            <tr>
-                <td>Location Details</td>
-                <td>{{ region_name }} | {{ state_name }} | {{ city_name }} | {{ location_name }} & {{ location_code }}</td>
-            </tr>
+           
             <tr>
                 <td>Date of joining</td>
                 <td>{{ doj }}</td>
             </tr>
-            <tr>
-                <td class="red_td">Web Application Link</td>
-                <td><a href="https://ob.associatehrms.com">https://ob.associatehrms.com</a></td>
-            </tr>           
+                      
            
         </table>
         <p>Following are the revised values which we have updated in system records are for your kind reference and necessary action.</p>
@@ -57,14 +51,15 @@
             </tr>
             {% for x,y in changes.items %}
                 <tr>
-                    <td>{{ x }}</td>
+                    <td>{{ x }}</td>                    
                     <td>{{ y.0 }}</td>
                     <td>{{ y.1 }}</td>
+                
                 </tr>
             {% endfor %}
         </table>
         <p>Complete details are available over portal (<a href="https://ob.associatehrms.com">https://ob.associatehrms.com</a>) you are requested to review the details and validate the details. If required, do reach out to Onboarding SPOC ({{ onboarding_spoc }} & E Mail ID : {{ onboarding_spoc_mail }}). </p>
-        <p>The same request has been sent to you for your review and approval. Once approved, the request will again go to Vendor SPOC for approval for LOI & Offer letter will be rolled out to Candidate accordingly. In parallel, the details will be updated over portal.</p>       
+        <p>The same request has been sent to Vendor SPOC for review and approval. Once approved, the LOI & Offer letter will be rolled out to Candidate accordingly. In parallel, the details will be updated over portal.</p>
         <p>Help Manual is attached in the <a href="{{ manual_link }}">link</a> for your kind reference and easy navigation.</p>
         <p>For any further queries, please contact the Onboarding SPOC ({{ onboarding_spoc }}) or the Admin ( {{ admin }} , E Mail ID : {{ admin_mail }}).</p>
         <p>Regards,</p>

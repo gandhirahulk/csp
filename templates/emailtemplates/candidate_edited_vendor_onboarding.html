@@ -23,7 +23,7 @@
                   
         <table class="email_table">
             <tr>
-                <td class="red_td">Candidate Name</td>
+                <td>Candidate Name</td>
                 <td>{{ candidate_name }} | {{ candidate_id }} </td>
             </tr>
             <tr>
@@ -58,8 +58,8 @@
             {% for x,y in changes.items %}
                 <tr>
                     <td>{{ x }}</td>
-                    <td>{{ y[0] }}</td>
-                    <td>{{ y[1] }}</td>
+                    <td>{{ y.0 }}</td>
+                    <td>{{ y.1 }}</td>
                 </tr>
             {% endfor %}
         </table>
