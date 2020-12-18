@@ -96,46 +96,43 @@
             
                         <input type="text" placeholder="SPOC Email ID" value="{{ eachvendor.spoc_email_id }}" name="e_vendor_spoc_email" required="true" id="spocemail" pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,6})">
                     </div>
-                 
-                    
                     <div class="forms-input-holder">
                         <label for="">Add/Remove Company</label>
-                        <input type="search" class="search-entity" name="" id="search-entity" placeholder="Search By Company Name" onkeyup="filterCompany('search-entity','entity-ul')">
-                       
-                    
+                        <input type="search" class="search-entity" name="" id="search-entity" placeholder="Search By Company Name"  onkeyup="searchEmpTbl('search-entity', 'c_tbl', 0)">
                     </div>
-                    
-                  
                     <div class="entity-holder" id="entity-ul">
-                          
-                        <div style="flex-grow: 1;
-                        width: 100%;">    
-                        {% if forloop.first %}
-                        <span> 
-                            <input type="checkbox" name="" id="selectall" value="Select All"> Select All      
-                        </span> 
-                        <br>
-                        {% endif %}
-                        {% for entities in existing %}
-                            {% for i in entities %}
-                                <span>
-        
-                                    <input type="checkbox" checked="true" name="vendor_entity" value="{{ i.pk }}" id="" class="entities"> {{ i.entity_name }}  
-                                </span>                                 
-                                <br>
-                            {% endfor %}
-                        {% endfor %}
-                        {% for entities in new %}
-                        <span>
+                        <table id="c_tbl">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">
+                                        <input type="checkbox" name="" id="selectall" value="Select All"> Select All      
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entities in existing %}
+                                    {% for i in entities %}
+                                        <tr>
+                                            <td><input type="checkbox" checked="true" name="vendor_entity" value="{{ i.pk }}" id="" class="entities"> {{ i.entity_name }}  </td>
+                                            
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for entities in new %}
+                                    <tr>
+                                        <td><input type="checkbox" name="vendor_entity" value="{{ entities.pk }}" id="" class="entities"> {{ entities.entity_name }}</td>
+                                    </tr>
 
-                            <input type="checkbox" name="vendor_entity" value="{{ entities.pk }}" id="" class="entities"> {{ entities.entity_name }}  
-                        </span>                                 
-                        <br>
-                        {% endfor %}
-                        
-                        </div>  
-                     
-                        <p></p>
+                                {% endfor %}
+                                <tr id="no_data_table" style="display: none;">
+                                    <td>Not Found</td>
+                                </tr>
+                              
+            
+                            </tbody>
+                        </table>
+                        <p>&nbsp;</p>
+                        <br>                        
                     </div>
                 {% endif %}
                
@@ -165,25 +162,33 @@
         document.getElementById(formid).style.display = "block";
         document.getElementById("delete_me").setAttribute("value", itemid);
     }
-    function filterCompany(inputid, ulid) {
-        var input, filter, ul, li, a, i, txtValue;
-   
+    function searchEmpTbl(inputid, tableid, colno) {
+        var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById(inputid);
-       
         filter = input.value.toUpperCase();
-        ul = document.getElementById(ulid);
-        li = ul.getElementsByTagName("div");
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("span")[0];
-     
-            txtValue = a.textContent || a.innerText;
-        
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
+        table = document.getElementById(tableid);
+        tr = table.getElementsByTagName("tr");
+        var nd = -1;
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[colno];
+            // console.log("td:" + td);
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    nd += 1;
+                } else {
+                    tr[i].style.display = "none";
+                }
             }
+            if (nd === -1) {
+                document.getElementById("no_data_table").style.display = "contents";
+            } else {
+                document.getElementById("no_data_table").style.display = "none";
+            }
+           
         }
+        
     }
      document.addEventListener('DOMContentLoaded', function() {        
         var input = document.getElementById('email');
