@@ -1086,7 +1086,7 @@ def process_requests(request, cid):
 
                 
                 if request.POST.get('ve_status') != None:                   
-                
+                    # print(changes_list)
                     if len(changes_list) > 0:
                         selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=2)
@@ -1111,7 +1111,7 @@ def process_requests(request, cid):
                         html_content = render_to_string('emailtemplates/candidate_edited_vendor_onboarding.html' , {'changes':changes_list, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'company_name': selected_candidate.fk_entity_code.entity_name, 'candidate_name': selected_candidate.First_Name, 'candidate_id': selected_candidate.pk, 'vendor_name': selected_candidate.fk_vendor_code.vendor_name, 'dept_name': selected_candidate.fk_department_code.department_name , 'function_name': selected_candidate.fk_function_code.function_name, 'team_name': selected_candidate.fk_team_code.team_name, 'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name, 
                         'desg_name': selected_candidate.fk_designation_code.designation_name, 'region_name': selected_candidate.fk_region_code.region_name.zone_name , 'state_name': selected_candidate.fk_state_code.state_name.state_name, 'location_name': selected_candidate.fk_location_code.location_name, 'location_code': selected_candidate.fk_location_code.location_code, 'salary_num': selected_candidate.Gross_Salary_Amount , 'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang = 'en_IN'), 'rm_name': selected_candidate.Reporting_Manager, 'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID, 'doj': selected_candidate.Date_of_Joining, 'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id, 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id, 'manual_link': MANUAL_LINK, 'admin' : ADMIN_NAME, 'admin_mail': ADMIN_MAIL}) 
                         text_content = strip_tags(html_content)
-                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email )
                         msg.attach_alternative(html_content, "text/html")
                         msg.send()
                         # send_mail_code

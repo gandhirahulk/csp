@@ -382,7 +382,7 @@
                                 {% if 'Date_of_Joining' in x.tbl_column_name %}
                                     class = "changed_field"
                                 {% endif %}
-                            {% endfor %} type="date" readonly tabindex="17" value="{{ dummy.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+                            {% endfor %} type="date" readonly tabindex="17" value="{{ dummy.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" >
     
                         </div>
                     </div>
@@ -849,7 +849,7 @@
                             {% if 'Date_of_Joining' in x.tbl_column_name %}
                                 class = "changed_field"
                             {% endif %}
-                        {% endfor %} type="date" tabindex="17" value="{{ dummy.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+                        {% endfor %} type="date" tabindex="17" value="{{ dummy.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="True">
 
                     </div>
                 </div>
