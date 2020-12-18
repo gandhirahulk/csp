@@ -94,7 +94,8 @@ def resend_loi(request, cid):
         candidate_salary_structure = salary_structure.objects.get(candidate_code= selected_candidate.pk)
         ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
         ctc_word = num2words(ctc_number, lang = 'en_IN')
-        subject1 = 'Letter Of Intent'
+        subject1 = 'Letter Of Intent : ' + str(selected_candidate.fk_vendor_code.vendor_name) + ' | ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code) 
+                       
         html_content = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'designation': selected_candidate.fk_designation_code, 'vendor_name': selected_candidate.fk_vendor_code,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'company_name': selected_candidate.fk_entity_code,'state': selected_candidate.fk_state_code, 'city': selected_candidate.fk_city_code, 'doj': selected_candidate.Date_of_Joining,'ctc_number': ctc_number ,'ctc_words': ctc_word})
         body1 = strip_tags(html_content)
         from1 = my_username
@@ -106,7 +107,7 @@ def resend_loi(request, cid):
         use_tls=my_use_tls,
         use_ssl= my_use_ssl
         ) as connection:
-            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], connection=connection)
+            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id], bcc= [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id, 'sadaf.shaikh@udaan.com', ADMIN_MAIL ], connection=connection)
             msg.attach_alternative(html_content, "text/html")
             msg.send()
     except TimeoutError:
