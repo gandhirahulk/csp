@@ -83,19 +83,18 @@ WSGI_APPLICATION = 'Candidates_Selection_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       
         # 'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': 'obtooldb',
-        # 'USER': 'postgres',
-        # 'PASSWORD': 'associate',
-        # 'HOST': '172.31.20.44',
+        # 'USER': 'hrmsadmin@hrms-server',
+        # 'PASSWORD': 'Ud@@NhRm$',
+        # 'HOST': 'hrms-server.postgres.database.azure.com',
         # 'PORT': 5432,
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'obtooldb',
-        'USER': 'hrmsadmin@hrms-server',
+        'NAME': 'ob_tool',
+        'USER': 'hrmsadmin@hrmsassociatedb',
         'PASSWORD': 'Ud@@NhRm$',
-        'HOST': 'hrms-server.postgres.database.azure.com',
+        'HOST': 'hrmsassociatedb.postgres.database.azure.com',
         'PORT': 5432,
     }
 }
