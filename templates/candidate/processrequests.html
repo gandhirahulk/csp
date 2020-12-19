@@ -949,7 +949,8 @@
                                             <option value="{{ eachcandidate.fk_vendor_code_id }}">{{ eachcandidate.fk_vendor_code_id }}</option> -->
     
                                             {% if eachvendor.pk != eachcandidate.fk_vendor_code_id %}
-                                            <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
+                                                
+                                                <option value="{{ eachvendor.pk }}" label="{{ eachvendor.vendor_name }}">{{ eachvendor.fk_entity_code_id }}</option>
                                             {% endif %}                                    
                                         {% endfor %}                
                                     {% endif %}

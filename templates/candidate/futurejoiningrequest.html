@@ -20,7 +20,7 @@
     
     {% if future_requests %}
         
-        <table id="candidate-table" class="dataTable">
+        <table id="future-table" class="dataTable">
             <thead>
                 <tr>
                     <th>Candidate ID</th>
@@ -53,7 +53,7 @@
                         <td>{{ eachcandidate.fk_designation_code }}</td> 
                         <td>{{ eachcandidate.Date_of_Joining | date:"M d, Y" }}</td>
                         <td>{{ eachcandidate.delay_date | date:"M d, Y" }}</td>
-                        <td><a style="color: blue;cursor: pointer;" onclick="showConfirm('{{eachcandidate.pk}}','confirm_form')">Approve</a> | <a style="color: blue;" onclick="showReject('{{eachcandidate.pk}}','reject_form')">Reject</a></td>
+                        <td><a style="color: blue;cursor: pointer;" onclick="showConfirm('{{eachcandidate.pk}}','confirm_form')">Approve</a> | <a style="color: blue;cursor: pointer;" onclick="showReject('{{eachcandidate.pk}}','reject_form')">Reject</a></td>
                     </tr>
 
                  {% endfor %}
@@ -113,12 +113,13 @@
             <h2>Confirm New Joining Date?</h2>
         </div>     
     </div>
-    <div class="delete_form_footer">
+    <div class="delete_form_footer" style="display: flex;justify-content: space-around;">
         <form action="" method="post">
             {% csrf_token %}
             <button type="submit" formaction="{% url 'csp_app:future_joining_request' %}" value="" id="confirm_me" name="confirm_cid" class="forms-delete-btn">Confirm</button>
-            <button id="close_confirm" class="delete-forms-close-btn">Cancel</button>        
+                   
         </form>
+        <button id="close_confirm" class="delete-forms-close-btn" type="button">Cancel</button> 
     </div>
 </div>
 
@@ -128,17 +129,22 @@
             <h2>Reject New Joining Date?</h2>
         </div>     
     </div>
-    <div class="delete_form_footer">
+    <div class="delete_form_footer" style="display: flex;justify-content: space-around;">
         <form action="" method="post">
             {% csrf_token %}
             <button type="submit" formaction="{% url 'csp_app:future_joining_request' %}" value="" id="reject_me" name="reject_cid" class="forms-delete-btn">Confirm</button>
-            <button id="close_reject" class="delete-forms-close-btn">Cancel</button>        
+                  
         </form>
+        <button id="close_reject" class="delete-forms-close-btn" type="button">Cancel</button>  
     </div>
 </div>
-
+<input type="hidden" id="name">
+<input type="hidden" id="email">
+<input type="hidden" id="spocemail">
+<input type="hidden" id="phone_no">
 <script>
 $(document).ready(function(){
+    $('#future-table').dataTable();
     showMe('Candidate', 'can-expand');
     
     $(document).keyup(function(){

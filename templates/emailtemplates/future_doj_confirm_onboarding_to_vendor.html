@@ -10,16 +10,20 @@
                 border: 1px solid #000;
                 padding: 5px;
             }
+
+            .red_td{
+                background: #bf0711;
+                color: #f5f5fa;
+            }
         </style>
     </head>
     <body>
-        <p>Dear Recruiter SPOC / {{ onboarding_spoc }},</p>
-        <p>Please be informed that the below mentioned wants to join on {{ new_doj }} rather than {{ doj }}.</p>
-
-        <p>Request you to please revalidate the same and do the needful over portal ( <a href="http://www.ob.associatehrms.com/"> http://www.ob.associatehrms.com/)</a>.</p>
+        <p>Dear {{ vendor_spoc }},</p>
+        <p>Please be informed that Onboarding SPOC ({{ onboarding_spoc }} & {{ onboarding_spoc_mail }}) has approved the date of joining change request for below mentioned candidate with final Date of Joining as {{ doj }}. </p>          
+        <p>In Parallel, the letter for revised date of joining will be issued once the you approve the same.</p>
         <table class="email_table">
             <tr>
-                <td class="red_td">Candidate Name</td>
+                <td>Candidate Name</td>
                 <td>{{ candidate_name }} | {{ candidate_id }} </td>
             </tr>
             <tr>
@@ -31,17 +35,12 @@
                 <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }}</td>
             </tr>
             <tr>
-                <td>Designation</td>
-                <td>{{ desg_name }}</td>
-            </tr>
-            <tr>
                 <td>Location Details</td>
                 <td>{{ region_name }} | {{ state_name }} | {{ city_name }} | {{ location_name }} & {{ location_code }}</td>
             </tr>
            
-            
             <tr>
-                <td class="red_td">Web Application Link</td>
+                <td>Web Application Link</td>
                 <td><a href="https://ob.associatehrms.com">https://ob.associatehrms.com</a></td>
             </tr>           
            
