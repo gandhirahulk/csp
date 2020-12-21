@@ -1582,7 +1582,7 @@ def reject_candidate_onboarding(request, cid):
 
 
 @login_required(login_url='/notlogin/')
-@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def reject_candidate_vendor(request, cid):
     try:
         selected_candidate = master_candidate.objects.get(pk = cid)
