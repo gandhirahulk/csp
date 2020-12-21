@@ -1607,7 +1607,7 @@ def reject_candidate_vendor(request, cid):
                     Onboarding_SPOC = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
-                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
                     to_email = [ selected_candidate.TA_Spoc_Email_Id ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
@@ -1620,7 +1620,7 @@ def reject_candidate_vendor(request, cid):
                     msg.attach_alternative(html_content, "text/html")
                     msg.send() 
 
-                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
                     to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
@@ -1717,7 +1717,7 @@ def reject_candidate_vendor(request, cid):
                     Onboarding_SPOC = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
-                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
                     to_email = [ selected_candidate.Onboarding_Spoc_Email_Id]   
                     cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
@@ -1730,7 +1730,7 @@ def reject_candidate_vendor(request, cid):
                     msg.attach_alternative(html_content, "text/html")
                     msg.send() 
 
-                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
                     to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
