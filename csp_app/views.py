@@ -936,6 +936,7 @@ def process_requests(request, cid):
   
                 selected_candidate.modified_by = str(request.user)
                 selected_candidate.modified_date_time= datetime.now()
+                selected_candidate.save()
                 create_salary_structure(selected_candidate, basic, annualbasic, house_rent_allowance, annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus, special_allowance, annualspecial_allowance, ss_gross_salary, annualgross_salary, employee_pf, annualemployee_pf, employee_esic, annualemployer_esic, employee_total_contribution, annualemployee_total_contribution, employer_pf, annualemployer_pf, employer_pf_admin, annualemployer_pf_admin, employer_esic, group_personal_accident, annualgroup_personal_accident, group_mediclaim_insurance, annualgroup_mediclaim_insurance, employer_total_contribution, annualemployer_total_contribution, cost_to_company, annualcost_to_company, take_home_salary, annualtake_home_salary, variable, annualvariable, fixedsalary, annualfixedsalary)
 
                 for eachgroup in request.user.groups.all():
@@ -1401,6 +1402,16 @@ def process_requests(request, cid):
     except ObjectDoesNotExist:
         return HttpResponse("No Data To Display.")
 
+def check_for_doj_changes(selected_candidate, doj, new_doj, request):
+    changes_list = {}
+    m = str(doj)
+    n = str(new_doj)
+    
+    if m != n:
+        changes_list['Date Of Joining'] = [ selected_candidate.Date_of_Joining, doj, 'Date_of_Joining' ]
+    selected_candidate.Date_of_Joining = doj
+    return changes_list
+
 
 
 def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, dob, fathername, mothername, aadhaar, Pan, contact_no, emergency_no, hiring_fk, hiring, replacement, email, subsource_fk, referral, vendor_fk, entity_fk, department_fk, function_fk, team_fk, sub_team_fk, designation_fk, region_fk, state_fk, city_fk, location_fk, reporting_manager, reporting_manager_email, gender_fk, email_creation, onboarding_spoc, la_fk, salarytype_fk, salarytype, gross_salary, ss_gross_salary,physically_challenged, request):
@@ -1533,11 +1544,6 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     if s_type > 0 or s_amount > 0:
         new_gross_salary = gross_salary_history(fk_candidate_code= selected_candidate, gross_salary_entered= gross_salary, gross_salary_calculated= INR_to_number(ss_gross_salary), salary_type_selected= salarytype_fk, enetered_by= str(request.user), created_date_time= datetime.now())
         new_gross_salary.save() 
-    
-    
-        
- 
-  
     return changes_list
 
 
@@ -1838,11 +1844,29 @@ def future_joining_requests(request):
      
         if reject == None and confirm != None:
             selected_candidate = master_candidate.objects.get(pk = confirm)
+           
+            doj_changes_list = check_for_doj_changes(selected_candidate, selected_candidate.Date_of_Joining , selected_candidate.delay_date, request)
+            previous_changes = candidate_history.objects.filter(fk_candidate_code=selected_candidate, status=active_status)
+            for i in previous_changes:
+                i.status = deactive_status
+                i.save()
+            
+            for k,v in doj_changes_list.items():
+                try:
+                    existing = candidate_history.objects.get(fk_candidate_code=selected_candidate, field_name=k,old_value= v[0], new_value= v[1],tbl_column_name= v[2], status=active_status)
+                except ObjectDoesNotExist:
+                    
+                    new_record = candidate_history(fk_candidate_code=selected_candidate, field_name=k,old_value= v[0], new_value= v[1],tbl_column_name= v[2], created_by=str(request.user), created_date_time=datetime.now())
+                    new_record.save()
             selected_candidate.Date_of_Joining = selected_candidate.delay_date
             selected_candidate.vendor_status = pending_vendor
             selected_candidate.candidate_status = candidate_status.objects.get(pk=9)
             selected_candidate.joining_status = joining_status.objects.get(pk = 0)
+            selected_candidate.modified_by = str(request.user)
+            selected_candidate.modified_date_time= datetime.now()
             selected_candidate.save()
+
+
             subject = 'Change in Candidate Date of Joining : Confirmed : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
             to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
             cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id , selected_candidate.TA_Spoc_Email_Id]
