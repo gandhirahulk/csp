@@ -107,6 +107,8 @@ def joining_confirmation(request):
             msg.attach_alternative(html_content, "text/html")
             msg.send()
             selected_candidate.candidate_status = candidate_status.objects.get(pk=6)
+            selected_candidate.status = status.objects.get(pk=0)
+
             selected_candidate.save()
             my_host = selected_candidate.fk_vendor_code.vendor_smtp
             my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
