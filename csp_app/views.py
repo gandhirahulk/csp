@@ -1835,8 +1835,7 @@ def future_joining_requests(request):
     if request.method == 'POST':
         reject = request.POST.get('reject_cid')
         confirm = request.POST.get('confirm_cid')
-        print(reject)
-        print(confirm)
+     
         if reject == None and confirm != None:
             selected_candidate = master_candidate.objects.get(pk = confirm)
             selected_candidate.Date_of_Joining = selected_candidate.delay_date

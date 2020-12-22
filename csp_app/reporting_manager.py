@@ -134,9 +134,6 @@ def joining_confirmation(request):
             messages.success(request, "Candidate Dropped Out Details Mailed To Concerned Team")
             return redirect("csp_app:rm_joining_confirmation")
         if choice == '5':
-           
-            
-           
             try:
                 IT_email = IT_Email_ID.objects.get(pk=1)
                 IT_email_id = IT_email.email_id
@@ -184,6 +181,10 @@ def joining_confirmation(request):
                 msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
+                selected_candidate.candidate_status = candidate_status.objects.get(pk=7)
+                selected_candidate.delay_date = joining_date
+                selected_candidate.joining_status = joining_status.objects.get(pk=4)
+                selected_candidate.save()
                 messages.success(request, "Details Mailed To Concerned Team.")
                 return redirect("csp_app:rm_joining_confirmation")
 

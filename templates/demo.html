@@ -44,5 +44,13 @@
             // for using some added functionality go through https://datatables.net/examples/
         } );
     </script>
+     {% if request.user.groups.all %}
+     {% for eachgroup in request.user.groups.all %}
+         {% if eachgroup.name == 'Vendor' %}
+             <a href="{% url 'csp_app:document_upload' eachcandidate.pk %}" class="tab-btns">Documents</a> 
+
+         {% endif %}
+     {% endfor %}
+ {% endif %}
 </body>
 </html>
