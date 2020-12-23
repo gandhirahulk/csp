@@ -1544,18 +1544,20 @@
                 
             </div>
             <div id="reject_reason_form" class="form_modal" style="padding-top: 15%;">
-                <div class="delete_form_header" style="width: 60%;">
+                <div class="delete_form_header" style="width: 320px;">
                     <div class="forms-heading">
                         <h2>Reject Candidate?</h2>
                     </div>     
                 </div>
-                <div class="delete_form_footer" style="width: 60%;">
+                <div class="delete_form_footer" style="width: 320px;">
                     <div class="candidate-forms-input-holder">
-                        <textarea style="width: 100%;padding: 10px;outline: none;" name="reason" id="" cols="10" rows="3" placeholder="Reason For Rejection"></textarea>
+                      
+                        
+                        <textarea style="width: 100%;padding: 10px;outline: none;" name="reason" id="" placeholder="Reason For Rejection"></textarea>
                     </div>
                     <div>
                         <button type="submit" style="width: auto;" formaction="{% url 'csp_app:reject_candidate_vendor' eachcandidate.pk %}" class="forms-delete-btn">Reject Candidate</button>
-                        <button id="close_delete" class="delete-forms-close-btn">Cancel</button> 
+                        <button id="close_delete" class="delete-forms-close-btn" type="button">Cancel</button> 
                     </div>
     
                 
@@ -1697,6 +1699,9 @@
         });
         $('#close_c_history').click(function(){
             $("#view_candidate_history_form").css("display", "none");
+        });
+        $('#close_delete').click(function(){
+            $("#reject_reason_form").css("display", "none");
         });
         var selectedvalue = $('#referral').val();
         var usergroup = $('#user_group').val();

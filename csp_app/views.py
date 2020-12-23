@@ -578,10 +578,10 @@ def save_edit_wages(request):
 def vendor_candidates(usrname):
     try:
         a = []
-        s_vendor = master_vendor.objects.filter(spoc_email_id= usrname, status=active_status)
+        s_vendor = master_vendor.objects.filter(spoc_email_id= usrname)
         for e in s_vendor:
         
-            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= approve_onboarding, status= active_status) | master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= onboarding_status.objects.get(pk=4), status= active_status))
+            a = chain(master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= approve_onboarding) | master_candidate.objects.filter(fk_vendor_code=e.pk,onboarding_status= onboarding_status.objects.get(pk=4)))
             break
         
         vs_candidates = list(a)
@@ -610,7 +610,7 @@ def vendor_pending_candidates(usrname):
 
 def onboarding_candidates(usrname):
     try:
-        onb_candidates = master_candidate.objects.filter( Onboarding_Spoc_Email_Id=usrname,status= active_status)
+        onb_candidates = master_candidate.objects.filter( Onboarding_Spoc_Email_Id=usrname)
         # print(onb_candidates)
         return onb_candidates
     except ObjectDoesNotExist:
@@ -1614,6 +1614,8 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
+                    selected_candidate.status = deactive_status
+
                     selected_candidate.save()
                     Onboarding_SPOC = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
@@ -1660,11 +1662,12 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
+                    selected_candidate.status = deactive_status
                     selected_candidate.save()
                     Onboarding_SPOC = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
-                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
                     to_email = [ selected_candidate.TA_Spoc_Email_Id ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
@@ -1677,7 +1680,7 @@ def reject_candidate_vendor(request, cid):
                     msg.attach_alternative(html_content, "text/html")
                     msg.send() 
 
-                    subject = 'Candidate Request Rejected : Intimation :  ' + str(firstname) + ' | ' + str(new_code)
+                    subject = 'Candidate Request Rejected : Intimation :  ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
                     to_email = [ selected_candidate.Reporting_Manager_E_Mail_ID ]   
                     cc_email = [ selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id ]
                     bcc_email = [ 'sadaf.shaikh@udaan.com' , ADMIN_MAIL ]
@@ -1708,6 +1711,7 @@ def reject_candidate_vendor(request, cid):
                         selected_candidate.candidate_status = approved_candidates
                         selected_candidate.vendor_status = approve_vendor
                         selected_candidate.joining_status = joining_status.objects.get(pk=0)
+                        selected_candidate.status = deactive_status
                         selected_candidate.save()
                         messages.success(request, "Candidate Future Joining Request Rejected.")
                         return redirect("csp_app:pending_request")
@@ -1932,7 +1936,7 @@ def candidate(request):
     count = 0
     dojcount = 0
     all_active_candidates = master_candidate.objects.filter(status=active_status)
-    candidate_list = master_candidate.objects.filter(status=active_status)
+    candidate_list = master_candidate.objects.all()
     document_list = candidate_document.objects.filter(status=active_status)
     entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
     c_status_list = candidate_status.objects.all()
@@ -3189,12 +3193,12 @@ def create_candidate(request):
                 return redirect("csp_app:new_candidate")
             location_fk = master_location.objects.get(pk= location)
                
-            try:                
-                dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
-                messages.error( request, "Aadhaar Number Already Exist")
-                return redirect("csp_app:new_candidate")
-            except ObjectDoesNotExist:
-                pass
+            # try:                
+            #     dup_candidate_aadhaar = master_candidate.objects.get(Aadhaar_Number= aadhaar, status= active_status)
+            #     messages.error( request, "Aadhaar Number Already Exist")
+            #     return redirect("csp_app:new_candidate")
+            # except ObjectDoesNotExist:
+            #     pass
             try:
                 dup_candidate_pan = master_candidate.objects.get(PAN_Number= Pan, status= active_status)
                 messages.error( request, "PAN  Already Exist")
