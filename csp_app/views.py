@@ -1708,12 +1708,20 @@ def reject_candidate_vendor(request, cid):
                         msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email )
                         msg.attach_alternative(html_content, "text/html")
                         msg.send()
-                        selected_candidate.candidate_status = approved_candidates
-                        selected_candidate.vendor_status = approve_vendor
-                        selected_candidate.joining_status = joining_status.objects.get(pk=0)
+                        selected_candidate.vendor_status = reject_vendor
+                        selected_candidate.loi_status = loi_status.objects.get(pk=3)
+                        selected_candidate.documentation_status = documentation_status.objects.get(pk=3)
+                        selected_candidate.offer_letter_status = offer_letter_status.objects.get(pk=3)
+                        selected_candidate.it_intimation_status = IT_intimation_status.objects.get(pk=3)
+                        selected_candidate.joining_status = joining_status.objects.get(pk=3)
+                        e = ecode_generation_status.objects.get(pk=3)
+                        selected_candidate.ecode_status = e.status_name
+                        selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
+                        selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
+                        selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                         selected_candidate.status = deactive_status
                         selected_candidate.save()
-                        messages.success(request, "Candidate Future Joining Request Rejected.")
+                        messages.success(request, "Candidate Rejected.")
                         return redirect("csp_app:pending_request")
 
 
@@ -1862,7 +1870,7 @@ def future_joining_requests(request):
                     
                     new_record = candidate_history(fk_candidate_code=selected_candidate, field_name=k,old_value= v[0], new_value= v[1],tbl_column_name= v[2], created_by=str(request.user), created_date_time=datetime.now())
                     new_record.save()
-            selected_candidate.Date_of_Joining = selected_candidate.delay_date
+            # selected_candidate.Date_of_Joining = selected_candidate.delay_date
             selected_candidate.vendor_status = pending_vendor
             selected_candidate.candidate_status = candidate_status.objects.get(pk=9)
             selected_candidate.joining_status = joining_status.objects.get(pk = 0)

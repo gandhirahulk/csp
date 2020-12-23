@@ -367,27 +367,47 @@
                                 {% endfor %} type="text" readonly value="{{ eachcandidate.Referral }}" tabindex="16" placeholder="Referral" name="c_referral" id="c_referral" pattern="[U]{1}[0-9]{2,5}" maxlength="6">
                             </div>
                         </div>
-        
-                        <div class="request-forms-input-holder">
-                            <div>
-                                <label for="">Date Of Joining</label>    
-                            </div>
-                            <div>
-                                <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
-        
-                            </div>
-        
-                            <div>
-                                <input
-                                {% for x in candidate_recent_change %}
-                                    {% if 'Date_of_Joining' in x.tbl_column_name %}
-                                        class = "changed_field"
-                                    {% endif %}
-                                {% endfor %} type="date" readonly tabindex="17" value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
-        
-                            </div>
-                        </div>  
-
+                        {% if eachcandidate.candidate_status_id == 9 %}
+                            <div class="request-forms-input-holder">
+                                <div>
+                                    <label for="">Date Of Joining</label>    
+                                </div>
+                                <div>
+                                    <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+            
+                                </div>
+            
+                                <div>
+                                    <input
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Date_of_Joining' in x.tbl_column_name %}
+                                            class = "changed_field"
+                                        {% endif %}
+                                    {% endfor %} type="date" readonly tabindex="17" value="{{ eachcandidate.delay_date|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+            
+                                </div>
+                            </div>  
+                        {% else %}
+                            <div class="request-forms-input-holder">
+                                <div>
+                                    <label for="">Date Of Joining</label>    
+                                </div>
+                                <div>
+                                    <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+            
+                                </div>
+            
+                                <div>
+                                    <input
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Date_of_Joining' in x.tbl_column_name %}
+                                            class = "changed_field"
+                                        {% endif %}
+                                    {% endfor %} type="date" readonly tabindex="17" value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'}}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4" id="{{ request.user.is_staff }}">
+            
+                                </div>
+                            </div>  
+                        {% endif %}
                         <div class="request-forms-input-holder">
                             <div>
                                 <label for="">Physically Challenged</label>    
