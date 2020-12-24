@@ -1092,6 +1092,10 @@ def process_requests(request, cid):
                     # print(changes_list)
                     if len(changes_list) > 0:
                         if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
+                            selected_candidate.Date_of_Joining = selected_candidate.delay_date
+                            selected_candidate.vendor_status = approve_vendor
+                            selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
+                            selected_candidate.save()
                             my_host = selected_candidate.fk_vendor_code.vendor_smtp
                             my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
                             my_username = selected_candidate.fk_vendor_code.vendor_email_id
@@ -1149,10 +1153,7 @@ def process_requests(request, cid):
                             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
                             msg.attach_alternative(html_content, "text/html")
                             msg.send()
-
-                            selected_candidate.vendor_status = approve_vendor
-                            selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
-                            selected_candidate.save()
+                           
                             messages.success(request, "A mail with side letter sent to candidate.")
                             return redirect("csp_app:pending_request")
                         selected_candidate.vendor_status = vendor_status.objects.get(pk=4)
