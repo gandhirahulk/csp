@@ -7874,67 +7874,6 @@ def index(request):
     return HttpResponse("Hello Sdf")
 
 
-@login_required(login_url='/notlogin/')
-def admin(request):
-    return render(request, 'csp_app/adminhome.html', {'allcandidates': all_active_candidates, })
-
-
-def csp_login(request):
-    if request.method == "POST":
-        if request.POST.get('username') != None or request.POST.get('username') != '':
-            usrname = request.POST.get('username')
-            pwd = request.POST.get('password')
-            if usrname == '':
-                messages.add_message(request, messages.WARNING, "Please Enter UID")
-                return redirect('csp_app:login')
-            elif pwd == '':
-                messages.add_message(request, messages.WARNING, "Please Enter Password")
-                return redirect('csp_app:login')
-            user = authenticate(request, username=usrname, password=pwd)
-            if user is not None and user.is_active:
-                login(request, user)
-                try:
-                    User.objects.filter(pk=request.user.pk).update(last_login=datetime.now())
-                    group = request.user.groups.all()
-
-                    for groupname in group:
-                        group_name = groupname
-                    if str(group_name) == 'Admin':
-                        messages.success(request, "Login Successfull")
-                        return redirect('csp_app:candidate')
-                    elif str(group_name) == 'Vendor':
-                        messages.success(request, "Login Successfull")
-                        return redirect('csp_app:candidate')
-                    elif str(group_name) == 'Candidate':
-                        try:
-                            selected_candidate = master_candidate.objects.get(Personal_Email_Id=str(request.user),
-                                                                              status=active_status)
-                        except ObjectDoesNotExist:
-                            messages.add_message(request, messages.ERROR, "Invalid Credentials")
-                            return redirect('csp_app:login')
-                        messages.success(request, "Login Successfull")
-                        return redirect('csp_app:document_upload', selected_candidate.pk_candidate_code)
-                    else:
-                        messages.success(request, "Login Successfull")
-                        return redirect('csp_app:candidate')
-                except UnboundLocalError:
-                    messages.success(request, "Login Successfull")
-                    return redirect('csp_app:rm_joined')
-            else:
-                messages.add_message(request, messages.ERROR, "Invalid Credentials")
-                return redirect('csp_app:login')
-    return render(request, 'csp_app/Login.html', {'allcandidates': all_active_candidates, })
-
-
-@login_required(login_url='/notlogin/')
-def csp_logout(request):
-    logout(request)
-    return redirect('csp_app:login')
-
-
-def notlogin(request):
-    return render(request, 'csp_app/timeout.html', {'allcandidates': all_active_candidates, })
-
 
 def clear_data(request):
     reject_reason.objects.all().delete()
