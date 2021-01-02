@@ -13,7 +13,7 @@
         </style>
     </head>
     <body>
-        <p>Dear Recruiter SPOC / {{ onboarding_spoc }},</p>
+        <p>Dear {{ recruiter_name }} / {{ onboarding_spoc }},</p>
         <p>Please be informed that joining confirmation has been received from the reporting manager for below mentioned candidate with Date of Joining as {{ doj }}. </p>          
         <p>Request you to please initiate the next step of intimation to other departments (for email / laptop) if required.</p>
         <table class="email_table">
@@ -27,7 +27,7 @@
             </tr> 
             <tr>
                 <td>Functional Details</td>
-                <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }}</td>
+                <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }} | {{ desg_name}} </td>
             </tr>
             <tr>
                 <td>Designation</td>

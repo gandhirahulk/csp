@@ -19,8 +19,8 @@
     </head>
     <body>
         <p>Dear {{ rm_name }},</p>
-        <p>Please be informed that Onboarding SPOC ({{ onboarding_spoc }} & {{ onboarding_spoc_mail }}) has <mark>“rejected”</mark> the date of joining change request for below mentioned candidate and the final Date of Joining been considered as of now is {{ doj }}. </p>
-        <p>You are requested to connect with the Onboarding SPOC ({{ onboarding_spoc }} & {{ onboarding_spoc_mail }}) for any further clarification, if required.</p>
+        <p>Please be informed that the Onboarding SPOC: {{ onboarding_spoc }} ({{ onboarding_spoc_mail }}) has <mark>“rejected”</mark> the date of joining change request for below mentioned candidate and the final Date of Joining been considered as of now is {{ doj }}. </p>
+        <p>You are requested to connect with the Onboarding SPOC: {{ onboarding_spoc }} ({{ onboarding_spoc_mail }}) for any further clarification, if required.</p>
         <table class="email_table">
             <tr>
                 <td>Candidate Name</td>
@@ -32,7 +32,7 @@
             </tr> 
             <tr>
                 <td>Functional Details</td>
-                <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }}</td>
+                <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }} | {{ desg_name}} </td>
             </tr>
             <tr>
                 <td>Location Details</td>
