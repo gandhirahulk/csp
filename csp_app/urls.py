@@ -1,8 +1,8 @@
 from django.urls import path
-from csp_app import views
-from csp_app import execute
-from csp_app import exports
-from csp_app import reporting_manager
+from . import views
+from . import execute
+from . import exports
+from . import reporting_manager
 from django.conf import settings
 from django.conf.urls.static import static
 
