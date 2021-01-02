@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'csp_app/images/udaanredlogo.png' %}"/>
+    <title>Login!</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/login.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/alertmsgcss.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="login-wrapper">
+    {% block bodyblock %}
+
+        <div>
+            <h2 style="color: #bf0711;">Login</h2>
+        </div>
+
+        <form method="POST" action="{% url 'csp_app:check_otp' %}">
+            {% csrf_token %}
+            OTP : {{ x }}
+
+            <div class="form-group">
+
+                <input class="login-input" type="text" value="{{ x }}" name="otp" id="otp" autocomplete="off" max="50"
+                       placeholder="Enter 6 Digit OTP" maxlength="6">
+            </div>
+
+            <div class="login-flex">
+
+                <input type="hidden" value="{{ otp }}" name="sent_otp">
+                <input type="hidden" name="general" value="{{ f }}">
+                <input type="hidden" name="uid" value="{{ uid }}">
+                <input type="hidden" name="pwd" value="{{ pwd }}">
+
+
+            </div>
+
+            <div class="login-btn-holder" style="padding-bottom: 10px;">
+                <button class="login-btn" formaction="{% url 'csp_app:check_otp' %}" type="submit">Submit</button>
+            </div>
+
+            <div class="login-btn-holder" style="padding-bottom: 10px;">
+                <button type="submit" id="send_otp" class="login-btn"
+                        formaction="{% url 'csp_app:resend_otp' %}"> Resend OTP
+                </button>
+            </div>
+
+
+            <div class="login-btn-holder" style="padding-top: 0px;">
+                {% if messages %}
+                    {% for msg in messages %}
+                        {% if msg.tags == 'success' %}
+                            <div id="alerts"
+                                 class="alert alert-success alert-dismissible sucess-msg-alert animate__animated animate__slideInRight animate__fast"
+                                 style="    right: -37vw;
+                        bottom: -20vh;
+                    ">
+                                <table id="success-tbl">
+                                    <tr>
+                                        <td rowspan="2"><i class="fas fa-check-circle"
+                                                           style="padding: 15px; padding-left: 0px !important;"></i>
+                                        </td>
+                                        <td style="font-size: 16px; font-weight: bold;">Success</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ msg }}</td>
+
+                                    </tr>
+                                </table>
+                                <button type="button" class="close" data-dismiss="alert"
+                                        style="outline: none !important;"> &times;
+                                </button>
+
+                            </div>
+                        {% endif %}
+                        {% if msg.tags == 'error' %}
+                            <div id="alerts"
+                                 class="alert alert-danger alert-dismissible error-msg-alert animate__animated animate__slideInRight animate__fast"
+                                 style="    right: -37vw;
+                        bottom: -20vh;
+                    ">
+                                <table id="failure-tbl">
+                                    <tr>
+                                        <td rowspan="2" style="border-bottom: none;"><i class="fas fa-times"
+                                                                                        style="padding: 15px; padding-left: 0px !important; font-family: 'Font Awesome 5 Free' !important;"></i>
+                                        </td>
+                                        <td style="font-size: 16px; font-weight: bold;border-bottom: none;">Error</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: none;">{{ msg }}</td>
+                                    </tr>
+                                </table>
+                                <button type="button" class="close" data-dismiss="alert"
+                                        style="outline: none !important;">&times;
+                                </button>
+
+                            </div>
+                        {% endif %}
+                        {% if msg.tags == 'warning' %}
+                            <div id="alerts"
+                                 class="alert alert-warning alert-dismissible warning-msg-alert animate__animated animate__slideInRight animate__fast"
+                                 style="    right: -37vw;
+                        bottom: -20vh;
+                    ">
+                                <table id="warning-tbl">
+                                    <tr>
+                                        <td rowspan="2" style="border-bottom: none;"><i class="fas fa-times"
+                                                                                        style="padding: 15px; padding-left: 0px !important; font-family: 'Font Awesome 5 Free' !important;"></i>
+                                        </td>
+                                        <td style="font-size: 16px; font-weight: bold;border-bottom: none;">Warning</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: none;">{{ msg }}</td>
+                                    </tr>
+                                </table>
+                                <button type="button" class="close" data-dismiss="alert"
+                                        style="outline: none !important;">&times;
+                                </button>
+
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </form>
+    {% endblock %}
+</div>
+<script type="text/javascript">
+    function hidediv() {
+        $('#alerts').removeClass('animate__animated animate__slideOutRight animate__fast').show().addClass('animate__animated animate__slideInRight animate__fast');
+
+        $('#alerts').removeClass('animate__animated animate__slideInRight animate__fast').addClass('animate__animated animate__slideOutRight animate__fast');
+    }
+
+    setTimeout("hidediv()", 2000);
+
+
+</script>
+</body>
+</html>
+
+
+<script>
+    function disFun() {
+        if (document.getElementById('otp').value === "" && document.getElementById('otp').length < 6) {
+            document.getElementById('btn').disabled = true;
+        } else {
+            document.getElementById('btn').disabled = false;
+        }
+    }
+
+
+</script>
+
