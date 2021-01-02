@@ -446,7 +446,7 @@ select[readonly]:focus{
     padding: 5px;
   }
 
-  #request_count{
+  .request_count{
     color: white;
     background: green;
     width: 20px;

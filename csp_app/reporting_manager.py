@@ -82,13 +82,17 @@ def joined(request):
     last_ten_days = today - timedelta(days = 10)   
     request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0), candidate_status=candidate_status.objects.get(pk=1)).exclude(Date_of_Joining__gt=today)
     count = len(request_candidates)
-    return render(request, 'reporting_manager/joined.html',{'count':count, 'joined_candidates': joined_candidates})
+    future_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= today,status=active_status, joining_status=joining_status.objects.get(pk=0), vendor_status= approve_vendor)
+    doj_count = len(future_candidates)
+    return render(request, 'reporting_manager/joined.html',{'count':count,'doj_count':doj_count, 'joined_candidates': joined_candidates})
 
 def joining_confirmation(request):
     today = date.today() 
     last_ten_days = today - timedelta(days = 10)   
     request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0), candidate_status=candidate_status.objects.get(pk=1)).exclude(Date_of_Joining__gt=today)
     count = len(request_candidates)
+    future_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= today,status=active_status, joining_status=joining_status.objects.get(pk=0), vendor_status= approve_vendor)
+    doj_count = len(future_candidates)
     Onboarding_SPOC, Onboarding_SPOC_name = get_onbording_spoc()
     if request.method == 'POST' and request.POST.get('cid') != None:
         cid = request.POST.get('cid')
@@ -236,7 +240,7 @@ def joining_confirmation(request):
 
         messages.success(request, "")
         return redirect("csp_app:rm_joining_confirmation")
-    return render(request, 'reporting_manager/joining_confirmation.html',{'count':count, 'request_candidates': request_candidates})
+    return render(request, 'reporting_manager/joining_confirmation.html',{'count':count,'doj_count':doj_count, 'request_candidates': request_candidates})
 
 def drop_out(request):
     drop_out_candidates = master_candidate.objects.filter( candidate_status=dropout_candidate, Reporting_Manager_E_Mail_ID= str(request.user),status=active_status)
@@ -244,7 +248,9 @@ def drop_out(request):
     last_ten_days = today - timedelta(days = 10)   
     request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0), candidate_status=candidate_status.objects.get(pk=1)).exclude(Date_of_Joining__gt=today)
     count = len(request_candidates)
-    return render(request, 'reporting_manager/drop_out.html',{ 'count':count, 'drop_out_candidates': drop_out_candidates})
+    future_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= today,status=active_status, joining_status=joining_status.objects.get(pk=0), vendor_status= approve_vendor)
+    doj_count = len(future_candidates)
+    return render(request, 'reporting_manager/drop_out.html',{ 'count':count,'doj_count':doj_count, 'drop_out_candidates': drop_out_candidates})
 
 def future_joining(request):
     today = date.today() 
@@ -253,5 +259,5 @@ def future_joining(request):
     count = len(request_candidates)
  
     future_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= today,status=active_status, joining_status=joining_status.objects.get(pk=0), vendor_status= approve_vendor)
-  
-    return render(request, 'reporting_manager/future_joining.html',{'count':count,'future_candidates': future_candidates})
+    doj_count = len(future_candidates)
+    return render(request, 'reporting_manager/future_joining.html',{'count':count,'doj_count':doj_count,'future_candidates': future_candidates})
