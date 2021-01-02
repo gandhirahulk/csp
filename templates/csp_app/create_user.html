@@ -106,7 +106,7 @@
             </div>
             <div class="forms-input-holder">
                 <label for="">Phone Number</label>
-                <input type="text" placeholder="10 digit phone no." name="phone" required="true">
+                <input type="text" placeholder="10 digit phone no." name="phone" id="phone_no" pattern="[6-9]{1}[0-9]{9}" maxlength="10" required="true">
             </div>
             <div class="forms-input-holder">
                 <label for="">User Group</label>
@@ -201,5 +201,21 @@
         document.getElementById(formid).style.display = "block";
         document.getElementById(inputid).setAttribute("value", itemid);
     }
+</script>
+
+<script type="text/javascript">
+      
+    document.addEventListener('DOMContentLoaded', function() { 
+        var input = document.getElementById('phone_no');
+            input.addEventListener('keydown', function(e){      
+                var input = e.target;
+                var val = input.value;
+                var end = input.selectionEnd;
+                if(e.keyCode == 32) {
+                    e.preventDefault();
+                    return false;
+                }     
+            });
+        })
 </script>
 {% endblock %}

@@ -7837,8 +7837,7 @@ def create_user(request):
         email = request.POST.get('email')
         group = request.POST.get('usergroup')
         phone = request.POST.get('phone')
-        try:               
-            assign_group = Group.objects.get(name=group) 
+       
         try:
             assign_group = Group.objects.get(name=group)
             if assign_group.name == 'Onboarding SPOC':
