@@ -6,9 +6,9 @@
 
     <div class="tabs">
         <a href="{% url 'csp_app:rm_joined' %}" class="tab-btns active-tab">Joined</a>   
-        <a href="{% url 'csp_app:rm_joining_confirmation' %}" class="tab-btns">Joining Confirmation Required <button disabled id="request_count" >{{ count }}</button></a> 
+        <a href="{% url 'csp_app:rm_joining_confirmation' %}" class="tab-btns">Joining Confirmation Required <button disabled class="request_count" >{{ count }}</button></a> 
         <a href="{% url 'csp_app:rm_drop_out' %}" class="tab-btns">Drop Out</a>   
-        <a href="{% url 'csp_app:rm_future_joining' %}" class="tab-btns">Future Joining</a>        
+        <a href="{% url 'csp_app:rm_future_joining' %}" class="tab-btns">Future Joining <button disabled class="request_count" >{{ doj_count }}</button></a>        
 
     </div>
 

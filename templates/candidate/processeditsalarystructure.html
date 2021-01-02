@@ -7,7 +7,7 @@
 {% if eachcandidate %}
     <div class="tabs">
         <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>   
-        <a href="{% url 'csp_app:pending_request' %}" class="tab-btns active-tab">Pending Requests <button disabled id="request_count" >{{ count }}</button> </a>   
+        <a href="{% url 'csp_app:pending_request' %}" class="tab-btns active-tab">Pending Requests <button disabled class="request_count" >{{ count }}</button> </a>   
         
     </div>
    

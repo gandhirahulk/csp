@@ -199,7 +199,7 @@
                 <label for="" >Company</label>
 
                 <select name="c_entity" id="c_entity" required="true" tabindex="19">
-                    <option value="" disabled selected>Select Company</option>
+                    <option value="" disabled selected class="empty">Select Company</option>
                     {% if entity_list %}
                         {% for eachentity in entity_list %}
                             <option value="{{ eachentity.pk }}" label="{{ eachentity.entity_name }}">{{ eachentity.entity_name }}</option>

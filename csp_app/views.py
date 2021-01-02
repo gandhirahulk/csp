@@ -65,6 +65,16 @@ def get_onbording_spoc():
     return Onboarding_SPOC_Mail, Onboarding_SPOC_Name
 
 
+def get_recruiter_spoc(ta_spoc_mail):
+    try:
+
+        recruiter = User.objects.get(username=ta_spoc_mail)
+        recruiter_name = recruiter.first_name
+    except ObjectDoesNotExist:
+        recruiter_name = ADMIN_NAME
+    return recruiter_name
+
+
 Onboarding_SPOC, Onboarding_SPOC_name = get_onbording_spoc()
 
 
@@ -1063,6 +1073,8 @@ def process_requests(request, cid):
                             selected_candidate.onboarding_status = onboarding_status.objects.get(pk=4)
                         selected_candidate.save()
                         Onboarding_SPOC, Onboarding_SPOC_name = get_onbording_spoc()
+                        recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+
                         # send_mail_code
                         subject = 'New Resource Requirement & Finalized Candidate Information : ' + str(
                             selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
@@ -1093,7 +1105,9 @@ def process_requests(request, cid):
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                         'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                         'recruiter_name': recruiter_name,
+                                                         'onboarding_spoc_mail': Onboarding_SPOC,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1132,7 +1146,9 @@ def process_requests(request, cid):
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                         'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                         'recruiter_name': recruiter_name,
+                                                         'onboarding_spoc_mail': Onboarding_SPOC,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1171,7 +1187,9 @@ def process_requests(request, cid):
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                         'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                         'recruiter_name': recruiter_name,
+                                                         'onboarding_spoc_mail': Onboarding_SPOC,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1198,12 +1216,13 @@ def process_requests(request, cid):
                     if selected_candidate.Laptop_Allocation_id == 1:
                         selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
                     if len(changes_list) > 0:
-
+                        recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=4)
                         # send_mail_code
                         subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' | ' + str(
                             selected_candidate.pk)
                         to_email = [selected_candidate.TA_Spoc_Email_Id]
+                        cc_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                         bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                         from_email = FROM_EMAIL
                         html_content = render_to_string('emailtemplates/candidate_edited_onboarding.html',
@@ -1230,11 +1249,14 @@ def process_requests(request, cid):
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                         'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                         'recruiter_name': recruiter_name,
+                                                         'onboarding_spoc_mail': Onboarding_SPOC,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
-                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email)
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email,
+                                                     cc=cc_email)
                         msg.attach_alternative(html_content, "text/html")
                         msg.send()
                         if selected_candidate.vendor_status != vendor_status.objects.get(
@@ -1243,7 +1265,7 @@ def process_requests(request, cid):
                             # send_mail_code
                             subject = 'Candidate Information Edited : ' + str(
                                 selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
-                            to_email = [selected_candidate.TA_Spoc_Email_Id]
+                            to_email = [selected_candidate.fk_vendor_code.spoc_email_id]
                             bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                             from_email = FROM_EMAIL
                             html_content = render_to_string('emailtemplates/candidate_edited_onboarding_to_vendor.html',
@@ -1270,7 +1292,9 @@ def process_requests(request, cid):
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                             'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                             'recruiter_name': recruiter_name,
+                                                             'onboarding_spoc_mail': Onboarding_SPOC,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1308,7 +1332,9 @@ def process_requests(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                     'recruiter_name': recruiter_name,
+                                                     'onboarding_spoc_mail': Onboarding_SPOC,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -1347,7 +1373,9 @@ def process_requests(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                     'recruiter_name': recruiter_name,
+                                                     'onboarding_spoc_mail': Onboarding_SPOC,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -1386,7 +1414,9 @@ def process_requests(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                     'recruiter_name': recruiter_name,
+                                                     'onboarding_spoc_mail': Onboarding_SPOC,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -1399,7 +1429,7 @@ def process_requests(request, cid):
                     return redirect("csp_app:pending_request")
 
                 if request.POST.get('ve_status') != None:
-
+                    recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                     # print(changes_list)
                     if len(changes_list) > 0:
                         if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
@@ -1460,6 +1490,8 @@ def process_requests(request, cid):
                                                              'function_name': selected_candidate.fk_function_code.function_name,
                                                              'team_name': selected_candidate.fk_team_code.team_name,
                                                              'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name,
+                                                             'region_name': selected_candidate.fk_region_code.region_name.zone_name,
+                                                             'city_name': selected_candidate.fk_city_code.city_name,
                                                              'desg_name': selected_candidate.fk_designation_code.designation_name,
                                                              'city_name': selected_candidate.fk_city_code.city_name,
                                                              'region_name': selected_candidate.fk_region_code.region_name.zone_name,
@@ -1473,7 +1505,9 @@ def process_requests(request, cid):
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                             'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                             'recruiter_name': recruiter_name,
+                                                             'onboarding_spoc_mail': Onboarding_SPOC,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1490,7 +1524,10 @@ def process_requests(request, cid):
                                                             {'changes': changes_list,
                                                              'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                              'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                             'candidate_name': selected_candidate.First_Name,
+                                                             'candidate_name': str(
+                                                                 selected_candidate.First_Name) + ' ' + str(
+                                                                 selected_candidate.Middle_Name) + ' ' + str(
+                                                                 selected_candidate.Last_Name),
                                                              'candidate_id': selected_candidate.pk,
                                                              'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                              'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1510,7 +1547,9 @@ def process_requests(request, cid):
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                             'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                             'recruiter_name': recruiter_name,
+                                                             'onboarding_spoc_mail': Onboarding_SPOC,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1548,7 +1587,9 @@ def process_requests(request, cid):
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                             'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                             'recruiter_name': recruiter_name,
+                                                             'onboarding_spoc_mail': Onboarding_SPOC,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1604,7 +1645,9 @@ def process_requests(request, cid):
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                         'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                         'recruiter_name': recruiter_name,
+                                                         'onboarding_spoc_mail': Onboarding_SPOC,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1642,7 +1685,9 @@ def process_requests(request, cid):
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                         'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                         'recruiter_name': recruiter_name,
+                                                         'onboarding_spoc_mail': Onboarding_SPOC,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1726,7 +1771,9 @@ def process_requests(request, cid):
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                             'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                             'recruiter_name': recruiter_name,
+                                                             'onboarding_spoc_mail': Onboarding_SPOC,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1789,7 +1836,9 @@ def process_requests(request, cid):
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                         'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                         'recruiter_name': recruiter_name,
+                                                         'onboarding_spoc_mail': Onboarding_SPOC,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
                                                          'onboarding_spoc_firstname': Onboarding_SPOC_first_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
@@ -1847,7 +1896,8 @@ def process_requests(request, cid):
                                  'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                  'doj': selected_candidate.Date_of_Joining,
                                  'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                 'recruiter_name': recruiter_name, 'onboarding_spoc_mail': Onboarding_SPOC,
+                                 'onboarding_spoc': Onboarding_SPOC_name,
                                  'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': MANUAL_LINK,
                                  'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1898,7 +1948,8 @@ def process_requests(request, cid):
                                  'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                  'doj': selected_candidate.Date_of_Joining,
                                  'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                 'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                 'recruiter_name': recruiter_name, 'onboarding_spoc_mail': Onboarding_SPOC,
+                                 'onboarding_spoc': Onboarding_SPOC_name,
                                  'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': MANUAL_LINK,
                                  'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -2255,6 +2306,7 @@ def reject_candidate_vendor(request, cid):
 
                     selected_candidate.save()
                     Onboarding_SPOC, Onboarding_SPOC_name = get_onbording_spoc()
+                    recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
                     subject = 'Candidate Request Rejected : Intimation :  ' + str(
@@ -2285,8 +2337,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
-                                                     'admin_mail': ADMIN_MAIL})
+                                                     'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                                     'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email,
@@ -2322,8 +2374,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
-                                                     'admin_mail': ADMIN_MAIL})
+                                                     'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                                     'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email,
@@ -2334,6 +2386,7 @@ def reject_candidate_vendor(request, cid):
                     messages.success(request, "Candidate Rejected .")
                     return redirect("csp_app:pending_request")
                 elif str(eachgroup) == 'Onboarding SPOC':
+                    recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                     selected_candidate.onboarding_status = reject_onboarding
                     selected_candidate.vendor_status = vendor_status.objects.get(pk=3)
                     selected_candidate.loi_status = loi_status.objects.get(pk=3)
@@ -2379,8 +2432,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
-                                                     'admin_mail': ADMIN_MAIL})
+                                                     'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                                     'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email,
@@ -2416,8 +2469,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
-                                                     'admin_mail': ADMIN_MAIL})
+                                                     'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                                     'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email,
@@ -2427,6 +2480,7 @@ def reject_candidate_vendor(request, cid):
                     messages.success(request, "Candidate Rejected Mail Sent To Admin.")
                     return redirect("csp_app:pending_request")
                 else:
+                    recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                     if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
                         # send_mail_code
                         subject = 'Change in Date of Joining : Rejected : ' + str(
@@ -2445,6 +2499,8 @@ def reject_candidate_vendor(request, cid):
                                                          'function_name': selected_candidate.fk_function_code.function_name,
                                                          'team_name': selected_candidate.fk_team_code.team_name,
                                                          'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name,
+                                                         'region_name': selected_candidate.fk_region_code.region_name.zone_name,
+                                                         'city_name': selected_candidate.fk_city_code.city_name,
                                                          'desg_name': selected_candidate.fk_designation_code.designation_name,
                                                          'city_name': selected_candidate.fk_city_code.city_name,
                                                          'region_name': selected_candidate.fk_region_code.region_name.zone_name,
@@ -2458,7 +2514,9 @@ def reject_candidate_vendor(request, cid):
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                         'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                         'recruiter_name': recruiter_name,
+                                                         'onboarding_spoc_mail': Onboarding_SPOC,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -2524,8 +2582,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
-                                                     'admin_mail': ADMIN_MAIL})
+                                                     'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                                     'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email,
@@ -2561,8 +2619,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
-                                                     'admin_mail': ADMIN_MAIL})
+                                                     'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                                     'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email,
@@ -2671,7 +2729,7 @@ def future_joining_requests(request):
     if request.method == 'POST':
         reject = request.POST.get('reject_cid')
         confirm = request.POST.get('confirm_cid')
-
+        recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
         if reject == None and confirm != None:
             selected_candidate = master_candidate.objects.get(pk=confirm)
 
@@ -2702,6 +2760,7 @@ def future_joining_requests(request):
             selected_candidate.modified_date_time = datetime.now()
             selected_candidate.save()
 
+            recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
             subject = 'Change in Candidate Date of Joining : Confirmed : ' + str(
                 selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
             to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
@@ -2719,6 +2778,8 @@ def future_joining_requests(request):
                                              'team_name': selected_candidate.fk_team_code.team_name,
                                              'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name,
                                              'onboarding_spoc_mail': selected_candidate.Onboarding_Spoc_Email_Id,
+                                             'region_name': selected_candidate.fk_region_code.region_name.zone_name,
+                                             'city_name': selected_candidate.fk_city_code.city_name,
                                              'desg_name': selected_candidate.fk_designation_code.designation_name,
                                              'state_name': selected_candidate.fk_state_code.state_name.state_name,
                                              'location_name': selected_candidate.fk_location_code.location_name,
@@ -2730,7 +2791,8 @@ def future_joining_requests(request):
                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                              'doj': selected_candidate.Date_of_Joining,
                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                             'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
+                                             'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                             'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email, cc=cc_email)
             msg.attach_alternative(html_content, "text/html")
@@ -2753,6 +2815,8 @@ def future_joining_requests(request):
                                              'team_name': selected_candidate.fk_team_code.team_name,
                                              'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name,
                                              'onboarding_spoc_mail': selected_candidate.Onboarding_Spoc_Email_Id,
+                                             'region_name': selected_candidate.fk_region_code.region_name.zone_name,
+                                             'city_name': selected_candidate.fk_city_code.city_name,
                                              'desg_name': selected_candidate.fk_designation_code.designation_name,
                                              'state_name': selected_candidate.fk_state_code.state_name.state_name,
                                              'location_name': selected_candidate.fk_location_code.location_name,
@@ -2764,7 +2828,8 @@ def future_joining_requests(request):
                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                              'doj': selected_candidate.Date_of_Joining,
                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                             'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
+                                             'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                             'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email, cc=cc_email)
             msg.attach_alternative(html_content, "text/html")
@@ -2773,6 +2838,7 @@ def future_joining_requests(request):
             return redirect("csp_app:future_joining_request")
         if confirm == None and reject != None:
             selected_candidate = master_candidate.objects.get(pk=reject)
+            recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
             selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
             selected_candidate.joining_status = joining_status.objects.get(pk=0)
             selected_candidate.save()
@@ -2793,6 +2859,8 @@ def future_joining_requests(request):
                                              'team_name': selected_candidate.fk_team_code.team_name,
                                              'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name,
                                              'onboarding_spoc_mail': selected_candidate.Onboarding_Spoc_Email_Id,
+                                             'region_name': selected_candidate.fk_region_code.region_name.zone_name,
+                                             'city_name': selected_candidate.fk_city_code.city_name,
                                              'desg_name': selected_candidate.fk_designation_code.designation_name,
                                              'state_name': selected_candidate.fk_state_code.state_name.state_name,
                                              'location_name': selected_candidate.fk_location_code.location_name,
@@ -2804,7 +2872,8 @@ def future_joining_requests(request):
                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                              'doj': selected_candidate.Date_of_Joining,
                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                             'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
+                                             'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                             'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email, cc=cc_email)
             msg.attach_alternative(html_content, "text/html")
@@ -2826,6 +2895,8 @@ def future_joining_requests(request):
                                              'team_name': selected_candidate.fk_team_code.team_name,
                                              'sub_team_name': selected_candidate.fk_subteam_code.sub_team_name,
                                              'onboarding_spoc_mail': selected_candidate.Onboarding_Spoc_Email_Id,
+                                             'region_name': selected_candidate.fk_region_code.region_name.zone_name,
+                                             'city_name': selected_candidate.fk_city_code.city_name,
                                              'desg_name': selected_candidate.fk_designation_code.designation_name,
                                              'state_name': selected_candidate.fk_state_code.state_name.state_name,
                                              'location_name': selected_candidate.fk_location_code.location_name,
@@ -2837,7 +2908,8 @@ def future_joining_requests(request):
                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                              'doj': selected_candidate.Date_of_Joining,
                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                             'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
+                                             'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                             'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
             text_content = strip_tags(html_content)
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email, cc=cc_email)
             msg.attach_alternative(html_content, "text/html")
@@ -2993,7 +3065,6 @@ def edit_salary_structure_process(request, cid):
             selected_candidate = master_candidate.objects.filter(pk=candidate_id)
             selected_c = master_candidate.objects.get(pk=candidate_id)
 
-            print(type(selected_c.Date_of_Joining))
             entity_list, location_list, city_list, state_list, region_list, dept_list, function_list, team_list, subteam_list, desg_list, hiring_type_list, sub_source_list, salary_type_list, gender_list, laptop_allocation_list, vendor_list = candidate_form_lists()
             candidate_list = master_candidate.objects.filter(pk=candidate_id)
             cid = request.POST.get('cid')
@@ -4113,7 +4184,7 @@ def edit_candidate(request):
                                                                                 email_creation, onboarding_spoc, la_fk,
                                                                                 salarytype_fk, request, email,
                                                                                 ss_gross_salary, physically_challenged)
-
+                recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                 if len(changes_list) > 0:
                     print(changes_list)
                     subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' | ' + str(
@@ -4145,7 +4216,9 @@ def edit_candidate(request):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                     'recruiter_name': recruiter_name,
+                                                     'onboarding_spoc_mail': Onboarding_SPOC,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -4160,6 +4233,7 @@ def edit_candidate(request):
                     selected_candidate.vendor_status = pending_vendor
                     selected_candidate.save()
 
+                recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                 create_salary_structure(selected_candidate, basic, annualbasic, house_rent_allowance,
                                         annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus,
                                         special_allowance, annualspecial_allowance, ss_gross_salary, annualgross_salary,
@@ -4202,7 +4276,9 @@ def edit_candidate(request):
                                                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                                                          'doj': selected_candidate.Date_of_Joining,
                                                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                                                         'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                                                         'recruiter_name': recruiter_name,
+                                                                                         'onboarding_spoc_mail': Onboarding_SPOC,
+                                                                                         'onboarding_spoc': Onboarding_SPOC_name,
                                                                                          'manual_link': MANUAL_LINK,
                                                                                          'admin': ADMIN_NAME,
                                                                                          'admin_mail': ADMIN_MAIL})
@@ -4992,6 +5068,8 @@ def save_new_candidate(request):
                     Onboarding_SPOC_first_name = Onboarding_SPOC_list.first_name
                 except ObjectDoesNotExist:
                     Onboarding_SPOC_first_name = 'Admin'
+                recruiter_name = get_recruiter_spoc(ta_spoc)
+                print(recruiter_name)
                 # send_mail_code
                 subject = 'Candidate Selection & Offer Request : ' + str(firstname) + ' | ' + str(new_code)
                 to_email = [Onboarding_SPOC]
@@ -5015,9 +5093,8 @@ def save_new_candidate(request):
                                                  'salary_word': num2words(gross_salary, lang='en_IN'),
                                                  'rm_name': reporting_manager, 'rm_mail': reporting_manager_email,
                                                  'doj': doj, 'recruitment_spoc': str(request.user.email),
-                                                 'recruitment_spoc_name': str(request.user.first_name),
-                                                 'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
-                                                 'admin_mail': ADMIN_MAIL})
+                                                 'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                                 'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                 text_content = strip_tags(html_content)
                 msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email, cc=cc_email)
@@ -5047,9 +5124,8 @@ def save_new_candidate(request):
                                                  'salary_word': num2words(gross_salary, lang='en_IN'),
                                                  'rm_name': reporting_manager, 'rm_mail': reporting_manager_email,
                                                  'doj': doj, 'recruitment_spoc': str(request.user.email),
-                                                 'recruitment_spoc_name': str(request.user.first_name),
-                                                 'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
-                                                 'admin_mail': ADMIN_MAIL})
+                                                 'recruiter_name': recruiter_name, 'manual_link': MANUAL_LINK,
+                                                 'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
                 text_content = strip_tags(html_content)
                 msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email, cc=cc_email)
                 msg.attach_alternative(html_content, "text/html")
@@ -5336,6 +5412,7 @@ def candidate_document_upload(request, candidate_id):
                     candidate_fk.save()
                 if flag == 1 and candidate_fk.offer_letter_status.pk == 1:
                     selected_candidate = master_candidate.objects.get(pk=candidate_id)
+                    recruiter_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                     # send_mail_code
                     subject = 'Candidate Offer Closure : ' + str(selected_candidate.First_Name) + ' | ' + str(
                         selected_candidate.pk)
@@ -5367,7 +5444,9 @@ def candidate_document_upload(request, candidate_id):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'onboarding_spoc': selected_candidate.Onboarding_Spoc_Email_Id,
+                                                     'recruiter_name': recruiter_name,
+                                                     'onboarding_spoc_mail': Onboarding_SPOC,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -7872,7 +7951,6 @@ def enable_user(request):
 @login_required(login_url='/notlogin/')
 def index(request):
     return HttpResponse("Hello Sdf")
-
 
 
 def clear_data(request):

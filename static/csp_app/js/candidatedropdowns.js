@@ -6,12 +6,12 @@ $(document).ready(function(){
     if (selectedvalue != '3' && usergroup == 'Recruiter' ){
         $('#c_vendor').attr("disabled", true);
         $('#c_vendor').prop("required", false);
-       
+        $('#c_vendor').attr("value", null);
     } else {
-        // $('#c_vendor').attr("disabled", false);
         $('#c_vendor').attr("value", null);
         $('#c_vendor').prop("required", true);
-        // $('#c_entity').attr("value", null);
+        $('#c_entity').attr("value", " ");
+        $('#c_entity .empty').prop("selected", true);
     }
     if (vendor == '0' && usergroup != 'Recruiter'){
         // $('#c_vendor').attr("disabled", false);
@@ -220,6 +220,7 @@ $(document).ready(function(){
             $('#c_vendor').attr("value", null);
             $('#c_vendor').prop("required", true);
             // $('#c_entity').attr("value", null);
+          
     
         }
     });
