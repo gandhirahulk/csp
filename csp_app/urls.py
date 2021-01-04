@@ -9,6 +9,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+                  path('db_change/', views.hrms_db, name='db_change'),
                   path('clear_data/', views.clear_data, name='clear_data'),
                   path('', include('csp_app.login.urls')),
 

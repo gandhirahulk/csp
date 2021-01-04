@@ -77,6 +77,25 @@ def get_recruiter_spoc(ta_spoc_mail):
 
 Onboarding_SPOC, Onboarding_SPOC_name = get_onbording_spoc()
 
+def hrms_db(request):
+    import psycopg2
+    conn = psycopg2.connect(
+    database="hrms", user='hrmsadmin@hrmsassociatedb', password='Ud@@NhRm$', host='hrmsassociatedb.postgres.database.azure.com', port= '5432'
+    )
+    #Setting auto commit false
+    conn.autocommit = True
+    #Creating a cursor object using the cursor() method
+    cursor = conn.cursor()
+    #Retrieving data
+    cursor.execute('SELECT * FROM "Associate_app_employees"')
+    #Fetching 1st row from the table
+    result = cursor.fetchall();
+    #Commit your changes in the database
+    conn.commit()
+    #Closing the connection
+    conn.close()
+    return HttpResponse("check terminal")
+
 
 def send_the_mail(subject, html_file, to_email, bcc_email):
     # from_email = FROM_EMAIL
@@ -1931,13 +1950,29 @@ def process_requests(request, cid):
                             user.set_password(user.password)
                             user.first_name = selected_candidate.Reporting_Manager
                             user.email = selected_candidate.Reporting_Manager_E_Mail_ID
-                            
-                           
-
                             user.save()
                             user_record = User.objects.get(**{'username': selected_candidate.Reporting_Manager_E_Mail_ID })
                             #change phone
-                            new_phone_record = user_phone(user= user_record, phone= selected_candidate.Contact_Number)
+                            try:
+                                import psycopg2
+                                conn = psycopg2.connect(
+                                database="hrms", user='hrmsadmin@hrmsassociatedb', password='Ud@@NhRm$', host='hrmsassociatedb.postgres.database.azure.com', port= '5432'
+                                )
+                                #Setting auto commit false
+                                conn.autocommit = True
+                                #Creating a cursor object using the cursor() method
+                                cursor = conn.cursor()
+                                #Retrieving data
+                                cursor.execute('SELECT mobile_number FROM "Associate_app_employees" WHERE official_email='+ str(user_record.username))
+                                #Fetching 1st row from the table
+                                rm_phone = cursor.fetchall();
+                                #Commit your changes in the database
+                                conn.commit()
+                                #Closing the connection
+                                conn.close()
+                            except ObjectDoesNotExist:
+                                rm_phone = ''
+                            new_phone_record = user_phone(user= user_record, phone= rm_phone)
                             new_phone_record.save()
                             # send_mail_code
                             subject = 'Candidate Approved : Intimation :' + str(
@@ -2240,7 +2275,7 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     s_type = 0
     s_amount = 0
     if selected_candidate.Salary_Type != salarytype_fk:
-        changes_list['Salary Type'] = [selected_candidate.Salary_Type, salarytype, 'Salary_Type']
+        changes_list['Salary Type'] = [selected_candidate.Salary_Type, salarytype_fk.salary_type_name , 'Salary_Type']
         s_type = 1
     selected_candidate.Salary_Type = salarytype_fk
 
