@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
 ]
 
 ROOT_URLCONF = 'Candidates_Selection_project.urls'
@@ -61,8 +61,8 @@ ROOT_URLCONF = 'Candidates_Selection_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ TEMPLATE_DIR,
-         ],
+        'DIRS': [TEMPLATE_DIR,
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'Candidates_Selection_project.wsgi.application'
 
 DATABASES = {
     'default': {
-       
+
         # 'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': 'obtooldb',
         # 'USER': 'hrmsadmin@hrms-server',
@@ -98,7 +98,6 @@ DATABASES = {
         'PORT': 5432,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -118,14 +117,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-
-TIME_ZONE =  'Asia/Kolkata'
+TIME_ZONE = 'Asia/Kolkata'
 
 # TIME_ZONE =  'UTC'
 
@@ -135,7 +132,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -162,7 +158,6 @@ if DEBUG:
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'documents')
 MEDIA_URL = '/documents/'
 
@@ -179,7 +174,8 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
 # INACTIVE_TIME = 40 * 60
-SESSION_EXPIRE_AT_BROWSER_CLOSE= True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_HTTPONLY = True
 # SESSION_COOKIE_AGE = INACTIVE_TIME  
 # SESSION_IDLE_TIMEOUT = INACTIVE_TIME 
 
