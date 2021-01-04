@@ -13,6 +13,8 @@ from django.core.mail.message import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.db.utils import IntegrityError, DataError
+from django.views.decorators.cache import never_cache
+
 from .models import *
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
@@ -89,22 +91,24 @@ def get_recruiter_spoc(ta_spoc_mail):
 
 Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
 
+
 def hrms_db(request):
     import psycopg2
     conn = psycopg2.connect(
-    database="hrms", user='hrmsadmin@hrmsassociatedb', password='Ud@@NhRm$', host='hrmsassociatedb.postgres.database.azure.com', port= '5432'
+        database="hrms", user='hrmsadmin@hrmsassociatedb', password='Ud@@NhRm$',
+        host='hrmsassociatedb.postgres.database.azure.com', port='5432'
     )
-    #Setting auto commit false
+    # Setting auto commit false
     conn.autocommit = True
-    #Creating a cursor object using the cursor() method
+    # Creating a cursor object using the cursor() method
     cursor = conn.cursor()
-    #Retrieving data
+    # Retrieving data
     cursor.execute('SELECT * FROM "Associate_app_employees"')
-    #Fetching 1st row from the table
+    # Fetching 1st row from the table
     result = cursor.fetchall();
-    #Commit your changes in the database
+    # Commit your changes in the database
     conn.commit()
-    #Closing the connection
+    # Closing the connection
     conn.close()
     return HttpResponse("check terminal")
 
@@ -143,9 +147,14 @@ def resend_loi(request, cid):
         ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
         ctc_word = num2words(ctc_number, lang='en_IN')
         subject1 = 'Letter Of Intent : ' + str(selected_candidate.fk_vendor_code.vendor_name) + ' | ' + str(
-            selected_candidate.First_Name) + ' ' +str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+            selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+            selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
 
-        html_content = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+        html_content = render_to_string('emailtemplates/loi.html', {'candidate_name': selected_candidate.First_Name,
+                                                                    'candidate_full_name': str(
+                                                                        selected_candidate.First_Name) + ' ' + str(
+                                                                        selected_candidate.Middle_Name) + ' ' + str(
+                                                                        selected_candidate.Last_Name),
                                                                     'designation': selected_candidate.fk_designation_code,
                                                                     'vendor_name': selected_candidate.fk_vendor_code,
                                                                     'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id,
@@ -270,6 +279,7 @@ def send_email(subject, from_email, to, template):
     return HttpResponse("Mail Sent")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(
     lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(
@@ -307,6 +317,7 @@ def approved_candidates(request):
                    'allcandidates': all_active_candidates})
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
 def candidate_profile(request):
@@ -318,6 +329,7 @@ def candidate_profile(request):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(
     lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(
@@ -334,6 +346,7 @@ def view_ss(request, cid):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 def change_password(request):
     selected_user = User.objects.get(email=request.user.email)
@@ -427,7 +440,7 @@ def check_duplicate_candidate_new(request):
         result['repeated'] = 'Email ID Already In Use'
         result['invalid_domain'] = ''
         return JsonResponse(result)
-     
+
     except ObjectDoesNotExist:
         result['repeated'] = ''
         result['invalid_domain'] = ''
@@ -520,7 +533,7 @@ def check_duplicate_candidate_edit(request):
         result['repeated'] = 'Email ID Already In Use'
         result['invalid_domain'] = ''
         return JsonResponse(result)
-     
+
     except ObjectDoesNotExist:
         result['repeated'] = ''
         result['invalid_domain'] = ''
@@ -528,6 +541,7 @@ def check_duplicate_candidate_edit(request):
     return JsonResponse(result)
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def minimum_wages(request):
@@ -544,6 +558,7 @@ def minimum_wages(request):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def create_wages(request):
@@ -583,6 +598,7 @@ def create_wages(request):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def delete_wages(request):
@@ -605,6 +621,7 @@ def delete_wages(request):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_wages(request):
@@ -624,6 +641,7 @@ def view_wages(request):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def view_edit_wages(request):
@@ -644,6 +662,7 @@ def view_edit_wages(request):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def save_edit_wages(request):
@@ -757,6 +776,7 @@ def onboarding_pending_candidates(usrname):
         pass
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(
     name='Vendor').exists() or u.groups.filter(name='Admin').exists())
@@ -1134,7 +1154,11 @@ def process_requests(request, cid):
                         html_content = render_to_string('emailtemplates/new_candidate_vendor.html',
                                                         {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                         'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                         'candidate_name': selected_candidate.First_Name,
+                                                         'candidate_full_name': str(
+                                                             selected_candidate.First_Name) + ' ' + str(
+                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                             selected_candidate.Last_Name),
                                                          'candidate_id': selected_candidate.pk,
                                                          'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                          'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1156,7 +1180,8 @@ def process_requests(request, cid):
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                          'recruiter_first_name': recruiter_first_name,
                                                          'onboarding_spoc_mail': Onboarding_SPOC,
-                                                         'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
+                                                         'onboarding_first_name': Onboarding_first_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1175,7 +1200,11 @@ def process_requests(request, cid):
                         html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_ta.html',
                                                         {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                         'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                         'candidate_name': selected_candidate.First_Name,
+                                                         'candidate_full_name': str(
+                                                             selected_candidate.First_Name) + ' ' + str(
+                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                             selected_candidate.Last_Name),
                                                          'candidate_id': selected_candidate.pk,
                                                          'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                          'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1197,7 +1226,8 @@ def process_requests(request, cid):
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                          'recruiter_first_name': recruiter_first_name,
                                                          'onboarding_spoc_mail': Onboarding_SPOC,
-                                                         'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
+                                                         'onboarding_first_name': Onboarding_first_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1216,7 +1246,11 @@ def process_requests(request, cid):
                         html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_manager.html',
                                                         {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                         'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                         'candidate_name': selected_candidate.First_Name,
+                                                         'candidate_full_name': str(
+                                                             selected_candidate.First_Name) + ' ' + str(
+                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                             selected_candidate.Last_Name),
                                                          'candidate_id': selected_candidate.pk,
                                                          'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                          'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1238,7 +1272,8 @@ def process_requests(request, cid):
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                          'recruiter_first_name': recruiter_first_name,
                                                          'onboarding_spoc_mail': Onboarding_SPOC,
-                                                         'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
+                                                         'onboarding_first_name': Onboarding_first_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1278,7 +1313,11 @@ def process_requests(request, cid):
                                                         {'changes': changes_list,
                                                          'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                         'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                         'candidate_name': selected_candidate.First_Name,
+                                                         'candidate_full_name': str(
+                                                             selected_candidate.First_Name) + ' ' + str(
+                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                             selected_candidate.Last_Name),
                                                          'candidate_id': selected_candidate.pk,
                                                          'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                          'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1300,7 +1339,8 @@ def process_requests(request, cid):
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                          'recruiter_first_name': recruiter_first_name,
                                                          'onboarding_spoc_mail': Onboarding_SPOC,
-                                                         'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
+                                                         'onboarding_first_name': Onboarding_first_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1321,7 +1361,11 @@ def process_requests(request, cid):
                                                             {'changes': changes_list,
                                                              'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                              'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                             'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                             'candidate_name': selected_candidate.First_Name,
+                                                             'candidate_full_name': str(
+                                                                 selected_candidate.First_Name) + ' ' + str(
+                                                                 selected_candidate.Middle_Name) + ' ' + str(
+                                                                 selected_candidate.Last_Name),
                                                              'candidate_id': selected_candidate.pk,
                                                              'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                              'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1343,7 +1387,8 @@ def process_requests(request, cid):
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                              'recruiter_first_name': recruiter_first_name,
                                                              'onboarding_spoc_mail': Onboarding_SPOC,
-                                                             'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
+                                                             'onboarding_first_name': Onboarding_first_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1361,7 +1406,11 @@ def process_requests(request, cid):
                     html_content = render_to_string('emailtemplates/new_candidate_vendor.html',
                                                     {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1383,7 +1432,8 @@ def process_requests(request, cid):
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                      'recruiter_first_name': recruiter_first_name,
                                                      'onboarding_spoc_mail': Onboarding_SPOC,
-                                                     'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
+                                                     'onboarding_first_name': Onboarding_first_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -1402,7 +1452,11 @@ def process_requests(request, cid):
                     html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_ta.html',
                                                     {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1424,7 +1478,8 @@ def process_requests(request, cid):
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                      'recruiter_first_name': recruiter_first_name,
                                                      'onboarding_spoc_mail': Onboarding_SPOC,
-                                                     'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
+                                                     'onboarding_first_name': Onboarding_first_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -1443,7 +1498,11 @@ def process_requests(request, cid):
                     html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_manager.html',
                                                     {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1465,7 +1524,8 @@ def process_requests(request, cid):
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                      'recruiter_first_name': recruiter_first_name,
                                                      'onboarding_spoc_mail': Onboarding_SPOC,
-                                                     'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
+                                                     'onboarding_first_name': Onboarding_first_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -1494,7 +1554,9 @@ def process_requests(request, cid):
                             my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
 
                             subject1 = 'Change Of Appointment : ' + str(
-                                selected_candidate.fk_vendor_code.vendor_name) + ' | ' + str(selected_candidate.First_Name) + ' ' +str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+                                selected_candidate.fk_vendor_code.vendor_name) + ' | ' + str(
+                                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+                                selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
                             html_content = render_to_string('emailtemplates/side_letter.html', {
                                 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(
                                     selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
@@ -1531,7 +1593,11 @@ def process_requests(request, cid):
                             html_content = render_to_string('emailtemplates/future_doj_confirm_vendor.html',
                                                             {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                              'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                             'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                             'candidate_name': selected_candidate.First_Name,
+                                                             'candidate_full_name': str(
+                                                                 selected_candidate.First_Name) + ' ' + str(
+                                                                 selected_candidate.Middle_Name) + ' ' + str(
+                                                                 selected_candidate.Last_Name),
                                                              'candidate_id': selected_candidate.pk,
                                                              'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                              'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1555,7 +1621,8 @@ def process_requests(request, cid):
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                              'recruiter_first_name': recruiter_first_name,
                                                              'onboarding_spoc_mail': Onboarding_SPOC,
-                                                             'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
+                                                             'onboarding_first_name': Onboarding_first_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1597,7 +1664,8 @@ def process_requests(request, cid):
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                              'recruiter_first_name': recruiter_first_name,
                                                              'onboarding_spoc_mail': Onboarding_SPOC,
-                                                             'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
+                                                             'onboarding_first_name': Onboarding_first_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1615,7 +1683,11 @@ def process_requests(request, cid):
                                                             {'changes': changes_list,
                                                              'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                              'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                             'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                             'candidate_name': selected_candidate.First_Name,
+                                                             'candidate_full_name': str(
+                                                                 selected_candidate.First_Name) + ' ' + str(
+                                                                 selected_candidate.Middle_Name) + ' ' + str(
+                                                                 selected_candidate.Last_Name),
                                                              'candidate_id': selected_candidate.pk,
                                                              'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                              'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1637,7 +1709,8 @@ def process_requests(request, cid):
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                              'recruiter_first_name': recruiter_first_name,
                                                              'onboarding_spoc_mail': Onboarding_SPOC,
-                                                             'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
+                                                             'onboarding_first_name': Onboarding_first_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1673,7 +1746,11 @@ def process_requests(request, cid):
                                                         {'changes': changes_list,
                                                          'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                         'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                         'candidate_name': selected_candidate.First_Name,
+                                                         'candidate_full_name': str(
+                                                             selected_candidate.First_Name) + ' ' + str(
+                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                             selected_candidate.Last_Name),
                                                          'candidate_id': selected_candidate.pk,
                                                          'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                          'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1695,7 +1772,8 @@ def process_requests(request, cid):
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                          'recruiter_first_name': recruiter_first_name,
                                                          'onboarding_spoc_mail': Onboarding_SPOC,
-                                                         'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
+                                                         'onboarding_first_name': Onboarding_first_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1713,7 +1791,11 @@ def process_requests(request, cid):
                                                         {'changes': changes_list,
                                                          'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                         'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                         'candidate_name': selected_candidate.First_Name,
+                                                         'candidate_full_name': str(
+                                                             selected_candidate.First_Name) + ' ' + str(
+                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                             selected_candidate.Last_Name),
                                                          'candidate_id': selected_candidate.pk,
                                                          'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                          'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1735,7 +1817,8 @@ def process_requests(request, cid):
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                          'recruiter_first_name': recruiter_first_name,
                                                          'onboarding_spoc_mail': Onboarding_SPOC,
-                                                         'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
+                                                         'onboarding_first_name': Onboarding_first_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -1759,7 +1842,8 @@ def process_requests(request, cid):
 
                             subject1 = 'Change Of Appointment : ' + str(
                                 selected_candidate.fk_vendor_code.vendor_name) + ' | ' + str(
-                                selected_candidate.First_Name) + ' ' +str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+                                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+                                selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
                             html_content = render_to_string('emailtemplates/side_letter.html', {
                                 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(
                                     selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
@@ -1799,7 +1883,11 @@ def process_requests(request, cid):
                             html_content = render_to_string('emailtemplates/future_doj_confirm_vendor.html',
                                                             {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                              'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                             'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                             'candidate_name': selected_candidate.First_Name,
+                                                             'candidate_full_name': str(
+                                                                 selected_candidate.First_Name) + ' ' + str(
+                                                                 selected_candidate.Middle_Name) + ' ' + str(
+                                                                 selected_candidate.Last_Name),
                                                              'candidate_id': selected_candidate.pk,
                                                              'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                              'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1821,7 +1909,8 @@ def process_requests(request, cid):
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                              'recruiter_first_name': recruiter_first_name,
                                                              'onboarding_spoc_mail': Onboarding_SPOC,
-                                                             'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                             'onboarding_spoc': Onboarding_SPOC_name,
+                                                             'onboarding_first_name': Onboarding_first_name,
                                                              'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                              'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1862,7 +1951,11 @@ def process_requests(request, cid):
                         html_content = render_to_string('emailtemplates/candidate_approved_vendor_to_onboarding.html',
                                                         {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                         'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                         'candidate_name': selected_candidate.First_Name,
+                                                         'candidate_full_name': str(
+                                                             selected_candidate.First_Name) + ' ' + str(
+                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                             selected_candidate.Last_Name),
                                                          'candidate_id': selected_candidate.pk,
                                                          'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                          'dept_name': selected_candidate.fk_department_code.department_name,
@@ -1886,7 +1979,8 @@ def process_requests(request, cid):
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                          'recruiter_first_name': recruiter_first_name,
                                                          'onboarding_spoc_mail': Onboarding_SPOC,
-                                                         'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
+                                                         'onboarding_first_name': Onboarding_first_name,
                                                          'onboarding_spoc_firstname': Onboarding_SPOC_first_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
@@ -1924,7 +2018,10 @@ def process_requests(request, cid):
                                 'emailtemplates/old_reporting_manager_candidate_approve.html',
                                 {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                  'company_name': selected_candidate.fk_entity_code.entity_name,
-                                 'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name), 'candidate_id': selected_candidate.pk,
+                                 'candidate_name': selected_candidate.First_Name,
+                                 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(
+                                     selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                 'candidate_id': selected_candidate.pk,
                                  'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                  'dept_name': selected_candidate.fk_department_code.department_name,
                                  'function_name': selected_candidate.fk_function_code.function_name,
@@ -1945,7 +2042,8 @@ def process_requests(request, cid):
                                  'doj': selected_candidate.Date_of_Joining,
                                  'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                  'recruiter_first_name': recruiter_first_name, 'onboarding_spoc_mail': Onboarding_SPOC,
-                                 'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                 'onboarding_spoc': Onboarding_SPOC_name,
+                                 'onboarding_first_name': Onboarding_first_name,
                                  'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': MANUAL_LINK,
                                  'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -1962,28 +2060,32 @@ def process_requests(request, cid):
                             user.first_name = selected_candidate.Reporting_Manager
                             user.email = selected_candidate.Reporting_Manager_E_Mail_ID
                             user.save()
-                            user_record = User.objects.get(**{'username': selected_candidate.Reporting_Manager_E_Mail_ID })
-                            #change phone
+                            user_record = User.objects.get(
+                                **{'username': selected_candidate.Reporting_Manager_E_Mail_ID})
+                            # change phone
                             try:
                                 import psycopg2
                                 conn = psycopg2.connect(
-                                database="hrms", user='hrmsadmin@hrmsassociatedb', password='Ud@@NhRm$', host='hrmsassociatedb.postgres.database.azure.com', port= '5432'
+                                    database="hrms", user='hrmsadmin@hrmsassociatedb', password='Ud@@NhRm$',
+                                    host='hrmsassociatedb.postgres.database.azure.com', port='5432'
                                 )
-                                #Setting auto commit false
+                                # Setting auto commit false
                                 conn.autocommit = True
-                                #Creating a cursor object using the cursor() method
+                                # Creating a cursor object using the cursor() method
                                 cursor = conn.cursor()
-                                #Retrieving data
-                                cursor.execute('SELECT mobile_number FROM "Associate_app_employees" WHERE official_email='+ str(user_record.username))
-                                #Fetching 1st row from the table
+                                # Retrieving data
+                                cursor.execute(
+                                    'SELECT mobile_number FROM "Associate_app_employees" WHERE official_email=' + str(
+                                        user_record.username))
+                                # Fetching 1st row from the table
                                 rm_phone = cursor.fetchall();
-                                #Commit your changes in the database
+                                # Commit your changes in the database
                                 conn.commit()
-                                #Closing the connection
+                                # Closing the connection
                                 conn.close()
                             except ObjectDoesNotExist:
                                 rm_phone = ''
-                            new_phone_record = user_phone(user= user_record, phone= rm_phone)
+                            new_phone_record = user_phone(user=user_record, phone=rm_phone)
                             new_phone_record.save()
                             # send_mail_code
                             subject = 'Candidate Approved : Intimation :' + str(
@@ -1997,7 +2099,10 @@ def process_requests(request, cid):
                                 'emailtemplates/old_reporting_manager_candidate_approve.html',
                                 {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                  'company_name': selected_candidate.fk_entity_code.entity_name,
-                                 'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name), 'candidate_id': selected_candidate.pk,
+                                 'candidate_name': selected_candidate.First_Name,
+                                 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(
+                                     selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                 'candidate_id': selected_candidate.pk,
                                  'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                  'dept_name': selected_candidate.fk_department_code.department_name,
                                  'function_name': selected_candidate.fk_function_code.function_name,
@@ -2019,7 +2124,8 @@ def process_requests(request, cid):
                                  'doj': selected_candidate.Date_of_Joining,
                                  'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                  'recruiter_first_name': recruiter_first_name, 'onboarding_spoc_mail': Onboarding_SPOC,
-                                 'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                 'onboarding_spoc': Onboarding_SPOC_name,
+                                 'onboarding_first_name': Onboarding_first_name,
                                  'onboarding_spoc_firstname': Onboarding_SPOC_first_name, 'manual_link': MANUAL_LINK,
                                  'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
                             text_content = strip_tags(html_content)
@@ -2037,11 +2143,11 @@ def process_requests(request, cid):
                             user.first_name = selected_candidate.First_Name
                             user.last_name = selected_candidate.Last_Name
                             user.email = selected_candidate.Personal_Email_Id
-                            
+
                             assign_group.user_set.add(user)
                             user.save()
-                            user_record = User.objects.get(**{'username': selected_candidate.Personal_Email_Id })
-                            new_phone_record = user_phone(user= user_record, phone= selected_candidate.Contact_Number)
+                            user_record = User.objects.get(**{'username': selected_candidate.Personal_Email_Id})
+                            new_phone_record = user_phone(user=user_record, phone=selected_candidate.Contact_Number)
                             new_phone_record.save()
                         except IntegrityError:
                             password = 'Use old password else reset it.'
@@ -2056,9 +2162,14 @@ def process_requests(request, cid):
                         ctc_word = num2words(ctc_number, lang='en_IN')
                         subject1 = 'Letter Of Intent : ' + str(
                             selected_candidate.fk_vendor_code.vendor_name) + ' | ' + str(
-                            selected_candidate.First_Name) + ' ' +str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+                            selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+                            selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
                         html_content = render_to_string('emailtemplates/loi.html',
-                                                        {'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                        {'candidate_name': selected_candidate.First_Name,
+                                                         'candidate_full_name': str(
+                                                             selected_candidate.First_Name) + ' ' + str(
+                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                             selected_candidate.Last_Name),
                                                          'designation': selected_candidate.fk_designation_code,
                                                          'vendor_name': selected_candidate.fk_vendor_code,
                                                          'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id,
@@ -2286,7 +2397,7 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     s_type = 0
     s_amount = 0
     if selected_candidate.Salary_Type != salarytype_fk:
-        changes_list['Salary Type'] = [selected_candidate.Salary_Type, salarytype_fk.salary_type_name , 'Salary_Type']
+        changes_list['Salary Type'] = [selected_candidate.Salary_Type, salarytype_fk.salary_type_name, 'Salary_Type']
         s_type = 1
     selected_candidate.Salary_Type = salarytype_fk
 
@@ -2307,6 +2418,7 @@ def check_for_changes(selected_candidate, firstname, middlename, lastname, doj, 
     return changes_list
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Onboarding SPOC').exists() or u.groups.filter(name='Admin').exists())
 def reject_candidate_onboarding(request, cid):
@@ -2346,6 +2458,7 @@ def reject_candidate_onboarding(request, cid):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(
     lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(
@@ -2391,7 +2504,11 @@ def reject_candidate_vendor(request, cid):
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding.html',
                                                     {'onboarding_spoc': Onboarding_SPOC_first_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2410,7 +2527,9 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'recruiter_first_name': recruiter_first_name, 'recruiter_first_name': recruiter_first_name, 'manual_link': MANUAL_LINK,
+                                                     'recruiter_first_name': recruiter_first_name,
+                                                     'recruiter_first_name': recruiter_first_name,
+                                                     'manual_link': MANUAL_LINK,
                                                      'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
@@ -2428,7 +2547,11 @@ def reject_candidate_vendor(request, cid):
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding_manager.html',
                                                     {'onboarding_spoc': Onboarding_SPOC_first_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2447,7 +2570,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'recruiter_first_name': recruiter_first_name, 'manual_link': MANUAL_LINK,
+                                                     'recruiter_first_name': recruiter_first_name,
+                                                     'manual_link': MANUAL_LINK,
                                                      'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
@@ -2486,7 +2610,11 @@ def reject_candidate_vendor(request, cid):
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding.html',
                                                     {'onboarding_spoc': Onboarding_SPOC_first_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2505,7 +2633,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'recruiter_first_name': recruiter_first_name, 'manual_link': MANUAL_LINK,
+                                                     'recruiter_first_name': recruiter_first_name,
+                                                     'manual_link': MANUAL_LINK,
                                                      'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
@@ -2523,7 +2652,11 @@ def reject_candidate_vendor(request, cid):
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding_manager.html',
                                                     {'onboarding_spoc': Onboarding_SPOC_first_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2542,7 +2675,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'recruiter_first_name': recruiter_first_name, 'manual_link': MANUAL_LINK,
+                                                     'recruiter_first_name': recruiter_first_name,
+                                                     'manual_link': MANUAL_LINK,
                                                      'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
@@ -2565,7 +2699,11 @@ def reject_candidate_vendor(request, cid):
                         html_content = render_to_string('emailtemplates/future_doj_reject_vendor.html',
                                                         {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                         'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                         'candidate_name': selected_candidate.First_Name,
+                                                         'candidate_full_name': str(
+                                                             selected_candidate.First_Name) + ' ' + str(
+                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                             selected_candidate.Last_Name),
                                                          'candidate_id': selected_candidate.pk,
                                                          'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                          'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2589,7 +2727,8 @@ def reject_candidate_vendor(request, cid):
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                          'recruiter_first_name': recruiter_first_name,
                                                          'onboarding_spoc_mail': Onboarding_SPOC,
-                                                         'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                         'onboarding_spoc': Onboarding_SPOC_name,
+                                                         'onboarding_first_name': Onboarding_first_name,
                                                          'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                          'admin_mail': ADMIN_MAIL})
                         text_content = strip_tags(html_content)
@@ -2636,7 +2775,11 @@ def reject_candidate_vendor(request, cid):
                     html_content = render_to_string('emailtemplates/candidate_rejected_vendor.html',
                                                     {'onboarding_spoc': Onboarding_SPOC_first_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2655,7 +2798,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'recruiter_first_name': recruiter_first_name, 'manual_link': MANUAL_LINK,
+                                                     'recruiter_first_name': recruiter_first_name,
+                                                     'manual_link': MANUAL_LINK,
                                                      'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
@@ -2673,7 +2817,11 @@ def reject_candidate_vendor(request, cid):
                     html_content = render_to_string('emailtemplates/candidate_rejected_vendor_manager.html',
                                                     {'onboarding_spoc': Onboarding_SPOC_first_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2692,7 +2840,8 @@ def reject_candidate_vendor(request, cid):
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
-                                                     'recruiter_first_name': recruiter_first_name, 'manual_link': MANUAL_LINK,
+                                                     'recruiter_first_name': recruiter_first_name,
+                                                     'manual_link': MANUAL_LINK,
                                                      'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                     text_content = strip_tags(html_content)
@@ -2714,6 +2863,7 @@ def save_rejected_reason(selected_candidate, request, reason):
     rejected_reason.save()
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(
     lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(
@@ -2767,6 +2917,7 @@ def pending_requests(request):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def future_joining_requests(request):
@@ -2835,7 +2986,8 @@ def future_joining_requests(request):
 
             recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
             subject = 'Change in Candidate Date of Joining : Confirmed : ' + str(
-                selected_candidate.First_Name) + ' ' +str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+                selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
             to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
             cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
             bcc_email = ['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com']
@@ -2843,7 +2995,10 @@ def future_joining_requests(request):
             html_content = render_to_string('emailtemplates/future_doj_confirm_onboarding_to_manager.html',
                                             {'onboarding_spoc': Onboarding_SPOC_first_name,
                                              'company_name': selected_candidate.fk_entity_code.entity_name,
-                                             'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                             'candidate_name': selected_candidate.First_Name,
+                                             'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(
+                                                 selected_candidate.Middle_Name) + ' ' + str(
+                                                 selected_candidate.Last_Name),
                                              'candidate_id': selected_candidate.pk,
                                              'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                              'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2872,7 +3027,8 @@ def future_joining_requests(request):
             msg.send()
 
             subject = 'Change in Candidate Date of Joining : Confirmed : ' + str(
-                selected_candidate.First_Name) + ' ' +str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+                selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
             to_email = [selected_candidate.fk_vendor_code.spoc_email_id]
             cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
             bcc_email = ['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com']
@@ -2880,7 +3036,10 @@ def future_joining_requests(request):
             html_content = render_to_string('emailtemplates/future_doj_confirm_onboarding_to_vendor.html',
                                             {'onboarding_spoc': Onboarding_SPOC_first_name,
                                              'company_name': selected_candidate.fk_entity_code.entity_name,
-                                             'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                             'candidate_name': selected_candidate.First_Name,
+                                             'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(
+                                                 selected_candidate.Middle_Name) + ' ' + str(
+                                                 selected_candidate.Last_Name),
                                              'candidate_id': selected_candidate.pk,
                                              'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                              'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2916,7 +3075,8 @@ def future_joining_requests(request):
             selected_candidate.joining_status = joining_status.objects.get(pk=0)
             selected_candidate.save()
             subject = 'Change in Candidate Date of Joining : Rejected : ' + str(
-                selected_candidate.First_Name) + ' ' +str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+                selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
             to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
             cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
             bcc_email = ['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com']
@@ -2924,7 +3084,10 @@ def future_joining_requests(request):
             html_content = render_to_string('emailtemplates/future_doj_reject_onboarding_to_manager.html',
                                             {'onboarding_spoc': Onboarding_SPOC_first_name,
                                              'company_name': selected_candidate.fk_entity_code.entity_name,
-                                             'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                             'candidate_name': selected_candidate.First_Name,
+                                             'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(
+                                                 selected_candidate.Middle_Name) + ' ' + str(
+                                                 selected_candidate.Last_Name),
                                              'candidate_id': selected_candidate.pk,
                                              'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                              'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2952,7 +3115,8 @@ def future_joining_requests(request):
             msg.attach_alternative(html_content, "text/html")
             msg.send()
             subject = 'Change in Candidate Date of Joining : Rejected : ' + str(
-                selected_candidate.First_Name) + ' ' +str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+                selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
             to_email = [selected_candidate.fk_vendor_code.spoc_email_id]
             cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
             bcc_email = ['sadaf.shaikh@udaan.com', 'rahul.gandhi@udaan.com']
@@ -2960,7 +3124,10 @@ def future_joining_requests(request):
             html_content = render_to_string('emailtemplates/future_doj_reject_onboarding_to_vendor.html',
                                             {'onboarding_spoc': Onboarding_SPOC_first_name,
                                              'company_name': selected_candidate.fk_entity_code.entity_name,
-                                             'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                             'candidate_name': selected_candidate.First_Name,
+                                             'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(
+                                                 selected_candidate.Middle_Name) + ' ' + str(
+                                                 selected_candidate.Last_Name),
                                              'candidate_id': selected_candidate.pk,
                                              'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                              'dept_name': selected_candidate.fk_department_code.department_name,
@@ -2993,6 +3160,7 @@ def future_joining_requests(request):
                   {'dojcount': dojcount, 'future_requests': delay_joiners, 'count': count})
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(
     lambda u: u.groups.filter(name='Vendor').exists() or u.groups.filter(name='Admin').exists() or u.groups.filter(
@@ -3049,6 +3217,7 @@ def candidate(request):
                    'vendor_list': vendor_list, 'candidate_list': candidate_list, 'v_status_list': v_status_list})
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(
     lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Recruiter').exists() or u.groups.filter(
@@ -3078,6 +3247,7 @@ def new_candidate(request):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(
     lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(
@@ -3107,6 +3277,7 @@ def view_edit_candidate(request, cid):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(
     lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(
@@ -3415,6 +3586,7 @@ def edit_salary_structure_process(request, cid):
         return HttpResponse("No Data To Display.")
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Onboarding SPOC').exists())
 def edit_salary_structure(request):
@@ -3925,6 +4097,7 @@ def create_dummy(firstname, middlename, lastname, doj, dob, fathername, motherna
     return new_code
 
 
+@never_cache
 @login_required(login_url='/notlogin/')
 @user_passes_test(
     lambda u: u.groups.filter(name='Admin').exists() or u.groups.filter(name='Vendor').exists() or u.groups.filter(
@@ -4269,7 +4442,11 @@ def edit_candidate(request):
                                                     {'changes': changes_list,
                                                      'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -4291,7 +4468,8 @@ def edit_candidate(request):
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                      'recruiter_first_name': recruiter_first_name,
                                                      'onboarding_spoc_mail': Onboarding_SPOC,
-                                                     'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
+                                                     'onboarding_first_name': Onboarding_first_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -4328,7 +4506,11 @@ def edit_candidate(request):
                 html_content = render_to_string('emailtemplates/candidate_edited.html', {'changes': changes_list,
                                                                                          'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                                                         'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                                                         'candidate_name': selected_candidate.First_Name,
+                                                                                         'candidate_full_name': str(
+                                                                                             selected_candidate.First_Name) + ' ' + str(
+                                                                                             selected_candidate.Middle_Name) + ' ' + str(
+                                                                                             selected_candidate.Last_Name),
                                                                                          'candidate_id': selected_candidate.pk,
                                                                                          'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                                                          'dept_name': selected_candidate.fk_department_code.department_name,
@@ -4351,7 +4533,8 @@ def edit_candidate(request):
                                                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                                                          'recruiter_first_name': recruiter_first_name,
                                                                                          'onboarding_spoc_mail': Onboarding_SPOC,
-                                                                                         'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                                                         'onboarding_spoc': Onboarding_SPOC_name,
+                                                                                         'onboarding_first_name': Onboarding_first_name,
                                                                                          'manual_link': MANUAL_LINK,
                                                                                          'admin': ADMIN_NAME,
                                                                                          'admin_mail': ADMIN_MAIL})
@@ -5166,7 +5349,8 @@ def save_new_candidate(request):
                                                  'salary_word': num2words(gross_salary, lang='en_IN'),
                                                  'rm_name': reporting_manager, 'rm_mail': reporting_manager_email,
                                                  'doj': doj, 'recruitment_spoc': str(request.user.email),
-                                                 'recruiter_first_name': recruiter_first_name, 'manual_link': MANUAL_LINK,
+                                                 'recruiter_first_name': recruiter_first_name,
+                                                 'manual_link': MANUAL_LINK,
                                                  'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
 
                 text_content = strip_tags(html_content)
@@ -5197,7 +5381,8 @@ def save_new_candidate(request):
                                                  'salary_word': num2words(gross_salary, lang='en_IN'),
                                                  'rm_name': reporting_manager, 'rm_mail': reporting_manager_email,
                                                  'doj': doj, 'recruitment_spoc': str(request.user.email),
-                                                 'recruiter_first_name': recruiter_first_name, 'manual_link': MANUAL_LINK,
+                                                 'recruiter_first_name': recruiter_first_name,
+                                                 'manual_link': MANUAL_LINK,
                                                  'admin': ADMIN_NAME, 'admin_mail': ADMIN_MAIL})
                 text_content = strip_tags(html_content)
                 msg = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc_email, cc=cc_email)
@@ -5496,7 +5681,14 @@ def candidate_document_upload(request, candidate_id):
                     html_content = render_to_string('emailtemplates/candidate_offer_closure.html',
                                                     {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
-                                                     'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name), 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                                     'candidate_name': selected_candidate.First_Name,
+                                                     'candidate_full_name': str(
+                                                         selected_candidate.First_Name) + ' ' + str(
+                                                         selected_candidate.Middle_Name) + ' ' + str(
+                                                         selected_candidate.Last_Name), 'candidate_full_name': str(
+                                                        selected_candidate.First_Name) + ' ' + str(
+                                                        selected_candidate.Middle_Name) + ' ' + str(
+                                                        selected_candidate.Last_Name),
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
@@ -5519,7 +5711,8 @@ def candidate_document_upload(request, candidate_id):
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
                                                      'recruiter_first_name': recruiter_first_name,
                                                      'onboarding_spoc_mail': Onboarding_SPOC,
-                                                     'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name,
+                                                     'onboarding_spoc': Onboarding_SPOC_name,
+                                                     'onboarding_first_name': Onboarding_first_name,
                                                      'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                                      'admin_mail': ADMIN_MAIL})
                     text_content = strip_tags(html_content)
@@ -6380,11 +6573,11 @@ def create_vendor(request):
             user.set_password(user.password)
             user.first_name = vendor_name
             user.email = vendor_spoc_email
-         
-            assign_group.user_set.add(user)  
+
+            assign_group.user_set.add(user)
             user.save()
-            user_record = User.objects.get(**{'username': vendor_spoc_email })
-            new_phone_record = user_phone(user= user_record, phone= vendor_phone)
+            user_record = User.objects.get(**{'username': vendor_spoc_email})
+            new_phone_record = user_phone(user=user_record, phone=vendor_phone)
             new_phone_record.save()
             Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
             # send_mail_code
@@ -6395,7 +6588,9 @@ def create_vendor(request):
             html_content = render_to_string('emailtemplates/new_vendor_account_first.html',
                                             {'vendor_spoc': vendor_spoc, 'company_name': entity_fk.entity_name,
                                              'vendor_email': vendor_email, 'onboarding_spoc_mail': Onboarding_SPOC,
-                                             'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_first_name': Onboarding_first_name, 'username': vendor_spoc_email,
+                                             'onboarding_spoc': Onboarding_SPOC_name,
+                                             'onboarding_first_name': Onboarding_first_name,
+                                             'username': vendor_spoc_email,
                                              'password': password, 'manual_link': MANUAL_LINK, 'admin': ADMIN_NAME,
                                              'admin_mail': ADMIN_MAIL})
             text_content = strip_tags(html_content)
@@ -7912,7 +8107,7 @@ def create_user(request):
         email = request.POST.get('email')
         group = request.POST.get('usergroup')
         phone = request.POST.get('phone')
-       
+
         try:
             assign_group = Group.objects.get(name=group)
             if assign_group.name == 'Onboarding SPOC':
@@ -7932,7 +8127,7 @@ def create_user(request):
             user.first_name = firstname
             user.last_name = lastname
             user.email = email
-            
+
             if group == 'Admin':
                 user.is_staff = True
             # user.groups = group
@@ -7940,7 +8135,7 @@ def create_user(request):
             assign_group.user_set.add(user)
             user.save()
             user_record = User.objects.get(**{'username': usrname})
-            new_phone_record = user_phone(user= user_record, phone= phone)
+            new_phone_record = user_phone(user=user_record, phone=phone)
             new_phone_record.save()
 
             # send_mail_code

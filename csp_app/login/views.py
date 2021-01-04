@@ -7,6 +7,7 @@ import random
 import math
 import requests
 
+from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -30,7 +31,7 @@ INVALID_CREDENTIALS = "Invalid Credentials"
 def admin(request):
     return render(request, 'csp_app/adminhome.html', {'allcandidates': all_active_candidates, })
 
-
+@never_cache
 def csp_login(request):
     if request.method == "POST":
         if request.POST.get('username') != None or request.POST.get('username') != '':
