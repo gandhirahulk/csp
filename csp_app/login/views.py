@@ -155,7 +155,7 @@ def send_otp(request):
     # phone_number = '9582420365'
 
     emp_record = User.objects.get(**{'username': request.POST['username'], 'is_active': True})
-    phone_record = user_phone.objects.get(**{'user_id': emp_record})
+    phone_record = user_phone.objects.get(**{'user': emp_record})
     phone_number = getattr(phone_record, 'phone')
     print(phone_number)
 
