@@ -23,7 +23,7 @@
 
         <form method="POST" action="{% url 'csp_app:check_otp' %}">
             {% csrf_token %}
-            <p style="visibility: hidden">OTP : {{ x }}</p>
+            <p>OTP : {{ x }}</p>
 
             <div class="form-group">
 

@@ -13,13 +13,13 @@
         </style>
     </head>
     <body>
-        <p>Dear {{ onboarding_spoc }},</p>
+        <p>Dear {{ onboarding_first_name }},</p>
         <p>Please be informed that as per the recruitment and selection process, we have selected the below mentioned candidature who is fit as per business / functional requirements. Following details are for your kind perusal, kindly accept / reject / modify the same, basis your guidelines / processes.</p>
                   
         <table class="email_table">
             <tr>
                 <td class="red_td">Candidate Name</td>
-                <td>{{ candidate_name }} | {{ candidate_id }} </td>
+                <td>{{ candidate_full_name }} | {{ candidate_id }} </td>
             </tr>
             <tr>
                 <td>Vendor</td>
@@ -39,7 +39,7 @@
             </tr>
             <tr>
                 <td>Monthly Gross</td>
-                <td>{{ salary_num }} ( {{ salary_word }} )</td>
+                <td>{{ salary_num }} ( {{ salary_word|title }} )</td>
             </tr>
             <tr>
                 <td>Reporting Manager</td>
@@ -47,7 +47,7 @@
             </tr>
             <tr>
                 <td>Date of joining</td>
-                <td>{{ doj }}</td>
+                <td>{{ doj|date:"M d, Y" }} sdf {{ doj }}</td>
             </tr>
             <tr>
                 <td class="red_td">Web Application Link</td>

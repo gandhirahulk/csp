@@ -13,13 +13,13 @@
         </style>
     </head>
     <body>
-        <p>Dear {{ onboarding_spoc }},</p>
+        <p>Dear {{ onboarding_first_name }},</p>
         <p>Please be informed that we have approved the candidature of below mentioned candidate:</p>
                   
         <table class="email_table">
             <tr>
                 <td class="red_td">Candidate Name</td>
-                <td>{{ candidate_name }} | {{ candidate_id }} </td>
+                <td>{{ candidate_full_name }} | {{ candidate_id }} </td>
             </tr>
             <tr>
                 <td>Vendor</td>
@@ -45,7 +45,7 @@
         <p>Once approved from the Vendor SPOC, the “Letter of Intent” will be sent to the Candidate, and after candidate documents are upload the offer letter will also be made visible to the candidate. We shall keep you posted on every development.</p>
         
         <p>Help Manual is attached in the <a href="{{ manual_link }}">link</a> for your kind reference and easy navigation.</p>
-        <p>For any further queries, please contact the Onboarding SPOC: {{ onboarding_spoc }} ({{ onboarding_spoc_mail }}) or the Admin ( {{ admin }} , E Mail ID : {{ admin_mail }}).</p>
+        <p>For any further queries, please contact the Onboarding SPOC : {{ onboarding_spoc }} ({{ onboarding_spoc_mail }}) or the Admin : {{ admin }} ({{ admin_mail }}).</p>
         <p>Regards,</p>
         <p>Team HR</p>
         <p>Note: This is a system generated mail, please do not reply.</p>               

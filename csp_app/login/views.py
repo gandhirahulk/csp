@@ -63,8 +63,8 @@ def csp_login(request):
                 return render(request, OTP_HTML, {'otp': OTP, 'f': key, 'uid': usrname, 'pwd': pwd, 'x': x})
 
             else:
-                messages.add_message(request, messages.ERROR, INVALID_CREDENTIALS)
-                return render(request, 'csp_app:login')
+                messages.add_message(request, messages.ERROR, INVALID_CREDENTIALS)                
+                return redirect('csp_app:login')
 
         else:
             messages.add_message(request, messages.ERROR, "Invalid Credentials")
@@ -116,8 +116,11 @@ def check_otp(request):
                             selected_candidate = master_candidate.objects.get(Personal_Email_Id=str(request.user),
                                                                               status=active_status)
                         except ObjectDoesNotExist:
+                           
                             messages.add_message(request, messages.ERROR, "Invalid Credentials")
+                         
                             return redirect('csp_app:login')
+                         
                         messages.success(request, "Login Successfull")
                         return redirect('csp_app:document_upload', selected_candidate.pk_candidate_code)
                     else:
@@ -153,11 +156,15 @@ def send_otp(request):
     # phone_number = '9663473089'
     # phone_number = '9008453786'
     # phone_number = '9582420365'
-
-    emp_record = User.objects.get(**{'username': request.POST['username'], 'is_active': True})
+   
+    # print(request.POST['username'])
+    if request.POST.get('username') != None:
+        emp_record = User.objects.get(**{'username': request.POST.get('username'), 'is_active': True})
+    else:
+        emp_record = User.objects.get(**{'username': request.POST.get('uid'), 'is_active': True})
     phone_record = user_phone.objects.get(**{'user': emp_record})
     phone_number = getattr(phone_record, 'phone')
-    print(phone_number)
+ 
 
     sender_id = 'HLPUDN'
     base_url = url + '&method=sms&message=' + message + '&to=' + phone_number + '&sender=' + sender_id + "&template_id=1"
@@ -187,6 +194,7 @@ def resend_otp(request):
         pwd = request.POST.get('pwd')
         # x = otp = send_me_otp()
         x = otp = send_otp(request)
+        print("after x")
         key = Fernet.generate_key()
         f = Fernet(key)
         otp_value = bytes(otp, 'utf-8')

@@ -18,7 +18,7 @@
         <table class="email_table">
             <tr>
                 <td class="red_td">Candidate Name</td>
-                <td>{{ candidate_name }} | {{ candidate_id }}</td>
+                <td>{{ candidate_full_name }} | {{ candidate_id }}</td>
             </tr>
             <tr>
                 <td>Vendor</td>
@@ -36,7 +36,7 @@
         <p>Complete details for the candidate are available over <a href="https://ob.associatehrms.com">portal</a> (<a href="https://ob.associatehrms.com">https://ob.associatehrms.com </a>), below is the rejection remarks. </p>
         <p>" {{ reason }} "</p>
 
-        <p>In Case of any disconnect or any further queries, please contact the Onboarding SPOC: {{ onboarding_spoc }} ({{ onboarding_spoc_mail }}) or the Recruitment SPOC : {{ recruiter_name }} ({{ recruitment_spoc }}).</p>
+        <p>In Case of any disconnect or any further queries, please contact the Onboarding SPOC : {{ onboarding_spoc }} ({{ onboarding_spoc_mail }}) or the Recruitment SPOC : {{ recruiter_name }} ({{ recruitment_spoc }}).</p>
         <p>Regards,</p>
         <p>Team HR</p>
         <p>Note: This is a system generated mail, please do not reply.</p>  
