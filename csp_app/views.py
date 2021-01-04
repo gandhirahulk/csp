@@ -1937,7 +1937,7 @@ def process_requests(request, cid):
                             user.save()
                             user_record = User.objects.get(**{'username': selected_candidate.Reporting_Manager_E_Mail_ID })
                             #change phone
-                            new_phone_record = user_phone(user_id= user_record.pk, phone= selected_candidate.Contact_Number)
+                            new_phone_record = user_phone(user= user_record, phone= selected_candidate.Contact_Number)
                             new_phone_record.save()
                             # send_mail_code
                             subject = 'Candidate Approved : Intimation :' + str(
@@ -1995,7 +1995,7 @@ def process_requests(request, cid):
                             assign_group.user_set.add(user)
                             user.save()
                             user_record = User.objects.get(**{'username': selected_candidate.Personal_Email_Id })
-                            new_phone_record = user_phone(user_id= user_record.pk, phone= selected_candidate.Contact_Number)
+                            new_phone_record = user_phone(user= user_record, phone= selected_candidate.Contact_Number)
                             new_phone_record.save()
                         except IntegrityError:
                             password = 'Use old password else reset it.'
@@ -6338,7 +6338,7 @@ def create_vendor(request):
             assign_group.user_set.add(user)  
             user.save()
             user_record = User.objects.get(**{'username': vendor_spoc_email })
-            new_phone_record = user_phone(user_id= user_record.pk, phone= vendor_phone)
+            new_phone_record = user_phone(user= user_record, phone= vendor_phone)
             new_phone_record.save()
             Onboarding_SPOC, Onboarding_SPOC_name = get_onbording_spoc()
             # send_mail_code
@@ -7894,7 +7894,7 @@ def create_user(request):
             assign_group.user_set.add(user)
             user.save()
             user_record = User.objects.get(**{'username': usrname})
-            new_phone_record = user_phone(user_id= user_record.pk, phone= phone)
+            new_phone_record = user_phone(user= user_record, phone= phone)
             new_phone_record.save()
 
             # send_mail_code

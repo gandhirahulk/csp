@@ -153,6 +153,7 @@ def send_otp(request):
     # phone_number = '9663473089'
     # phone_number = '9008453786'
     # phone_number = '9582420365'
+    print('sdf')
     print(request.POST['username'])
     if request.POST['username'] != None:
         emp_record = User.objects.get(**{'username': request.POST['username'], 'is_active': True})
@@ -190,6 +191,7 @@ def resend_otp(request):
         pwd = request.POST.get('pwd')
         # x = otp = send_me_otp()
         x = otp = send_otp(request)
+        print("after x")
         key = Fernet.generate_key()
         f = Fernet(key)
         otp_value = bytes(otp, 'utf-8')
