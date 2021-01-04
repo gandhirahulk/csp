@@ -166,11 +166,19 @@ $(document).ready(function(){
                         $('#detailsmsg').html('').css('color','red');
 
                     }
+                    if (data['repeated'] != ''){
+                        var duplicate_msg = ' ' + data['repeated'] ;
+                        $('#emailmsg').html(duplicate_msg).css('color','red');
+                        $('#new-candidate').attr('onsubmit','return false;');
+                        $('#calculate').attr('title', 'Please Recheck Entered Data');
+                        $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+                    } 
                 }
                 
             }
         });
     });
+
     
     $('#c_firstname').keyup(function(){
         fathername = $('#c_fathername').val();

@@ -58,7 +58,7 @@ def get_onbording_spoc():
     try:
         Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
         Onboarding_SPOC_Mail = Onboarding_SPOC_list.email
-        Onboarding_SPOC_Name = Onboarding_SPOC_list.first_name
+        Onboarding_SPOC_Name = str(Onboarding_SPOC_list.first_name) + ' ' + str(Onboarding_SPOC_list.last_name)
     except ObjectDoesNotExist:
         Onboarding_SPOC_Mail = FROM_EMAIL
         Onboarding_SPOC_Name = ONBOARDING_SPOC_NAME
@@ -69,7 +69,7 @@ def get_recruiter_spoc(ta_spoc_mail):
     try:
 
         recruiter = User.objects.get(username=ta_spoc_mail)
-        recruiter_name = recruiter.first_name
+        recruiter_name = str(recruiter.first_name) + ' ' + str(recruiter.last_name)
     except ObjectDoesNotExist:
         recruiter_name = ADMIN_NAME
     return recruiter_name
@@ -391,6 +391,15 @@ def check_duplicate_candidate_new(request):
     except ObjectDoesNotExist:
         result['email'] = ''
         result['invalid_domain'] = ''
+    try:
+        repeated_email = User.objects.get(username=email, is_active=True)
+        result['repeated'] = 'Email ID Already In Use'
+        result['invalid_domain'] = ''
+        return JsonResponse(result)
+     
+    except ObjectDoesNotExist:
+        result['repeated'] = ''
+        result['invalid_domain'] = ''
     if len(aadhaar) != 12:
         result['adhaar_size'] = 'Please provide 12 digit Aadhaar number.'
         return JsonResponse(result)
@@ -474,6 +483,15 @@ def check_duplicate_candidate_edit(request):
             return JsonResponse(result)
     except ObjectDoesNotExist:
         result['email'] = ''
+        result['invalid_domain'] = ''
+    try:
+        repeated_email = User.objects.get(username=email, is_active=True)
+        result['repeated'] = 'Email ID Already In Use'
+        result['invalid_domain'] = ''
+        return JsonResponse(result)
+     
+    except ObjectDoesNotExist:
+        result['repeated'] = ''
         result['invalid_domain'] = ''
 
     return JsonResponse(result)
@@ -7857,12 +7875,15 @@ def create_user(request):
             user.first_name = firstname
             user.last_name = lastname
             user.email = email
+            user.phone = phone
+            print(phone)
             if group == 'Admin':
                 user.is_staff = True
             # user.groups = group
 
             assign_group.user_set.add(user)
             user.save()
+
             # send_mail_code
             subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + firstname
             to_email = [email]
