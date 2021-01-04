@@ -43,18 +43,19 @@ $(document).ready(function(){
             $('#c_referral').attr("disabled", true);
     }
     $('#referral').change(function() {
+        console.log("referral")
         var selectedvalue = $(this).val();
         var usergroup = $('#user_group').val();
-        if (selectedvalue != '3' && usergroup == 'Recruiter'){
-            $('#c_vendor').attr("disabled", true);
-            $('#c_vendor').prop("required", false);
-
+        $('#c_entity .empty').css("display", "");
+        $('#c_entity .empty').prop("selected", true);
+        if (selectedvalue != 3){
+            if (usergroup == 'Recruiter'){
+                $('#c_vendor').attr("disabled", true);
+                $('#c_vendor').prop("required", false);
+            }            
         } else {
-            // $('#c_vendor').attr("disabled", false);
             $('#c_vendor').attr("value", null);
             $('#c_vendor').prop("required", true);
-            // $('#c_entity').attr("value", null);
-
         }
     });
  
