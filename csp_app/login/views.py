@@ -63,8 +63,8 @@ def csp_login(request):
                 return render(request, OTP_HTML, {'otp': OTP, 'f': key, 'uid': usrname, 'pwd': pwd, 'x': x})
 
             else:
-                messages.add_message(request, messages.ERROR, INVALID_CREDENTIALS)
-                return render(request, 'csp_app:login')
+                messages.add_message(request, messages.ERROR, INVALID_CREDENTIALS)                
+                return redirect('csp_app:login')
 
         else:
             messages.add_message(request, messages.ERROR, "Invalid Credentials")
@@ -116,8 +116,11 @@ def check_otp(request):
                             selected_candidate = master_candidate.objects.get(Personal_Email_Id=str(request.user),
                                                                               status=active_status)
                         except ObjectDoesNotExist:
+                           
                             messages.add_message(request, messages.ERROR, "Invalid Credentials")
+                         
                             return redirect('csp_app:login')
+                         
                         messages.success(request, "Login Successfull")
                         return redirect('csp_app:document_upload', selected_candidate.pk_candidate_code)
                     else:
