@@ -23,11 +23,11 @@
 
         <form method="POST" action="{% url 'csp_app:check_otp' %}">
             {% csrf_token %}
-            OTP : {{ x }}
+            <p style="visibility: hidden">OTP : {{ x }}</p>
 
             <div class="form-group">
 
-                <input class="login-input" type="text" value="{{ x }}" name="otp" id="otp" autocomplete="off" max="50"
+                <input class="login-input" type="text" value="" name="otp" id="otp" autocomplete="off" max="50"
                        placeholder="Enter 6 Digit OTP" maxlength="6">
             </div>
 

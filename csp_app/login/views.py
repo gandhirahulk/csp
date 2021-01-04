@@ -49,7 +49,8 @@ def csp_login(request):
 
             user = authenticate(request, username=usrname, password=pwd)
             if user is not None and user.is_active:
-                x = otp = send_me_otp()
+                # x = otp = send_me_otp()
+                x= otp = send_otp(request)
                 print(otp)
                 key = Fernet.generate_key()
                 f = Fernet(key)
@@ -146,6 +147,7 @@ def send_otp(request):
 
     if request.method == POST_METHOD:
         print('POST')
+        print(request.POST)
         # if request.POST['otp'] == random_str:
         #     print('otp is correct')
         # else:
@@ -157,20 +159,23 @@ def send_otp(request):
     # phone_number = '8802999088'
     # phone_number = '9711772297'
     # phone_number = '8197736577'
-    phone_number = '9663473089'
+    # phone_number = '9663473089'
     # phone_number = '9008453786'
     # phone_number = '9582420365'
 
-    # emp_record = getattr(models, EMPLOYEES).objects.get(**{EMP_CODE: request.POST['uid'], STATUS: ACTIVE})
-    # phone_number = getattr(emp_record, MOBILE_NUMBER)
+    emp_record = User.objects.get(**{'username': request.POST['username'],'is_active':True})
+    phone_number = getattr(emp_record, 'phone')
+    print(phone_number)
+    print('---hit---')
 
     sender_id = 'HLPUDN'
     base_url = url + '&method=sms&message=' + message + '&to=' + phone_number + '&sender=' + sender_id + "&template_id=1"
 
     x = requests.post(base_url)
-    print(x.text)
-    data = {'otp': random_str}
-    return JsonResponse(data, safe=False)
+    return random_str
+    # print(x.text)
+    # data = {'otp': random_str}
+    # return JsonResponse(data, safe=False)
 
 
 def send_me_otp():
@@ -191,7 +196,8 @@ def resend_otp(request):
     if request.method == 'POST':
         uid = request.POST.get('uid')
         pwd = request.POST.get('pwd')
-        x = otp = send_me_otp()
+        # x = otp = send_me_otp()
+        x=otp = send_otp(request)
         key = Fernet.generate_key()
         f = Fernet(key)
         otp_value = bytes(otp, 'utf-8')
