@@ -7857,6 +7857,8 @@ def create_user(request):
             user.first_name = firstname
             user.last_name = lastname
             user.email = email
+            user.phone = phone
+            print(phone)
             if group == 'Admin':
                 user.is_staff = True
             # user.groups = group

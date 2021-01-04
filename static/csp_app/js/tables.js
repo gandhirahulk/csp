@@ -103,6 +103,7 @@
             "pagingType": "full_numbers",
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
+            rowReorder: true
         });
         
         $('#candidate-table').DataTable({
