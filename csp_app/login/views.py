@@ -26,7 +26,6 @@ OTP_SENT = "OTP Sent To Registered Mobile Number"
 INVALID_CREDENTIALS = "Invalid Credentials"
 
 
-
 @login_required(login_url='/notlogin/')
 def admin(request):
     return render(request, 'csp_app/adminhome.html', {'allcandidates': all_active_candidates, })
@@ -50,7 +49,7 @@ def csp_login(request):
             user = authenticate(request, username=usrname, password=pwd)
             if user is not None and user.is_active:
                 # x = otp = send_me_otp()
-                x= otp = send_otp(request)
+                x = otp = send_otp(request)
                 print(otp)
                 key = Fernet.generate_key()
                 f = Fernet(key)
@@ -145,16 +144,8 @@ def send_otp(request):
         index = math.floor(random.random() * 10)
         random_str += str(digits[index])
 
-    if request.method == POST_METHOD:
-        print('POST')
-        print(request.POST)
-        # if request.POST['otp'] == random_str:
-        #     print('otp is correct')
-        # else:
-        #     print('otp is incorrect')
-
     url = 'https://alerts.kaleyra.com/api/v4/?api_key=Af25bf56645bb5c944ed22af307bd97b7'
-    message = '# DO NOT SHARE: ' + random_str + ' is the otp for your hrms login account. Keep this OTP to yourself for account safety.'
+    message = '# DO NOT SHARE: ' + random_str + ' is the otp for your on boarding tool login account. Keep this OTP to yourself for account safety.'
 
     # phone_number = '8802999088'
     # phone_number = '9711772297'
@@ -163,19 +154,17 @@ def send_otp(request):
     # phone_number = '9008453786'
     # phone_number = '9582420365'
 
-    emp_record = User.objects.get(**{'username': request.POST['username'],'is_active':True})
-    phone_number = getattr(emp_record, 'phone')
+    emp_record = User.objects.get(**{'username': request.POST['username'], 'is_active': True})
+    phone_record = user_phone.objects.get(**{'user': emp_record})
+    phone_number = getattr(phone_record, 'phone')
     print(phone_number)
-    print('---hit---')
 
     sender_id = 'HLPUDN'
     base_url = url + '&method=sms&message=' + message + '&to=' + phone_number + '&sender=' + sender_id + "&template_id=1"
 
     x = requests.post(base_url)
+    print(x.text)
     return random_str
-    # print(x.text)
-    # data = {'otp': random_str}
-    # return JsonResponse(data, safe=False)
 
 
 def send_me_otp():
@@ -197,7 +186,7 @@ def resend_otp(request):
         uid = request.POST.get('uid')
         pwd = request.POST.get('pwd')
         # x = otp = send_me_otp()
-        x=otp = send_otp(request)
+        x = otp = send_otp(request)
         key = Fernet.generate_key()
         f = Fernet(key)
         otp_value = bytes(otp, 'utf-8')

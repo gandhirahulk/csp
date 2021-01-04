@@ -6,7 +6,7 @@ from .extvalidate import validate_file_extension
 
 class user_phone(models.Model):
     pk_user_phone_id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=10,null=True,blank=True)
 
 class status(models.Model):
