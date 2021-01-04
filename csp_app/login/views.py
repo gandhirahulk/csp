@@ -153,15 +153,15 @@ def send_otp(request):
     # phone_number = '9663473089'
     # phone_number = '9008453786'
     # phone_number = '9582420365'
-    print('sdf')
-    print(request.POST['username'])
-    if request.POST['username'] != None:
-        emp_record = User.objects.get(**{'username': request.POST['username'], 'is_active': True})
+   
+    # print(request.POST['username'])
+    if request.POST.get('username') != None:
+        emp_record = User.objects.get(**{'username': request.POST.get('username'), 'is_active': True})
     else:
-        emp_record = User.objects.get(**{'username': request.POST['uid'], 'is_active': True})
+        emp_record = User.objects.get(**{'username': request.POST.get('uid'), 'is_active': True})
     phone_record = user_phone.objects.get(**{'user': emp_record})
     phone_number = getattr(phone_record, 'phone')
-    print(phone_number)
+ 
 
     sender_id = 'HLPUDN'
     base_url = url + '&method=sms&message=' + message + '&to=' + phone_number + '&sender=' + sender_id + "&template_id=1"
