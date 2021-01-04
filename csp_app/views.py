@@ -1931,9 +1931,14 @@ def process_requests(request, cid):
                             user.set_password(user.password)
                             user.first_name = selected_candidate.Reporting_Manager
                             user.email = selected_candidate.Reporting_Manager_E_Mail_ID
-                            user.phone = selected_candidate.Contact_Number
+                            
+                           
 
                             user.save()
+                            user_record = User.objects.get(**{'username': selected_candidate.Reporting_Manager_E_Mail_ID })
+                            #change phone
+                            new_phone_record = user_phone(user_id= user_record.pk, phone= selected_candidate.Contact_Number)
+                            new_phone_record.save()
                             # send_mail_code
                             subject = 'Candidate Approved : Intimation :' + str(
                                 selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
@@ -1986,9 +1991,12 @@ def process_requests(request, cid):
                             user.first_name = selected_candidate.First_Name
                             user.last_name = selected_candidate.Last_Name
                             user.email = selected_candidate.Personal_Email_Id
-                            user.phone = selected_candidate.Contact_Number
+                            
                             assign_group.user_set.add(user)
                             user.save()
+                            user_record = User.objects.get(**{'username': selected_candidate.Personal_Email_Id })
+                            new_phone_record = user_phone(user_id= user_record.pk, phone= selected_candidate.Contact_Number)
+                            new_phone_record.save()
                         except IntegrityError:
                             password = 'Use old password else reset it.'
                         my_host = selected_candidate.fk_vendor_code.vendor_smtp
@@ -6326,9 +6334,12 @@ def create_vendor(request):
             user.set_password(user.password)
             user.first_name = vendor_name
             user.email = vendor_spoc_email
-            user.phone = vendor_phone
+         
             assign_group.user_set.add(user)  
             user.save()
+            user_record = User.objects.get(**{'username': vendor_spoc_email })
+            new_phone_record = user_phone(user_id= user_record.pk, phone= vendor_phone)
+            new_phone_record.save()
             Onboarding_SPOC, Onboarding_SPOC_name = get_onbording_spoc()
             # send_mail_code
             subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + vendor_spoc
@@ -7875,14 +7886,16 @@ def create_user(request):
             user.first_name = firstname
             user.last_name = lastname
             user.email = email
-            user.phone = phone
-            print(phone)
+            
             if group == 'Admin':
                 user.is_staff = True
             # user.groups = group
 
             assign_group.user_set.add(user)
             user.save()
+            user_record = User.objects.get(**{'username': usrname})
+            new_phone_record = user_phone(user_id= user_record.pk, phone= phone)
+            new_phone_record.save()
 
             # send_mail_code
             subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + firstname
