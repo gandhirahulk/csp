@@ -148,7 +148,7 @@ def send_otp(request):
         random_str += str(digits[index])
 
     url = 'https://alerts.kaleyra.com/api/v4/?api_key=Af25bf56645bb5c944ed22af307bd97b7'
-    message = '# DO NOT SHARE: ' + random_str + ' is the otp for your on boarding tool login account. Keep this OTP to yourself for account safety.'
+    message = random_str + ' is the otp for your on boarding tool login account. Keep this OTP to yourself for account safety.'
 
     # phone_number = '8802999088'
     # phone_number = '9711772297'
