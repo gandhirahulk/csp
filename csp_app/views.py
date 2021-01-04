@@ -1913,6 +1913,7 @@ def process_requests(request, cid):
                             user.set_password(user.password)
                             user.first_name = selected_candidate.Reporting_Manager
                             user.email = selected_candidate.Reporting_Manager_E_Mail_ID
+                            user.phone = selected_candidate.Contact_Number
 
                             user.save()
                             # send_mail_code
@@ -1967,7 +1968,7 @@ def process_requests(request, cid):
                             user.first_name = selected_candidate.First_Name
                             user.last_name = selected_candidate.Last_Name
                             user.email = selected_candidate.Personal_Email_Id
-
+                            user.phone = selected_candidate.Contact_Number
                             assign_group.user_set.add(user)
                             user.save()
                         except IntegrityError:
@@ -6307,7 +6308,8 @@ def create_vendor(request):
             user.set_password(user.password)
             user.first_name = vendor_name
             user.email = vendor_spoc_email
-            assign_group.user_set.add(user)
+            user.phone = vendor_phone
+            assign_group.user_set.add(user)  
             user.save()
             Onboarding_SPOC, Onboarding_SPOC_name = get_onbording_spoc()
             # send_mail_code
@@ -7834,6 +7836,8 @@ def create_user(request):
         lastname = request.POST.get('lastname').title()
         email = request.POST.get('email')
         group = request.POST.get('usergroup')
+        phone = request.POST.get('phone')
+       
         try:
             assign_group = Group.objects.get(name=group)
             if assign_group.name == 'Onboarding SPOC':

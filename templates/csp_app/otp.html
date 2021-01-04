@@ -43,10 +43,14 @@
 
             <div class="login-btn-holder" style="padding-bottom: 10px;">
                 <button class="login-btn" formaction="{% url 'csp_app:check_otp' %}" type="submit">Submit</button>
-            </div>
-
-            <div class="login-btn-holder" style="padding-bottom: 10px;">
-                <button type="submit" id="send_otp" class="login-btn"
+            
+                <button type="submit" id="send_otp" style="background: none !important;
+                outline: none !important;
+                color:blue;
+                border: none !important;
+                font-size: 12px;
+                padding-left: 7px;
+                font-weight: 600; text-decoration: underline;cursor: pointer;"
                         formaction="{% url 'csp_app:resend_otp' %}"> Resend OTP
                 </button>
             </div>
