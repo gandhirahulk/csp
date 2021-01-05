@@ -1359,6 +1359,7 @@ def process_requests(request, cid):
                         msg.attach_alternative(html_content, "text/html")
                         msg.send()
                         vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                        rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                         if selected_candidate.vendor_status != vendor_status.objects.get(
                                 pk=2) or selected_candidate.vendor_status != vendor_status.objects.get(
                             pk=0) or selected_candidate.vendor_status != vendor_status.objects.get(pk=3):
@@ -1408,6 +1409,7 @@ def process_requests(request, cid):
                             msg.send()
                     selected_candidate.save()
                     vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                     # send_mail_code
                     subject = 'New Resource Requirement & Finalized Candidate Information :' + str(
                         selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
@@ -6610,6 +6612,7 @@ def create_vendor(request):
             new_phone_record.save()
             Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
             vendor_spoc_first_name = get_first_name(vendor_spoc)
+            
           
 
             # send_mail_code

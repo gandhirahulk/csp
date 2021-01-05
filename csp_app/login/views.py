@@ -99,6 +99,7 @@ def check_otp(request):
 
             if inserted_otp == otp:
                 login(request, user)
+                
                 try:
                     User.objects.filter(pk=request.user.pk).update(last_login=datetime.datetime.now())
                     group = request.user.groups.all()
@@ -106,9 +107,11 @@ def check_otp(request):
                     for groupname in group:
                         group_name = groupname
                     if str(group_name) == 'Admin':
+                        print('Admin')
                         messages.success(request, "Login Successfull")
                         return redirect('csp_app:candidate')
                     elif str(group_name) == 'Vendor':
+                        print('Vendor')
                         messages.success(request, "Login Successfull")
                         return redirect('csp_app:candidate')
                     elif str(group_name) == 'Candidate':

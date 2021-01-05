@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
+from sys import platform
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -173,10 +173,15 @@ EMAIL_HOST_PASSWORD = 'lyboapvarmagsbsv'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
+if platform == "linux" or platform == "linux2":
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SECURE = True
+
+
 # INACTIVE_TIME = 40 * 60
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_SECURE = True
 # SESSION_COOKIE_AGE = INACTIVE_TIME  
 # SESSION_IDLE_TIMEOUT = INACTIVE_TIME 
 
