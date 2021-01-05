@@ -5336,7 +5336,7 @@ def save_new_candidate(request):
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(ta_spoc)
                 # print(recruiter_name)
                 # send_mail_code
-                subject = 'Candidate Selection & Offer Request : ' + str(firstname) + ' | ' + str(new_code)
+                subject = 'Candidate Selection & Offer Request : ' + str(firstname) + ' ' + str(middlename) + ' ' + str(lastname) + ' | ' + str(new_code)
                 to_email = [Onboarding_SPOC]
                 cc_email = [ta_spoc]
                 bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -5368,7 +5368,7 @@ def save_new_candidate(request):
                 msg.send()
 
                 # send_mail_code
-                subject = 'Candidate Selection Notification : ' + str(firstname) + ' | ' + str(new_code)
+                subject = 'Candidate Selection Notification : ' + str(firstname) + ' ' + str(middlename) + ' ' + str(lastname) + ' | ' + str(new_code)
                 to_email = [reporting_manager_email]
                 cc_email = [ta_spoc, Onboarding_SPOC]
                 bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -8147,7 +8147,7 @@ def create_user(request):
             new_phone_record.save()
 
             # send_mail_code
-            subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + firstname
+            subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + str(firstname) + ' ' + str(lastname)
             to_email = [email]
             bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
             from_email = FROM_EMAIL
@@ -8184,7 +8184,7 @@ def disable_user(request):
             selected_user.is_active = False
             selected_user.save()
             # send_mail_code
-            subject = 'Account Disabled – Associate Onboarding Tool : ' + selected_user.first_name
+            subject = 'Account Disabled – Associate Onboarding Tool : ' + str(selected_user.first_name) + ' ' + str(selected_user.last_name) 
             to_email = [selected_user.email]
             bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
 
@@ -8216,7 +8216,7 @@ def enable_user(request):
             selected_user.is_active = True
             selected_user.save()
             # send_mail_code
-            subject = 'Account Enabled – Associate Onboarding Tool : ' + selected_user.first_name
+            subject = 'Account Enabled – Associate Onboarding Tool : ' + str(selected_user.first_name) + ' ' +  str(selected_user.last_name) 
             to_email = [selected_user.email]
             bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
 
