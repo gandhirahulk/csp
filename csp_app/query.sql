@@ -57,8 +57,8 @@ insert into "csp_app_dummy_candidate_code" values(0, 'D000000000');
 delete from "csp_app_group_ids";
 insert into "csp_app_group_ids" values(0);
 delete from "auth_user" where not id = 1 and not id = 23 and not id = 24;
+delete from "csp_app_user_phone" where not user_id = 1 and not user_id = 23 and not user_id = 24;
 delete from "auth_user_groups" where not user_id = 1 and not user_id = 23 and not user_id = 24;
-
 
 
 

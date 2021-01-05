@@ -1308,6 +1308,7 @@ def process_requests(request, cid):
                         selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
                     if len(changes_list) > 0:
                         recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+                        vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=4)
                         # send_mail_code
                         subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
@@ -1546,6 +1547,7 @@ def process_requests(request, cid):
 
                 if request.POST.get('ve_status') != None:
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                     # print(changes_list)
                     if len(changes_list) > 0:
                         if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
@@ -2500,6 +2502,7 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.save()
                     Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
                     subject = 'Candidate Request Rejected : Intimation :  ' + str(
@@ -2591,6 +2594,7 @@ def reject_candidate_vendor(request, cid):
                     return redirect("csp_app:pending_request")
                 elif str(eachgroup) == 'Onboarding SPOC':
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                     selected_candidate.onboarding_status = reject_onboarding
                     selected_candidate.vendor_status = vendor_status.objects.get(pk=3)
                     selected_candidate.loi_status = loi_status.objects.get(pk=3)
@@ -2962,6 +2966,7 @@ def future_joining_requests(request):
         reject = request.POST.get('reject_cid')
         confirm = request.POST.get('confirm_cid')
         recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+        vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
         if reject == None and confirm != None:
             selected_candidate = master_candidate.objects.get(pk=confirm)
 
@@ -2993,6 +2998,7 @@ def future_joining_requests(request):
             selected_candidate.save()
             vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
             recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+            vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
             subject = 'Change in Candidate Date of Joining : Confirmed : ' + str(
                 selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
                 selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
@@ -3079,6 +3085,7 @@ def future_joining_requests(request):
         if confirm == None and reject != None:
             selected_candidate = master_candidate.objects.get(pk=reject)
             recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+            vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
             selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
             selected_candidate.joining_status = joining_status.objects.get(pk=0)
             selected_candidate.save()
@@ -4440,6 +4447,7 @@ def edit_candidate(request):
                                                                                 salarytype_fk, request, email,
                                                                                 ss_gross_salary, physically_challenged)
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+                vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                 if len(changes_list) > 0:
                     vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                     subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
@@ -4494,6 +4502,7 @@ def edit_candidate(request):
                     selected_candidate.save()
 
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+                vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                 create_salary_structure(selected_candidate, basic, annualbasic, house_rent_allowance,
                                         annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus,
                                         special_allowance, annualspecial_allowance, ss_gross_salary, annualgross_salary,
@@ -5681,6 +5690,7 @@ def candidate_document_upload(request, candidate_id):
                     selected_candidate = master_candidate.objects.get(pk=candidate_id)
                     vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                     # send_mail_code
                     subject = 'Candidate Offer Closure : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
                         selected_candidate.pk)
