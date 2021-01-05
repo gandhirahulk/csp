@@ -1146,7 +1146,7 @@ def process_requests(request, cid):
 
                         # send_mail_code
                         subject = 'New Resource Requirement & Finalized Candidate Information : ' + str(
-                            selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                            selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk)
                         to_email = [selected_candidate.fk_vendor_code.spoc_email_id]
                         cc_email = [selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id]
                         bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -1191,7 +1191,7 @@ def process_requests(request, cid):
                         msg.send()
 
                         # send_mail_code
-                        subject = 'Candidate Approval from Admin :' + str(selected_candidate.First_Name) + ' | ' + str(
+                        subject = 'Candidate Approval from Admin :' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
                             selected_candidate.pk)
                         to_email = [selected_candidate.TA_Spoc_Email_Id]
                         cc_email = [selected_candidate.Onboarding_Spoc_Email_Id]
@@ -1237,7 +1237,7 @@ def process_requests(request, cid):
                         msg.send()
 
                         # send_mail_code
-                        subject = 'Candidate Approval from Admin :' + str(selected_candidate.First_Name) + ' | ' + str(
+                        subject = 'Candidate Approval from Admin :' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
                             selected_candidate.pk)
                         to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                         cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
@@ -1303,7 +1303,7 @@ def process_requests(request, cid):
                         recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=4)
                         # send_mail_code
-                        subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' | ' + str(
+                        subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
                             selected_candidate.pk)
                         to_email = [selected_candidate.TA_Spoc_Email_Id]
                         cc_email = [selected_candidate.Onboarding_Spoc_Email_Id]
@@ -1353,7 +1353,7 @@ def process_requests(request, cid):
                             pk=0) or selected_candidate.vendor_status != vendor_status.objects.get(pk=3):
                             # send_mail_code
                             subject = 'Candidate Information Edited : ' + str(
-                                selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                             to_email = [selected_candidate.fk_vendor_code.spoc_email_id]
                             bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                             from_email = FROM_EMAIL
@@ -1398,7 +1398,7 @@ def process_requests(request, cid):
                     selected_candidate.save()
                     # send_mail_code
                     subject = 'New Resource Requirement & Finalized Candidate Information :' + str(
-                        selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                     to_email = [selected_candidate.fk_vendor_code.spoc_email_id]
                     cc_email = [selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -1444,7 +1444,7 @@ def process_requests(request, cid):
 
                     # send_mail_code
                     subject = 'Candidate Approval from Onboarding SPOC :' + str(
-                        selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                     to_email = [selected_candidate.TA_Spoc_Email_Id]
                     cc_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -1490,7 +1490,7 @@ def process_requests(request, cid):
 
                     # send_mail_code
                     subject = 'Candidate Approval from Onboarding SPOC :' + str(
-                        selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                     to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                     cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -1584,7 +1584,7 @@ def process_requests(request, cid):
                                 msg.send()
                             # send_mail_code
                             subject = 'Change in Date of Joining - Confirmation : Approved : ' + str(
-                                selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                             to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                             cc_email = [selected_candidate.Onboarding_Spoc_Email_Id,
                                         selected_candidate.TA_Spoc_Email_Id]
@@ -1631,7 +1631,7 @@ def process_requests(request, cid):
                             msg.send()
                             # send_mail_code
                             subject = 'Candidate Information Edited : Approval Required : ' + str(
-                                selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                             to_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                             bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                             from_email = FROM_EMAIL
@@ -1674,7 +1674,7 @@ def process_requests(request, cid):
                             msg.send()
                             # send_mail_code
                             subject = 'Candidate Information Edited : Intimation : ' + str(
-                                selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                             cc_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                             to_email = [selected_candidate.TA_Spoc_Email_Id]
                             bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -1738,7 +1738,7 @@ def process_requests(request, cid):
                         selected_candidate.save()
                         # send_mail_code
                         subject = 'Candidate Information Edited : Approval Required : ' + str(
-                            selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                            selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                         to_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                         bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                         from_email = FROM_EMAIL
@@ -1782,7 +1782,7 @@ def process_requests(request, cid):
                         msg.send()
                         # send_mail_code
                         subject = 'Candidate Information Edited : Intimation : ' + str(
-                            selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                            selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                         cc_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                         to_email = [selected_candidate.TA_Spoc_Email_Id]
                         bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -1874,7 +1874,7 @@ def process_requests(request, cid):
                             selected_candidate.save()
                             # send_mail_code
                             subject = 'Change in Date of Joining - Confirmation : Approved : ' + str(
-                                selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                             to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                             cc_email = [selected_candidate.Onboarding_Spoc_Email_Id,
                                         selected_candidate.TA_Spoc_Email_Id]
@@ -1942,7 +1942,7 @@ def process_requests(request, cid):
                             Onboarding_SPOC_first_name = 'Admin'
                         # send_mail_code
                         subject = 'Candidate Approved : Intimation :' + str(
-                            selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                            selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                         to_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                         cc_email = [selected_candidate.TA_Spoc_Email_Id,
                                     selected_candidate.fk_vendor_code.spoc_email_id]
@@ -2008,7 +2008,7 @@ def process_requests(request, cid):
                             u = User.objects.get(username=selected_candidate.Reporting_Manager_E_Mail_ID)
                             # send_mail_code
                             subject = 'Candidate Approved : Intimation :' + str(
-                                selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                             to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                             cc_email = [selected_candidate.TA_Spoc_Email_Id,
                                         selected_candidate.Onboarding_Spoc_Email_Id]
@@ -2089,7 +2089,7 @@ def process_requests(request, cid):
                             new_phone_record.save()
                             # send_mail_code
                             subject = 'Candidate Approved : Intimation :' + str(
-                                selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                                selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                             to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                             cc_email = [selected_candidate.TA_Spoc_Email_Id,
                                         selected_candidate.Onboarding_Spoc_Email_Id]
@@ -2496,7 +2496,7 @@ def reject_candidate_vendor(request, cid):
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
                     subject = 'Candidate Request Rejected : Intimation :  ' + str(
-                        selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                     to_email = [selected_candidate.TA_Spoc_Email_Id]
                     cc_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -2539,7 +2539,7 @@ def reject_candidate_vendor(request, cid):
                     msg.send()
 
                     subject = 'Candidate Request Rejected : Intimation :  ' + str(
-                        selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                     to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                     cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -2602,7 +2602,7 @@ def reject_candidate_vendor(request, cid):
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
                     subject = 'Candidate Request Rejected : Intimation :  ' + str(
-                        selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                     to_email = [selected_candidate.TA_Spoc_Email_Id]
                     cc_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -2644,7 +2644,7 @@ def reject_candidate_vendor(request, cid):
                     msg.send()
 
                     subject = 'Candidate Request Rejected : Intimation :  ' + str(
-                        selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                     to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                     cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -2691,7 +2691,7 @@ def reject_candidate_vendor(request, cid):
                     if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
                         # send_mail_code
                         subject = 'Change in Date of Joining : Rejected : ' + str(
-                            selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                            selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                         to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                         cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
                         bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -2767,7 +2767,7 @@ def reject_candidate_vendor(request, cid):
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
                     subject = 'Candidate Request Rejected : Intimation :  ' + str(
-                        selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                     to_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                     cc_email = [selected_candidate.TA_Spoc_Email_Id, selected_candidate.fk_vendor_code.spoc_email_id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -2809,7 +2809,7 @@ def reject_candidate_vendor(request, cid):
                     msg.send()
 
                     subject = 'Candidate Request Rejected : Intimation :  ' + str(
-                        selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk)
+                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
                     to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
                     cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -4433,7 +4433,7 @@ def edit_candidate(request):
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                 if len(changes_list) > 0:
                     print(changes_list)
-                    subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' | ' + str(
+                    subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
                         selected_candidate.pk)
                     to_email = [selected_candidate.TA_Spoc_Email_Id]
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
@@ -4497,7 +4497,7 @@ def edit_candidate(request):
                                         annualcost_to_company, take_home_salary, annualtake_home_salary, variable,
                                         annualvariable, fixedsalary, annualfixedsalary)
                 # send_mail_code
-                subject = 'Candidate Information Edit Intimation : ' + str(selected_candidate.First_Name) + ' | ' + str(
+                subject = 'Candidate Information Edit Intimation : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
                     selected_candidate.pk)
                 cc_email = [selected_candidate.Onboarding_Spoc_Email_Id]
                 to_email = [selected_candidate.TA_Spoc_Email_Id]
@@ -5324,8 +5324,8 @@ def save_new_candidate(request):
                     Onboarding_SPOC_first_name = Onboarding_SPOC_list.first_name
                 except ObjectDoesNotExist:
                     Onboarding_SPOC_first_name = 'Admin'
-                recruiter_name = get_recruiter_spoc(ta_spoc)
-                print(recruiter_name)
+                recruiter_name, recruiter_first_name = get_recruiter_spoc(ta_spoc)
+                # print(recruiter_name)
                 # send_mail_code
                 subject = 'Candidate Selection & Offer Request : ' + str(firstname) + ' | ' + str(new_code)
                 to_email = [Onboarding_SPOC]
@@ -5672,7 +5672,7 @@ def candidate_document_upload(request, candidate_id):
                     selected_candidate = master_candidate.objects.get(pk=candidate_id)
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                     # send_mail_code
-                    subject = 'Candidate Offer Closure : ' + str(selected_candidate.First_Name) + ' | ' + str(
+                    subject = 'Candidate Offer Closure : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
                         selected_candidate.pk)
                     cc_email = [selected_candidate.Onboarding_Spoc_Email_Id, selected_candidate.TA_Spoc_Email_Id]
                     to_email = [selected_candidate.Reporting_Manager_E_Mail_ID]
