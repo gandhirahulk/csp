@@ -11,7 +11,6 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from ..models import *
@@ -31,6 +30,7 @@ INVALID_CREDENTIALS = "Invalid Credentials"
 def admin(request):
     return render(request, 'csp_app/adminhome.html', {'allcandidates': all_active_candidates, })
 
+
 @never_cache
 def csp_login(request):
     if request.method == "POST":
@@ -49,9 +49,8 @@ def csp_login(request):
 
             user = authenticate(request, username=usrname, password=pwd)
             if user is not None and user.is_active:
-                # x = otp = send_me_otp()
                 x = otp = send_otp(request)
-                print(otp)
+
                 key = Fernet.generate_key()
                 f = Fernet(key)
                 otp_value = bytes(otp, 'utf-8')
@@ -64,7 +63,7 @@ def csp_login(request):
                 return render(request, OTP_HTML, {'otp': OTP, 'f': key, 'uid': usrname, 'pwd': pwd, 'x': x})
 
             else:
-                messages.add_message(request, messages.ERROR, INVALID_CREDENTIALS)                
+                messages.add_message(request, messages.ERROR, INVALID_CREDENTIALS)
                 return redirect('csp_app:login')
 
         else:
@@ -117,11 +116,11 @@ def check_otp(request):
                             selected_candidate = master_candidate.objects.get(Personal_Email_Id=str(request.user),
                                                                               status=active_status)
                         except ObjectDoesNotExist:
-                           
+
                             messages.add_message(request, messages.ERROR, "Invalid Credentials")
-                         
+
                             return redirect('csp_app:login')
-                         
+
                         messages.success(request, "Login Successfull")
                         return redirect('csp_app:document_upload', selected_candidate.pk_candidate_code)
                     else:
@@ -149,29 +148,18 @@ def send_otp(request):
         random_str += str(digits[index])
 
     url = 'https://alerts.kaleyra.com/api/v4/?api_key=Af25bf56645bb5c944ed22af307bd97b7'
-    message = random_str + ' is the otp for your on boarding tool login account. Keep this OTP to yourself for account safety.'
+    message = 'OTP for https://www.ob.associatehrms.com/ login is:' + random_str
 
-    # phone_number = '8802999088'
-    # phone_number = '9711772297'
-    # phone_number = '8197736577'
-    # phone_number = '9663473089'
-    # phone_number = '9008453786'
-    # phone_number = '9582420365'
-   
-    # print(request.POST['username'])
     if request.POST.get('username') != None:
         emp_record = User.objects.get(**{'username': request.POST.get('username'), 'is_active': True})
     else:
         emp_record = User.objects.get(**{'username': request.POST.get('uid'), 'is_active': True})
     phone_record = user_phone.objects.get(**{'user': emp_record})
     phone_number = getattr(phone_record, 'phone')
- 
 
     sender_id = 'HLPUDN'
     base_url = url + '&method=sms&message=' + message + '&to=' + phone_number + '&sender=' + sender_id + "&template_id=1"
-
-    x = requests.post(base_url)
-    print(x.text)
+    requests.post(base_url)
     return random_str
 
 
@@ -193,16 +181,14 @@ def resend_otp(request):
     if request.method == 'POST':
         uid = request.POST.get('uid')
         pwd = request.POST.get('pwd')
-        # x = otp = send_me_otp()
         x = otp = send_otp(request)
-        print("after x")
         key = Fernet.generate_key()
+
         f = Fernet(key)
         otp_value = bytes(otp, 'utf-8')
         encrpt_otp = f.encrypt(otp_value)
 
         OTP = str(encrpt_otp, 'utf-8')
-
         key = str(key, 'utf-8')
         return render(request, OTP_HTML, {'otp': OTP, 'f': key, 'uid': uid, 'pwd': pwd, 'x': x})
     return render(request, OTP_HTML)
