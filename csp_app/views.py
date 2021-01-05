@@ -72,13 +72,13 @@ def get_onbording_spoc():
             Onboarding_SPOC_first_name = x
     return Onboarding_SPOC_Mail, Onboarding_SPOC_Name, Onboarding_SPOC_first_name
 
-def get_vendor_first_name(spoc_name):
-    x = spoc_name.split(' ', 1)[0]
+def get_first_name(name):
+    x = name.split(' ', 1)[0]
     if len(x) > 2:
-        vendor_spoc_first_name = x
+        my_first_name = x
     else:
-        vendor_spoc_first_name = spoc_name
-    return vendor_spoc_first_name
+        my_first_name = name
+    return my_first_name
 
 def get_recruiter_spoc(ta_spoc_mail):
     try:
@@ -1150,7 +1150,8 @@ def process_requests(request, cid):
                         selected_candidate.save()
                         Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                         recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-                        vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                        vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                        rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                         # send_mail_code
                         subject = 'New Resource Requirement & Finalized Candidate Information : ' + str(
                             selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk)
@@ -1181,7 +1182,7 @@ def process_requests(request, cid):
                                                          'salary_num': selected_candidate.Gross_Salary_Amount,
                                                          'salary_word': num2words(
                                                              selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                         'rm_name': selected_candidate.Reporting_Manager,
+                                                         'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1227,7 +1228,7 @@ def process_requests(request, cid):
                                                          'salary_num': selected_candidate.Gross_Salary_Amount,
                                                          'salary_word': num2words(
                                                              selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                         'rm_name': selected_candidate.Reporting_Manager,
+                                                         'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1273,7 +1274,7 @@ def process_requests(request, cid):
                                                          'salary_num': selected_candidate.Gross_Salary_Amount,
                                                          'salary_word': num2words(
                                                              selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                         'rm_name': selected_candidate.Reporting_Manager,
+                                                         'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1308,7 +1309,8 @@ def process_requests(request, cid):
                         selected_candidate.laptop_status = laptop_request_status.objects.get(pk=0)
                     if len(changes_list) > 0:
                         recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-                        vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                        vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                        rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                         selected_candidate.onboarding_status = onboarding_status.objects.get(pk=4)
                         # send_mail_code
                         subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
@@ -1341,7 +1343,7 @@ def process_requests(request, cid):
                                                          'salary_num': selected_candidate.Gross_Salary_Amount,
                                                          'salary_word': num2words(
                                                              selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                         'rm_name': selected_candidate.Reporting_Manager,
+                                                         'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1389,7 +1391,7 @@ def process_requests(request, cid):
                                                              'salary_num': selected_candidate.Gross_Salary_Amount,
                                                              'salary_word': num2words(
                                                                  selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                             'rm_name': selected_candidate.Reporting_Manager,
+                                                             'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1434,7 +1436,7 @@ def process_requests(request, cid):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1480,7 +1482,7 @@ def process_requests(request, cid):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1526,7 +1528,7 @@ def process_requests(request, cid):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1547,8 +1549,8 @@ def process_requests(request, cid):
 
                 if request.POST.get('ve_status') != None:
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
-                    # print(changes_list)
+                    vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                     if len(changes_list) > 0:
                         if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
                             selected_candidate.Date_of_Joining = selected_candidate.delay_date
@@ -1624,7 +1626,7 @@ def process_requests(request, cid):
                                                              'salary_num': selected_candidate.Gross_Salary_Amount,
                                                              'salary_word': num2words(
                                                                  selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                             'rm_name': selected_candidate.Reporting_Manager,
+                                                             'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1667,7 +1669,7 @@ def process_requests(request, cid):
                                                              'salary_num': selected_candidate.Gross_Salary_Amount,
                                                              'salary_word': num2words(
                                                                  selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                             'rm_name': selected_candidate.Reporting_Manager,
+                                                             'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1712,7 +1714,7 @@ def process_requests(request, cid):
                                                              'salary_num': selected_candidate.Gross_Salary_Amount,
                                                              'salary_word': num2words(
                                                                  selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                             'rm_name': selected_candidate.Reporting_Manager,
+                                                             'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1775,7 +1777,7 @@ def process_requests(request, cid):
                                                          'salary_num': selected_candidate.Gross_Salary_Amount,
                                                          'salary_word': num2words(
                                                              selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                         'rm_name': selected_candidate.Reporting_Manager,
+                                                         'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1820,7 +1822,7 @@ def process_requests(request, cid):
                                                          'salary_num': selected_candidate.Gross_Salary_Amount,
                                                          'salary_word': num2words(
                                                              selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                         'rm_name': selected_candidate.Reporting_Manager,
+                                                         'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1912,7 +1914,7 @@ def process_requests(request, cid):
                                                              'salary_num': selected_candidate.Gross_Salary_Amount,
                                                              'salary_word': num2words(
                                                                  selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                             'rm_name': selected_candidate.Reporting_Manager,
+                                                             'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                              'doj': selected_candidate.Date_of_Joining,
                                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -1982,7 +1984,7 @@ def process_requests(request, cid):
                                                          'salary_num': selected_candidate.Gross_Salary_Amount,
                                                          'salary_word': num2words(
                                                              selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                         'rm_name': selected_candidate.Reporting_Manager,
+                                                         'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2046,7 +2048,7 @@ def process_requests(request, cid):
                                  'location_code': selected_candidate.fk_location_code.location_code,
                                  'salary_num': selected_candidate.Gross_Salary_Amount,
                                  'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                 'rm_name': selected_candidate.Reporting_Manager,
+                                 'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                  'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                  'doj': selected_candidate.Date_of_Joining,
                                  'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2128,7 +2130,7 @@ def process_requests(request, cid):
                                  'location_code': selected_candidate.fk_location_code.location_code,
                                  'salary_num': selected_candidate.Gross_Salary_Amount,
                                  'salary_word': num2words(selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                 'rm_name': selected_candidate.Reporting_Manager,
+                                 'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                  'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                  'doj': selected_candidate.Date_of_Joining,
                                  'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2502,7 +2504,8 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.save()
                     Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
                     subject = 'Candidate Request Rejected : Intimation :  ' + str(
@@ -2533,7 +2536,7 @@ def reject_candidate_vendor(request, cid):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2576,7 +2579,7 @@ def reject_candidate_vendor(request, cid):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2594,7 +2597,8 @@ def reject_candidate_vendor(request, cid):
                     return redirect("csp_app:pending_request")
                 elif str(eachgroup) == 'Onboarding SPOC':
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                     selected_candidate.onboarding_status = reject_onboarding
                     selected_candidate.vendor_status = vendor_status.objects.get(pk=3)
                     selected_candidate.loi_status = loi_status.objects.get(pk=3)
@@ -2640,7 +2644,7 @@ def reject_candidate_vendor(request, cid):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2682,7 +2686,7 @@ def reject_candidate_vendor(request, cid):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2699,7 +2703,8 @@ def reject_candidate_vendor(request, cid):
                     return redirect("csp_app:pending_request")
                 else:
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                     if selected_candidate.candidate_status == candidate_status.objects.get(pk=9):
                         # send_mail_code
                         subject = 'Change in Date of Joining : Rejected : ' + str(
@@ -2733,7 +2738,7 @@ def reject_candidate_vendor(request, cid):
                                                          'salary_num': selected_candidate.Gross_Salary_Amount,
                                                          'salary_word': num2words(
                                                              selected_candidate.Gross_Salary_Amount, lang='en_IN'),
-                                                         'rm_name': selected_candidate.Reporting_Manager,
+                                                         'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                          'doj': selected_candidate.Date_of_Joining,
                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2806,7 +2811,7 @@ def reject_candidate_vendor(request, cid):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2848,7 +2853,7 @@ def reject_candidate_vendor(request, cid):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -2966,7 +2971,8 @@ def future_joining_requests(request):
         reject = request.POST.get('reject_cid')
         confirm = request.POST.get('confirm_cid')
         recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-        vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+        vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+        rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
         if reject == None and confirm != None:
             selected_candidate = master_candidate.objects.get(pk=confirm)
 
@@ -2996,9 +3002,9 @@ def future_joining_requests(request):
             selected_candidate.modified_by = str(request.user)
             selected_candidate.modified_date_time = datetime.now()
             selected_candidate.save()
-            vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+            rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
             recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-            vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+            vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
             subject = 'Change in Candidate Date of Joining : Confirmed : ' + str(
                 selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
                 selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
@@ -3029,7 +3035,7 @@ def future_joining_requests(request):
                                              'salary_num': selected_candidate.Gross_Salary_Amount,
                                              'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                       lang='en_IN'),
-                                             'rm_name': selected_candidate.Reporting_Manager,
+                                             'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                              'doj': selected_candidate.Date_of_Joining,
                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -3070,7 +3076,7 @@ def future_joining_requests(request):
                                              'salary_num': selected_candidate.Gross_Salary_Amount,
                                              'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                       lang='en_IN'),
-                                             'rm_name': selected_candidate.Reporting_Manager,
+                                             'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                              'doj': selected_candidate.Date_of_Joining,
                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -3085,11 +3091,12 @@ def future_joining_requests(request):
         if confirm == None and reject != None:
             selected_candidate = master_candidate.objects.get(pk=reject)
             recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-            vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+          
             selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
             selected_candidate.joining_status = joining_status.objects.get(pk=0)
             selected_candidate.save()
-            vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+            vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+            rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
             subject = 'Change in Candidate Date of Joining : Rejected : ' + str(
                 selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
                 selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
@@ -3120,7 +3127,7 @@ def future_joining_requests(request):
                                              'salary_num': selected_candidate.Gross_Salary_Amount,
                                              'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                       lang='en_IN'),
-                                             'rm_name': selected_candidate.Reporting_Manager,
+                                             'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                              'doj': selected_candidate.Date_of_Joining,
                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -3160,7 +3167,7 @@ def future_joining_requests(request):
                                              'salary_num': selected_candidate.Gross_Salary_Amount,
                                              'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                       lang='en_IN'),
-                                             'rm_name': selected_candidate.Reporting_Manager,
+                                             'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                              'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                              'doj': selected_candidate.Date_of_Joining,
                                              'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -4447,9 +4454,10 @@ def edit_candidate(request):
                                                                                 salarytype_fk, request, email,
                                                                                 ss_gross_salary, physically_challenged)
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-                vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                 if len(changes_list) > 0:
-                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    
                     subject = 'Candidate Information Edited : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
                         selected_candidate.pk)
                     to_email = [selected_candidate.TA_Spoc_Email_Id]
@@ -4479,7 +4487,7 @@ def edit_candidate(request):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager, 'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -4502,7 +4510,8 @@ def edit_candidate(request):
                     selected_candidate.save()
 
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-                vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                 create_salary_structure(selected_candidate, basic, annualbasic, house_rent_allowance,
                                         annualhouse_rent_allowance, statutory_bonus, annualstatutory_bonus,
                                         special_allowance, annualspecial_allowance, ss_gross_salary, annualgross_salary,
@@ -4545,7 +4554,7 @@ def edit_candidate(request):
                                                                                          'salary_word': num2words(
                                                                                              selected_candidate.Gross_Salary_Amount,
                                                                                              lang='en_IN'),
-                                                                                         'rm_name': selected_candidate.Reporting_Manager,
+                                                                                         'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                                                          'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                                                          'doj': selected_candidate.Date_of_Joining,
                                                                                          'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -5343,6 +5352,7 @@ def save_new_candidate(request):
                 except ObjectDoesNotExist:
                     Onboarding_SPOC_first_name = 'Admin'
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(ta_spoc)
+                rm_first_name = get_first_name(reporting_manager)
                 # print(recruiter_name)
                 # send_mail_code
                 subject = 'Candidate Selection & Offer Request : ' + str(firstname) + ' ' + str(middlename) + ' ' + str(lastname) + ' | ' + str(new_code)
@@ -5365,7 +5375,7 @@ def save_new_candidate(request):
                                                  'location_name': location_fk.location_name,
                                                  'location_code': location_fk.location_code, 'salary_num': gross_salary,
                                                  'salary_word': num2words(gross_salary, lang='en_IN'),
-                                                 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email,
+                                                 'rm_name': reporting_manager, 'rm_first_name': rm_first_name, 'rm_mail': reporting_manager_email,
                                                  'doj': doj, 'recruitment_spoc': str(request.user.email),
                                                  'recruiter_first_name': recruiter_first_name,
                                                  'manual_link': MANUAL_LINK,
@@ -5397,7 +5407,7 @@ def save_new_candidate(request):
                                                  'location_name': location_fk.location_name,
                                                  'location_code': location_fk.location_code, 'salary_num': gross_salary,
                                                  'salary_word': num2words(gross_salary, lang='en_IN'),
-                                                 'rm_name': reporting_manager, 'rm_mail': reporting_manager_email,
+                                                 'rm_name': reporting_manager,'rm_first_name': rm_first_name, 'rm_mail': reporting_manager_email,
                                                  'doj': doj, 'recruitment_spoc': str(request.user.email),
                                                  'recruiter_first_name': recruiter_first_name,
                                                  'manual_link': MANUAL_LINK,
@@ -5688,9 +5698,9 @@ def candidate_document_upload(request, candidate_id):
                     candidate_fk.save()
                 if flag == 1 and candidate_fk.offer_letter_status.pk == 1:
                     selected_candidate = master_candidate.objects.get(pk=candidate_id)
-                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-                    vendor_spoc_first_name = get_vendor_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                     # send_mail_code
                     subject = 'Candidate Offer Closure : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(
                         selected_candidate.pk)
@@ -5722,7 +5732,7 @@ def candidate_document_upload(request, candidate_id):
                                                      'salary_num': selected_candidate.Gross_Salary_Amount,
                                                      'salary_word': num2words(selected_candidate.Gross_Salary_Amount,
                                                                               lang='en_IN'),
-                                                     'rm_name': selected_candidate.Reporting_Manager,
+                                                     'rm_name': selected_candidate.Reporting_Manager,'rm_first_name' : rm_first_name,
                                                      'rm_mail': selected_candidate.Reporting_Manager_E_Mail_ID,
                                                      'doj': selected_candidate.Date_of_Joining,
                                                      'recruitment_spoc': selected_candidate.TA_Spoc_Email_Id,
@@ -6597,7 +6607,9 @@ def create_vendor(request):
             new_phone_record = user_phone(user=user_record, phone=vendor_phone)
             new_phone_record.save()
             Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
-            vendor_spoc_first_name = get_vendor_first_name(vendor_spoc)
+            vendor_spoc_first_name = get_first_name(vendor_spoc)
+          
+
             # send_mail_code
             subject = 'Associate Onboarding Tool - User Credentials & Manual : ' + vendor_spoc
             to_email = [vendor_spoc_email]
