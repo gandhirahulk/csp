@@ -77,6 +77,13 @@ $(document).ready(function(){
                     $('#detailsmsg').html('').css('color','red');
 
                 }
+                // if (data['repeated_phone'] != ''){
+                //     var duplicate_msg = ' ' + data['repeated_phone'] ;
+                //     $('#contactmsg').html(duplicate_msg).css('color','red');
+                //     $('#new-candidate').attr('onsubmit','return true;');
+                //     $('#calculate').attr('title', 'Calculate Salary Structure');
+                //     $('#detailsmsg').html('').css('color','red');
+                // } 
             }
         });
     });
