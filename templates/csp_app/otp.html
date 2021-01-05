@@ -43,15 +43,17 @@
 
             <div class="login-btn-holder" style="padding-bottom: 10px;">
                 <button class="login-btn" formaction="{% url 'csp_app:check_otp' %}" type="submit">Submit</button>
-            
+
+
+                <div id="timer_div">Wait for: <span id="timer"></span></div>
                 <button type="submit" id="send_otp" style="background: none !important;
                 outline: none !important;
-                color:blue;
+                color:grey;
                 border: none !important;
                 font-size: 12px;
                 padding-left: 7px;
                 font-weight: 600; text-decoration: underline;cursor: pointer;"
-                        formaction="{% url 'csp_app:resend_otp' %}"> Resend OTP
+                        formaction="{% url 'csp_app:resend_otp' %}" disabled> Resend OTP
                 </button>
             </div>
 
@@ -155,6 +157,38 @@
 
 
 <script>
+
+    let timerOn = true;
+
+    function resent_otp(remaining) {
+        let m = Math.floor(remaining / 60);
+        let s = remaining % 60;
+
+        m = m < 10 ? '0' + m : m;
+        s = s < 10 ? '0' + s : s;
+        document.getElementById('timer').innerHTML = m + ':' + s;
+        remaining -= 1;
+
+
+        if (remaining >= 0 && timerOn) {
+            setTimeout(function () {
+                resent_otp(remaining);
+            }, 1000);
+            return;
+        }
+        if (!timerOn) {
+            document.getElementById('send_otp').style.color = 'grey'
+            document.getElementById('send_otp').disabled = true
+            return;
+        }
+        document.getElementById('send_otp').style.color = 'blue'
+        document.getElementById('send_otp').disabled = false
+        document.getElementById('timer').style.display = 'none'
+        document.getElementById('timer_div').style.display = 'none'
+    }
+
+    resent_otp(40);
+
     function disFun() {
         if (document.getElementById('otp').value === "" && document.getElementById('otp').length < 6) {
             document.getElementById('btn').disabled = true;
