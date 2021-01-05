@@ -5334,7 +5334,7 @@ def save_new_candidate(request):
                 from_email = FROM_EMAIL
                 html_content = render_to_string('emailtemplates/new_candidate_onboarding.html',
                                                 {'onboarding_spoc': Onboarding_SPOC_first_name,
-                                                 'company_name': entity_fk.entity_name, 'candidate_name': firstname,
+                                                 'company_name': entity_fk.entity_name, 'candidate_name': firstname, 'candidate_full_name': str(firstname) + ' ' + str(middlename) + ' ' + str(lastname),
                                                  'candidate_id': new_code, 'vendor_name': vendor_fk.vendor_name,
                                                  'dept_name': department_fk.department_name,
                                                  'function_name': function_fk.function_name,
@@ -5366,7 +5366,7 @@ def save_new_candidate(request):
                 from_email = FROM_EMAIL
                 html_content = render_to_string('emailtemplates/new_candidate_manager.html',
                                                 {'manager': reporting_manager, 'company_name': entity_fk.entity_name,
-                                                 'candidate_name': firstname, 'candidate_id': new_code,
+                                                 'candidate_name': firstname, 'candidate_id': new_code, 'candidate_full_name': str(firstname) + ' ' + str(middlename) + ' ' + str(lastname),
                                                  'vendor_name': vendor_fk.vendor_name,
                                                  'dept_name': department_fk.department_name,
                                                  'function_name': function_fk.function_name,
@@ -5685,10 +5685,7 @@ def candidate_document_upload(request, candidate_id):
                                                      'candidate_full_name': str(
                                                          selected_candidate.First_Name) + ' ' + str(
                                                          selected_candidate.Middle_Name) + ' ' + str(
-                                                         selected_candidate.Last_Name), 'candidate_full_name': str(
-                                                        selected_candidate.First_Name) + ' ' + str(
-                                                        selected_candidate.Middle_Name) + ' ' + str(
-                                                        selected_candidate.Last_Name),
+                                                         selected_candidate.Last_Name), 
                                                      'candidate_id': selected_candidate.pk,
                                                      'vendor_name': selected_candidate.fk_vendor_code.vendor_name,
                                                      'dept_name': selected_candidate.fk_department_code.department_name,
