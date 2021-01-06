@@ -41,7 +41,7 @@
                 <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
             
             </div>
-            
+            {{ candidate_recent_change }}
             <div class="candidate_form_content">
                 <div class="request-forms-input-holder">
                     <div style="font-weight: bold;">
@@ -75,15 +75,31 @@
                             <label for="c_firstname">First Name</label>    
                         </div>
                         <div>
-                            <input disabled value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name"  required="true"   >
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'First_Name' in x.tbl_column_name %}
+                                        <input disabled  value="{{ x.old_value }}" type="text" maxlength="30" placeholder="First Name"  required="true"   >
+                                    {% else %}
+                                        {% if forloop.last %}
+                                            <input disabled  value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name"  required="true"   >
+                                        {% endif %}
+                                    {% endif %}
+                                   
+                                {% endfor %}
+                            {% else %}
+                                <input disabled  value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name"  required="true"   >
+
+                            {% endif %}
                         </div>
                         <div>
+                            
                             <input
-                            {% for x in candidate_recent_change %}
-                                {% if 'First_Name' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
+                                {% for x in candidate_recent_change %}
+                                    {% if 'First_Name' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
+                          
                         </div>
                     </div>
                     <div class="request-forms-input-holder">
@@ -91,7 +107,19 @@
                             <label for="">Middle Name</label>    
                         </div>
                         <div>
-                            <input type="text" value="{{ eachcandidate.Middle_Name }}" disabled maxlength="30" placeholder="Middle Name" >
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Middle_Name' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        {% if forloop.last %}
+                                        <input type="text" value="{{ eachcandidate.Middle_Name }}" disabled maxlength="30"  >
+                                        {% endif %}
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
+                            <input type="text" value="{{ eachcandidate.Middle_Name }}" disabled maxlength="30"  >
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -107,7 +135,19 @@
                             <label for="">Last Name</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Last_Name' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                    {% else %}
+                                    {% if forloop.last %}
+                                        <input type="text" value="{{ eachcandidate.Last_Name }}" disabled maxlength="30" placeholder="Last Name"  >
+                                    {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" value="{{ eachcandidate.Last_Name }}" disabled maxlength="30" placeholder="Last Name"  >
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -123,7 +163,19 @@
                             <label for="">Candidate Date Of Birth</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Date_of_Birth' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        {% if forloop.last %}
+                                        <input type="date" disabled value='{{ eachcandidate.Date_of_Birth }}'  placeholder="Date Of Birth" required="true" >
+                                        {% endif %}
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="date" disabled value='{{ eachcandidate.Date_of_Birth }}'  placeholder="Date Of Birth" required="true" >
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -139,8 +191,19 @@
                             <label for="">Contact Number</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Contact_Number' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        {% if forloop.last %}
+                                        <input type="text" disabled value="{{ eachcandidate.Contact_Number }}" required="true" >
+                                        {% endif %}
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Contact_Number }}" required="true" >
-                            
+                            {% endif %}
                         </div>
                         <div>
                             <input 
@@ -158,8 +221,17 @@
                             <label for="">Emergency Contact Number</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Emergency_Contact_Number' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Emergency_Contact_Number }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Emergency_Contact_Number }}" required="true" >
-                            
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -177,8 +249,17 @@
                             <label for="">Email Id</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Personal_Email_Id' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Personal_Email_Id }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Personal_Email_Id }}" required="true" >
-                            
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -196,8 +277,17 @@
                             <label for="">Gender</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Gender' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Gender }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Gender }}" required="true" >
-                            
+                            {% endif %}
                         </div>
                         <div>
                             <select
@@ -223,7 +313,21 @@
                             <label for="">Father Name</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if forloop.first %}
+                                    {% if 'Father_Name' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        {% if forloop.last %}
+                                        <input type="text" disabled value="{{ eachcandidate.Father_Name }}" required="true" >           
+                                        {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Father_Name }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -240,7 +344,18 @@
                             <label for="">Mother Name</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                            
+                                    {% if 'Mother_Name' in x.tbl_column_name %}
+                                    
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                    
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Mother_Name }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -257,7 +372,17 @@
                             <label for="">Aadhaar Number</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Aadhaar_Number' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Aadhaar_Number }}" required="true" >           
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Aadhaar_Number }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -275,7 +400,17 @@
                             <label for="">PAN Number</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'PAN_Number' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.PAN_Number }}" required="true" >           
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.PAN_Number }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -298,7 +433,17 @@
                                 <label for="">Hiring Type</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Type_of_Hiring' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -318,7 +463,17 @@
                                 <label for="">Replacement UID</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Replacement' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                {% endif %}
                             </div>
                             <div>
                                 <input
@@ -334,8 +489,17 @@
                                 <label for="">Sub Source</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Sub_Source' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -355,8 +519,17 @@
                                 <label for="">Referral UID</label>    
                             </div>
                             <div>
-        
-                                <input type="text" disabled value="{{ eachcandidate.Referral }}">           
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Referral' in x.tbl_column_name  %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.Referral }}">  
+                                            {% endif %}  
+                                    {% endfor %}
+                                {% else %}
+                                <input type="text" disabled value="{{ eachcandidate.Referral }}">  
+                                {% endif %}         
                             </div>
                             <div>
                                 <input
@@ -373,8 +546,17 @@
                                     <label for="">Date Of Joining</label>    
                                 </div>
                                 <div>
+                                    {% if candidate_recent_change %}
+                                        {% for x in candidate_recent_change %}
+                                            {% if 'Date_of_Joining' in x.tbl_column_name %}
+                                                <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                                {% else %}
+                                                <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+                                                {% endif %}
+                                        {% endfor %}
+                                    {% else %}
                                     <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
-            
+                                    {% endif %}
                                 </div>
             
                                 <div>
@@ -393,8 +575,17 @@
                                     <label for="">Date Of Joining</label>    
                                 </div>
                                 <div>
+                                    {% if candidate_recent_change %}
+                                        {% for x in candidate_recent_change %}
+                                            {% if 'Date_of_Joining' in x.tbl_column_name %}
+                                                <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                                {% else %}
+                                                <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'  }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+                                                {% endif %}
+                                        {% endfor %}
+                                    {% else %}
                                     <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'  }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
-            
+                                    {% endif %}
                                 </div>
             
                                 <div>
@@ -413,8 +604,17 @@
                                 <label for="">Physically Challenged</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'physically_challenged' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -440,8 +640,17 @@
                                 <label for="">Company</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_entity_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -461,8 +670,17 @@
                                 <label for="">Vendor</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_vendor_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -501,8 +719,17 @@
                                 <label for="">Department</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_department_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -532,8 +759,17 @@
                                 <label for="">Function</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_function_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -563,8 +799,17 @@
                                 <label for="">Team</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_team_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -594,8 +839,17 @@
                                 <label for="">Sub Team</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_subteam_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -624,8 +878,17 @@
                                 <label for="">Designation</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_designation_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -654,8 +917,17 @@
                                 <label for="">Region</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_region_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -684,8 +956,17 @@
                                 <label for="">State</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_state_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -714,8 +995,17 @@
                                 <label for="">City</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_city_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -744,8 +1034,17 @@
                                 <label for="">Location</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_location_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -775,7 +1074,17 @@
                                 <label for="">Hiring Type</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Type_of_Hiring' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -802,7 +1111,17 @@
                                 <label for="">Replacement UID</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Replacement' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                {% endif %}
                             </div>
                             <div>
                                 <input
@@ -818,8 +1137,17 @@
                                 <label for="">Sub Source</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Sub_Source' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -845,8 +1173,17 @@
                                 <label for="">Referral UID</label>    
                             </div>
                             <div>
-
-                                <input type="text" disabled value="{{ eachcandidate.Referral }}">           
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Referral' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.Referral }}">  
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                <input type="text" disabled value="{{ eachcandidate.Referral }}">  
+                                {% endif %}         
                             </div>
                             <div>
                                 <input
@@ -863,8 +1200,17 @@
                                 <label for="">Date Of Joining</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'Date_of_Joining' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="date" disabled value="{{ eachcandidate.Date_of_Joining | date:'Y-m-d' }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="date" disabled value="{{ eachcandidate.Date_of_Joining | date:'Y-m-d' }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <input
@@ -882,8 +1228,17 @@
                                 <label for="">Physically Challenged</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'physically_challenged' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -908,8 +1263,17 @@
                                 <label for="">Company</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_entity_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -935,8 +1299,17 @@
                                 <label for="">Vendor</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_vendor_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -976,8 +1349,17 @@
                                 <label for="">Department</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_department_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -1007,8 +1389,17 @@
                                 <label for="">Function</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_function_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -1038,8 +1429,17 @@
                                 <label for="">Team</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_team_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -1069,8 +1469,17 @@
                                 <label for="">Sub Team</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_subteam_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -1099,8 +1508,17 @@
                                 <label for="">Designation</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_designation_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -1129,8 +1547,17 @@
                                 <label for="">Region</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_region_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -1159,8 +1586,17 @@
                                 <label for="">State</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_state_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -1189,8 +1625,17 @@
                                 <label for="">City</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_city_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -1219,8 +1664,17 @@
                                 <label for="">Location</label>    
                             </div>
                             <div>
+                                {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'fk_location_code' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
-                                
+                                {% endif %}
                             </div>
                             <div>
                                 <select
@@ -1254,7 +1708,17 @@
                             <label for="">TA SPOC Email ID</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                    {% for x in candidate_recent_change %}
+                                        {% if 'TA_Spoc_Email_Id' in x.tbl_column_name %}
+                                            <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            <input type="text" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" required="true" >           
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
                             <input type="text" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -1271,7 +1735,17 @@
                             <label for="">Onboarding SPOC Email ID</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Onboarding_Spoc_Email_Id' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" required="true" >           
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -1291,7 +1765,17 @@
                             <label for="">Reporting / Hiring Manager Name</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Reporting_Manager' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -1308,7 +1792,17 @@
                             <label for="">Reporting / Hiring Manager Email ID</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -1327,8 +1821,17 @@
                             <label for="">Email ID Creation</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
-                            
+                            {% endif %}
                         </div>
                         <div>
                             <select
@@ -1348,8 +1851,17 @@
                             <label for="">Laptop Allocation</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Laptop_Allocation' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
-                            
+                            {% endif %}
                         </div>
                         <div>
                             <select
@@ -1370,7 +1882,17 @@
                             <label for="">Reporting / Hiring Manager Name</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Reporting_Manager' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -1387,7 +1909,17 @@
                             <label for="">Reporting / Hiring Manager Email ID</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -1406,8 +1938,17 @@
                             <label for="">Email ID Creation</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
-                            
+                            {% endif %}
                         </div>
                         <div>
                             <select
@@ -1432,8 +1973,17 @@
                             <label for="">Laptop Allocation</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Laptop_Allocation' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
-                            
+                            {% endif %}
                         </div>
                         <div>
                             <select
@@ -1464,8 +2014,17 @@
                             <label for="">Salary Type</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Salary_Type' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
-                            
+                            {% endif %}
                         </div>
                         <div>
                             <select
@@ -1491,7 +2050,17 @@
                             <label for="">Gross Salary Entered Recruiter / Initial</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Gross_Salary_Entered' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Entered }}" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
@@ -1511,7 +2080,17 @@
                             <label for="">Gross Salary Calculated</label>    
                         </div>
                         <div>
+                            {% if candidate_recent_change %}
+                                {% for x in candidate_recent_change %}
+                                    {% if 'Gross_Salary_Amount' in x.tbl_column_name %}
+                                        <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
+                                        {% endif %}
+                                {% endfor %}
+                            {% else %}
                             <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >           
+                            {% endif %}
                         </div>
                         <div>
                             <input
