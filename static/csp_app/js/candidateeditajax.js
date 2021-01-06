@@ -115,8 +115,7 @@ $(document).ready(function(){
             dataType: 'Json',
             success: function(data){
                 if (data['contact'] != ''){
-                    var duplicate_msg = 'Contact Number Already Exist With Candidate ID : ' + data['contact'] ;
-                    $('#contactmsg').html(duplicate_msg).css('color','red');
+                    var duplicate_msg = ' ' + data['contact'] ;
                     $('#new-candidate').attr('onsubmit','return false;');
                     $('#calculate').attr('title', 'Please Recheck Entered Data');
                     $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
@@ -221,6 +220,13 @@ $(document).ready(function(){
                         $('#detailsmsg').html('').css('color','red');
 
                     }
+                    if (data['repeated'] != ''){
+                        var duplicate_msg = ' ' + data['repeated'] ;
+                        $('#emailmsg').html(duplicate_msg).css('color','red');
+                        $('#new-candidate').attr('onsubmit','return false;');
+                        $('#calculate').attr('title', 'Please Recheck Entered Data');
+                        $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
+                    } 
                 }
             }
         });

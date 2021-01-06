@@ -1,18 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from cryptography.fernet import Fernet
-
 import pytz
 import random
 import math
 import requests
-
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, redirect
-
+from django.shortcuts import render, redirect, HttpResponse
 from ..models import *
 from .. import models
 from ..views import all_active_candidates, active_status
@@ -157,8 +154,13 @@ def send_otp(request):
         emp_record = User.objects.get(**{'username': request.POST.get('username'), 'is_active': True})
     else:
         emp_record = User.objects.get(**{'username': request.POST.get('uid'), 'is_active': True})
-    phone_record = user_phone.objects.get(**{'user': emp_record})
-    phone_number = getattr(phone_record, 'phone')
+    try:
+        phone_record = user_phone.objects.get(**{'user': emp_record})
+        phone_number = getattr(phone_record, 'phone')
+    except ObjectDoesNotExist:
+        return HttpResponse("Your mobile number is required to receive OTP for login, please contact your HR to get that updated.")
+        #or send a email to connect with admin
+
 
     sender_id = 'HLPUDN'
     base_url = url + '&method=sms&message=' + message + '&to=' + phone_number + '&sender=' + sender_id + "&template_id=1"

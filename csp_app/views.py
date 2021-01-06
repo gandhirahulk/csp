@@ -410,13 +410,32 @@ def check_duplicate_candidate_new(request):
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['pan'] = ''
+    # try:
+    #     repeated_phone = user_phone.objects.get(phone=contact_no)
+    #     result['repeated_phone'] = 'Phone Number Already In Use'
+    #     result['invalid_domain'] = ''
+    #     return JsonResponse(result)
+
+    # except ObjectDoesNotExist:
+        
+    #     result['invalid_domain'] = ''
+    #     result['repeated_phone'] = ''
+    #     return JsonResponse(result)
     try:
         dup_candidate_contact = master_candidate.objects.get(Contact_Number=contact_no, status=active_status)
-        result['contact'] = dup_candidate_contact.pk_candidate_code
+        result['contact'] = 'Contact Number Already Exist With Candidate ID : ' + str(dup_candidate_contact.pk_candidate_code)
         result['invalid_domain'] = ''
         return JsonResponse(result)
     except ObjectDoesNotExist:
         result['contact'] = ''
+    try:
+        dup_candidate_contact = user_phone.objects.get(phone=contact_no)
+        result['contact'] = 'Contact Number Already Exist With System Users'
+        result['invalid_domain'] = ''
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['contact'] = ''
+       
     try:
 
         dup_candidate_details = master_candidate.objects.get(Father_Name=fathername, First_Name=firstname,
@@ -452,15 +471,7 @@ def check_duplicate_candidate_new(request):
     except ObjectDoesNotExist:
         result['repeated'] = ''
         result['invalid_domain'] = ''
-    # try:
-    #     repeated_phone = user_phone.objects.get(phone=phone)
-    #     result['repeated_phone'] = 'Phone Number Already In Use'
-    #     result['invalid_domain'] = ''
-    #     return JsonResponse(result)
-
-    # except ObjectDoesNotExist:
-    #     result['repeated_phone'] = ''
-    #     result['invalid_domain'] = ''
+    
     if len(aadhaar) != 12:
         result['adhaar_size'] = 'Please provide 12 digit Aadhaar number.'
         return JsonResponse(result)
@@ -518,6 +529,23 @@ def check_duplicate_candidate_edit(request):
     except ObjectDoesNotExist:
         result['contact'] = ''
     try:
+        dup_candidate_contact = user_phone.objects.get(phone=contact_no)
+        result['contact'] = 'Contact Number Already Exist With System Users'
+        result['invalid_domain'] = ''
+        return JsonResponse(result)
+    except ObjectDoesNotExist:
+        result['contact'] = ''
+    # try:
+    #     print(phone)
+    #     repeated_phone = user_phone.objects.get(phone=phone)
+    #     result['repeated_phone'] = 'Phone Number Already In Use'
+    #     result['invalid_domain'] = ''
+    #     return JsonResponse(result)
+
+    # except ObjectDoesNotExist:
+    #     result['repeated_phone'] = ''
+    #     result['invalid_domain'] = ''
+    try:
         # dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(Date_of_Birth=dob, Father_Name = fathername, status= active_status)
 
         dup_candidate_details = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(
@@ -554,6 +582,7 @@ def check_duplicate_candidate_edit(request):
     except ObjectDoesNotExist:
         result['repeated'] = ''
         result['invalid_domain'] = ''
+    
 
     return JsonResponse(result)
 
