@@ -193,7 +193,7 @@
                         <div>
                             {% if candidate_recent_change %}
                                 {% for x in candidate_recent_change %}
-                                    {% if 'Contact_Number' in x.tbl_column_name %}
+                                    {% if 'Contact_Number' == x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
                                         {% if forloop.last %}
@@ -208,7 +208,7 @@
                         <div>
                             <input 
                             {% for x in candidate_recent_change %}
-                                {% if 'Contact_Number' in x.tbl_column_name %}
+                                {% if 'Contact_Number' == x.tbl_column_name %}
                                     class = "changed_field"
                                 {% endif %}
                             {% endfor %} type="text" value="{{ eachcandidate.Contact_Number }}" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
