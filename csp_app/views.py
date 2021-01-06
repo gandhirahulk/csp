@@ -82,7 +82,6 @@ def get_first_name(name):
 
 def get_recruiter_spoc(ta_spoc_mail):
     try:
-
         recruiter = User.objects.get(username=ta_spoc_mail)
         recruiter_name = str(recruiter.first_name) + ' ' + str(recruiter.last_name)
         recruiter_first_name = str(recruiter.first_name)
