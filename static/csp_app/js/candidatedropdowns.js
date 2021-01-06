@@ -12,6 +12,11 @@ $(document).ready(function(){
         $('#c_vendor').prop("required", true);
         $('#c_entity').attr("value", " ");
         $('#c_entity .empty').prop("selected", true);
+       
+
+
+
+
     }
     if (vendor == '0' && usergroup != 'Recruiter'){
         // $('#c_vendor').attr("disabled", false);
@@ -48,6 +53,16 @@ $(document).ready(function(){
         var usergroup = $('#user_group').val();
         $('#c_entity .empty').css("display", "");
         $('#c_entity .empty').prop("selected", true);
+        $('#c_vendor .empty').prop("selected", true);
+        $('#c_dept .empty').prop("selected", true);
+        $('#c_function .empty').prop("selected", true);
+        $('#c_team .empty').prop("selected", true);
+        $('#c_subteam .empty').prop("selected", true);
+        $('#c_desg .empty').prop("selected", true);
+        $('#c_region .empty').prop("selected", true);
+        $('#c_state .empty').prop("selected", true);
+        $('#c_city .empty').prop("selected", true);
+        $('#c_location .empty').prop("selected", true);
         if (selectedvalue != 3){
             if (usergroup == 'Recruiter'){
                 $('#c_vendor').attr("disabled", true);
