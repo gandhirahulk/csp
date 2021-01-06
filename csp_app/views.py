@@ -78,6 +78,7 @@ def get_first_name(name):
         my_first_name = x
     else:
         my_first_name = name
+    print(my_first_name)
     return my_first_name
 
 def get_recruiter_spoc(ta_spoc_mail):
@@ -450,6 +451,15 @@ def check_duplicate_candidate_new(request):
     except ObjectDoesNotExist:
         result['repeated'] = ''
         result['invalid_domain'] = ''
+    # try:
+    #     repeated_phone = user_phone.objects.get(phone=phone)
+    #     result['repeated_phone'] = 'Phone Number Already In Use'
+    #     result['invalid_domain'] = ''
+    #     return JsonResponse(result)
+
+    # except ObjectDoesNotExist:
+    #     result['repeated_phone'] = ''
+    #     result['invalid_domain'] = ''
     if len(aadhaar) != 12:
         result['adhaar_size'] = 'Please provide 12 digit Aadhaar number.'
         return JsonResponse(result)
@@ -1358,6 +1368,7 @@ def process_requests(request, cid):
                         msg.attach_alternative(html_content, "text/html")
                         msg.send()
                         vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                        rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                         if selected_candidate.vendor_status != vendor_status.objects.get(
                                 pk=2) or selected_candidate.vendor_status != vendor_status.objects.get(
                             pk=0) or selected_candidate.vendor_status != vendor_status.objects.get(pk=3):
@@ -1407,6 +1418,7 @@ def process_requests(request, cid):
                             msg.send()
                     selected_candidate.save()
                     vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+                    rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
                     # send_mail_code
                     subject = 'New Resource Requirement & Finalized Candidate Information :' + str(
                         selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' '+ str(selected_candidate.Last_Name) + ' | '  + str(selected_candidate.pk)
@@ -2212,7 +2224,7 @@ def process_requests(request, cid):
                             selected_candidate.First_Name) + ' ( ' + str(selected_candidate.pk) + ' ) '
                         html_content = render_to_string('emailtemplates/candidate_credentials.html', {
                             'candidate_name': str(selected_candidate.First_Name) + ' ' + str(
-                                selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name),
+                                selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name), 'candidate_first_name': selected_candidate.First_Name,
                             'username': selected_candidate.Personal_Email_Id, 'password': password,
                             'manual_link': MANUAL_LINK, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_first_name': vendor_spoc_first_name,
                             'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id})
@@ -5394,7 +5406,7 @@ def save_new_candidate(request):
                 bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                 from_email = FROM_EMAIL
                 html_content = render_to_string('emailtemplates/new_candidate_manager.html',
-                                                {'manager': reporting_manager, 'company_name': entity_fk.entity_name,
+                                                {'manager': reporting_manager, 'rm_first_name':rm_first_name,  'company_name': entity_fk.entity_name,
                                                  'candidate_name': firstname, 'candidate_id': new_code, 'candidate_full_name': str(firstname) + ' ' + str(middlename) + ' ' + str(lastname),
                                                  'vendor_name': vendor_fk.vendor_name,
                                                  'dept_name': department_fk.department_name,
@@ -6609,6 +6621,7 @@ def create_vendor(request):
             new_phone_record.save()
             Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
             vendor_spoc_first_name = get_first_name(vendor_spoc)
+            
           
 
             # send_mail_code
@@ -8138,7 +8151,12 @@ def create_user(request):
         email = request.POST.get('email')
         group = request.POST.get('usergroup')
         phone = request.POST.get('phone')
-
+        try:
+            check_phone = user_phone.objects.get(phone=phone)
+            messages.error(request, "Phone Number Already Exist.")
+            return redirect('csp_app:user')
+        except ObjectDoesNotExist:
+            pass
         try:
             assign_group = Group.objects.get(name=group)
             if assign_group.name == 'Onboarding SPOC':
