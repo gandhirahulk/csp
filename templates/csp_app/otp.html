@@ -161,6 +161,10 @@
 
 <script>
 
+    setTimeout(function(){
+            window.location.href = 'https://ob.associatehrms.com/';
+         }, 600000);
+
     let timerOn = true;
 
     function resent_otp(remaining) {
@@ -190,7 +194,7 @@
         document.getElementById('timer_div').style.display = 'none'
     }
 
-    resent_otp(40);
+    resent_otp(120);
 
     function disFun() {
         if (document.getElementById('otp').value === "" && document.getElementById('otp').length < 6) {
