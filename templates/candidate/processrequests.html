@@ -226,7 +226,9 @@
                                     {% if 'Emergency_Contact_Number' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Emergency_Contact_Number }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -254,7 +256,9 @@
                                     {% if 'Personal_Email_Id' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Personal_Email_Id }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -282,7 +286,9 @@
                                     {% if 'Gender' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Gender }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -315,13 +321,12 @@
                         <div>
                             {% if candidate_recent_change %}
                                 {% for x in candidate_recent_change %}
-                                    {% if forloop.first %}
+                                    
                                     {% if 'Father_Name' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
-                                        {% else %}
+                                    {% else %}
                                         {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Father_Name }}" required="true" >           
-                                        {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
@@ -351,6 +356,10 @@
                                     
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                     
+                                        {% else %}
+                                        {% if forloop.last %}
+                                        <input type="text" disabled value="{{ eachcandidate.Mother_Name }}" required="true" >           
+                                        {% endif %}
                                     {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -377,7 +386,9 @@
                                     {% if 'Aadhaar_Number' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Aadhaar_Number }}" required="true" >           
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -405,7 +416,9 @@
                                     {% if 'PAN_Number' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.PAN_Number }}" required="true" >           
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -438,7 +451,9 @@
                                         {% if 'Type_of_Hiring' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -468,7 +483,9 @@
                                         {% if 'Replacement' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -494,7 +511,9 @@
                                         {% if 'Sub_Source' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -524,8 +543,10 @@
                                         {% if 'Referral' in x.tbl_column_name  %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.Referral }}">  
                                             {% endif %}  
+                                            {% endif %}
                                     {% endfor %}
                                 {% else %}
                                 <input type="text" disabled value="{{ eachcandidate.Referral }}">  
@@ -551,7 +572,9 @@
                                             {% if 'Date_of_Joining' in x.tbl_column_name %}
                                                 <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                                 {% else %}
+                                                {% if forloop.last %}
                                                 <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+                                                {% endif %}
                                                 {% endif %}
                                         {% endfor %}
                                     {% else %}
@@ -580,7 +603,9 @@
                                             {% if 'Date_of_Joining' in x.tbl_column_name %}
                                                 <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                                 {% else %}
+                                                {% if forloop.last %}
                                                 <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'  }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+                                                {% endif %}
                                                 {% endif %}
                                         {% endfor %}
                                     {% else %}
@@ -609,7 +634,9 @@
                                         {% if 'physically_challenged' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -645,7 +672,9 @@
                                         {% if 'fk_entity_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -675,7 +704,9 @@
                                         {% if 'fk_vendor_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -724,7 +755,9 @@
                                         {% if 'fk_department_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -764,7 +797,9 @@
                                         {% if 'fk_function_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -804,7 +839,9 @@
                                         {% if 'fk_team_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -844,7 +881,9 @@
                                         {% if 'fk_subteam_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -883,7 +922,9 @@
                                         {% if 'fk_designation_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -922,7 +963,9 @@
                                         {% if 'fk_region_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -961,7 +1004,9 @@
                                         {% if 'fk_state_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1000,7 +1045,9 @@
                                         {% if 'fk_city_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1039,7 +1086,9 @@
                                         {% if 'fk_location_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1079,7 +1128,9 @@
                                         {% if 'Type_of_Hiring' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1116,7 +1167,9 @@
                                         {% if 'Replacement' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1142,7 +1195,9 @@
                                         {% if 'Sub_Source' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1178,7 +1233,9 @@
                                         {% if 'Referral' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.Referral }}">  
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1205,7 +1262,9 @@
                                         {% if 'Date_of_Joining' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="date" disabled value="{{ eachcandidate.Date_of_Joining | date:'Y-m-d' }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1233,7 +1292,9 @@
                                         {% if 'physically_challenged' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1268,7 +1329,9 @@
                                         {% if 'fk_entity_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1304,7 +1367,9 @@
                                         {% if 'fk_vendor_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1354,7 +1419,9 @@
                                         {% if 'fk_department_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1394,7 +1461,9 @@
                                         {% if 'fk_function_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1434,7 +1503,9 @@
                                         {% if 'fk_team_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1474,7 +1545,9 @@
                                         {% if 'fk_subteam_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1513,7 +1586,9 @@
                                         {% if 'fk_designation_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1552,7 +1627,9 @@
                                         {% if 'fk_region_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1591,7 +1668,9 @@
                                         {% if 'fk_state_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1613,7 +1692,8 @@
                                         {% for eachstate in state_list %}
                                             {% if eachestate.pk != eachcandidate.fk_state_code_id %}
                                             <option style="display: none;" value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
-                                            {% endif %}                                    
+                                            {% endif %}
+                                                                                
                                         {% endfor %}                
                                     {% endif %}
                                 </select>
@@ -1630,7 +1710,9 @@
                                         {% if 'fk_city_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1669,7 +1751,9 @@
                                         {% if 'fk_location_code' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1713,7 +1797,9 @@
                                         {% if 'TA_Spoc_Email_Id' in x.tbl_column_name %}
                                             <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                             {% else %}
+                                            {% if forloop.last %}
                                             <input type="text" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" required="true" >           
+                                            {% endif %}
                                             {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -1740,7 +1826,9 @@
                                     {% if 'Onboarding_Spoc_Email_Id' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" required="true" >           
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -1770,7 +1858,9 @@
                                     {% if 'Reporting_Manager' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -1797,7 +1887,9 @@
                                     {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -1826,7 +1918,9 @@
                                     {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -1856,7 +1950,9 @@
                                     {% if 'Laptop_Allocation' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -1887,7 +1983,9 @@
                                     {% if 'Reporting_Manager' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -1914,7 +2012,9 @@
                                     {% if 'Reporting_Manager_E_Mail_ID' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -1943,7 +2043,9 @@
                                     {% if 'E_Mail_ID_Creation' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -1978,7 +2080,9 @@
                                     {% if 'Laptop_Allocation' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -2019,7 +2123,9 @@
                                     {% if 'Salary_Type' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -2055,7 +2161,9 @@
                                     {% if 'Gross_Salary_Entered' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -2085,7 +2193,9 @@
                                     {% if 'Gross_Salary_Amount' in x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
+                                        {% if forloop.last %}
                                         <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
+                                        {% endif %}
                                         {% endif %}
                                 {% endfor %}
                             {% else %}
