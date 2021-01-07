@@ -2288,7 +2288,11 @@ def process_requests(request, cid):
         candidate_history_list = candidate_history.objects.filter(fk_candidate_code=c).order_by(
             '-created_date_time').distinct()
         candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=c, status=active_status)
-        return render(request, 'candidate/processrequests.html', {'candidate_recent_change': candidate_recent_change,
+        tbl_col_names = {}
+        for each in candidate_recent_change:
+            tbl_col_names[each.tbl_column_name] = each.old_value
+        
+        return render(request, 'candidate/processrequests.html', {'candidate_recent_change': candidate_recent_change, 'changed_col_names': tbl_col_names,
                                                                   'candidate_history_list': candidate_history_list,
                                                                   'history_list': history_list,
                                                                   'selected_candidate': selected_candidate_data,
