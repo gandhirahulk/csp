@@ -47,16 +47,46 @@ candidate_list = master_candidate.objects.filter(status=active_status)
 
 #change 'chirag.phor@udaan.com' to request.user
 
+
+
 def get_onbording_spoc():
     try:
-
         Onboarding_SPOC_list = User.objects.get(groups__name='Onboarding SPOC')
         Onboarding_SPOC_Mail = Onboarding_SPOC_list.email
-        Onboarding_SPOC_Name = Onboarding_SPOC_list.first_name
+        Onboarding_SPOC_Name = str(Onboarding_SPOC_list.first_name) + ' ' + str(Onboarding_SPOC_list.last_name)
+        Onboarding_SPOC_first_name = str(Onboarding_SPOC_list.first_name)
     except ObjectDoesNotExist:
         Onboarding_SPOC_Mail = FROM_EMAIL
         Onboarding_SPOC_Name = ONBOARDING_SPOC_NAME
-    return Onboarding_SPOC_Mail, Onboarding_SPOC_Name
+        x = ONBOARDING_SPOC_NAME.split(' ', 1)[0]
+        if len(x) < 3:
+            Onboarding_SPOC_first_name = ONBOARDING_SPOC_NAME
+        else:
+            Onboarding_SPOC_first_name = x
+    return Onboarding_SPOC_Mail, Onboarding_SPOC_Name, Onboarding_SPOC_first_name
+
+def get_first_name(name):
+    x = name.split(' ', 1)[0]
+    if len(x) > 2:
+        my_first_name = x
+    else:
+        my_first_name = name
+    print(my_first_name)
+    return my_first_name
+
+def get_recruiter_spoc(ta_spoc_mail):
+    try:
+        recruiter = User.objects.get(username=ta_spoc_mail)
+        recruiter_name = str(recruiter.first_name) + ' ' + str(recruiter.last_name)
+        recruiter_first_name = str(recruiter.first_name)
+    except ObjectDoesNotExist:
+        recruiter_name = ADMIN_NAME
+        x = recruiter_name.split(' ', 1)[0]
+        if len(x) < 3:
+            recruiter_first_name = ADMIN_NAME
+        else:
+            recruiter_first_name = x
+    return recruiter_name, recruiter_first_name
 
 
 def doj_limit(request):
