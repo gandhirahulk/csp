@@ -10,7 +10,7 @@
                     {% for eachgroup in request.user.groups.all %}
                         {% if eachgroup.name == 'Candidate' %}
                             <!-- <a href="{% url 'csp_app:candidate_profile' %}" class="tab-btns">Profile</a>  -->
-                            <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a> 
+                            <!-- <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a>  -->
                         {% else %}
                             <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>             
                             <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a> 
@@ -28,8 +28,24 @@
 {% block tabcontentblock %}
 {% if view_candidate %}
     {% for eachc in  view_candidate %}
+        {% if request.user.groups.all %}
+            {% for eachgroup in request.user.groups.all %}
+                {% if eachgroup.name == 'Candidate' %}
+                    <div style="margin-top: 0px;">
+                    
+                {% else %}
+                    <div class="crumbs" style="z-index: unset;"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
+                        <span><i class="fas fa-chevron-right"></i></span>
+                        <span>Upload Documents</span>
+                        <span><i class="fas fa-chevron-right"></i></span>
+                        <span>{{ eachc.pk }} | {{ eachc.First_Name }} {{ eachc.Middle_Name }} {{ eachc.Last_Name }}</span>                
+                
+                    </div>
+                    <div style="margin-top: 55px;">
+                {% endif %}
+            {% endfor %}
+        {% endif %}
         
-        <div style="margin-top: 0px;">
        
         {% if flag != 1 %}
             {% if request.user.groups.all %}
