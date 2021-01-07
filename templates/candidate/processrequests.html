@@ -109,11 +109,13 @@
                         <div>
                             {% if candidate_recent_change %}
                                 {% for x in candidate_recent_change %}
-                                    {% if 'Middle_Name' in x.tbl_column_name %}
+                                    {% if 'Middle_Name' == x.tbl_column_name %}
                                         <input type="text" value="{{ x.old_value }}" disabled maxlength="30"  >
                                         {% else %}
                                         {% if forloop.last %}
-                                        <input type="text" value="{{ eachcandidate.Middle_Name }}" disabled maxlength="30"  >
+                                        {% if 'Middle_Name' != x.tbl_column_name %}
+                                        <input type="text" value="{{ eachcandidate.pk }}" disabled maxlength="30"  >
+                                        {% endif %}
                                         {% endif %}
                                         {% endif %}
                                 {% endfor %}
@@ -171,7 +173,7 @@
                                         {% if forloop.last %}
                                         <input type="date" disabled value='{{ eachcandidate.Date_of_Birth }}'  placeholder="Date Of Birth" required="true" >
                                         {% endif %}
-                                        {% endif %}
+                                    {% endif %}
                                 {% endfor %}
                             {% else %}
                             <input type="date" disabled value='{{ eachcandidate.Date_of_Birth }}'  placeholder="Date Of Birth" required="true" >
