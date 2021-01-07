@@ -10,7 +10,7 @@
                     {% for eachgroup in request.user.groups.all %}
                         {% if eachgroup.name == 'Candidate' %}
                             <!-- <a href="{% url 'csp_app:candidate_profile' %}" class="tab-btns">Profile</a>  -->
-                            <!-- <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a>  -->
+                            <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">{{ eachc.First_Name }}</a> 
                         {% else %}
                             <a href="{% url 'csp_app:candidate' %}" class="tab-btns"> Candidates</a>             
                             <a href="{% url 'csp_app:document_upload' eachc.pk %}" class="tab-btns active-tab">Documents</a> 

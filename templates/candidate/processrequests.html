@@ -38,20 +38,7 @@
                 <div class="forms-heading">
                     <h2>Candidate Request Process Form</h2>
                 </div>
-                {% if 'First_Name' in changed_col_names %}
-                    bharat
-                    {{ changed_col_names.First_Name }}
-                    mata
-                    {{ changed_col_names.items.First_Name }}
-                    ki jai
-                {% endif %}
-                {% if 'First_Name' in changed_col_names.keys %}
-                    abbra
-                    {{ changed_col_names.First_Name }}
-                    ka
-                    {{ changed_col_names.items.First_Name }}
-                    dabra
-                {% endif %}
+              
              
                 <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
             
@@ -165,7 +152,7 @@
                         <div>
                              
                                     {% if 'Date_of_Birth' in changed_col_names.keys %}
-                                        <input type="text" value="{{ changed_col_names.Date_of_Birth }}" disabled maxlength="30"  >
+                                        <input type="date" value="{{ changed_col_names.Date_of_Birth }}" disabled maxlength="30"  >
                                     {% else %}
                                     
                                     <input type="date" disabled value='{{ eachcandidate.Date_of_Birth }}'  placeholder="Date Of Birth" required="true" >
@@ -504,7 +491,7 @@
                                 <div>
                                     
                                             {% if 'Date_of_Joining' in changed_col_names.keys %}
-                                                <input type="text" value="{{ changed_col_names.Date_of_Joining }}" disabled maxlength="30"  >
+                                                <input type="date" value="{{ changed_col_names.Date_of_Joining }}" disabled maxlength="30"  >
                                                 {% else %}
                                                 
                                                 <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
@@ -529,7 +516,7 @@
                                 </div>
                                 <div>
                                             {% if 'Date_of_Joining' in changed_col_names.keys %}
-                                                <input type="text" value="{{ changed_col_names.Date_of_Joining }}" disabled maxlength="30"  >
+                                                <input type="date" value="{{ changed_col_names.Date_of_Joining }}" disabled maxlength="30"  >
                                                 {% else %}
                                                 
                                                 <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'  }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
@@ -1103,7 +1090,7 @@
                             <div>
                                  
                                         {% if 'Date_of_Joining' in changed_col_names.keys %}
-                                            <input type="text" value="{{ changed_col_names.Date_of_Joining }}" disabled maxlength="30"  >
+                                            <input type="date" value="{{ changed_col_names.Date_of_Joining }}" disabled maxlength="30"  >
                                             {% else %}
                                             
                                             <input type="date" disabled value="{{ eachcandidate.Date_of_Joining | date:'Y-m-d' }}" required="true" >
