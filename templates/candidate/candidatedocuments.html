@@ -28,14 +28,8 @@
 {% block tabcontentblock %}
 {% if view_candidate %}
     {% for eachc in  view_candidate %}
-        <div class="crumbs" style="z-index: unset;"><span><a href="{% url 'csp_app:candidate' %}">Candidates</a></span>
-            <span><i class="fas fa-chevron-right"></i></span>
-            <span>Upload Documents</span>
-            <span><i class="fas fa-chevron-right"></i></span>
-            <span>{{ eachc.pk }} | {{ eachc.First_Name }} {{ eachc.Middle_Name }} {{ eachc.Last_Name }}</span>                
-      
-        </div>
-        <div style="margin-top: 55px;">
+        
+        <div style="margin-top: 0px;">
        
         {% if flag != 1 %}
             {% if request.user.groups.all %}
