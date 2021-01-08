@@ -38,6 +38,8 @@
                 <div class="forms-heading">
                     <h2>Candidate Request Process Form</h2>
                 </div>
+              
+             
                 <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
             
             </div>
@@ -75,15 +77,27 @@
                             <label for="c_firstname">First Name</label>    
                         </div>
                         <div>
-                            <input disabled value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name"  required="true"   >
+                           
+                        
+                            {% if 'First_Name' in changed_col_names.keys %}
+                                <input disabled  value="{{ changed_col_names.First_Name }}" type="text" maxlength="30" placeholder="First Name"  required="true"   >
+                            {% else %}
+                                
+                                <input disabled  value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name"  required="true"   >
+                                
+                            {% endif %}
+                            
+                               
                         </div>
                         <div>
+                            
                             <input
-                            {% for x in candidate_recent_change %}
-                                {% if 'First_Name' in x.tbl_column_name %}
-                                    class = "changed_field"
-                                {% endif %}
-                            {% endfor %} value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
+                                {% for x in candidate_recent_change %}
+                                    {% if 'First_Name' in x.tbl_column_name %}
+                                        class = "changed_field"
+                                    {% endif %}
+                                {% endfor %} value="{{ eachcandidate.First_Name }}" type="text" maxlength="30" placeholder="First Name" name="c_firstname" id="c_firstname" required="true"  autofocus="true" tabindex="1"  >
+                          
                         </div>
                     </div>
                     <div class="request-forms-input-holder">
@@ -91,7 +105,14 @@
                             <label for="">Middle Name</label>    
                         </div>
                         <div>
-                            <input type="text" value="{{ eachcandidate.Middle_Name }}" disabled maxlength="30" placeholder="Middle Name" >
+                            
+                            {% if 'Middle_Name' in changed_col_names.keys %}
+                                <input type="text" value="{{ changed_col_names.Middle_Name }}" disabled maxlength="30"  >
+                            {% else %}
+                            
+                                <input type="text" value="{{ eachcandidate.Middle_Name }}" disabled maxlength="30"  >
+                            {% endif %}
+                               
                         </div>
                         <div>
                             <input
@@ -107,7 +128,13 @@
                             <label for="">Last Name</label>    
                         </div>
                         <div>
-                            <input type="text" value="{{ eachcandidate.Last_Name }}" disabled maxlength="30" placeholder="Last Name"  >
+                            {% if 'Last_Name' in changed_col_names.keys %}
+                                <input type="text" value="{{ changed_col_names.Last_Name }}" disabled maxlength="30"  >
+                            {% else %}
+                                <input type="text" value="{{ eachcandidate.Last_Name }}" disabled maxlength="30" placeholder="Last Name"  >
+                            
+                            {% endif %}
+                                
                         </div>
                         <div>
                             <input
@@ -123,7 +150,14 @@
                             <label for="">Candidate Date Of Birth</label>    
                         </div>
                         <div>
-                            <input type="date" disabled value='{{ eachcandidate.Date_of_Birth }}'  placeholder="Date Of Birth" required="true" >
+                             
+                                    {% if 'Date_of_Birth' in changed_col_names.keys %}
+                                        <input type="date" value="{{ changed_col_names.Date_of_Birth }}" disabled maxlength="30"  >
+                                    {% else %}
+                                    
+                                    <input type="date" disabled value='{{ eachcandidate.Date_of_Birth }}'  placeholder="Date Of Birth" required="true" >
+                                    {% endif %}
+                                   
                         </div>
                         <div>
                             <input
@@ -139,13 +173,19 @@
                             <label for="">Contact Number</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Contact_Number }}" required="true" >
-                            
+                             
+                                    {% if 'Contact_Number' == changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Contact_Number }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Contact_Number }}" required="true" >
+                                        {% endif %}
+                                       
                         </div>
                         <div>
                             <input 
                             {% for x in candidate_recent_change %}
-                                {% if 'Contact_Number' in x.tbl_column_name %}
+                                {% if 'Contact_Number' == x.tbl_column_name %}
                                     class = "changed_field"
                                 {% endif %}
                             {% endfor %} type="text" value="{{ eachcandidate.Contact_Number }}" tabindex="5" placeholder="Contact Number" name="c_contact" id="c_contact" required="true" pattern="[6-9]{1}[0-9]{9}" minlength="10" maxlength="10" >
@@ -158,8 +198,14 @@
                             <label for="">Emergency Contact Number</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Emergency_Contact_Number }}" required="true" >
-                            
+                             
+                                    {% if 'Emergency_Contact_Number' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Emergency_Contact_Number }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Emergency_Contact_Number }}" required="true" >
+                                        {% endif %}
+                                        
                         </div>
                         <div>
                             <input
@@ -177,8 +223,14 @@
                             <label for="">Email Id</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Personal_Email_Id }}" required="true" >
-                            
+                             
+                                    {% if 'Personal_Email_Id' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Personal_Email_Id }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Personal_Email_Id }}" required="true" >
+                                        {% endif %}
+                                        
                         </div>
                         <div>
                             <input
@@ -196,8 +248,14 @@
                             <label for="">Gender</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Gender }}" required="true" >
-                            
+                             
+                                    {% if 'Gender' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Gender }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Gender }}" required="true" >
+                                        {% endif %}
+                                       
                         </div>
                         <div>
                             <select
@@ -223,7 +281,15 @@
                             <label for="">Father Name</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Father_Name }}" required="true" >           
+                             
+                                    
+                                    {% if 'Father_Name' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Father_Name }}" disabled maxlength="30"  >
+                                    {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Father_Name }}" required="true" >           
+                                        {% endif %}
+                                    
                         </div>
                         <div>
                             <input
@@ -240,7 +306,17 @@
                             <label for="">Mother Name</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Mother_Name }}" required="true" >           
+                             
+                            
+                                    {% if 'Mother_Name' in changed_col_names.keys %}
+                                    
+                                        <input type="text" value="{{ changed_col_names.Mother_Name }}" disabled maxlength="30"  >
+                                    
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Mother_Name }}" required="true" >           
+                                        {% endif %}
+                                    
                         </div>
                         <div>
                             <input
@@ -257,7 +333,14 @@
                             <label for="">Aadhaar Number</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Aadhaar_Number }}" required="true" >           
+                             
+                                    {% if 'Aadhaar_Number' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Aadhaar_Number }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Aadhaar_Number }}" required="true" >           
+                                        {% endif %}
+                                       
                         </div>
                         <div>
                             <input
@@ -275,7 +358,14 @@
                             <label for="">PAN Number</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.PAN_Number }}" required="true" >           
+                             
+                                    {% if 'PAN_Number' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.PAN_Number }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.PAN_Number }}" required="true" >           
+                                        {% endif %}
+                                       
                         </div>
                         <div>
                             <input
@@ -298,7 +388,14 @@
                                 <label for="">Hiring Type</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                 
+                                        {% if 'Type_of_Hiring' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.Type_of_Hiring }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -318,7 +415,14 @@
                                 <label for="">Replacement UID</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                 
+                                        {% if 'Replacement' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.Replacement }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                            {% endif %}
+                                           
                             </div>
                             <div>
                                 <input
@@ -334,8 +438,14 @@
                                 <label for="">Sub Source</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
-                                
+                                 
+                                        {% if 'Sub_Source' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.Sub_Source }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
+                                            {% endif %}
+                                           
                             </div>
                             <div>
                                 <select
@@ -355,8 +465,14 @@
                                 <label for="">Referral UID</label>    
                             </div>
                             <div>
-        
-                                <input type="text" disabled value="{{ eachcandidate.Referral }}">           
+                                 
+                                        {% if 'Referral' in changed_col_names.keys  %}
+                                            <input type="text" value="{{ changed_col_names.Referral }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.Referral }}">  
+                                            {% endif %}  
+                                                   
                             </div>
                             <div>
                                 <input
@@ -373,8 +489,14 @@
                                     <label for="">Date Of Joining</label>    
                                 </div>
                                 <div>
-                                    <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
-            
+                                    
+                                            {% if 'Date_of_Joining' in changed_col_names.keys %}
+                                                <input type="date" value="{{ changed_col_names.Date_of_Joining }}" disabled maxlength="30"  >
+                                                {% else %}
+                                                
+                                                <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d' }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+                                                 
+                                    {% endif %}
                                 </div>
             
                                 <div>
@@ -393,8 +515,13 @@
                                     <label for="">Date Of Joining</label>    
                                 </div>
                                 <div>
-                                    <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'  }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
-            
+                                            {% if 'Date_of_Joining' in changed_col_names.keys %}
+                                                <input type="date" value="{{ changed_col_names.Date_of_Joining }}" disabled maxlength="30"  >
+                                                {% else %}
+                                                
+                                                <input type="date" disabled value="{{ eachcandidate.Date_of_Joining|date:'Y-m-d'  }}" placeholder="Date Of Joining" name="c_doj" required="true" tabindex="4">
+                                                 
+                                        {% endif %}
                                 </div>
             
                                 <div>
@@ -413,8 +540,14 @@
                                 <label for="">Physically Challenged</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
-                                
+                                 
+                                        {% if 'physically_challenged' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.physically_challenged }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -440,8 +573,14 @@
                                 <label for="">Company</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_entity_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_entity_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                                            {% endif %}
+                                           
                             </div>
                             <div>
                                 <select
@@ -461,8 +600,14 @@
                                 <label for="">Vendor</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_vendor_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_vendor_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -501,8 +646,14 @@
                                 <label for="">Department</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_department_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_department_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -532,8 +683,14 @@
                                 <label for="">Function</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_function_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_function_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -563,8 +720,14 @@
                                 <label for="">Team</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_team_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_team_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
+                                            {% endif %}
+                                           
                             </div>
                             <div>
                                 <select
@@ -594,8 +757,14 @@
                                 <label for="">Sub Team</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_subteam_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_subteam_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
+                                            {% endif %}
+                                           
                             </div>
                             <div>
                                 <select
@@ -624,8 +793,14 @@
                                 <label for="">Designation</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_designation_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_designation_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -654,8 +829,14 @@
                                 <label for="">Region</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_region_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_region_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
+                                            {% endif %}
+                                           
                             </div>
                             <div>
                                 <select
@@ -684,8 +865,14 @@
                                 <label for="">State</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_state_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_state_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
+                                            {% endif %}
+                                           
                             </div>
                             <div>
                                 <select
@@ -714,8 +901,14 @@
                                 <label for="">City</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_city_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_city_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -744,8 +937,14 @@
                                 <label for="">Location</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_location_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_location_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -775,7 +974,14 @@
                                 <label for="">Hiring Type</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                 
+                                        {% if 'Type_of_Hiring' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.Type_of_Hiring }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.Type_of_Hiring }}" required="true" >           
+                                            {% endif %}
+                                           
                             </div>
                             <div>
                                 <select
@@ -802,7 +1008,14 @@
                                 <label for="">Replacement UID</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                 
+                                        {% if 'Replacement' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.Replacement }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.Replacement }}" required="true" >           
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <input
@@ -818,8 +1031,14 @@
                                 <label for="">Sub Source</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
-                                
+                                 
+                                        {% if 'Sub_Source' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.Sub_Source }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.Sub_Source }}" required="true" >
+                                            {% endif %}
+                                          
                             </div>
                             <div>
                                 <select
@@ -845,8 +1064,14 @@
                                 <label for="">Referral UID</label>    
                             </div>
                             <div>
-
-                                <input type="text" disabled value="{{ eachcandidate.Referral }}">           
+                                 
+                                        {% if 'Referral' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.Referral }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.Referral }}">  
+                                            {% endif %}
+                                                   
                             </div>
                             <div>
                                 <input
@@ -863,8 +1088,14 @@
                                 <label for="">Date Of Joining</label>    
                             </div>
                             <div>
-                                <input type="date" disabled value="{{ eachcandidate.Date_of_Joining | date:'Y-m-d' }}" required="true" >
-                                
+                                 
+                                        {% if 'Date_of_Joining' in changed_col_names.keys %}
+                                            <input type="date" value="{{ changed_col_names.Date_of_Joining }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="date" disabled value="{{ eachcandidate.Date_of_Joining | date:'Y-m-d' }}" required="true" >
+                                            {% endif %}
+                                          
                             </div>
                             <div>
                                 <input
@@ -882,8 +1113,14 @@
                                 <label for="">Physically Challenged</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
-                                
+                                 
+                                        {% if 'physically_challenged' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.physically_challenged }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.physically_challenged }}" required="true" >
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -908,8 +1145,14 @@
                                 <label for="">Company</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_entity_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_entity_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_entity_code }}" required="true" >
+                                            {% endif %}
+                                            
                             </div>
                             <div>
                                 <select
@@ -935,8 +1178,14 @@
                                 <label for="">Vendor</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_vendor_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_vendor_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_vendor_code }}" required="true" >
+                                            {% endif %}
+                                          
                             </div>
                             <div>
                                 <select
@@ -976,8 +1225,14 @@
                                 <label for="">Department</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_department_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_department_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_department_code }}" required="true" >
+                                            {% endif %}
+                                         
                             </div>
                             <div>
                                 <select
@@ -1007,8 +1262,14 @@
                                 <label for="">Function</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_function_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_function_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_function_code }}" required="true" >
+                                            {% endif %}
+                                          
                             </div>
                             <div>
                                 <select
@@ -1038,8 +1299,14 @@
                                 <label for="">Team</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_team_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_team_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_team_code }}" required="true" >
+                                            {% endif %}
+                                          
                             </div>
                             <div>
                                 <select
@@ -1069,8 +1336,14 @@
                                 <label for="">Sub Team</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_subteam_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_subteam_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_subteam_code }}" required="true" >
+                                            {% endif %}
+                                         
                             </div>
                             <div>
                                 <select
@@ -1099,8 +1372,14 @@
                                 <label for="">Designation</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_designation_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_designation_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_designation_code }}" required="true" >
+                                            {% endif %}
+                                           
                             </div>
                             <div>
                                 <select
@@ -1129,8 +1408,14 @@
                                 <label for="">Region</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_region_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_region_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_region_code }}" required="true" >
+                                            {% endif %}
+                                          
                             </div>
                             <div>
                                 <select
@@ -1159,8 +1444,14 @@
                                 <label for="">State</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_state_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_state_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_state_code }}" required="true" >
+                                            {% endif %}
+                                         
                             </div>
                             <div>
                                 <select
@@ -1177,7 +1468,8 @@
                                         {% for eachstate in state_list %}
                                             {% if eachestate.pk != eachcandidate.fk_state_code_id %}
                                             <option style="display: none;" value="{{ eachstate.pk }}" label="{{ eachstate.state_name }}">{{ eachstate.fk_region_code_id }}</option>
-                                            {% endif %}                                    
+                                            {% endif %}
+                                                                                
                                         {% endfor %}                
                                     {% endif %}
                                 </select>
@@ -1189,8 +1481,14 @@
                                 <label for="">City</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_city_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_city_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_city_code }}" required="true" >
+                                            {% endif %}
+                                          
                             </div>
                             <div>
                                 <select
@@ -1219,8 +1517,14 @@
                                 <label for="">Location</label>    
                             </div>
                             <div>
-                                <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
-                                
+                                 
+                                        {% if 'fk_location_code' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.fk_location_code }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.fk_location_code }}" required="true" >
+                                            {% endif %}
+                                        
                             </div>
                             <div>
                                 <select
@@ -1254,7 +1558,14 @@
                             <label for="">TA SPOC Email ID</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" required="true" >           
+                             
+                                        {% if 'TA_Spoc_Email_Id' in changed_col_names.keys %}
+                                            <input type="text" value="{{ changed_col_names.TA_Spoc_Email_Id }}" disabled maxlength="30"  >
+                                            {% else %}
+                                            
+                                            <input type="text" disabled value="{{ eachcandidate.TA_Spoc_Email_Id }}" required="true" >           
+                                            {% endif %}
+                                         
                         </div>
                         <div>
                             <input
@@ -1271,7 +1582,14 @@
                             <label for="">Onboarding SPOC Email ID</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" required="true" >           
+                             
+                                    {% if 'Onboarding_Spoc_Email_Id' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Onboarding_Spoc_Email_Id }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Onboarding_Spoc_Email_Id }}" required="true" >           
+                                        {% endif %}
+                                     
                         </div>
                         <div>
                             <input
@@ -1291,7 +1609,14 @@
                             <label for="">Reporting / Hiring Manager Name</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                             
+                                    {% if 'Reporting_Manager' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Reporting_Manager }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                                        {% endif %}
+                                     
                         </div>
                         <div>
                             <input
@@ -1308,7 +1633,14 @@
                             <label for="">Reporting / Hiring Manager Email ID</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                             
+                                    {% if 'Reporting_Manager_E_Mail_ID' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Reporting_Manager_E_Mail_ID }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                                        {% endif %}
+                                    
                         </div>
                         <div>
                             <input
@@ -1327,8 +1659,14 @@
                             <label for="">Email ID Creation</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
-                            
+                             
+                                    {% if 'E_Mail_ID_Creation' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.E_Mail_ID_Creation }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
+                                        {% endif %}
+                                   
                         </div>
                         <div>
                             <select
@@ -1348,8 +1686,14 @@
                             <label for="">Laptop Allocation</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
-                            
+                             
+                                    {% if 'Laptop_Allocation' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Laptop_Allocation }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
+                                        {% endif %}
+                                    
                         </div>
                         <div>
                             <select
@@ -1370,7 +1714,14 @@
                             <label for="">Reporting / Hiring Manager Name</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                             
+                                    {% if 'Reporting_Manager' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Reporting_Manager }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager }}" required="true" >           
+                                        {% endif %}
+                                    
                         </div>
                         <div>
                             <input
@@ -1387,7 +1738,14 @@
                             <label for="">Reporting / Hiring Manager Email ID</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                             
+                                    {% if 'Reporting_Manager_E_Mail_ID' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Reporting_Manager_E_Mail_ID }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Reporting_Manager_E_Mail_ID }}" required="true" >           
+                                        {% endif %}
+                                    
                         </div>
                         <div>
                             <input
@@ -1406,8 +1764,14 @@
                             <label for="">Email ID Creation</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
-                            
+                             
+                                    {% if 'E_Mail_ID_Creation' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.E_Mail_ID_Creation }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.E_Mail_ID_Creation }}" required="true" >
+                                        {% endif %}
+                                     
                         </div>
                         <div>
                             <select
@@ -1432,8 +1796,14 @@
                             <label for="">Laptop Allocation</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
-                            
+                             
+                                    {% if 'Laptop_Allocation' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Laptop_Allocation }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Laptop_Allocation }}" required="true" >
+                                        {% endif %}
+                                    
                         </div>
                         <div>
                             <select
@@ -1464,8 +1834,14 @@
                             <label for="">Salary Type</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
-                            
+                             
+                                    {% if 'Salary_Type' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Salary_Type }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Salary_Type }}" required="true" >
+                                        {% endif %}
+                                    
                         </div>
                         <div>
                             <select
@@ -1491,7 +1867,14 @@
                             <label for="">Gross Salary Entered Recruiter / Initial</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Entered }}" >           
+                             
+                                    {% if 'Gross_Salary_Entered' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Gross_Salary_Entered }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Entered }}" required="true" >
+                                        {% endif %}
+                                     
                         </div>
                         <div>
                             <input
@@ -1511,7 +1894,14 @@
                             <label for="">Gross Salary Calculated</label>    
                         </div>
                         <div>
-                            <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >           
+                             
+                                    {% if 'Gross_Salary_Amount' in changed_col_names.keys %}
+                                        <input type="text" value="{{ changed_col_names.Gross_Salary_Amount }}" disabled maxlength="30"  >
+                                        {% else %}
+                                        
+                                        <input type="text" disabled value="{{ eachcandidate.Gross_Salary_Amount }}" required="true" >
+                                        {% endif %}
+                                    
                         </div>
                         <div>
                             <input

@@ -9,7 +9,7 @@
     {% include 'static_utilities/js_imports.html' %}
     {% include 'static_utilities/css_imports.html' %}
 
-{#    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/login.css' %}" crossorigin="use-credentials">#}
+ <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/login.css' %}" crossorigin="use-credentials">
 {#    <link rel="stylesheet" type="text/css" href="{% static 'csp_app/css/alertmsgcss.css' %}" crossorigin="use-credentials">#}
 {#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" crossorigin="use-credentials"/>#}
 {#    <script src="https://kit.fontawesome.com/b99e675b6e.js" crossorigin="use-credentials"></script>#}
@@ -17,10 +17,10 @@
 {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" crossorigin="use-credentials"></script>#}
 </head>
 <body>
- <div class="login-wrapper">
+ <div class="login-wrapper animate__animated animate__fadeInDown animate__slow" id="login-wrapper-div">
     {% block bodyblock %}             
     
-    <div>
+    <div style="margin-bottom: 10px;">
         <h2 style="color: #bf0711;">Login</h2> 
     </div>
     
@@ -29,7 +29,7 @@
         <div class="login-input-holder">
             <input type="text" placeholder="Username" class="login-input" name="username" >
         </div>
-        <div class="login-input-holder">
+        <div class="login-input-holder" style="margin-bottom: 0px;">
             <input type="password" placeholder="Password" class="login-input" name="password">
         </div>
         <div class="login-btn-holder" style="padding-bottom: 10px;">
