@@ -167,13 +167,7 @@ $(document).ready(function(){
                         $('#detailsmsg').html('').css('color','red');
 
                     }
-                    // if (data['email'] != ''){
-                    //     var duplicate_msg = ' ' + data['email'] ;
-                    //     $('#emailmsg').html(duplicate_msg).css('color','red');
-                    //     $('#new-candidate').attr('onsubmit','return false;');
-                    //     $('#calculate').attr('title', 'Please Recheck Entered Data');
-                    //     $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
-                    // } 
+                    
                 }
                 
             }

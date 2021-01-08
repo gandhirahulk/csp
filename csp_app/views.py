@@ -561,7 +561,7 @@ def check_duplicate_candidate_edit(request):
 
             dup_candidate_email = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(
                 Personal_Email_Id=email, status=active_status)
-            result['email'] = dup_candidate_email.pk_candidate_code
+            result['email'] = 'Email ID Already Exist With Candidate ID :' + str(dup_candidate_email.pk_candidate_code)
             result['invalid_domain'] = ''
             return JsonResponse(result)
         else:
@@ -573,7 +573,7 @@ def check_duplicate_candidate_edit(request):
         result['invalid_domain'] = ''
     try:
         repeated_email = User.objects.get(username=email, is_active=True)
-        result['repeated'] = 'Email ID Already In Use'
+        result['email'] = 'Email ID Already Exist With System Users'
         result['invalid_domain'] = ''
         return JsonResponse(result)
 
