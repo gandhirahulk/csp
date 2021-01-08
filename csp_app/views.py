@@ -5798,6 +5798,7 @@ def candidate_document_upload(request, candidate_id):
                                                  cc=cc_email)
                     msg.attach_alternative(html_content, "text/html")
                     msg.send()
+                try:
                     my_host = selected_candidate.fk_vendor_code.vendor_smtp
                     my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
                     my_username = selected_candidate.fk_vendor_code.vendor_email_id
