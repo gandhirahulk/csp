@@ -578,7 +578,7 @@ def check_duplicate_candidate_edit(request):
         return JsonResponse(result)
 
     except ObjectDoesNotExist:
-        result['repeated'] = ''
+        result['email'] = ''
         result['invalid_domain'] = ''
     
 
@@ -2286,7 +2286,7 @@ def process_requests(request, cid):
             '-created_date_time').distinct()
         candidate_history_list = candidate_history.objects.filter(fk_candidate_code=c).order_by(
             '-created_date_time').distinct()
-        candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=c, status=active_status)
+        candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=c, status=active_status).order_by('-created_date_time')
         tbl_col_names = {}
         for each in candidate_recent_change:
             tbl_col_names[each.tbl_column_name] = each.old_value
@@ -3616,7 +3616,7 @@ def edit_salary_structure_process(request, cid):
                 candidate_history_list = candidate_history.objects.filter(
                     fk_candidate_code=selected_candidate).order_by('-created_date_time').distinct()
                 candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=selected_candidate,
-                                                                           status=active_status)
+                                                                           status=active_status).order_by('-created_date_time')
                 return render(request, 'candidate/processeditsalarystructure.html',
                               {'side_letter': side_letter, 'candidate_recent_change': candidate_recent_change,
                                'candidate_history_list': candidate_history_list, 'history_list': history_list,

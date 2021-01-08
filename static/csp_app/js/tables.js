@@ -125,6 +125,9 @@
 
     
         $('#document-table').DataTable();
+    
+
+
         $('#nocandidate-table').DataTable({
             scrollX: true,
         });

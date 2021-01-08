@@ -1988,7 +1988,7 @@
             <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
         </div>
         <div class="delete_form_footer" style="width: 80%;text-align: center;">
-            <table id="function_table" class="dataTable">
+            <table id="salary-history-table" class="dataTable">
                 <thead>
                     <tr>
                         <th>Entered By</th>
@@ -2034,7 +2034,7 @@
             <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
         </div>
         <div class="delete_form_footer" style="width: 80%;text-align: center;">
-            <table id="entity_table" class="dataTable">
+            <table id="history-table" class="dataTable">
                 <thead>
                     <tr>
                         <th>Field Name</th>
@@ -2084,10 +2084,15 @@
 </script>
 <script>
     $(document).ready(function(){
-        $('#entity_table').dataTable()
-        $('#function_table').dataTable()
 
-
+        $('#history-table').dataTable({
+            "order": [ 4, "desc" ], 
+            "columnDefs" : [{"targets":4, "type":"date-eu"}],
+        })
+        $('#salary-history-table').DataTable({
+            "order": [ 5, "desc" ], 
+            "columnDefs" : [{"targets":5, "type":"date-eu"}],
+        });
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#view_history_form").css("display", "none");
