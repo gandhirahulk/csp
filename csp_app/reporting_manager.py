@@ -171,7 +171,7 @@ def joining_confirmation(request):
             candidate_salary_structure = salary_structure.objects.get(candidate_code= selected_candidate.pk)
             
             subject1 = 'Offer Withdrawal : ' + str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name)
-            html_content = render_to_string('emailtemplates/offer_withdrawel.html', {'recruiter_first_name': recruiter_first_name,'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name), 'designation': selected_candidate.fk_designation_code, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'vendor_phone': selected_candidate.fk_vendor_code.vendor_phone_number, 'offer_date': 'offer_date'})
+            html_content = render_to_string('emailtemplates/offer_withdrawel.html', {'recruiter_first_name': recruiter_first_name,'candidate_name': selected_candidate.First_Name, 'candidate_full_name': str(selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name), 'designation': selected_candidate.fk_designation_code, 'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id , 'vendor_phone': selected_candidate.fk_vendor_code.vendor_phone_number, 'offer_date': selected_candidate.offer_letter_date})
             body1 = strip_tags(html_content)
             from1 = my_username
             with get_connection(

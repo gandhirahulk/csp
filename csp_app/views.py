@@ -5744,6 +5744,7 @@ def candidate_document_upload(request, candidate_id):
                                                   created_by=str(request.user), created_date_time=datetime.now())
                 new_document.save()
                 if catogory_fk.pk == 1:
+                    candidate_fk.offer_letter_date = datetime.today()
                     candidate_fk.offer_letter_status = offer_letter_status.objects.get(pk=1)
                     candidate_fk.save()
                 if flag == 1 and candidate_fk.offer_letter_status.pk == 1:

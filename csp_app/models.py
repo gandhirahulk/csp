@@ -524,7 +524,7 @@ class master_candidate(models.Model):
     remarks = models.CharField(max_length=300, default=" ")
     physically_challenged = models.CharField(max_length=10, default='No')
     submit_status = models.IntegerField(default=0)
-
+    offer_letter_date = models.DateField(default=None, blank=True, null=True)
     def __str__(self):
         return self.pk_candidate_code
 
