@@ -3019,12 +3019,12 @@ def future_joining_requests(request):
     if request.method == 'POST':
         reject = request.POST.get('reject_cid')
         confirm = request.POST.get('confirm_cid')
-        recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-        vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
-        rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
+        
         if reject == None and confirm != None:
             selected_candidate = master_candidate.objects.get(pk=confirm)
-
+            recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+            vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+            rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
             doj_changes_list = check_for_doj_changes(selected_candidate, selected_candidate.Date_of_Joining,
                                                      selected_candidate.delay_date, request)
             previous_changes = candidate_history.objects.filter(fk_candidate_code=selected_candidate,
@@ -3139,6 +3139,9 @@ def future_joining_requests(request):
             return redirect("csp_app:future_joining_request")
         if confirm == None and reject != None:
             selected_candidate = master_candidate.objects.get(pk=reject)
+            recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+            vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+            rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
             recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
           
             selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
