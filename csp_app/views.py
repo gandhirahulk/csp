@@ -5799,6 +5799,7 @@ def candidate_document_upload(request, candidate_id):
                     msg.attach_alternative(html_content, "text/html")
                     msg.send()
                 try:
+                    selected_candidate = master_candidate.objects.get(pk=candidate_id)
                     my_host = selected_candidate.fk_vendor_code.vendor_smtp
                     my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
                     my_username = selected_candidate.fk_vendor_code.vendor_email_id
