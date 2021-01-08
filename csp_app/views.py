@@ -328,7 +328,6 @@ def approved_candidates(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
 def candidate_profile(request):
-    print(request.user)
     try:
         me = master_candidate.objects.get(pk=request.user.username)
         return render(request, 'candidate/candidatesdashboard.html', {'me': me})
@@ -451,7 +450,7 @@ def check_duplicate_candidate_new(request):
             'rediffmail.com'):
 
             dup_candidate_email = master_candidate.objects.get(Personal_Email_Id=email, status=active_status)
-            result['email'] = dup_candidate_email.pk_candidate_code
+            result['email'] = 'Contact Number Already Exist With Candidate ID : ' + str(dup_candidate_email.pk_candidate_code)
             result['invalid_domain'] = ''
             return JsonResponse(result)
         else:
@@ -463,12 +462,12 @@ def check_duplicate_candidate_new(request):
         result['invalid_domain'] = ''
     try:
         repeated_email = User.objects.get(username=email, is_active=True)
-        result['repeated'] = 'Email ID Already In Use'
+        result['email'] = 'Email ID Already Exist With System Users'
         result['invalid_domain'] = ''
         return JsonResponse(result)
 
     except ObjectDoesNotExist:
-        result['repeated'] = ''
+        result['email'] = ''
         result['invalid_domain'] = ''
     
     if len(aadhaar) != 12:
@@ -8227,6 +8226,7 @@ def create_user_view(request):
     user_list = User.objects.all().exclude(is_superuser=True)
     exclude_group = ['Candidate', 'Admin']
     group_list = Group.objects.all().exclude(name__in=exclude_group)
+    all_active_candidates = master_candidate.objects.filter(status=active_status)
     return render(request, 'csp_app/create_user.html',
                   {'allcandidates': all_active_candidates, 'user_list': user_list, 'group_list': group_list})
 
@@ -8234,6 +8234,7 @@ def create_user_view(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def create_user(request):
+    all_active_candidates = master_candidate.objects.filter(status=active_status)
     if request.method == 'POST':
         usrname = request.POST.get('email')
         firstname = request.POST.get('firstname').title()
