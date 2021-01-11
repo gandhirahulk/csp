@@ -5405,6 +5405,7 @@ def save_new_candidate(request):
                     Onboarding_SPOC_first_name = 'Admin'
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(ta_spoc)
                 rm_first_name = get_first_name(reporting_manager)
+                print(doj.strftime("%B %d %Y"))
                 # print(recruiter_name)
                 # send_mail_code
                 subject = 'Candidate Selection & Offer Request : ' + str(firstname) + ' ' + str(middlename) + ' ' + str(lastname) + ' | ' + str(new_code)

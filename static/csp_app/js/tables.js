@@ -139,5 +139,13 @@
             "paging": true,
             "lengthMenu": [10, 25, 50, 75, 100],
         });
+        $('#history-table').dataTable({
+            "order": [ 4, "desc" ], 
+            "columnDefs" : [{"targets":4, "type":"date-eu"}],
+        })
+        $('#salary-history-table').DataTable({
+            "order": [ 5, "desc" ], 
+            "columnDefs" : [{"targets":5, "type":"date-eu"}],
+        });
 
     });

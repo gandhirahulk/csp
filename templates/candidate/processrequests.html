@@ -2079,20 +2079,15 @@
 
 <script>
     function showDelete(formid){
+       
         document.getElementById(formid).style.display = "block";
+        
     }
 </script>
 <script>
     $(document).ready(function(){
 
-        $('#history-table').dataTable({
-            "order": [ 4, "desc" ], 
-            "columnDefs" : [{"targets":4, "type":"date-eu"}],
-        })
-        $('#salary-history-table').DataTable({
-            "order": [ 5, "desc" ], 
-            "columnDefs" : [{"targets":5, "type":"date-eu"}],
-        });
+       
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#view_history_form").css("display", "none");
@@ -2113,6 +2108,7 @@
             $("#view_history_form").css("display", "none");
         });
         $('#close_c_history').click(function(){
+           
             $("#view_candidate_history_form").css("display", "none");
         });
         $('#close_delete').click(function(){
