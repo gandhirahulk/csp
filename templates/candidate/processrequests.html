@@ -557,12 +557,7 @@
                                     {% endif %}
                                 {% endfor %} name="challenged" readonly="true" required="true" tabindex="18">
                                     <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
-                                    {% if eachcandidate.physically_challenged == 'No' %}
-                                        <option value="Yes">Yes</option>
-                                    {% else %}
-                                        
-                                        <option value="No">No</option>
-                                    {% endif %}
+                                  
                                 </select>
                             </div>
                         </div>
