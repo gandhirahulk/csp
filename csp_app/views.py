@@ -454,8 +454,7 @@ def check_duplicate_candidate_new(request):
             result['invalid_domain'] = ''
             return JsonResponse(result)
         else:
-            result[
-                'invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com, yahoo.co.in, rediffmail.com'
+            result['invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com, yahoo.co.in, rediffmail.com'
             return JsonResponse(result)
     except ObjectDoesNotExist:
         result['email'] = ''
@@ -2827,6 +2826,7 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
+                    selected_candidate.status = deactive_status
                     selected_candidate.save()
                     Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
@@ -5405,7 +5405,7 @@ def save_new_candidate(request):
                     Onboarding_SPOC_first_name = 'Admin'
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(ta_spoc)
                 rm_first_name = get_first_name(reporting_manager)
-                print(doj.strftime("%B %d %Y"))
+                # print(doj.strftime("%B %d %Y"))
                 # print(recruiter_name)
                 # send_mail_code
                 subject = 'Candidate Selection & Offer Request : ' + str(firstname) + ' ' + str(middlename) + ' ' + str(lastname) + ' | ' + str(new_code)
