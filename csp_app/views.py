@@ -328,7 +328,6 @@ def approved_candidates(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Candidate').exists())
 def candidate_profile(request):
-    print(request.user)
     try:
         me = master_candidate.objects.get(pk=request.user.username)
         return render(request, 'candidate/candidatesdashboard.html', {'me': me})
@@ -451,24 +450,23 @@ def check_duplicate_candidate_new(request):
             'rediffmail.com'):
 
             dup_candidate_email = master_candidate.objects.get(Personal_Email_Id=email, status=active_status)
-            result['email'] = dup_candidate_email.pk_candidate_code
+            result['email'] = 'Contact Number Already Exist With Candidate ID : ' + str(dup_candidate_email.pk_candidate_code)
             result['invalid_domain'] = ''
             return JsonResponse(result)
         else:
-            result[
-                'invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com, yahoo.co.in, rediffmail.com'
+            result['invalid_domain'] = 'Supported Domains : gmail.com, yahoo.com, hotmail.com, outlook.com, yahoo.co.in, rediffmail.com'
             return JsonResponse(result)
     except ObjectDoesNotExist:
         result['email'] = ''
         result['invalid_domain'] = ''
     try:
         repeated_email = User.objects.get(username=email, is_active=True)
-        result['repeated'] = 'Email ID Already In Use'
+        result['email'] = 'Email ID Already Exist With System Users'
         result['invalid_domain'] = ''
         return JsonResponse(result)
 
     except ObjectDoesNotExist:
-        result['repeated'] = ''
+        result['email'] = ''
         result['invalid_domain'] = ''
     
     if len(aadhaar) != 12:
@@ -562,7 +560,7 @@ def check_duplicate_candidate_edit(request):
 
             dup_candidate_email = master_candidate.objects.exclude(pk_candidate_code=candidate_id).get(
                 Personal_Email_Id=email, status=active_status)
-            result['email'] = dup_candidate_email.pk_candidate_code
+            result['email'] = 'Email ID Already Exist With Candidate ID :' + str(dup_candidate_email.pk_candidate_code)
             result['invalid_domain'] = ''
             return JsonResponse(result)
         else:
@@ -574,12 +572,12 @@ def check_duplicate_candidate_edit(request):
         result['invalid_domain'] = ''
     try:
         repeated_email = User.objects.get(username=email, is_active=True)
-        result['repeated'] = 'Email ID Already In Use'
+        result['email'] = 'Email ID Already Exist With System Users'
         result['invalid_domain'] = ''
         return JsonResponse(result)
 
     except ObjectDoesNotExist:
-        result['repeated'] = ''
+        result['email'] = ''
         result['invalid_domain'] = ''
     
 
@@ -2287,7 +2285,7 @@ def process_requests(request, cid):
             '-created_date_time').distinct()
         candidate_history_list = candidate_history.objects.filter(fk_candidate_code=c).order_by(
             '-created_date_time').distinct()
-        candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=c, status=active_status)
+        candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=c, status=active_status).order_by('-created_date_time')
         tbl_col_names = {}
         for each in candidate_recent_change:
             tbl_col_names[each.tbl_column_name] = each.old_value
@@ -2551,6 +2549,11 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.status = deactive_status
 
                     selected_candidate.save()
+                    try:
+                        selected_user = User.objects.get(username=selected_candidate.Personal_Email_Id)
+                        selected_user.delete()
+                    except ObjectDoesNotExist:
+                        pass
                     Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                     vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
@@ -2662,6 +2665,11 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                     selected_candidate.status = deactive_status
                     selected_candidate.save()
+                    try:
+                        selected_user = User.objects.get(username=selected_candidate.Personal_Email_Id)
+                        selected_user.delete()
+                    except ObjectDoesNotExist:
+                        pass
                     Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
@@ -2814,6 +2822,11 @@ def reject_candidate_vendor(request, cid):
                         selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                         selected_candidate.status = deactive_status
                         selected_candidate.save()
+                        try:
+                            selected_user = User.objects.get(username=selected_candidate.Personal_Email_Id)
+                            selected_user.delete()
+                        except ObjectDoesNotExist:
+                            pass
                         messages.success(request, "Candidate Rejected.")
                         return redirect("csp_app:pending_request")
 
@@ -2828,7 +2841,13 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.email_creation_status = email_creation_request_status.objects.get(pk=3)
                     selected_candidate.laptop_status = laptop_request_status.objects.get(pk=3)
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
+                    selected_candidate.status = deactive_status
                     selected_candidate.save()
+                    try:
+                        selected_user = User.objects.get(username=selected_candidate.Personal_Email_Id)
+                        selected_user.delete()
+                    except ObjectDoesNotExist:
+                        pass
                     Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
@@ -3019,12 +3038,12 @@ def future_joining_requests(request):
     if request.method == 'POST':
         reject = request.POST.get('reject_cid')
         confirm = request.POST.get('confirm_cid')
-        recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
-        vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
-        rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
+        
         if reject == None and confirm != None:
             selected_candidate = master_candidate.objects.get(pk=confirm)
-
+            recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+            vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+            rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
             doj_changes_list = check_for_doj_changes(selected_candidate, selected_candidate.Date_of_Joining,
                                                      selected_candidate.delay_date, request)
             previous_changes = candidate_history.objects.filter(fk_candidate_code=selected_candidate,
@@ -3139,6 +3158,9 @@ def future_joining_requests(request):
             return redirect("csp_app:future_joining_request")
         if confirm == None and reject != None:
             selected_candidate = master_candidate.objects.get(pk=reject)
+            recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
+            vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
+            rm_first_name = get_first_name(selected_candidate.Reporting_Manager)
             recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
           
             selected_candidate.candidate_status = candidate_status.objects.get(pk=1)
@@ -3614,7 +3636,7 @@ def edit_salary_structure_process(request, cid):
                 candidate_history_list = candidate_history.objects.filter(
                     fk_candidate_code=selected_candidate).order_by('-created_date_time').distinct()
                 candidate_recent_change = candidate_history.objects.filter(fk_candidate_code=selected_candidate,
-                                                                           status=active_status)
+                                                                           status=active_status).order_by('-created_date_time')
                 return render(request, 'candidate/processeditsalarystructure.html',
                               {'side_letter': side_letter, 'candidate_recent_change': candidate_recent_change,
                                'candidate_history_list': candidate_history_list, 'history_list': history_list,
@@ -5403,6 +5425,7 @@ def save_new_candidate(request):
                     Onboarding_SPOC_first_name = 'Admin'
                 recruiter_name, recruiter_first_name = get_recruiter_spoc(ta_spoc)
                 rm_first_name = get_first_name(reporting_manager)
+                # print(doj.strftime("%B %d %Y"))
                 # print(recruiter_name)
                 # send_mail_code
                 subject = 'Candidate Selection & Offer Request : ' + str(firstname) + ' ' + str(middlename) + ' ' + str(lastname) + ' | ' + str(new_code)
@@ -5711,6 +5734,15 @@ def candidate_document_upload(request, candidate_id):
                 messages.warning(request, "Choose File")
                 return redirect('csp_app:document_upload')
             file_name = c_file.name
+            
+            if f_catogory == '2' or f_catogory == '1': #resume & Offer Letter
+                if file_name.endswith('.pdf') or file_name.endswith('.PDF'):
+                    fs = FileSystemStorage()
+                    filename = fs.save(file_name, c_file)
+                    file_url = fs.url(filename)
+                else:
+                    messages.error(request, "Please Upload pdf file.")
+                    return redirect('csp_app:document_upload', candidate_id=candidate_id)
 
             if file_name.endswith('.pdf') or file_name.endswith('.jpg') or file_name.endswith(
                     '.png') or file_name.endswith('.JPG') or file_name.endswith('.PNG'):
@@ -5744,6 +5776,7 @@ def candidate_document_upload(request, candidate_id):
                                                   created_by=str(request.user), created_date_time=datetime.now())
                 new_document.save()
                 if catogory_fk.pk == 1:
+                    candidate_fk.offer_letter_date = datetime.today()
                     candidate_fk.offer_letter_status = offer_letter_status.objects.get(pk=1)
                     candidate_fk.save()
                 if flag == 1 and candidate_fk.offer_letter_status.pk == 1:
@@ -5797,6 +5830,55 @@ def candidate_document_upload(request, candidate_id):
                                                  cc=cc_email)
                     msg.attach_alternative(html_content, "text/html")
                     msg.send()
+                    try:
+                        selected_candidate = master_candidate.objects.get(pk=candidate_id)
+                        my_host = selected_candidate.fk_vendor_code.vendor_smtp
+                        my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+                        my_username = selected_candidate.fk_vendor_code.vendor_email_id
+                        my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+                        my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+                        my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+                        candidate_salary_structure = salary_structure.objects.get(candidate_code=selected_candidate.pk)
+                        ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
+                        ctc_word = num2words(ctc_number, lang='en_IN')
+                        subject1 = 'Offer Letter Uploaded - ' + str(
+                            selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+                            selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+
+                        html_content = render_to_string('emailtemplates/offer_letter_uploaded_intimation.html', {'candidate_name': selected_candidate.First_Name,
+                                                                                    'candidate_full_name': str(
+                                                                                        selected_candidate.First_Name) + ' ' + str(
+                                                                                        selected_candidate.Middle_Name) + ' ' + str(
+                                                                                        selected_candidate.Last_Name),
+                                                                                    'designation': selected_candidate.fk_designation_code,
+                                                                                    'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
+                                                                                    'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id,
+                                                                                    'company_name': selected_candidate.fk_entity_code,
+                                                                                    'state': selected_candidate.fk_state_code,
+                                                                                    'city': selected_candidate.fk_city_code,
+                                                                                    'doj': selected_candidate.Date_of_Joining,
+                                                                                    'ctc_number': ctc_number, 'ctc_words': ctc_word})
+                        body1 = strip_tags(html_content)
+                        from1 = my_username
+                        with get_connection(
+                                host=my_host,
+                                port=my_port,
+                                username=my_username,
+                                password=my_password,
+                                use_tls=my_use_tls,
+                                use_ssl=my_use_ssl
+                        ) as connection:
+                            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id],
+                                                        bcc=[selected_candidate.TA_Spoc_Email_Id,
+                                                            selected_candidate.Onboarding_Spoc_Email_Id,
+                                                            'sadaf.shaikh@udaan.com',
+                                                            ADMIN_MAIL], cc=[selected_candidate.fk_vendor_code.spoc_email_id], connection=connection)
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
+                    except TimeoutError:
+                        return HttpResponse(
+                            "A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
+                    
                 messages.success(request, "Document Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id=candidate_id)
 
@@ -8174,6 +8256,7 @@ def create_user_view(request):
     user_list = User.objects.all().exclude(is_superuser=True)
     exclude_group = ['Candidate', 'Admin']
     group_list = Group.objects.all().exclude(name__in=exclude_group)
+    all_active_candidates = master_candidate.objects.filter(status=active_status)
     return render(request, 'csp_app/create_user.html',
                   {'allcandidates': all_active_candidates, 'user_list': user_list, 'group_list': group_list})
 
@@ -8181,6 +8264,7 @@ def create_user_view(request):
 @login_required(login_url='/notlogin/')
 @user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
 def create_user(request):
+    all_active_candidates = master_candidate.objects.filter(status=active_status)
     if request.method == 'POST':
         usrname = request.POST.get('email')
         firstname = request.POST.get('firstname').title()

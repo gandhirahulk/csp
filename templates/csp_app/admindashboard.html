@@ -297,12 +297,12 @@
             {% endif %}
         {% endfor %}
     {% endif %}
-    <div class="item item_header">
+    <div class="item item_header" id="item_header">
         {% block bodyblock %}
 
         {% endblock %}
     </div>
-    <div class="item item_contents">
+    <div class="item item_contents" id="item_contents">
 
         {% block tabcontentblock %}
 
@@ -396,9 +396,7 @@
     </div>
     <script type="text/javascript">
         function hidediv(stay) {
-            console.log(stay);
             if (stay != 0) {
-                console.log('in');
                 $('#alerts').removeClass('animate__animated animate__slideOutRight animate__fast').show().addClass('animate__animated animate__slideInRight animate__fast');
 
                 $('#alerts').removeClass('animate__animated animate__slideInRight animate__fast').addClass('animate__animated animate__slideOutRight animate__fast');

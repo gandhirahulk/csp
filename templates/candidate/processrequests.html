@@ -557,12 +557,7 @@
                                     {% endif %}
                                 {% endfor %} name="challenged" readonly="true" required="true" tabindex="18">
                                     <option value="{{ eachcandidate.physically_challenged }}" selected  label="{{ eachcandidate.physically_challenged }}">{{ eachcandidate.physically_challenged }}</option>
-                                    {% if eachcandidate.physically_challenged == 'No' %}
-                                        <option value="Yes">Yes</option>
-                                    {% else %}
-                                        
-                                        <option value="No">No</option>
-                                    {% endif %}
+                                  
                                 </select>
                             </div>
                         </div>
@@ -1988,7 +1983,7 @@
             <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
         </div>
         <div class="delete_form_footer" style="width: 80%;text-align: center;">
-            <table id="function_table" class="dataTable">
+            <table id="salary-history-table" class="dataTable">
                 <thead>
                     <tr>
                         <th>Entered By</th>
@@ -2034,7 +2029,7 @@
             <div class="hr_line" style="margin-bottom: 10px;">&nbsp;</div>
         </div>
         <div class="delete_form_footer" style="width: 80%;text-align: center;">
-            <table id="entity_table" class="dataTable">
+            <table id="history-table" class="dataTable">
                 <thead>
                     <tr>
                         <th>Field Name</th>
@@ -2079,15 +2074,15 @@
 
 <script>
     function showDelete(formid){
+       
         document.getElementById(formid).style.display = "block";
+        
     }
 </script>
 <script>
     $(document).ready(function(){
-        $('#entity_table').dataTable()
-        $('#function_table').dataTable()
 
-
+       
         $(document).keyup(function(){
             if (event.keyCode === 27){
             $("#view_history_form").css("display", "none");
@@ -2108,6 +2103,7 @@
             $("#view_history_form").css("display", "none");
         });
         $('#close_c_history').click(function(){
+           
             $("#view_candidate_history_form").css("display", "none");
         });
         $('#close_delete').click(function(){

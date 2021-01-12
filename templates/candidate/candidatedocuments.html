@@ -171,11 +171,11 @@
                 {% for eachgroup in request.user.groups.all %}
                     {% if eachgroup.name == 'Candidate' %}
                         {% if disabled == 'true' %}
-                            <div>
+                            <div style="padding-right: 10px !important;">
                                 <button class="add-new-btn" disabled="{{ disabled }}" style="display: '{{ display }}';float: right;" title="Upload all mandatory documents." onclick="showDelete('{{ eachc.pk }}', 'submit_document_form', 'submit_me')">Submit</button>
                             </div>
                         {% else %}
-                            <div>
+                            <div style="padding-right: 10px !important;">
                                 <button class="add-new-btn" style="display:{{ display }};float: right;" title="Upload all mandatory documents." onclick="showDelete('{{ eachc.pk }}', 'submit_document_form', 'submit_me')">Submit</button>
                             </div>
                         {% endif %}
@@ -228,6 +228,18 @@
     <input type="hidden" id="email">
     <input type="hidden" id="spocemail">
     <input type="hidden" id="phone_no">
+{% if request.user.groups.all %}
+    {% for eachgroup in request.user.groups.all %}
+        {% if eachgroup.name == 'Candidate' %}
+            <script>
+                $(document).ready(function(){
+                    document.getElementById('item_header').style.display = "none";
+                    document.getElementById('item_contents').style.top = "70px";
+                })
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 <script>
     $(document).ready(function(){
         $(document).keyup(function(){

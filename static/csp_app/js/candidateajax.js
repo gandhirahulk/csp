@@ -154,7 +154,7 @@ $(document).ready(function(){
                     $('#new-candidate').attr('onsubmit','return true;');
                     $('#calculate').attr('title', 'Calculate Salary Structure');
                     if (data['email'] != ''){
-                        var duplicate_msg = 'Email ID Already Exist With Candidate ID : ' + data['email'] ;
+                        var duplicate_msg = ' ' + data['email'] ;
                         $('#emailmsg').html(duplicate_msg).css('color','red');
                         $('#new-candidate').attr('onsubmit','return false;');
                         $('#calculate').attr('title', 'Please Recheck Entered Data');
@@ -167,13 +167,7 @@ $(document).ready(function(){
                         $('#detailsmsg').html('').css('color','red');
 
                     }
-                    if (data['repeated'] != ''){
-                        var duplicate_msg = ' ' + data['repeated'] ;
-                        $('#emailmsg').html(duplicate_msg).css('color','red');
-                        $('#new-candidate').attr('onsubmit','return false;');
-                        $('#calculate').attr('title', 'Please Recheck Entered Data');
-                        $('#detailsmsg').html('Please Fix All The Errors').css('color','red');
-                    } 
+                    
                 }
                 
             }
