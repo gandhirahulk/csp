@@ -2549,6 +2549,11 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.status = deactive_status
 
                     selected_candidate.save()
+                    try:
+                        selected_user = User.objects.get(username=selected_candidate.Personal_Email_Id)
+                        selected_user.delete()
+                    except ObjectDoesNotExist:
+                        pass
                     Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                     recruiter_name, recruiter_first_name = get_recruiter_spoc(selected_candidate.TA_Spoc_Email_Id)
                     vendor_spoc_first_name = get_first_name(selected_candidate.fk_vendor_code.spoc_name)
@@ -2660,6 +2665,11 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                     selected_candidate.status = deactive_status
                     selected_candidate.save()
+                    try:
+                        selected_user = User.objects.get(username=selected_candidate.Personal_Email_Id)
+                        selected_user.delete()
+                    except ObjectDoesNotExist:
+                        pass
                     Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code
@@ -2812,6 +2822,11 @@ def reject_candidate_vendor(request, cid):
                         selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                         selected_candidate.status = deactive_status
                         selected_candidate.save()
+                        try:
+                            selected_user = User.objects.get(username=selected_candidate.Personal_Email_Id)
+                            selected_user.delete()
+                        except ObjectDoesNotExist:
+                            pass
                         messages.success(request, "Candidate Rejected.")
                         return redirect("csp_app:pending_request")
 
@@ -2828,6 +2843,11 @@ def reject_candidate_vendor(request, cid):
                     selected_candidate.candidate_status = candidate_status.objects.get(pk=0)
                     selected_candidate.status = deactive_status
                     selected_candidate.save()
+                    try:
+                        selected_user = User.objects.get(username=selected_candidate.Personal_Email_Id)
+                        selected_user.delete()
+                    except ObjectDoesNotExist:
+                        pass
                     Onboarding_SPOC, Onboarding_SPOC_name, Onboarding_first_name = get_onbording_spoc()
                     save_rejected_reason(selected_candidate, request, reason)
                     # send_mail_code

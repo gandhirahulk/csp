@@ -160,8 +160,10 @@ def joining_confirmation(request):
             msg.send()
             selected_candidate.candidate_status = candidate_status.objects.get(pk=6)
             selected_candidate.status = status.objects.get(pk=0)
-
             selected_candidate.save()
+            selected_user = User.objects.get(username=selected_candidate.Personal_Email_Id)
+            selected_user.delete()
+            
             my_host = selected_candidate.fk_vendor_code.vendor_smtp
             my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
             my_username = selected_candidate.fk_vendor_code.vendor_email_id
@@ -275,7 +277,7 @@ def joining_confirmation(request):
     return render(request, 'reporting_manager/joining_confirmation.html',{'count':count,'doj_count':doj_count, 'request_candidates': request_candidates})
 
 def drop_out(request):
-    drop_out_candidates = master_candidate.objects.filter( candidate_status=dropout_candidate, Reporting_Manager_E_Mail_ID= str(request.user),status=active_status)
+    drop_out_candidates = master_candidate.objects.filter( candidate_status=dropout_candidate, Reporting_Manager_E_Mail_ID= str(request.user))
     today = date.today() 
     last_ten_days = today - timedelta(days = 10)   
     request_candidates = master_candidate.objects.filter(Reporting_Manager_E_Mail_ID= str(request.user), Date_of_Joining__gt= last_ten_days,status=active_status, vendor_status=approve_vendor, joining_status=joining_status.objects.get(pk=0), candidate_status=candidate_status.objects.get(pk=1)).exclude(Date_of_Joining__gt=today)
