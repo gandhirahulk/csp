@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from sys import platform
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_cookies_samesite.middleware.CookiesSameSite',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -175,6 +177,8 @@ EMAIL_USE_SSL = True
 
 if platform == "linux" or platform == "linux2":
     SESSION_COOKIE_HTTPONLY = True
+    DCS_SESSION_COOKIE_SAMESITE = 'Lax'
+    DCS_SESSION_COOKIE_SAMESITE_FORCE_ALL = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
 
