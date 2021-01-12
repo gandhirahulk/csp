@@ -9,8 +9,9 @@
         {% if request.user.groups.all %}
             {% for eachgroup in request.user.groups.all %}
                 {% if eachgroup.name == 'Vendor' %}
-                    <a href="{% url 'csp_app:document_upload' me.pk %}" class="tab-btns">Documents</a> 
-
+                    {% if me.vendor_status_id == 1 %}
+                        <a href="{% url 'csp_app:document_upload' me.pk %}" class="tab-btns">Documents</a> 
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% endif %} 

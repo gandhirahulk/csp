@@ -5734,6 +5734,15 @@ def candidate_document_upload(request, candidate_id):
                 messages.warning(request, "Choose File")
                 return redirect('csp_app:document_upload')
             file_name = c_file.name
+            
+            if f_catogory == '2' or f_catogory == '1': #resume & Offer Letter
+                if file_name.endswith('.pdf') or file_name.endswith('.PDF'):
+                    fs = FileSystemStorage()
+                    filename = fs.save(file_name, c_file)
+                    file_url = fs.url(filename)
+                else:
+                    messages.error(request, "Please Upload pdf file.")
+                    return redirect('csp_app:document_upload', candidate_id=candidate_id)
 
             if file_name.endswith('.pdf') or file_name.endswith('.jpg') or file_name.endswith(
                     '.png') or file_name.endswith('.JPG') or file_name.endswith('.PNG'):
@@ -5821,55 +5830,55 @@ def candidate_document_upload(request, candidate_id):
                                                  cc=cc_email)
                     msg.attach_alternative(html_content, "text/html")
                     msg.send()
-                try:
-                    selected_candidate = master_candidate.objects.get(pk=candidate_id)
-                    my_host = selected_candidate.fk_vendor_code.vendor_smtp
-                    my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
-                    my_username = selected_candidate.fk_vendor_code.vendor_email_id
-                    my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
-                    my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
-                    my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
-                    candidate_salary_structure = salary_structure.objects.get(candidate_code=selected_candidate.pk)
-                    ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
-                    ctc_word = num2words(ctc_number, lang='en_IN')
-                    subject1 = 'Offer Letter Uploaded - ' + str(
-                        selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
-                        selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+                    try:
+                        selected_candidate = master_candidate.objects.get(pk=candidate_id)
+                        my_host = selected_candidate.fk_vendor_code.vendor_smtp
+                        my_port = selected_candidate.fk_vendor_code.vendor_email_port.port
+                        my_username = selected_candidate.fk_vendor_code.vendor_email_id
+                        my_password = selected_candidate.fk_vendor_code.vendor_email_id_password
+                        my_use_tls = selected_candidate.fk_vendor_code.vendor_email_port.tls
+                        my_use_ssl = selected_candidate.fk_vendor_code.vendor_email_port.ssl
+                        candidate_salary_structure = salary_structure.objects.get(candidate_code=selected_candidate.pk)
+                        ctc_number = INR_to_number(candidate_salary_structure.annual_cost_to_company)
+                        ctc_word = num2words(ctc_number, lang='en_IN')
+                        subject1 = 'Offer Letter Uploaded - ' + str(
+                            selected_candidate.First_Name) + ' ' + str(selected_candidate.Middle_Name) + ' ' + str(
+                            selected_candidate.Last_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
 
-                    html_content = render_to_string('emailtemplates/offer_letter_uploaded_intimation.html', {'candidate_name': selected_candidate.First_Name,
-                                                                                'candidate_full_name': str(
-                                                                                    selected_candidate.First_Name) + ' ' + str(
-                                                                                    selected_candidate.Middle_Name) + ' ' + str(
-                                                                                    selected_candidate.Last_Name),
-                                                                                'designation': selected_candidate.fk_designation_code,
-                                                                                'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
-                                                                                'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id,
-                                                                                'company_name': selected_candidate.fk_entity_code,
-                                                                                'state': selected_candidate.fk_state_code,
-                                                                                'city': selected_candidate.fk_city_code,
-                                                                                'doj': selected_candidate.Date_of_Joining,
-                                                                                'ctc_number': ctc_number, 'ctc_words': ctc_word})
-                    body1 = strip_tags(html_content)
-                    from1 = my_username
-                    with get_connection(
-                            host=my_host,
-                            port=my_port,
-                            username=my_username,
-                            password=my_password,
-                            use_tls=my_use_tls,
-                            use_ssl=my_use_ssl
-                    ) as connection:
-                        msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id],
-                                                    bcc=[selected_candidate.TA_Spoc_Email_Id,
-                                                        selected_candidate.Onboarding_Spoc_Email_Id,
-                                                        'sadaf.shaikh@udaan.com',
-                                                        ADMIN_MAIL], cc=[selected_candidate.fk_vendor_code.spoc_email_id], connection=connection)
-                        msg.attach_alternative(html_content, "text/html")
-                        msg.send()
-                except TimeoutError:
-                    return HttpResponse(
-                        "A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
-                
+                        html_content = render_to_string('emailtemplates/offer_letter_uploaded_intimation.html', {'candidate_name': selected_candidate.First_Name,
+                                                                                    'candidate_full_name': str(
+                                                                                        selected_candidate.First_Name) + ' ' + str(
+                                                                                        selected_candidate.Middle_Name) + ' ' + str(
+                                                                                        selected_candidate.Last_Name),
+                                                                                    'designation': selected_candidate.fk_designation_code,
+                                                                                    'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
+                                                                                    'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id,
+                                                                                    'company_name': selected_candidate.fk_entity_code,
+                                                                                    'state': selected_candidate.fk_state_code,
+                                                                                    'city': selected_candidate.fk_city_code,
+                                                                                    'doj': selected_candidate.Date_of_Joining,
+                                                                                    'ctc_number': ctc_number, 'ctc_words': ctc_word})
+                        body1 = strip_tags(html_content)
+                        from1 = my_username
+                        with get_connection(
+                                host=my_host,
+                                port=my_port,
+                                username=my_username,
+                                password=my_password,
+                                use_tls=my_use_tls,
+                                use_ssl=my_use_ssl
+                        ) as connection:
+                            msg = EmailMultiAlternatives(subject1, body1, from1, [selected_candidate.Personal_Email_Id],
+                                                        bcc=[selected_candidate.TA_Spoc_Email_Id,
+                                                            selected_candidate.Onboarding_Spoc_Email_Id,
+                                                            'sadaf.shaikh@udaan.com',
+                                                            ADMIN_MAIL], cc=[selected_candidate.fk_vendor_code.spoc_email_id], connection=connection)
+                            msg.attach_alternative(html_content, "text/html")
+                            msg.send()
+                    except TimeoutError:
+                        return HttpResponse(
+                            "A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond")
+                    
                 messages.success(request, "Document Saved Successfully")
                 return redirect('csp_app:document_upload', candidate_id=candidate_id)
 
