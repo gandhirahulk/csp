@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django_cookies_samesite.middleware.CookiesSameSite',
+    # 'django_cookies_samesite.middleware.CookiesSameSite',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -181,6 +181,12 @@ if platform == "linux" or platform == "linux2":
     DCS_SESSION_COOKIE_SAMESITE_FORCE_ALL = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_SECURE = True
+    CORS_ORIGIN_ALLOW_ALL = False
+    CORS_ORIGIN_WHITELIST = ('http://ob.associatehrms.com')
+    CSRF_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SAMESITE = 'Lax'
+
 
 # INACTIVE_TIME = 40 * 60
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
