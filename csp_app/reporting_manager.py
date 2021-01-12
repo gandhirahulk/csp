@@ -207,7 +207,7 @@ def joining_confirmation(request):
                 msg = EmailMultiAlternatives(subject, text_content, from_email, to_email , bcc= bcc_email, cc= cc_email )
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
-                subject = 'Candidate Date of Joining Confirmed : ' + str(selected_candidate.First_Name) + ' | ' + str(selected_candidate.pk_candidate_code)
+                subject = 'Candidate Date of Joining Confirmed : ' + str(selected_candidate.First_Name) +' '+ str(selected_candidate.Middle_Name) + ' ' + str(selected_candidate.Last_Name)+ ' | ' + str(selected_candidate.pk_candidate_code)
                 cc_email = [ selected_candidate.TA_Spoc_Email_Id, selected_candidate.Onboarding_Spoc_Email_Id ]   
                 to_email = [ selected_candidate.fk_vendor_code.spoc_email_id ]
                 bcc_email = [ 'sadaf.shaikh@udaan.com' , 'rahul.gandhi@udaan.com' ]

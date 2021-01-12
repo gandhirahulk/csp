@@ -34,6 +34,7 @@ from django.db.models.query import QuerySet
 from num2words import num2words
 from .constants import *
 
+
 # print(num2words(100000, lang = 'en_IN'))
 # 0 - reject
 # 1 - approve
@@ -450,7 +451,7 @@ def check_duplicate_candidate_new(request):
             'rediffmail.com'):
 
             dup_candidate_email = master_candidate.objects.get(Personal_Email_Id=email, status=active_status)
-            result['email'] = 'Contact Number Already Exist With Candidate ID : ' + str(dup_candidate_email.pk_candidate_code)
+            result['email'] = 'Email ID Already Exist With Candidate ID : ' + str(dup_candidate_email.pk_candidate_code)
             result['invalid_domain'] = ''
             return JsonResponse(result)
         else:
@@ -1242,7 +1243,7 @@ def process_requests(request, cid):
                         bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                         from_email = FROM_EMAIL
                         html_content = render_to_string('emailtemplates/candidate_approved_onboarding_to_ta.html',
-                                                        {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_first_name': vendor_spoc_first_name,
+                                                        {'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_first_name': vendor_spoc_first_name, 'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
                                                          'candidate_name': selected_candidate.First_Name,
                                                          'candidate_full_name': str(
@@ -1357,7 +1358,7 @@ def process_requests(request, cid):
                         from_email = FROM_EMAIL
                         html_content = render_to_string('emailtemplates/candidate_edited_onboarding.html',
                                                         {'changes': changes_list,
-                                                         'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_first_name': vendor_spoc_first_name,
+                                                         'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_first_name': vendor_spoc_first_name, 'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
                                                          'candidate_name': selected_candidate.First_Name,
                                                          'candidate_full_name': str(
@@ -1408,7 +1409,7 @@ def process_requests(request, cid):
                             from_email = FROM_EMAIL
                             html_content = render_to_string('emailtemplates/candidate_edited_onboarding_to_vendor.html',
                                                             {'changes': changes_list,
-                                                             'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_first_name': vendor_spoc_first_name,
+                                                             'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_first_name': vendor_spoc_first_name,'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id,
                                                              'company_name': selected_candidate.fk_entity_code.entity_name,
                                                              'candidate_name': selected_candidate.First_Name,
                                                              'candidate_full_name': str(
@@ -1691,7 +1692,7 @@ def process_requests(request, cid):
                             from_email = FROM_EMAIL
                             html_content = render_to_string('emailtemplates/candidate_edited_vendor_onboarding.html',
                                                             {'changes': changes_list,
-                                                             'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_first_name': vendor_spoc_first_name,
+                                                             'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_first_name': vendor_spoc_first_name,'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id,
                                                              'company_name': selected_candidate.fk_entity_code.entity_name,
                                                              'candidate_name': str(
                                                                  selected_candidate.First_Name) + ' ' + str(
@@ -1735,7 +1736,7 @@ def process_requests(request, cid):
                             from_email = FROM_EMAIL
                             html_content = render_to_string('emailtemplates/candidate_edited_vendor_recruiter.html',
                                                             {'changes': changes_list,
-                                                             'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_first_name': vendor_spoc_first_name,
+                                                             'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_first_name': vendor_spoc_first_name,'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id,
                                                              'company_name': selected_candidate.fk_entity_code.entity_name,
                                                              'candidate_name': selected_candidate.First_Name,
                                                              'candidate_full_name': str(
@@ -1798,7 +1799,7 @@ def process_requests(request, cid):
                         from_email = FROM_EMAIL
                         html_content = render_to_string('emailtemplates/candidate_edited_vendor_onboarding.html',
                                                         {'changes': changes_list,
-                                                         'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_first_name': vendor_spoc_first_name,
+                                                         'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_first_name': vendor_spoc_first_name,'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
                                                          'candidate_name': selected_candidate.First_Name,
                                                          'candidate_full_name': str(
@@ -1843,7 +1844,7 @@ def process_requests(request, cid):
                         from_email = FROM_EMAIL
                         html_content = render_to_string('emailtemplates/candidate_edited_vendor_recruiter.html',
                                                         {'changes': changes_list,
-                                                         'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_first_name': vendor_spoc_first_name,
+                                                         'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,'vendor_spoc_first_name': vendor_spoc_first_name,'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id,
                                                          'company_name': selected_candidate.fk_entity_code.entity_name,
                                                          'candidate_name': selected_candidate.First_Name,
                                                          'candidate_full_name': str(
@@ -2567,7 +2568,7 @@ def reject_candidate_vendor(request, cid):
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                     from_email = FROM_EMAIL
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding.html',
-                                                    {'onboarding_spoc': Onboarding_SPOC_first_name,
+                                                    {'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_spoc_mail': selected_candidate.Onboarding_Spoc_Email_Id,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
                                                      'candidate_name': selected_candidate.First_Name,
                                                      'candidate_full_name': str(
@@ -2610,7 +2611,7 @@ def reject_candidate_vendor(request, cid):
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                     from_email = FROM_EMAIL
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding_manager.html',
-                                                    {'onboarding_spoc': Onboarding_SPOC_first_name,
+                                                    {'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_spoc_mail': selected_candidate.Onboarding_Spoc_Email_Id,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
                                                      'candidate_name': selected_candidate.First_Name,
                                                      'candidate_full_name': str(
@@ -2680,7 +2681,7 @@ def reject_candidate_vendor(request, cid):
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                     from_email = FROM_EMAIL
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding.html',
-                                                    {'onboarding_spoc': Onboarding_SPOC_first_name,
+                                                    {'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_spoc_mail': selected_candidate.Onboarding_Spoc_Email_Id,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
                                                      'candidate_name': selected_candidate.First_Name,
                                                      'candidate_full_name': str(
@@ -2722,7 +2723,7 @@ def reject_candidate_vendor(request, cid):
                     bcc_email = ['sadaf.shaikh@udaan.com', ADMIN_MAIL]
                     from_email = FROM_EMAIL
                     html_content = render_to_string('emailtemplates/candidate_rejected_onboarding_manager.html',
-                                                    {'onboarding_spoc': Onboarding_SPOC_first_name,
+                                                    {'onboarding_spoc': Onboarding_SPOC_name, 'onboarding_spoc_mail': selected_candidate.Onboarding_Spoc_Email_Id,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
                                                      'candidate_name': selected_candidate.First_Name,
                                                      'candidate_full_name': str(
@@ -4537,7 +4538,7 @@ def edit_candidate(request):
                     from_email = FROM_EMAIL
                     html_content = render_to_string('emailtemplates/candidate_edited_onboarding.html',
                                                     {'changes': changes_list,
-                                                     'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_first_name': vendor_spoc_first_name,
+                                                     'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name, 'vendor_spoc_first_name': vendor_spoc_first_name,'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id,
                                                      'company_name': selected_candidate.fk_entity_code.entity_name,
                                                      'candidate_name': selected_candidate.First_Name,
                                                      'candidate_full_name': str(
@@ -5850,9 +5851,10 @@ def candidate_document_upload(request, candidate_id):
                                                                                         selected_candidate.First_Name) + ' ' + str(
                                                                                         selected_candidate.Middle_Name) + ' ' + str(
                                                                                         selected_candidate.Last_Name),
-                                                                                    'designation': selected_candidate.fk_designation_code,
+                                                                                    'desg_name': selected_candidate.fk_designation_code,
+                                                                                    'dept_name': selected_candidate.fk_department_code,
                                                                                     'vendor_spoc': selected_candidate.fk_vendor_code.spoc_name,
-                                                                                    'vendor_spoc_email': selected_candidate.fk_vendor_code.spoc_email_id,
+                                                                                    'vendor_spoc_mail': selected_candidate.fk_vendor_code.spoc_email_id,
                                                                                     'company_name': selected_candidate.fk_entity_code,
                                                                                     'state': selected_candidate.fk_state_code,
                                                                                     'city': selected_candidate.fk_city_code,

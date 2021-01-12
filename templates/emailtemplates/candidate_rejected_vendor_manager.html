@@ -14,16 +14,12 @@
     </head>
     <body>
         <p>Dear {{ rm_first_name }},</p>
-        <p>Please be informed that we have <span style="color: red;">“Rejected”</span> the candidature of below mentioned candidate:</p>
+        <p>Please be informed that Vendor ( {{ vendor_name }} ) has <span style="color: red;">“Rejected”</span> the candidature of below mentioned candidate:</p>
         <table class="email_table">
             <tr>
                 <td class="red_td">Candidate Name</td>
                 <td>{{ candidate_full_name }} | {{ candidate_id }}</td>
             </tr>
-            <tr>
-                <td>Vendor</td>
-                <td>{{ vendor_name }}</td>
-            </tr> 
             <tr>
                 <td>Functional Details</td>
                 <td>{{ dept_name }} | {{ function_name }} | {{ team_name }} | {{ sub_team_name }} | {{ desg_name}} </td>
@@ -33,10 +29,9 @@
                 <td>{{ doj }}</td>
             </tr>   
         </table>
-        <p>Complete details for the candidate are available over <a href="https://ob.associatehrms.com">portal</a> (<a href="https://ob.associatehrms.com">https://ob.associatehrms.com </a>), below is the rejection remarks. </p>
-        <p>" {{ reason }} "</p>
+       
 
-        <p>In Case of any disconnect or any further queries, please contact the Onboarding SPOC : {{ onboarding_spoc }} ({{ onboarding_spoc_mail }}) or the Recruitment SPOC : {{ recruiter_name }} ({{ recruitment_spoc }}).</p>
+        <p>For further details, please contact the Onboarding SPOC : {{ onboarding_spoc }} ({{ onboarding_spoc_mail }}) or the Recruitment SPOC : {{ recruiter_name }} ({{ recruitment_spoc }}).</p>
         <p>Regards,</p>
         <p>Team HR</p>
         <p>Note: This is a system generated mail, please do not reply.</p>  
