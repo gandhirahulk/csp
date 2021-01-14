@@ -482,11 +482,11 @@ def check_duplicate_candidate_new(request):
 def check_rm_email(request):
     email = request.GET.get('email')
     valid = {}
-    if email.endswith('udaan.com'):
+    if email.endswith('udaan.com') or email.endswith('udaancorp.in'):
         valid['result'] = ''
         return JsonResponse(valid)
     else:
-        valid['result'] = 'Allowed Domain : udaan.com'
+        valid['result'] = 'Allowed Domain : udaan.com, udaancorp.in'
         return JsonResponse(valid)
 
 
