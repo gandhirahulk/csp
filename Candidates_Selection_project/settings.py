@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from sys import platform
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -25,10 +26,7 @@ SECRET_KEY = '+qryf_#ix&(-s=k4%qu&u2yy^ii(-c7wiwj@=$m_8w9vf8#olf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = [ '*','34.126.117.215', '172.31.20.44',
-#                   ]
-
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.ob.associatehrms.com','127.0.0.1']
 
 # Application definition
 
@@ -45,6 +43,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # 'django_cookies_samesite.middleware.CookiesSameSite',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -175,8 +174,16 @@ EMAIL_USE_SSL = True
 
 if platform == "linux" or platform == "linux2":
     SESSION_COOKIE_HTTPONLY = True
+    DCS_SESSION_COOKIE_SAMESITE = 'Lax'
+    DCS_SESSION_COOKIE_SAMESITE_FORCE_ALL = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_SECURE = True
+    CORS_ORIGIN_ALLOW_ALL = False
+    CORS_ORIGIN_WHITELIST = ('http://ob.associatehrms.com')
+    CSRF_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SAMESITE = 'Lax'
+
 
 # INACTIVE_TIME = 40 * 60
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
