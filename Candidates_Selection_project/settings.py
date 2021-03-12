@@ -167,7 +167,8 @@ EMAIL_PORT = 465
 # EMAIL_HOST_USER = "workmail052020@gmail.com"
 # EMAIL_HOST_PASSWORD = "lbdwewzbbtpjvaiv"
 EMAIL_HOST_USER = 'associateonboarding@udaan.com'
-EMAIL_HOST_PASSWORD = 'lyboapvarmagsbsv'
+# EMAIL_HOST_PASSWORD = 'lyboapvarmagsbsv'
+EMAIL_HOST_PASSWORD = 'cgteimwhutwnzbuc'
 
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
